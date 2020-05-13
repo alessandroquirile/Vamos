@@ -31,7 +31,8 @@
         android:layout_below="@+id/floatingActionButtonGoBack"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:src="@drawable/troppadvisor_logo" />
+        android:src="@drawable/troppadvisor_logo"
+        tools:ignore="ContentDescription" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

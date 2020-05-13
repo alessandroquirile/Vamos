@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TroppAdvisorProject</string>
+    <string name="app_name">TroppAdvisor</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -19,7 +19,6 @@
     <string name="password_sign_up_hint">Password*</string>
     <string name="repeat_password_sign_up_hint">Ripeti password*</string>
     <string name="sign_up">Crea account</string>
-
     <string name="name_profile_hint">Nome</string>
     <string name="last_name_profile_hint">Cognome</string>
     <string name="nickname_profile_hint">Nickname</string>
