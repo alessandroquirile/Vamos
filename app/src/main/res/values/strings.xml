@@ -19,4 +19,9 @@
     <string name="password_sign_up_hint">Password*</string>
     <string name="repeat_password_sign_up_hint">Ripeti password*</string>
     <string name="sign_up">Crea account</string>
+
+    <string name="name_profile_hint">Nome</string>
+    <string name="last_name_profile_hint">Cognome</string>
+    <string name="nickname_profile_hint">Nickname</string>
+    <string name="password_profile_hint">Password</string>
 </resources>
