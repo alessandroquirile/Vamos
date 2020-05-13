@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">TroppAdvisorProject</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="profile_home">Profilo</string>
+    <string name="search">Cerca</string>
+    <string name="map">Mappa</string>
+    <string name="filterStructure">Filtra</string>
+    <string name="email_login_hint">Email</string>
+    <string name="password_login_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="no_account">Non hai ancora un account?</string>
+    <string name="cancel_login">Continua senza login</string>
+    <string name="email_sign_up_hint">Email*</string>
+    <string name="name_sign_up_hint">Nome*</string>
+    <string name="last_name_sign_up_hint">Cognome*</string>
+    <string name="nickname_sign_up_hint">Nickname*</string>
+    <string name="password_sign_up_hint">Password*</string>
+    <string name="repeat_password_sign_up_hint">Ripeti password*</string>
+    <string name="sign_up">Crea account</string>
+</resources>

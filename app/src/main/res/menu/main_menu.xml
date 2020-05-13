@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/searchButton"
+        android:title="@string/search"
+        android:orderInCategory="1"
+        android:icon="@drawable/icon_search_white"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/mapButton"
+        android:title="@string/map"
+        android:orderInCategory="2"
+        android:icon="@drawable/icon_map_white"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/filterButton"
+        android:title="@string/filterStructure"
+        android:orderInCategory="3"
+        android:icon="@drawable/icon_filter_white"
+        app:showAsAction="always"/>
+
+</menu>
