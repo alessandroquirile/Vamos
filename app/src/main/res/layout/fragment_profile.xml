@@ -18,13 +18,13 @@
         app:rippleColor="@color/colorAccentDark" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="399dp"
-        android:layout_height="286dp"
+        android:layout_width="392dp"
+        android:layout_height="327dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="309dp">
+        android:layout_marginBottom="404dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -36,7 +36,6 @@
                 android:id="@+id/textInputLayoutNameSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:hint="@string/name_profile_hint"
                 android:theme="@style/AppThemeProfile">
 
@@ -53,7 +52,6 @@
                 android:id="@+id/textInputLayoutLastNameSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:hint="@string/last_name_profile_hint"
                 android:theme="@style/AppThemeProfile">
 
@@ -64,6 +62,24 @@
                     android:inputType="text"
                     android:maxLines="1" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutRepeatPasswordSignIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_profile_hint"
+                    android:theme="@style/AppThemeProfile"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@android:color/white">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -73,33 +89,14 @@
                 android:layout_marginBottom="10dp"
                 android:hint="@string/nickname_profile_hint"
                 android:theme="@style/AppThemeProfile"
-                app:counterMaxLength="50"
-                app:counterEnabled="true">
+                app:counterEnabled="true"
+                app:counterMaxLength="50">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutRepeatPasswordSignIn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="@string/password_profile_hint"
-                android:theme="@style/AppThemeProfile"
-                app:endIconMode="password_toggle"
-                app:endIconTint="@android:color/white">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
