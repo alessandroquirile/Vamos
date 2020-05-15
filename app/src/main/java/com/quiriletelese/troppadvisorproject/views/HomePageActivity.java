@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.View;
+package com.quiriletelese.troppadvisorproject.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,19 +24,23 @@ public class HomePageActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+
+    // Costruisce il menù in alto a destra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    // Listener sul click di un tasto dal menù in alto a destra
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -44,10 +48,10 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(new Intent(HomePageActivity.this, LoginActivity.class));
                 break;
             case R.id.mapButton:
-
+                // TODO
                 break;
             case R.id.filterButton:
-
+                // TODO
                 break;
         }
         return super.onOptionsItemSelected(item);

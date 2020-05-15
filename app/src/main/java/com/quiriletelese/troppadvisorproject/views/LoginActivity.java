@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.View;
+package com.quiriletelese.troppadvisorproject.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initializeViewComponent();
         setListenerOnViewComponent();
+    }
 
+    private void initializeViewComponent() {
+        textViewSignIn = findViewById(R.id.textViewSignIn);
+    }
+
+    private void setListenerOnViewComponent() {
+        textViewSignIn.setOnClickListener(this);
     }
 
     @Override
@@ -29,14 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                 break;
         }
-    }
-
-    private void initializeViewComponent() {
-        textViewSignIn = findViewById(R.id.textViewSignIn);
-    }
-
-    private void setListenerOnViewComponent() {
-        textViewSignIn.setOnClickListener(this);
     }
 
 }

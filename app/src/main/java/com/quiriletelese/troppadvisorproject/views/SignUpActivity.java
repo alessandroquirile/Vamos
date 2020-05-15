@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.View;
+package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
 
