@@ -9,18 +9,41 @@
         android:icon="@drawable/icon_search_white"
         app:showAsAction="always"/>
 
+
     <item
         android:id="@+id/mapButton"
         android:title="@string/map"
         android:orderInCategory="2"
         android:icon="@drawable/icon_map_white"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
+
 
     <item
         android:id="@+id/filterButton"
         android:title="@string/filterStructure"
         android:orderInCategory="3"
         android:icon="@drawable/icon_filter_white"
-        app:showAsAction="always"/>
+        app:showAsAction="always" >
+
+        <menu>
+            <group
+                android:id="@+id/group"
+                android:checkableBehavior="single" >
+                <item
+                    android:id="@+id/subitem_tutto"
+                    android:title="@string/tutto" />
+                <item
+                    android:id="@+id/subitem_hotel"
+                    android:title="@string/hotel" />
+                <item
+                    android:id="@+id/subitem_ristoranti"
+                    android:title="@string/ristoranti" />
+                <item
+                    android:id="@+id/subitem_attrazioni"
+                    android:title="@string/attrazioni" />
+            </group>
+        </menu>
+
+    </item>
 
 </menu>

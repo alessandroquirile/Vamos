@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile_home">Profile</string>
+    <string name="profile_home">My Profile</string>
     <string name="search">Search</string>
     <string name="map">Map</string>
     <string name="filterStructure">Filter</string>
@@ -8,8 +8,12 @@
     <string name="cancel_login">Continue without login</string>
     <string name="name_sign_up_hint">Name*</string>
     <string name="last_name_sign_up_hint">Last name</string>
-    <string name="repeat_password_sign_up_hint">Re-type password</string>
-    <string name="sign_up">Create an account</string>
+    <string name="repeat_password_sign_up_hint">Re-type Password</string>
+    <string name="sign_up">Create an Account</string>
     <string name="name_profile_hint">Name</string>
     <string name="last_name_profile_hint">Last Name</string>
+    <string name="tutto">All</string>
+    <string name="hotel">Hotels</string>
+    <string name="ristoranti">Restaurants</string>
+    <string name="attrazioni">Tourist Attractions</string>
 </resources>

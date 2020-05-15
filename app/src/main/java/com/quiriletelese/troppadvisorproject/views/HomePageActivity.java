@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,10 +49,23 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(new Intent(HomePageActivity.this, LoginActivity.class));
                 break;
             case R.id.mapButton:
-                // TODO
+                Toast.makeText(getApplicationContext(), "Premuto Mappa", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.filterButton:
-                // TODO
+                Toast.makeText(getApplicationContext(), "Premuto Filtri", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.subitem_tutto:
+                    Toast.makeText(getApplicationContext(), "Premuto Tutto", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.subitem_hotel:
+                    Toast.makeText(getApplicationContext(), "Premuto Hotel", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.subitem_ristoranti:
+                Toast.makeText(getApplicationContext(), "Premuto Ristoranti", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.subitem_attrazioni:
+                    Toast.makeText(getApplicationContext(), "Premuto Attrazioni", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
