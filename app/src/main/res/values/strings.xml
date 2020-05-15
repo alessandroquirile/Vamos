@@ -2,8 +2,7 @@
     <string name="app_name" translatable="false">TroppAdvisor</string>
     <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
-    <string name="title_notifications" translatable="false">Notifications</string>
-    <string name="profile_home">Il mio Profilo</string>
+    <string name="profile_home">Profilo</string>
     <string name="search">Cerca</string>
     <string name="map">Mappa</string>
     <string name="filterStructure">Filtra</string>
@@ -23,8 +22,10 @@
     <string name="last_name_profile_hint">Cognome</string>
     <string name="nickname_profile_hint" translatable="false">Nickname</string>
     <string name="password_profile_hint" translatable="false">Password</string>
-    <string name="tutto">Tutto</string>
+    <string name="all">Tutto</string>
     <string name="hotel">Hotel</string>
-    <string name="ristoranti">Ristoranti</string>
-    <string name="attrazioni">Attrazioni</string>
+    <string name="restaurant">Ristoranti</string>
+    <string name="attractions">Attrazioni</string>
+    <string name="no_position_error">Geolocalizzazione disattivata, attivala per trovare le strutture nelle vicinanze</string>
+    <string name="active_geolocation">attiva geolocalizzazione</string>
 </resources>

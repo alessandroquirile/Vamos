@@ -5,16 +5,18 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">#ffffff</item>
-        <item name="colorControlActivated">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
     </style>
 
     <!-- Profile application theme. -->
-    <style name="AppThemeProfile" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeLogin" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

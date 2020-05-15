@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile_home">My Profile</string>
+    <string name="profile_home">Profile</string>
     <string name="search">Search</string>
     <string name="map">Map</string>
     <string name="filterStructure">Filter</string>
@@ -12,8 +12,10 @@
     <string name="sign_up">Create an Account</string>
     <string name="name_profile_hint">Name</string>
     <string name="last_name_profile_hint">Last Name</string>
-    <string name="tutto">All</string>
+    <string name="all">All</string>
     <string name="hotel">Hotels</string>
-    <string name="ristoranti">Restaurants</string>
-    <string name="attrazioni">Tourist Attractions</string>
+    <string name="restaurant">Restaurants</string>
+    <string name="attractions">Tourist Attractions</string>
+    <string name="active_geolocation">attiva geolocalizzazione</string>
+    <string name="no_position_error">" Geolocation deactivated, activate it to find nearby structures"</string>
 </resources>

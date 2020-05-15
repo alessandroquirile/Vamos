@@ -3,47 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/searchButton"
-        android:title="@string/search"
-        android:orderInCategory="1"
+        android:id="@+id/search_button_menu"
         android:icon="@drawable/icon_search_white"
-        app:showAsAction="always"/>
-
+        android:orderInCategory="1"
+        android:title="@string/search"
+        app:showAsAction="always" />
 
     <item
-        android:id="@+id/mapButton"
-        android:title="@string/map"
-        android:orderInCategory="2"
+        android:id="@+id/map_button_menu"
         android:icon="@drawable/icon_map_white"
-        app:showAsAction="ifRoom"/>
-
+        android:orderInCategory="2"
+        android:title="@string/map"
+        app:showAsAction="always" />
 
     <item
-        android:id="@+id/filterButton"
-        android:title="@string/filterStructure"
-        android:orderInCategory="3"
+        android:id="@+id/filter_button_menu"
         android:icon="@drawable/icon_filter_white"
-        app:showAsAction="always" >
-
+        android:orderInCategory="3"
+        android:title="@string/filterStructure"
+        app:showAsAction="always">
         <menu>
             <group
-                android:id="@+id/group"
-                android:checkableBehavior="single" >
+                android:id="@+id/radio_group_filter_menu"
+                android:checkableBehavior="single">
                 <item
-                    android:id="@+id/subitem_tutto"
-                    android:title="@string/tutto" />
+                    android:id="@+id/radio_button_subitem_all"
+                    android:checked="true"
+                    android:title="@string/all" />
                 <item
-                    android:id="@+id/subitem_hotel"
+                    android:id="@+id/radio_button_subitem_hotel"
                     android:title="@string/hotel" />
                 <item
-                    android:id="@+id/subitem_ristoranti"
-                    android:title="@string/ristoranti" />
+                    android:id="@+id/radio_button_subitem_restaurant"
+                    android:title="@string/restaurant" />
                 <item
-                    android:id="@+id/subitem_attrazioni"
-                    android:title="@string/attrazioni" />
+                    android:id="@+id/radio_button_subitem_attractions"
+                    android:title="@string/attractions" />
             </group>
         </menu>
-
     </item>
 
 </menu>
