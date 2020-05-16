@@ -28,4 +28,16 @@
     <string name="attractions">Attrazioni</string>
     <string name="no_position_error">Geolocalizzazione disattivata, attivala per trovare le strutture nelle vicinanze</string>
     <string name="active_geolocation">attiva geolocalizzazione</string>
+    <string name="what">Cosa:</string>
+    <string name="posizione_attuale">Posizione attuale</string>
+    <string name="price_any">Prezzo: Qualsiasi</string>
+    <string name="distance_any">Distanza: Qualsiasi</string>
+    <string name="rank_any">Voto medio: Qualsiasi</string>
+    <string name="ree_results">Vedi risultati</string>
+    <string name="current_position">Posizione attuale</string>
+    <string name="up_to">Fino a</string>
+    <string name="price">Prezzo</string>
+    <string name="price_up_to_something">Prezzo: Fino a %1$d €</string>
+    <string name="distance_up_to_something">Distanza: Fino a %1$d km</string>
+    <string name="rank_up_to_something">Voto medio: Da %1$d+ </string>
 </resources>

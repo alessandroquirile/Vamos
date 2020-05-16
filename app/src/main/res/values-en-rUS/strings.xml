@@ -16,6 +16,18 @@
     <string name="hotel">Hotels</string>
     <string name="restaurant">Restaurants</string>
     <string name="attractions">Tourist Attractions</string>
-    <string name="active_geolocation">attiva geolocalizzazione</string>
+    <string name="active_geolocation">Activate Geolocation</string>
     <string name="no_position_error">" Geolocation deactivated, activate it to find nearby structures"</string>
+    <string name="posizione_attuale">Current position</string>
+    <string name="price_any">Price: Any</string>
+    <string name="distance_any">Distance: Any</string>
+    <string name="rank_any">Average Rank: Any</string>
+    <string name="ree_results">See results</string>
+    <string name="current_position">Current position</string>
+    <string name="what">What:</string>
+    <string name="up_to">Up to</string>
+    <string name="price">Price</string>
+    <string name="price_up_to_something">Price: Up to %1$d €</string>
+    <string name="distance_up_to_something">Distance: Up to %1$d km</string>
+    <string name="rank_up_to_something">Average Rank: From %1$d+</string>
 </resources>

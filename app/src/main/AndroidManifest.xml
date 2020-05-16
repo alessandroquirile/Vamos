@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.HomePageSearchActivity"></activity>
         <activity
             android:name=".views.SignUpActivity"
             android:theme="@style/AppThemeLogin" />
@@ -17,9 +18,9 @@
             android:theme="@style/AppThemeLogin" />
         <activity
             android:name=".views.HomePageActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:label="@string/app_name">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

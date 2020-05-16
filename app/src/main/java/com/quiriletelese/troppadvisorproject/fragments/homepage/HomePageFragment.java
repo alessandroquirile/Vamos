@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.views.LoginActivity;
+import com.quiriletelese.troppadvisorproject.views.HomePageSearchActivity;
 
 public class HomePageFragment extends Fragment {
 
@@ -42,7 +42,7 @@ public class HomePageFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_button_menu:
-                startActivity(new Intent(getContext(), LoginActivity.class));
+                startActivity(new Intent(getContext(), HomePageSearchActivity.class));
                 break;
             case R.id.map_button_menu:
                 Toast.makeText(getContext(), "Premuto Mappa", Toast.LENGTH_SHORT).show();
