@@ -1,14 +1,16 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.quiriletelese.troppadvisorproject.R;
+
+import java.util.Objects;
 
 public class SeeResultsActivity extends AppCompatActivity {
 
@@ -16,7 +18,7 @@ public class SeeResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_results); //Se qui vedi che non trova il layout non so perchè lo fa, sarà un bug perchè comunque in fase d'avvio non da nessun problema
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Vedi risultati"); //Temporaneo
     }
 

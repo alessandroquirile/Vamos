@@ -29,7 +29,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nome:"
+                        android:text="@string/name_profile_hint"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:textColor="@android:color/black"
@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dove:"
+                        android:text="@string/where"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:textColor="@android:color/black"
@@ -55,13 +55,13 @@
                         android:id="@+id/auto_complete_text_view_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nome" />
+                        android:hint="@string/name_profile_hint" />
 
                     <AutoCompleteTextView
                         android:id="@+id/auto_complete_text_view_where"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Dove" />
+                        android:hint="@string/where" />
 
                 </LinearLayout>
 

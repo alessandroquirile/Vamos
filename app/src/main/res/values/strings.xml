@@ -41,4 +41,5 @@
     <string name="rank_up_to_something">Voto medio: Da %1$d+ </string>
     <string name="title_activity_maps" translatable="false">Map</string>
     <string name="posizione_attuale">Posizione attuale</string>
+    <string name="where">Dove</string>
 </resources>

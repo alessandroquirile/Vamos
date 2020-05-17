@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.quiriletelese.troppadvisorproject.R;
+
+import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,
         View.OnClickListener {
@@ -32,7 +32,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
         setContentView(R.layout.activity_search);
         Toolbar toolbar = findViewById(R.id.toolbar_search_page);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         initViewComponents();
         setListenerOnViewComponents();
