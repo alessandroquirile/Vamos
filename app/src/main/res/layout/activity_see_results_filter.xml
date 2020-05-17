@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.SeeResultsFilterActivity">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_filter"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimaryDark"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_see_results_filter_activity"
+        android:layout_below="@id/progress_bar_filter">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/textview_what_see_result_filter_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:text="@string/what"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radiogroup_see_result_filter_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp">
+
+                <RadioButton
+                    android:id="@+id/radiobutton_all_see_result_filter_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/all" />
+
+                <RadioButton
+                    android:id="@+id/radiobutton_attractions_see_result_filter_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attractions" />
+
+                <RadioButton
+                    android:id="@+id/radiobutton_hotels_see_result_filter_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hotel" />
+
+                <RadioButton
+                    android:id="@+id/radiobutton_restaurants_see_result_filter_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/restaurant" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textview_price_see_result_filter_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:text="@string/price_search_page"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/seekbar_price_see_result_filter_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:max="150"
+                android:thumbTint="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/textview_distance_see_result_filter_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:text="@string/distance_search_page"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:thumbTint="@color/colorPrimaryDark" />
+
+            <SeekBar
+                android:id="@+id/seekbar_distance_see_result_filter_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:max="50"
+                android:thumbTint="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/textview_rank_see_result_filter_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:text="@string/rank_search_page"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/seekbar_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5"
+                android:thumbTint="@color/colorPrimaryDark" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/button_see_results_filter_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_see_results_button"
+        android:drawableStart="@drawable/icon_search_white"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/see_results"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

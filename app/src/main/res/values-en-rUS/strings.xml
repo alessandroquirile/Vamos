@@ -19,10 +19,10 @@
     <string name="active_geolocation">Activate Geolocation</string>
     <string name="no_position_error">" Geolocation deactivated, activate it to find nearby structures"</string>
     <string name="posizione_attuale">Current position</string>
-    <string name="price_any">Price: Any</string>
-    <string name="distance_any">Distance: Any</string>
-    <string name="rank_any">Average Rank: Any</string>
-    <string name="ree_results">See results</string>
+    <string name="price_search_page">Price: Any</string>
+    <string name="distance_search_page">Distance: Any</string>
+    <string name="rank_search_page">Average Rank: Any</string>
+    <string name="see_results">See results</string>
     <string name="current_position">Current position</string>
     <string name="what">What:</string>
     <string name="up_to">Up to</string>

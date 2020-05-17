@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/map_button_menu_see_results_activity"
+        android:icon="@drawable/icon_map_white"
+        android:orderInCategory="2"
+        android:title="@string/map"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/filter_button_menu_see_results_activity"
+        android:icon="@drawable/icon_filter_white"
+        android:orderInCategory="3"
+        android:title="@string/filterStructure"
+        app:showAsAction="always" />
+
+</menu>

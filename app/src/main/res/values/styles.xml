@@ -24,4 +24,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppThemeSearchActivity" parent="AppTheme.NoActionBar">
+        <item name="homeAsUpIndicator">@drawable/icon_arrow_back_green</item>
+    </style>
+
 </resources>

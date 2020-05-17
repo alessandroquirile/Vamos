@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.quiriletelese.troppadvisorproject.fragments.homepage.HomePageFragment"
+        android:name="com.quiriletelese.troppadvisorproject.views.HomePageFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.quiriletelese.troppadvisorproject.fragments.profile.ProfileFragment"
+        android:name="com.quiriletelese.troppadvisorproject.views.ProfileFragment"
         android:label="@string/profile_home"
         tools:layout="@layout/fragment_profile" />
 </navigation>

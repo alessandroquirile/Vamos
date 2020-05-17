@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.fragments.homepage;
+package com.quiriletelese.troppadvisorproject.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.views.HomePageSearchActivity;
+import com.quiriletelese.troppadvisorproject.views.MapsActivity;
+import com.quiriletelese.troppadvisorproject.views.SearchActivity;
 
 public class HomePageFragment extends Fragment {
 
@@ -41,13 +42,13 @@ public class HomePageFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.search_button_menu:
-                startActivity(new Intent(getContext(), HomePageSearchActivity.class));
+            case R.id.search_button_menu_home_page_activity:
+                startActivity(new Intent(getContext(), SearchActivity.class));
                 break;
-            case R.id.map_button_menu:
-                Toast.makeText(getContext(), "Premuto Mappa", Toast.LENGTH_SHORT).show();
+            case R.id.map_button_menu_home_page_activity:
+                startActivity(new Intent(getContext(), MapsActivity.class));
                 break;
-            case R.id.filter_button_menu:
+            case R.id.filter_button_menu_home_page_activity:
                 Toast.makeText(getContext(), "Premuto Filtri", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_button_subitem_all:

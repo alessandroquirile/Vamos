@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.fragments.profile;
+package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
