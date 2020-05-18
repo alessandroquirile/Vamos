@@ -26,6 +26,7 @@
                     android:layout_marginEnd="5dp"
                     android:orientation="vertical">
 
+                    <!--
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
                         android:layout_weight="1"
                         android:textColor="@android:color/black"
                         android:textStyle="bold" />
+                        -->
 
                 </LinearLayout>
 
@@ -56,14 +58,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/name_profile_hint"
-                        android:maxLines="1"/>
+                        android:maxLines="1"
+                        android:drawableStart="@drawable/icon_search_black"
+                        android:drawablePadding="3dp"/>
 
                     <AutoCompleteTextView
                         android:id="@+id/auto_complete_text_view_where"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/where"
-                        android:maxLines="1"/>
+                        android:maxLines="1"
+                        android:drawableStart="@drawable/icon_location_black"
+                        android:drawablePadding="3dp"/>
 
                 </LinearLayout>
 
