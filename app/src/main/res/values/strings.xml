@@ -42,4 +42,12 @@
     <string name="title_activity_maps" translatable="false">Map</string>
     <string name="posizione_attuale">Posizione attuale</string>
     <string name="where">Dove</string>
+    <string name="titolo">Titolo</string>
+    <string name="descrizione">Descrizione</string>
+    <string name="tocca_una_stella_per_indicare_un_punteggio">Tocca una stella per indicare un punteggio</string>
+    <string name="molto_buono">Molto Buono</string>
+    <string name="pubblica_anonimamente">Pubblica Anonimamente</string>
+    <string name="no" translatable="false">No</string>
+    <string name="s">Sì</string>
+    <string name="aggiungi_recensione">Aggiungi Recensione</string>
 </resources>

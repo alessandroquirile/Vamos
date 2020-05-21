@@ -31,4 +31,11 @@
     <string name="distance_up_to_something">Distance: Up to %1$d km</string>
     <string name="rank_up_to_something">Average Rank: From %1$d+</string>
     <string name="where">Where</string>
+    <string name="titolo">Title</string>
+    <string name="descrizione">Description</string>
+    <string name="tocca_una_stella_per_indicare_un_punteggio">Tap a star to rate</string>
+    <string name="molto_buono">Very Good</string>
+    <string name="pubblica_anonimamente">Publish Anonymously</string>
+    <string name="s">Yes</string>
+    <string name="aggiungi_recensione">Publish Review</string>
 </resources>
