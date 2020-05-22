@@ -15,8 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.views.MapsActivity;
-import com.quiriletelese.troppadvisorproject.views.SearchActivity;
 
 public class HomePageFragment extends Fragment {
 
@@ -43,7 +41,7 @@ public class HomePageFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_button_menu_home_page_activity:
-                startActivity(new Intent(getContext(), SearchActivity.class));
+                startActivity(new Intent(getContext(), /*SearchActivity.class*/WriteReviewActivity.class));
                 break;
             case R.id.map_button_menu_home_page_activity:
                 startActivity(new Intent(getContext(), MapsActivity.class));

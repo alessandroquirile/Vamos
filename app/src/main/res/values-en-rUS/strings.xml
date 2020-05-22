@@ -38,4 +38,8 @@
     <string name="pubblica_anonimamente">Publish Anonymously</string>
     <string name="s">Yes</string>
     <string name="aggiungi_recensione">Publish Review</string>
+    <string name="pessimo">Awful</string>
+    <string name="scarso">Cheap</string>
+    <string name="nella_media">Average</string>
+    <string name="eccellente">Flawless</string>
 </resources>

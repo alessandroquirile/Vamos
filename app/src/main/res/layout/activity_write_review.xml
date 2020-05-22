@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TODO: verificare la correttezza -->
+    <!-- TODO: aggiungere il fatto che scrivere tanto allarga l'edittext -->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_title"
+                android:id="@+id/text_input_layout_title_write_review_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/titolo"
@@ -28,6 +28,7 @@
                 app:counterMaxLength="50">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_edit_text_title_write_review_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -37,7 +38,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_description"
+                android:id="@+id/text_input_layout_description_review_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/descrizione"
@@ -46,6 +47,7 @@
                 app:counterMaxLength="350">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_edit_text_description_review_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -55,6 +57,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/text_view_tap_a_star_review_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tocca_una_stella_per_indicare_un_punteggio"
@@ -63,22 +66,23 @@
                android:layout_marginTop="10dp"/>
 
             <RatingBar
-                android:id="@+id/rating_bar"
+                android:id="@+id/rating_bar_review_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:stepSize="1"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:theme="@style/RatingBar"/>
 
             <TextView
-                android:id="@+id/text_view_about_rating"
+                android:id="@+id/text_view_about_rating_review_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/molto_buono" />
+                android:text="" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_button"
+                android:id="@+id/switch_button_review_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -92,7 +96,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/button_publish_review"
+        android:id="@+id/button_publish_review_review_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

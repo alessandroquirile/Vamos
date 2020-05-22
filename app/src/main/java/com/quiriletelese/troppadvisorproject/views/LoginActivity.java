@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.quiriletelese.troppadvisorproject.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
     private TextView textViewSignIn;
 
     @Override

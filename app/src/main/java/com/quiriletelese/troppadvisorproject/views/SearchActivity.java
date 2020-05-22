@@ -17,6 +17,7 @@ import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,
         View.OnClickListener {
+
     private RadioGroup radioGroup;
     private TextView textViewPrice;
     private TextView textViewDistance;

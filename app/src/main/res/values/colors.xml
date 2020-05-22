@@ -5,4 +5,6 @@
     <color name="colorAccent">#892233</color>
     <color name="colorAccentDark">#EC4964</color>
     <color name="infoboxBackground">#4D579441</color>
+    <color name="duskYellow">#FFC922</color>
+    <color name="lightGrey">#A7A7A7</color>
 </resources>
