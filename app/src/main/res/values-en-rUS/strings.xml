@@ -40,6 +40,9 @@
     <string name="aggiungi_recensione">Publish Review</string>
     <string name="pessimo">Awful</string>
     <string name="scarso">Cheap</string>
-    <string name="nella_media">Average</string>
-    <string name="eccellente">Flawless</string>
+    <string name="nella_media">Quite Good</string>
+    <string name="eccellente">Excellent</string>
+    <string name="informazioni_sulla_struttura">About this structure</string>
+    <string name="leggi_recensioni">See Reviews</string>
+    <string name="certificato_di_eccellenza">Certificate of Excellence</string>
 </resources>
