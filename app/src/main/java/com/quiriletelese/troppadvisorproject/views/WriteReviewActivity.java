@@ -43,6 +43,10 @@ public class WriteReviewActivity extends AppCompatActivity implements RatingBar.
     @Override
     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
         switch ((int) rating) {
+            case 0:
+                textViewAboutRating.setText("");
+                ratingBar.setRating(1);
+                break;
             case 1:
                 textViewAboutRating.setText(getResources().getString(R.string.pessimo));
                 break;
