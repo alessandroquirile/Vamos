@@ -16,14 +16,14 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
             app:contentScrim="@color/colorPrimaryDark"
             app:title="La Masardona">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:src="@drawable/my_background"
+                android:layout_height="200dp"
+                android:src="@drawable/pizza"
                 android:scaleType="centerCrop" />
 
             <androidx.appcompat.widget.Toolbar

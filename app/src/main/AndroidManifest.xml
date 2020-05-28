@@ -17,7 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.OverviewActivity"></activity>
+        <activity
+            android:name=".views.OverviewActivity"
+            android:theme="@style/FullScreen" />
+
         <activity android:name=".views.WriteReviewActivity" />
         <activity android:name=".views.SeeResultsFilterActivity" />
         <activity android:name=".views.SeeResultsActivity" />
