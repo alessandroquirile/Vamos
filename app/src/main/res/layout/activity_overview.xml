@@ -23,7 +23,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:src="@drawable/restaurant"
+                android:src="@drawable/my_background"
                 android:scaleType="centerCrop" />
 
             <androidx.appcompat.widget.Toolbar
@@ -68,59 +68,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_stars_black"
-                android:drawablePadding="3dp"
-                android:drawableTint="@color/colorPrimary"
+                android:drawableStart="@drawable/icon_stars_primary_color"
+                android:drawablePadding="4dp"
                 android:text="4/5 (63 recensioni)"
                 android:textColor="@color/black"
-                tools:targetApi="m"
                 tools:ignore="HardcodedText"  />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawableStart="@drawable/icon_loyalty_white"
-                android:drawablePadding="3dp"
-                android:drawableTint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_loyalty_primary_color"
+                android:drawablePadding="4dp"
                 android:text="@string/certificato_di_eccellenza"
                 android:textColor="@color/black"
-                tools:targetApi="m" />
+                 />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawableStart="@drawable/ic_location_white"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_location_primary_color"
                 android:drawablePadding="3dp"
-                android:drawableTint="@color/colorPrimary"
                 android:text="Via Salvo d'Acquisto, 25 San Giorgio a Cremano, Napoli"
                 android:textColor="@color/black"
-                tools:targetApi="m"
                 tools:ignore="HardcodedText"  />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawableStart="@drawable/icon_phone_white"
-                android:drawablePadding="3dp"
-                android:drawableTint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_phone_primary_color"
+                android:drawablePadding="4dp"
                 android:text="0817714413"
                 android:textColor="@color/black"
-                tools:targetApi="m"
                 tools:ignore="HardcodedText"  />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawableStart="@drawable/icon_schedule_white"
-                android:drawablePadding="3dp"
-                android:drawableTint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_schedule_primary_color"
+                android:drawablePadding="4dp"
                 android:text="17:30-23:00"
                 android:textColor="@color/black"
-                tools:targetApi="m"
                 tools:ignore="HardcodedText" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
