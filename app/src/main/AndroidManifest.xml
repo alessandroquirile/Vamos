@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".views.OverviewActivity"
-            android:theme="@style/FullScreen" />
+            android:theme="@style/OverView" />
 
         <activity android:name=".views.WriteReviewActivity" />
         <activity android:name=".views.SeeResultsFilterActivity" />

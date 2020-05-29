@@ -30,16 +30,10 @@
 
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/duskYellow</item>
-        <item name="colorControlActivated">@color/lightGrey</item>
+        <item name="colorControlActivated">@color/duskYellow</item>
     </style>
 
     <style name="OverView" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
