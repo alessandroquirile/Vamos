@@ -19,11 +19,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".views.OverviewActivity"
-            android:theme="@style/OverView" />
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.WriteReviewActivity" />
         <activity android:name=".views.SeeResultsFilterActivity" />
         <activity android:name=".views.SeeResultsActivity" />
+        <activity
+            android:name=".views.MapsActivity"
+            android:label="@string/title_activity_maps" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -36,9 +38,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".views.MapsActivity"
-            android:label="@string/title_activity_maps" />
         <activity
             android:name=".views.SearchActivity"
             android:theme="@style/AppThemeSearchActivity" />

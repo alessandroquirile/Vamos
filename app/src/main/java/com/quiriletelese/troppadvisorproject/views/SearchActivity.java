@@ -35,28 +35,9 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        initViewComponents();
+        initializeViewComponents();
         setListenerOnViewComponents();
     }
-
-    public void initViewComponents() {
-        radioGroup = findViewById(R.id.radiogroup);
-        textViewPrice = findViewById(R.id.textview_price);
-        textViewDistance = findViewById(R.id.textview_distance);
-        textViewRank = findViewById(R.id.textview_rank);
-        seekBarPrice = findViewById(R.id.seekbar_price);
-        seekbarDistance = findViewById(R.id.seekbar_distance);
-        seekBarRank = findViewById(R.id.seekbar_rank);
-        buttonSeeResults = findViewById(R.id.button_see_results);
-    }
-
-    private void setListenerOnViewComponents() {
-        seekBarPrice.setOnSeekBarChangeListener(this);
-        seekbarDistance.setOnSeekBarChangeListener(this);
-        seekBarRank.setOnSeekBarChangeListener(this);
-        buttonSeeResults.setOnClickListener(this);
-    }
-
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -105,7 +86,25 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
                         "\nDistanza fino a " + seekbarDistance.getProgress() + "" +
                         "\nVoto medio da " + seekBarRank.getProgress() + "" +
                         "\n\nNota che quando i parametri sono su Any, progress è 0", Toast.LENGTH_SHORT).show();*/
-            break;
+                break;
         }
+    }
+
+    public void initializeViewComponents() {
+        radioGroup = findViewById(R.id.radiogroup);
+        textViewPrice = findViewById(R.id.textview_price);
+        textViewDistance = findViewById(R.id.textview_distance);
+        textViewRank = findViewById(R.id.textview_rank);
+        seekBarPrice = findViewById(R.id.seekbar_price);
+        seekbarDistance = findViewById(R.id.seekbar_distance);
+        seekBarRank = findViewById(R.id.seekbar_rank);
+        buttonSeeResults = findViewById(R.id.button_see_results);
+    }
+
+    private void setListenerOnViewComponents() {
+        seekBarPrice.setOnSeekBarChangeListener(this);
+        seekbarDistance.setOnSeekBarChangeListener(this);
+        seekBarRank.setOnSeekBarChangeListener(this);
+        buttonSeeResults.setOnClickListener(this);
     }
 }

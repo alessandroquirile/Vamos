@@ -47,19 +47,14 @@ public class HomePageFragment extends Fragment {
                 startActivity(new Intent(getContext(), MapsActivity.class));
                 break;
             case R.id.filter_button_menu_home_page_activity:
-                Toast.makeText(getContext(), "Premuto Filtri", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_button_subitem_all:
-                Toast.makeText(getContext(), "Premuto Tutto", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_button_subitem_hotel:
-                Toast.makeText(getContext(), "Premuto Hotel", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_button_subitem_restaurant:
-                Toast.makeText(getContext(), "Premuto Ristoranti", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radio_button_subitem_attractions:
-                Toast.makeText(getContext(), "Premuto Attrazioni", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);

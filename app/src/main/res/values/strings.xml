@@ -57,4 +57,5 @@
     <string name="informazioni_sulla_struttura">Informazioni sulla struttura</string>
     <string name="leggi_recensioni">Leggi Recensioni</string>
     <string name="certificato_di_eccellenza">Certificato di Eccellenza</string>
+    <string name="nessuna_stella_selezionata">Nessuna stella selezionata</string>
 </resources>

@@ -2,47 +2,50 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppTheme.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.OverviewActivity"
-    style="@style/AppTheme.NoActionBar" >
+    tools:context=".views.OverviewActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:contentScrim="@color/colorPrimaryDark"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:title="La Masardona">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/pizza"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/pizza" />
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_write_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/icon_edit_white"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
-        android:layout_marginEnd="15dp"/>
+        app:rippleColor="@color/colorAccentDark" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -72,7 +75,7 @@
                 android:drawablePadding="4dp"
                 android:text="4/5 (63 recensioni)"
                 android:textColor="@color/black"
-                tools:ignore="HardcodedText"  />
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -81,8 +84,7 @@
                 android:drawableStart="@drawable/icon_loyalty_primary_color"
                 android:drawablePadding="4dp"
                 android:text="@string/certificato_di_eccellenza"
-                android:textColor="@color/black"
-                 />
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -92,7 +94,7 @@
                 android:drawablePadding="3dp"
                 android:text="Via Salvo d'Acquisto, 25 San Giorgio a Cremano, Napoli"
                 android:textColor="@color/black"
-                tools:ignore="HardcodedText"  />
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -102,7 +104,7 @@
                 android:drawablePadding="4dp"
                 android:text="0817714413"
                 android:textColor="@color/black"
-                tools:ignore="HardcodedText"  />
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -118,20 +120,21 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <Button
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/leggi_recensioni"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/background_see_reviews_button"/>
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/background_see_reviews_button"
+            android:text="@string/leggi_recensioni"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 
