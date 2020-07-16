@@ -1,15 +1,15 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.controllers.WriteReviewController;
 
-public class OverviewActivity extends AppCompatActivity implements View.OnClickListener {
+public class OverviewActivity extends AppCompatActivity {
+
     private FloatingActionButton floatingActionButtonWriteReview;
 
     @Override
@@ -18,23 +18,20 @@ public class OverviewActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_overview);
 
         initializeViewComponents();
-        setListenerOnViewComponents();
+        initializeController();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.floating_action_button_write_review:
-                startActivity(new Intent(getApplicationContext(), WriteReviewActivity.class));
-                break;
-        }
+    public FloatingActionButton getFloatingActionButtonWriteReview() {
+        return floatingActionButtonWriteReview;
     }
 
     private void initializeViewComponents() {
         floatingActionButtonWriteReview = findViewById(R.id.floating_action_button_write_review);
     }
 
-    private void setListenerOnViewComponents() {
-        floatingActionButtonWriteReview.setOnClickListener(this);
+    public void initializeController() {
+        WriteReviewController writeReviewController = new WriteReviewController(this);
+        writeReviewController.setListenerOnOverviewActiviyComponents();
     }
 }
+
