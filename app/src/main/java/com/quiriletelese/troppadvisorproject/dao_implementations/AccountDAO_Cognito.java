@@ -31,4 +31,10 @@ public class AccountDAO_Cognito implements AccountDAO {
         return false;
         // Verificare che il nickname sia disponibile
     }
+
+    @Override
+    public boolean updatePassword(String password) {
+        return false;
+        // Codice per cambiare password su cognito
+    }
 }

@@ -13,4 +13,6 @@ public interface AccountDAO {
     boolean isEmailAvailable(String email);
 
     boolean isNicknameAvailable(String nickname);
+
+    boolean updatePassword(String password);
 }

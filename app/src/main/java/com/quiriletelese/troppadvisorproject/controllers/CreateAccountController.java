@@ -75,7 +75,6 @@ public class CreateAccountController implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_sign_up_sign_up_activity:
-                //Toast.makeText(signUpActivity.getApplicationContext(), "Cliccato sign up", Toast.LENGTH_LONG).show();
                 checkFields();
                 break;
             case R.id.floating_action_button_go_back_sign_up_activity:

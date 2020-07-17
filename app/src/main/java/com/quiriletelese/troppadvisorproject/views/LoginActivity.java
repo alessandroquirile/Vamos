@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void initializeController() {
         LoginController loginController = new LoginController(this);
-        loginController.setListenerOnLoginActivity();
+        loginController.setListenersOnLoginActivity();
     }
 
     public EditText getEditTextEmail() {

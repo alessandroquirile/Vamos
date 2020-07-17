@@ -27,7 +27,7 @@ public class LoginController implements View.OnClickListener {
         this.loginActivity = loginActivity;
     }
 
-    public void setListenerOnLoginActivity() {
+    public void setListenersOnLoginActivity() {
         loginActivity.getButtonLogin().setOnClickListener(this);
         loginActivity.getTextViewSignIn().setOnClickListener(this);
     }
