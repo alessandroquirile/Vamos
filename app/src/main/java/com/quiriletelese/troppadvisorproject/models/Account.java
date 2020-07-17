@@ -67,7 +67,10 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "email='" + email + '\'' +
+                "name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
