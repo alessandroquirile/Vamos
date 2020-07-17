@@ -19,7 +19,7 @@
         android:layout_below="@+id/app_bar"
         android:indeterminate="true"
         android:indeterminateTint="@color/colorPrimaryDark"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +40,8 @@ public class HomePageFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_button_menu_home_page_activity:
-                startActivity(new Intent(getContext(), /*SearchActivity.class*/ /*WriteReviewActivity.class*/OverviewActivity.class));
+                startActivity(new Intent(getContext(), LoginActivity.class
+                        /*SearchActivity.class*/ /*WriteReviewActivity.class*//*OverviewActivity.class*/));
                 break;
             case R.id.map_button_menu_home_page_activity:
                 startActivity(new Intent(getContext(), MapsActivity.class));
