@@ -9,8 +9,6 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
 
-import java.io.IOException;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -33,12 +31,8 @@ public class UpdateProfileController implements View.OnClickListener {
 
     public void changePassword() {
         daoFactory = DAOFactory.getInstance();
-        try {
-            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
-                    profileFragment.requireActivity().getApplicationContext()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
+                profileFragment.requireActivity().getApplicationContext()));
         if (accountDAO.updatePassword(profileFragment.getEditTextPassword().getText().toString())) {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "PAssowrd mod", Toast.LENGTH_LONG).show();
         } else {

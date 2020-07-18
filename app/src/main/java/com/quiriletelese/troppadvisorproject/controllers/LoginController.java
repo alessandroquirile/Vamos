@@ -8,11 +8,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.models.Account;
+import com.quiriletelese.troppadvisorproject.personal_exceptions.TecnologiaNonAncoraSupportataException;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
-
-import java.io.IOException;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -38,7 +37,7 @@ public class LoginController implements View.OnClickListener {
         try {
             accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                     loginActivity.getApplicationContext()));
-        } catch (IOException e) {
+        } catch (TecnologiaNonAncoraSupportataException e) {
             e.printStackTrace();
         }
         if (accountDAO.authenticate(account))

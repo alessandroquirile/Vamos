@@ -12,11 +12,20 @@ import java.util.Properties;
  */
 public class ConfigFileReader {
 
-    public static String getProperty(String key, Context context) throws IOException {
+    public static String getProperty(String key, Context context) {
         Properties properties = new Properties();
         AssetManager assetManager = context.getAssets();
-        InputStream inputStream = assetManager.open("config.properties");
-        properties.load(inputStream);
+        InputStream inputStream = null;
+        try {
+            inputStream = assetManager.open("config.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return properties.getProperty(key);
     }
 }

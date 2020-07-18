@@ -26,13 +26,13 @@ public class DAOFactory {
         if (reviewStorageTechnology.equals("mongodb"))
             return new ReviewDAO_MongoDB();
         else
-            throw new UnsupportedOperationException("Tecnologia non ancora supportata");
+            throw new UnsupportedOperationException("Tecnologia " + reviewStorageTechnology + "non ancora supportata");
     }
 
     public AccountDAO getAccountDAO(String accountStorageTechnology) {
         if (accountStorageTechnology.equals("cognito"))
             return new AccountDAO_Cognito();
         else
-            throw new UnsupportedOperationException("Tecnologia non ancora supportata");
+            throw new UnsupportedOperationException("Tecnologia " + accountStorageTechnology + "non ancora supportata");
     }
 }

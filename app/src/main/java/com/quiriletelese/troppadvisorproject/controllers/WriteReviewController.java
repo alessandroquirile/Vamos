@@ -16,8 +16,6 @@ import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.OverviewActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 
-import java.io.IOException;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -39,12 +37,8 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
     public void aggiungiRecensione(String title, String description, int numStars, boolean isAnonymous) {
         Review review = new Review(title, description, numStars, isAnonymous);
         daoFactory = DAOFactory.getInstance();
-        try {
-            reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
-                    writeReviewActivity.getApplicationContext()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
+                writeReviewActivity.getApplicationContext()));
         if (reviewDAO.add(review))
             Toast.makeText(writeReviewActivity.getApplicationContext(), "Add true", Toast.LENGTH_LONG).show();
         else

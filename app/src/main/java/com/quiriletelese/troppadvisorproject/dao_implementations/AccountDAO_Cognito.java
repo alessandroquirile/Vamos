@@ -1,5 +1,9 @@
 package com.quiriletelese.troppadvisorproject.dao_implementations;
 
+import android.content.Context;
+
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
+import com.quiriletelese.troppadvisorproject.cognito.CognitoSettings;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.models.Account;
 
@@ -10,31 +14,45 @@ public class AccountDAO_Cognito implements AccountDAO {
 
     @Override
     public boolean authenticate(Account account) {
-        return false;
-        // codice per autenticarsi via cognito
+        // Codice per il login
+        return true;
     }
 
     @Override
-    public boolean create(Account account) {
-        return false;
-        // codice per creare un nuovo account via cognito
-    }
-
-    @Override
-    public boolean isEmailAvailable(String email) {
-        return false;
-        // Verificare che la mail sia disponibile, cioè non già impiegata
+    public boolean create(Account account, Context context) {
+        CognitoSettings cognitoSettings = new CognitoSettings(context);
+        cognitoSettings.addAttribute("email", account.getEmail());
+        cognitoSettings.addAttribute("name", account.getName());
+        cognitoSettings.addAttribute("family_name", account.getLastname());
+        cognitoSettings.addAttribute("nickname", account.getNickname());
+        cognitoSettings.signUpInBackground(account.getEmail(), account.getPassword());
+        return true;
     }
 
     @Override
     public boolean isNicknameAvailable(String nickname) {
-        return false;
-        // Verificare che il nickname sia disponibile
+        // Verificare che il nickname sia disponibile (?)
+        return true;
     }
 
     @Override
-    public boolean updatePassword(String password) {
-        return false;
-        // Codice per cambiare password su cognito
+    public boolean updatePassword(Account account, Context context, String newPassword) {
+        final GenericHandler genericHandler = new GenericHandler() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+
+            }
+        };
+        CognitoSettings cognitoSettings = new CognitoSettings(context);
+        cognitoSettings
+                .getCognitoUserPool()
+                .getUser(account.getEmail())
+                .changePasswordInBackground(account.getPassword(), newPassword, genericHandler);
+        return true;
     }
 }

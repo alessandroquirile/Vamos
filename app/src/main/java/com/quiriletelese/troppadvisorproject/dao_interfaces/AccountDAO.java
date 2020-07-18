@@ -1,5 +1,7 @@
 package com.quiriletelese.troppadvisorproject.dao_interfaces;
 
+import android.content.Context;
+
 import com.quiriletelese.troppadvisorproject.models.Account;
 
 /**
@@ -8,11 +10,9 @@ import com.quiriletelese.troppadvisorproject.models.Account;
 public interface AccountDAO {
     boolean authenticate(Account account);
 
-    boolean create(Account account);
-
-    boolean isEmailAvailable(String email);
+    boolean create(Account account, Context context);
 
     boolean isNicknameAvailable(String nickname);
 
-    boolean updatePassword(String password);
+    boolean updatePassword(Account account, Context context, String newPassword);
 }
