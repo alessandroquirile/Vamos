@@ -2,7 +2,11 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.RatingBar;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
@@ -17,11 +21,12 @@ import java.io.IOException;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
-public class WriteReviewController implements View.OnClickListener {
+public class WriteReviewController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener, SwitchCompat.OnCheckedChangeListener {
     private DAOFactory daoFactory;
     private ReviewDAO reviewDAO;
     private OverviewActivity overviewActivity;
     private WriteReviewActivity writeReviewActivity;
+    private boolean isAnonymoys = false;
 
     public WriteReviewController(OverviewActivity overviewActivity) {
         this.overviewActivity = overviewActivity;
@@ -47,12 +52,14 @@ public class WriteReviewController implements View.OnClickListener {
                     Toast.LENGTH_LONG).show();
     }
 
-    public void setListenerOnOverviewActiviyComponents() {
+    public void setListenersOnOverviewActiviyComponents() {
         overviewActivity.getFloatingActionButtonWriteReview().setOnClickListener(this);
     }
 
-    public void setListenerOnWriteReviewActivityComponents() {
+    public void setListenersOnWriteReviewActivityComponents() {
         writeReviewActivity.getButtonPublishReview().setOnClickListener(this);
+        writeReviewActivity.getRatingBar().setOnRatingBarChangeListener(this);
+        writeReviewActivity.getSwitchCompatButton().setOnCheckedChangeListener(this);
     }
 
 
@@ -69,11 +76,42 @@ public class WriteReviewController implements View.OnClickListener {
                 showWriteReviewActivity();
                 break;
             case R.id.button_publish_review_review_activity:
-                aggiungiRecensione(writeReviewActivity.getTextInputEditTextTitle().getText().toString(),
-                        writeReviewActivity.getTextInputEditTextDescription().getText().toString(),
-                        writeReviewActivity.getRatingBar().getNumStars(),
-                        false); // qui andrà messo qualcosa per leggere lo switch
+                aggiungiRecensione
+                        (writeReviewActivity.getTextInputEditTextTitle().getText().toString(),
+                                writeReviewActivity.getTextInputEditTextDescription().getText().toString(),
+                                (int) writeReviewActivity.getRatingBar().getRating(),
+                                isAnonymoys);
                 break;
         }
+    }
+
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+        switch ((int) rating) {
+            case 0:
+                writeReviewActivity.getTextViewAboutRating().setText("");
+                ratingBar.setRating(1);
+                break;
+            case 1:
+                writeReviewActivity.getTextViewAboutRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.pessimo));
+                break;
+            case 2:
+                writeReviewActivity.getTextViewAboutRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.scarso));
+                break;
+            case 3:
+                writeReviewActivity.getTextViewAboutRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.nella_media));
+                break;
+            case 4:
+                writeReviewActivity.getTextViewAboutRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.molto_buono));
+                break;
+            case 5:
+                writeReviewActivity.getTextViewAboutRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.eccellente));
+                break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        isAnonymoys = isChecked;
     }
 }

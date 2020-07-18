@@ -33,7 +33,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     public void initViewComponents() {
         textInputEditTextTitle = findViewById(R.id.text_input_edit_text_title_write_review_activity);
         textInputEditTextDescription = findViewById(R.id.text_input_edit_text_description_review_activity);
-        ratingBar = findViewById(R.id.rating_bar_review_activity);
+        ratingBar = findViewById(R.id.rating_bar_write_review_activity);
         textViewAboutRating = findViewById(R.id.text_view_about_rating_review_activity);
         switchCompatButton = findViewById(R.id.switch_button_review_activity);
         buttonPublishReview = findViewById(R.id.button_publish_review_review_activity);
@@ -41,7 +41,7 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     public void initializeController() {
         WriteReviewController writeReviewController = new WriteReviewController(this);
-        writeReviewController.setListenerOnWriteReviewActivityComponents();
+        writeReviewController.setListenersOnWriteReviewActivityComponents();
     }
 
     public EditText getTextInputEditTextTitle() {

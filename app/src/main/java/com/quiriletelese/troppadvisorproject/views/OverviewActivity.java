@@ -31,7 +31,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     public void initializeController() {
         WriteReviewController writeReviewController = new WriteReviewController(this);
-        writeReviewController.setListenerOnOverviewActiviyComponents();
+        writeReviewController.setListenersOnOverviewActiviyComponents();
     }
 }
 
