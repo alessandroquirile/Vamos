@@ -1,12 +1,10 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.view.View;
-import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
-import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
 
 /**
@@ -30,14 +28,14 @@ public class UpdateProfileController implements View.OnClickListener {
     }
 
     public void changePassword() {
-        daoFactory = DAOFactory.getInstance();
+        /*daoFactory = DAOFactory.getInstance();
         accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                 profileFragment.requireActivity().getApplicationContext()));
-        if (accountDAO.updatePassword(profileFragment.getEditTextPassword().getText().toString())) {
+        if (accountDAO.updatePassword(/*argomenti qui) {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "PAssowrd mod", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "PAssowrd NON mod", Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 
     @Override
