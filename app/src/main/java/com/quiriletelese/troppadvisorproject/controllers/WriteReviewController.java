@@ -34,7 +34,7 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
         this.writeReviewActivity = writeReviewActivity;
     }
 
-    public void aggiungiRecensione(String title, String description, int numStars, boolean isAnonymous) {
+    public void addReview(String title, String description, int numStars, boolean isAnonymous) {
         Review review = new Review(title, description, numStars, isAnonymous);
         daoFactory = DAOFactory.getInstance();
         reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
@@ -70,7 +70,7 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
                 showWriteReviewActivity();
                 break;
             case R.id.button_publish_review_review_activity:
-                aggiungiRecensione
+                addReview
                         (writeReviewActivity.getTextInputEditTextTitle().getText().toString(),
                                 writeReviewActivity.getTextInputEditTextDescription().getText().toString(),
                                 (int) writeReviewActivity.getRatingBar().getRating(),

@@ -27,7 +27,7 @@ public class UpdateProfileController implements View.OnClickListener {
         profileFragment.getEditTextPassword().setEnabled(true);
     }
 
-    public void changePassword() {
+    public void doUpdate() {
         /*daoFactory = DAOFactory.getInstance();
         accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                 profileFragment.requireActivity().getApplicationContext()));
@@ -46,7 +46,7 @@ public class UpdateProfileController implements View.OnClickListener {
                 enablePasswordField();
                 // inserisce nuova password
                 // conferma
-                changePassword();
+                doUpdate();
                 break;
         }
     }

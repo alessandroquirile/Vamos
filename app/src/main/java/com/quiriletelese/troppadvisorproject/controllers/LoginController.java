@@ -13,6 +13,9 @@ import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -35,16 +38,27 @@ public class LoginController implements View.OnClickListener {
         String email = loginActivity.getEditTextEmail().getText().toString();
         String password = loginActivity.getEditTextPassword().getText().toString();
         if (!areEmpty(email, password)) {
-            Account account = new Account(email, password);
-            daoFactory = DAOFactory.getInstance();
-            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
-                    loginActivity.getApplicationContext()));
-            if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
-                Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
+            if (isValid(email)) {
+                Account account = new Account(email, password);
+                daoFactory = DAOFactory.getInstance();
+                accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
+                        loginActivity.getApplicationContext()));
+                if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
+                    Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(loginActivity.getApplicationContext(), "La sintassi della mail non è corretta", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private static boolean isValid(String email) {
+        String emailRegExp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+        Pattern emailPattern = Pattern.compile(emailRegExp, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = emailPattern.matcher(email);
+        return matcher.find();
     }
 
     private boolean areEmpty(String... strings) {
