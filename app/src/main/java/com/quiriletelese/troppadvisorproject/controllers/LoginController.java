@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,14 +31,28 @@ public class LoginController implements View.OnClickListener {
         loginActivity.getTextViewSignIn().setOnClickListener(this);
     }
 
-    public void doLogin(String email, String password) {
-        Account account = new Account(email, password);
-        daoFactory = DAOFactory.getInstance();
-        accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
-                loginActivity.getApplicationContext()));
-        if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
-            Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
+    public void doLogin() {
+        String email = loginActivity.getEditTextEmail().getText().toString();
+        String password = loginActivity.getEditTextPassword().getText().toString();
+        if (!areEmpty(email, password)) {
+            Account account = new Account(email, password);
+            daoFactory = DAOFactory.getInstance();
+            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
+                    loginActivity.getApplicationContext()));
+            if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
+                Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean areEmpty(String... strings) {
+        for (String string : strings) {
+            if (TextUtils.isEmpty(string) || string.contains(" "))
+                return true;
+        }
+        return false;
     }
 
     public void showSignUpActivity() {
@@ -50,7 +65,7 @@ public class LoginController implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_login_login_activity:
-                doLogin(loginActivity.getEditTextEmail().getText().toString(), loginActivity.getEditTextPassword().getText().toString());
+                doLogin();
                 break;
             case R.id.text_view_sign_in_login_activity:
                 showSignUpActivity();

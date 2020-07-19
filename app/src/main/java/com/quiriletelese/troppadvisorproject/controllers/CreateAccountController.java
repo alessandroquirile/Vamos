@@ -37,7 +37,7 @@ public class CreateAccountController implements View.OnClickListener {
         signUpActivity.getApplicationContext().startActivity(intent);
     }
 
-    public void checkFields() {
+    public void doUpdate() {
         String email = signUpActivity.getEditTextEmail().getText().toString();
         String name = signUpActivity.getEditTextName().getText().toString();
         String lastName = signUpActivity.getEditTextLastName().getText().toString();
@@ -80,7 +80,7 @@ public class CreateAccountController implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_sign_up_sign_up_activity:
-                checkFields();
+                doUpdate();
                 break;
             case R.id.floating_action_button_go_back_sign_up_activity:
                 showLoginActivity();
