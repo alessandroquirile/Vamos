@@ -8,7 +8,7 @@ import com.quiriletelese.troppadvisorproject.models.Account;
  * @author Alessandro Quirile, Mauro Telese
  */
 public interface AccountDAO {
-    boolean authenticate(Account account);
+    boolean authenticate(Account account, Context context);
 
     boolean create(Account account, Context context);
 

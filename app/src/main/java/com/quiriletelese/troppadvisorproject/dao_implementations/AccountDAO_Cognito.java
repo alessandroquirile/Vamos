@@ -13,8 +13,9 @@ import com.quiriletelese.troppadvisorproject.models.Account;
 public class AccountDAO_Cognito implements AccountDAO {
 
     @Override
-    public boolean authenticate(Account account) {
-        // Codice per il login
+    public boolean authenticate(Account account, Context context) {
+        CognitoSettings cognitoSettings = new CognitoSettings(context);
+        cognitoSettings.userLogin(account.getEmail().toString(), account.getPassword().toString());
         return true;
     }
 

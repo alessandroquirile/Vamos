@@ -8,7 +8,6 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.models.Account;
-import com.quiriletelese.troppadvisorproject.personal_exceptions.TecnologiaNonAncoraSupportataException;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
@@ -34,16 +33,11 @@ public class LoginController implements View.OnClickListener {
     public void doLogin(String email, String password) {
         Account account = new Account(email, password);
         daoFactory = DAOFactory.getInstance();
-        try {
-            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
-                    loginActivity.getApplicationContext()));
-        } catch (TecnologiaNonAncoraSupportataException e) {
-            e.printStackTrace();
+        accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
+                loginActivity.getApplicationContext()));
+        if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
+            Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
         }
-        if (accountDAO.authenticate(account))
-            Toast.makeText(loginActivity.getApplicationContext(), "Authenticated", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(loginActivity.getApplicationContext(), "Authenticated (exp) " + account.toString(), Toast.LENGTH_SHORT).show();
     }
 
     public void showSignUpActivity() {
