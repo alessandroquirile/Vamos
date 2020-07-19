@@ -50,31 +50,28 @@ public class CreateAccountController implements View.OnClickListener {
 
         if (!areEmpty(email, name, lastName, nickname, password, repeatPassword)) {
             if (isValid(email)) {
-                if (password.length() >= 8) {
-                    if (password.equals(repeatPassword)) {
-                        daoFactory = DAOFactory.getInstance();
-                        accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
-                                signUpActivity.getApplicationContext()));
-                        // Va verificato se il nickname è già disponibile?
-                        if (/*accountDAO.isNicknameAvailable(nickname)*/ true) {
-                            Account account = new Account(name, lastName, nickname, email, password);
-                            //Toast.makeText(signUpActivity.getApplicationContext(), account.toString(), Toast.LENGTH_LONG).show();
-                            if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
-                                Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
-                            }/*else {
+                if (password.equals(repeatPassword)) {
+                    daoFactory = DAOFactory.getInstance();
+                    accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
+                            signUpActivity.getApplicationContext()));
+                    // Va verificato se il nickname è già disponibile?
+                    if (/*accountDAO.isNicknameAvailable(nickname)*/ true) {
+                        Account account = new Account(name, lastName, nickname, email, password);
+                        //Toast.makeText(signUpActivity.getApplicationContext(), account.toString(), Toast.LENGTH_LONG).show();
+                        if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
+                            Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
+                        }/*else {
                                 // TODO: Mostrare il dialog per inserire il codice di conferma ricevuto per email.
                                 Toast.makeText(signUpActivity.getApplicationContext(), "Creato", Toast.LENGTH_LONG).show();
                             }*/
-                        } /*else {
+                    } /*else {
                             Toast.makeText(signUpActivity.getApplicationContext(), "Il nickname " + nickname +
                                     " è già occupato", Toast.LENGTH_LONG).show();
                         }*/
-                    } else {
-                        Toast.makeText(signUpActivity.getApplicationContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
-                    }
                 } else {
-                    Toast.makeText(signUpActivity.getApplicationContext(), "Inserire una password con almeno 8 caratteri", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(signUpActivity.getApplicationContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
                 }
+
             } else {
                 Toast.makeText(signUpActivity.getApplicationContext(), "La sintassi della mail non è corretta", Toast.LENGTH_SHORT).show();
             }
