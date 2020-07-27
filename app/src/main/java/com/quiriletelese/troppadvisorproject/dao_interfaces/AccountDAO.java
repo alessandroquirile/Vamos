@@ -8,6 +8,7 @@ import com.quiriletelese.troppadvisorproject.models.Account;
  * @author Alessandro Quirile, Mauro Telese
  */
 public interface AccountDAO {
+
     boolean authenticate(Account account, Context context);
 
     boolean create(Account account, Context context);
@@ -15,4 +16,5 @@ public interface AccountDAO {
     boolean isNicknameAvailable(String nickname);
 
     boolean updatePassword(Account account, Context context, String newPassword);
+
 }

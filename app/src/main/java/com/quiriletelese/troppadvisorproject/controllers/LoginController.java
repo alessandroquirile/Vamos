@@ -46,12 +46,10 @@ public class LoginController implements View.OnClickListener {
                 if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
                     Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
                 }
-            } else {
+            } else
                 Toast.makeText(loginActivity.getApplicationContext(), "La sintassi della mail non è corretta", Toast.LENGTH_SHORT).show();
-            }
-        } else {
+        } else
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private static boolean isValid(String email) {
