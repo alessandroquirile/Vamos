@@ -1,7 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -59,10 +58,11 @@ public class LoginController implements View.OnClickListener {
         return matcher.find();
     }
 
-    private boolean areEmpty(String... strings) {
+    private static boolean areEmpty(String... strings) {
         for (String string : strings) {
-            if (TextUtils.isEmpty(string) || string.contains(" "))
+            if (string.equals("") || string.equals(" ")) {
                 return true;
+            }
         }
         return false;
     }
