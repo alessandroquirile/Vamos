@@ -22,7 +22,7 @@ public class AccountDAO_Cognito implements AccountDAO {
     @Override
     public boolean create(Account account, Context context) {
         CognitoSettings cognitoSettings = new CognitoSettings(context);
-        setCognitoSettingAttributes(cognitoSettings, account);
+        setCognitoSettingsAttributes(cognitoSettings, account);
         cognitoSettings.signUpInBackground(account.getEmail(), account.getPassword());
         return true;
     }
@@ -54,11 +54,10 @@ public class AccountDAO_Cognito implements AccountDAO {
         return true;
     }
 
-    private CognitoSettings setCognitoSettingAttributes(CognitoSettings cognitoSettings, Account account) {
+    private void setCognitoSettingsAttributes(CognitoSettings cognitoSettings, Account account) {
         cognitoSettings.addAttribute("email", account.getEmail());
         cognitoSettings.addAttribute("name", account.getName());
         cognitoSettings.addAttribute("family_name", account.getLastname());
         cognitoSettings.addAttribute("nickname", account.getNickname());
-        return cognitoSettings;
     }
 }
