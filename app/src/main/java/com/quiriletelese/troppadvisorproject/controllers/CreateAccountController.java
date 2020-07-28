@@ -1,7 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,7 +45,7 @@ public class CreateAccountController implements View.OnClickListener {
         String lastName = signUpActivity.getEditTextLastName().getText().toString();
         String nickname = signUpActivity.getEditTextNickname().getText().toString();
         String password = signUpActivity.getEditTextPassword().getText().toString();
-        String repeatPassword = signUpActivity.getEditTextRepeatPassword().toString();
+        String repeatPassword = signUpActivity.getEditTextRepeatPassword().getText().toString();
 
         if (!areEmpty(email, name, lastName, nickname, password, repeatPassword)) {
             if (isValid(email)) {
@@ -87,10 +86,11 @@ public class CreateAccountController implements View.OnClickListener {
         return matcher.find();
     }
 
-    private boolean areEmpty(String... strings) {
+    private static boolean areEmpty(String... strings) {
         for (String string : strings) {
-            if (TextUtils.isEmpty(string) || string.contains(" "))
+            if (string.equals("") || string.equals(" ")) {
                 return true;
+            }
         }
         return false;
     }
