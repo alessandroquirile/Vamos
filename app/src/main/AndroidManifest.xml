@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.FilterMapActivity"></activity>
         <activity
             android:name=".views.OverviewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
