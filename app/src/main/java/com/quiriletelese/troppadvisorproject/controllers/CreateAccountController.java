@@ -1,12 +1,10 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -52,6 +50,7 @@ public class CreateAccountController implements View.OnClickListener {
         String nickname = signUpActivity.getEditTextNickname().getText().toString();
         String password = signUpActivity.getEditTextPassword().getText().toString();
         String repeatPassword = signUpActivity.getEditTextRepeatPassword().getText().toString();
+
         if (!areEmpty(email, name, lastName, nickname, password, repeatPassword)) {
             if (isValid(email)) {
                 if (password.equals(repeatPassword)) {
@@ -121,7 +120,7 @@ public class CreateAccountController implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.button_sign_up_sign_up_activity:
                 showConfirmationCodeDialog();
-                //doCreate();
+                doCreate();
                 break;
             case R.id.floating_action_button_go_back_sign_up_activity:
                 showLoginActivity();
