@@ -1,7 +1,13 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -46,7 +52,6 @@ public class CreateAccountController implements View.OnClickListener {
         String nickname = signUpActivity.getEditTextNickname().getText().toString();
         String password = signUpActivity.getEditTextPassword().getText().toString();
         String repeatPassword = signUpActivity.getEditTextRepeatPassword().getText().toString();
-
         if (!areEmpty(email, name, lastName, nickname, password, repeatPassword)) {
             if (isValid(email)) {
                 if (password.equals(repeatPassword)) {
@@ -59,10 +64,8 @@ public class CreateAccountController implements View.OnClickListener {
                         //Toast.makeText(signUpActivity.getApplicationContext(), account.toString(), Toast.LENGTH_LONG).show();
                         if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
                             Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
-                        }/*else {
-                                // TODO: Mostrare il dialog per inserire il codice di conferma ricevuto per email.
-                                Toast.makeText(signUpActivity.getApplicationContext(), "Creato", Toast.LENGTH_LONG).show();
-                            }*/
+                        } else
+                            showConfirmationCodeDialog();
                     } /*else {
                             Toast.makeText(signUpActivity.getApplicationContext(), "Il nickname " + nickname +
                                     " è già occupato", Toast.LENGTH_LONG).show();
@@ -95,11 +98,30 @@ public class CreateAccountController implements View.OnClickListener {
         return false;
     }
 
+    private void showConfirmationCodeDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(signUpActivity);
+        LayoutInflater layoutInflater = signUpActivity.getLayoutInflater();
+        View dialogView = layoutInflater.inflate(R.layout.dialog_confirmation_code, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+        final EditText editTextConfirmationCode = dialogView.findViewById(R.id.edit_text_confirmation_code);
+        builder.setPositiveButton("Verifica", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                Toast.makeText(signUpActivity, "click " + editTextConfirmationCode.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_sign_up_sign_up_activity:
-                doCreate();
+                showConfirmationCodeDialog();
+                //doCreate();
                 break;
             case R.id.floating_action_button_go_back_sign_up_activity:
                 showLoginActivity();
