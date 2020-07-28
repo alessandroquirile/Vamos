@@ -79,14 +79,14 @@ public class CreateAccountController implements View.OnClickListener {
         }
     }
 
-    private static boolean isValid(String email) {
+    public static boolean isValid(String email) {
         String emailRegExp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
         Pattern emailPattern = Pattern.compile(emailRegExp, Pattern.CASE_INSENSITIVE);
         Matcher matcher = emailPattern.matcher(email);
         return matcher.find();
     }
 
-    private static boolean areEmpty(String... strings) {
+    public static boolean areEmpty(String... strings) {
         for (String string : strings) {
             if (string.equals("") || string.equals(" ")) {
                 return true;
