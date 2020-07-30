@@ -76,7 +76,7 @@
                 android:id="@+id/text_input_layout_nickname_profile_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nickname_profile_hint"
+                android:hint="@string/username"
                 android:theme="@style/AppTheme"
                 app:counterEnabled="true"
                 app:counterMaxLength="20">
