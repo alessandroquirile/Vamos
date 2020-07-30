@@ -46,4 +46,6 @@
     <string name="leggi_recensioni">See Reviews</string>
     <string name="certificato_di_eccellenza">Certificate of Excellence</string>
     <string name="nessuna_stella_selezionata">No star selected</string>
+    <string name="confirmation_code">Confirmation Code</string>
+    <string name="insert_confirmation_code">Type your confirmation code we have sent you via email to confirm your account</string>
 </resources>

@@ -40,7 +40,7 @@ public class HomePageFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_button_menu_home_page_activity:
-                startActivity(new Intent(getContext(),LoginActivity.class
+                startActivity(new Intent(getContext(), LoginActivity.class
                         /*SearchActivity.class*/ /*WriteReviewActivity.class*//*OverviewActivity.class*/));
                 break;
             case R.id.map_button_menu_home_page_activity:
