@@ -55,17 +55,17 @@ public class CreateAccountController implements View.OnClickListener {
         String email = signUpActivity.getEditTextEmail().getText().toString();
         String name = signUpActivity.getEditTextName().getText().toString();
         String lastName = signUpActivity.getEditTextLastName().getText().toString();
-        String nickname = signUpActivity.getEditTextUsername().getText().toString();
+        String username = signUpActivity.getEditTextUsername().getText().toString();
         String password = signUpActivity.getEditTextPassword().getText().toString();
         String repeatPassword = signUpActivity.getEditTextRepeatPassword().getText().toString();
 
-        if (!areEmpty(email, name, lastName, nickname, password, repeatPassword)) {
+        if (!areEmpty(email, name, lastName, username, password, repeatPassword)) {
             if (isValid(email)) {
                 if (password.equals(repeatPassword)) {
                     daoFactory = DAOFactory.getInstance();
                     accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                             signUpActivity.getApplicationContext()));
-                    Account account = new Account(name, lastName, nickname, email, password);
+                    Account account = new Account(name, lastName, username, email, password);
                     if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
                         Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
                     }

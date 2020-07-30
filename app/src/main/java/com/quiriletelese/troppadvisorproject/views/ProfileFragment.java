@@ -33,6 +33,12 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
     public void initializeViewComponents() {
         editTextName = view.findViewById(R.id.edit_text_name_fragment_profile);
         editTextLastName = view.findViewById(R.id.edit_text_lastname_fragment_profile);
@@ -52,11 +58,5 @@ public class ProfileFragment extends Fragment {
 
     public FloatingActionButton getFloatingActionButton() {
         return floatingActionButton;
-    }
-
-    @Nullable
-    @Override
-    public View getView() {
-        return view;
     }
 }

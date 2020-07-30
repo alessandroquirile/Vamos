@@ -1,12 +1,14 @@
 package com.quiriletelese.troppadvisorproject.models;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 public class Account {
     private String name;
     private String lastname;
-    private String nickname;
+    private String username;
     private String email;
     private String password;
 
@@ -16,12 +18,24 @@ public class Account {
         this.password = password;
     }
 
-    public Account(String name, String lastname, String nickname, String email, String password) {
+    public Account(String name, String lastname, String username, String email, String password) {
         this.name = name;
         this.lastname = lastname;
-        this.nickname = nickname;
+        this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return "Account{" +
+                "name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     public String getName() {
@@ -40,12 +54,12 @@ public class Account {
         this.lastname = lastname;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -62,16 +76,5 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

@@ -23,7 +23,7 @@ public class AccountDAO_Cognito implements AccountDAO {
     public boolean create(Account account, Context context) {
         CognitoSettings cognitoSettings = new CognitoSettings(context);
         setCognitoSettingsAttributes(cognitoSettings, account);
-        cognitoSettings.signUpInBackground(account.getNickname(), account.getPassword());
+        cognitoSettings.signUpInBackground(account.getUsername(), account.getPassword());
         return true;
     }
 
