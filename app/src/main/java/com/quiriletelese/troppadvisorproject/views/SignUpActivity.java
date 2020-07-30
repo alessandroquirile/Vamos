@@ -16,7 +16,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextName;
     private EditText editTextLastName;
-    private EditText editTextNickname;
+    private EditText editTextUsername;
     private EditText editTextPassword;
     private EditText editTextRepeatPassword;
     private Button buttonSignUp;
@@ -35,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.edit_text_email_sign_up_activity);
         editTextName = findViewById(R.id.edit_text_name_sign_up_activity);
         editTextLastName = findViewById(R.id.edit_text_lastname_sign_up_activity);
-        editTextNickname = findViewById(R.id.edit_text_nickname_sign_up_activity);
+        editTextUsername = findViewById(R.id.edit_text_nickname_sign_up_activity);
         editTextPassword = findViewById(R.id.edit_text_password_sign_up_activity);
         editTextRepeatPassword = findViewById(R.id.edit_text_repeat_password_sign_up_activity);
         buttonSignUp = findViewById(R.id.button_sign_up_sign_up_activity);
@@ -50,63 +50,31 @@ public class SignUpActivity extends AppCompatActivity {
         return floatingActionButtonGoBack;
     }
 
-    public void setFloatingActionButtonGoBack(FloatingActionButton floatingActionButtonGoBack) {
-        this.floatingActionButtonGoBack = floatingActionButtonGoBack;
-    }
-
     public EditText getEditTextEmail() {
         return editTextEmail;
-    }
-
-    public void setEditTextEmail(EditText editTextEmail) {
-        this.editTextEmail = editTextEmail;
     }
 
     public EditText getEditTextName() {
         return editTextName;
     }
 
-    public void setEditTextName(EditText editTextName) {
-        this.editTextName = editTextName;
-    }
-
     public EditText getEditTextLastName() {
         return editTextLastName;
     }
 
-    public void setEditTextLastName(EditText editTextLastName) {
-        this.editTextLastName = editTextLastName;
-    }
-
-    public EditText getEditTextNickname() {
-        return editTextNickname;
-    }
-
-    public void setEditTextNickname(EditText editTextNickname) {
-        this.editTextNickname = editTextNickname;
+    public EditText getEditTextUsername() {
+        return editTextUsername;
     }
 
     public EditText getEditTextPassword() {
         return editTextPassword;
     }
 
-    public void setEditTextPassword(EditText editTextPassword) {
-        this.editTextPassword = editTextPassword;
-    }
-
     public EditText getEditTextRepeatPassword() {
         return editTextRepeatPassword;
     }
 
-    public void setEditTextRepeatPassword(EditText editTextRepeatPassword) {
-        this.editTextRepeatPassword = editTextRepeatPassword;
-    }
-
     public Button getButtonSignUp() {
         return buttonSignUp;
-    }
-
-    public void setButtonSignUp(Button buttonSignUp) {
-        this.buttonSignUp = buttonSignUp;
     }
 }

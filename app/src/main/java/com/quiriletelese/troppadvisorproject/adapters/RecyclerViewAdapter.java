@@ -14,8 +14,6 @@ import com.quiriletelese.troppadvisorproject.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private Context context;
@@ -46,16 +44,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private Context context;
-        @BindView(R.id.image_view_background)
+        //@BindView(R.id.image_view_background)
         ImageView imageViewBackground;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            //ButterKnife.bind(this, itemView);
             context = itemView.getContext();
         }
 
-        public void setStructureFields(Object structure){
+        public void setStructureFields(Object structure) {
 
         }
 

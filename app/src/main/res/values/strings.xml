@@ -61,4 +61,6 @@
     <string name="confirmation_code">Codice verifica</string>
     <string name="insert_confirmation_code">Inserisci il codice di verifica che ti abbiamo inviato tramite email per verificare il tuo account</string>
     <string name="review_it">Recensisci</string>
+    <string name="email_or_username">Email o Username</string>
+    <string name="username" translatable="false">Username</string>
 </resources>

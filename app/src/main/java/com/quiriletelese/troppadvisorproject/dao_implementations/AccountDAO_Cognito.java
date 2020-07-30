@@ -23,13 +23,7 @@ public class AccountDAO_Cognito implements AccountDAO {
     public boolean create(Account account, Context context) {
         CognitoSettings cognitoSettings = new CognitoSettings(context);
         setCognitoSettingsAttributes(cognitoSettings, account);
-        cognitoSettings.signUpInBackground(account.getEmail(), account.getPassword());
-        return true;
-    }
-
-    @Override
-    public boolean isNicknameAvailable(String nickname) {
-        // Verificare che il nickname sia disponibile (?)
+        cognitoSettings.signUpInBackground(account.getNickname(), account.getPassword());
         return true;
     }
 
@@ -58,6 +52,5 @@ public class AccountDAO_Cognito implements AccountDAO {
         cognitoSettings.addAttribute("email", account.getEmail());
         cognitoSettings.addAttribute("name", account.getName());
         cognitoSettings.addAttribute("family_name", account.getLastname());
-        cognitoSettings.addAttribute("nickname", account.getNickname());
     }
 }

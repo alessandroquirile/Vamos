@@ -1,11 +1,7 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -32,6 +28,18 @@ public class CreateAccountController implements View.OnClickListener {
         this.signUpActivity = signUpActivity;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_sign_up_sign_up_activity:
+                doCreate();
+                break;
+            case R.id.floating_action_button_go_back_sign_up_activity:
+                showLoginActivity();
+                break;
+        }
+    }
+
     public void setListenersOnSignUpActivity() {
         signUpActivity.getButtonSignUp().setOnClickListener(this);
         signUpActivity.getFloatingActionButtonGoBack().setOnClickListener(this);
@@ -39,7 +47,7 @@ public class CreateAccountController implements View.OnClickListener {
 
     public void showLoginActivity() {
         Intent intent = new Intent(signUpActivity.getApplicationContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necessario per fare lo start di un'activity da una classe che non estende Activity
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         signUpActivity.getApplicationContext().startActivity(intent);
     }
 
@@ -47,7 +55,7 @@ public class CreateAccountController implements View.OnClickListener {
         String email = signUpActivity.getEditTextEmail().getText().toString();
         String name = signUpActivity.getEditTextName().getText().toString();
         String lastName = signUpActivity.getEditTextLastName().getText().toString();
-        String nickname = signUpActivity.getEditTextNickname().getText().toString();
+        String nickname = signUpActivity.getEditTextUsername().getText().toString();
         String password = signUpActivity.getEditTextPassword().getText().toString();
         String repeatPassword = signUpActivity.getEditTextRepeatPassword().getText().toString();
 
@@ -57,28 +65,16 @@ public class CreateAccountController implements View.OnClickListener {
                     daoFactory = DAOFactory.getInstance();
                     accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                             signUpActivity.getApplicationContext()));
-                    // Va verificato se il nickname è già disponibile?
-                    if (/*accountDAO.isNicknameAvailable(nickname)*/ true) {
-                        Account account = new Account(name, lastName, nickname, email, password);
-                        //Toast.makeText(signUpActivity.getApplicationContext(), account.toString(), Toast.LENGTH_LONG).show();
-                        if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
-                            Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
-                        } else
-                            showConfirmationCodeDialog();
-                    } /*else {
-                            Toast.makeText(signUpActivity.getApplicationContext(), "Il nickname " + nickname +
-                                    " è già occupato", Toast.LENGTH_LONG).show();
-                        }*/
-                } else {
+                    Account account = new Account(name, lastName, nickname, email, password);
+                    if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
+                        Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
+                    }
+                } else
                     Toast.makeText(signUpActivity.getApplicationContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
+            } else
                 Toast.makeText(signUpActivity.getApplicationContext(), "La sintassi della mail non è corretta", Toast.LENGTH_SHORT).show();
-            }
-        } else {
+        } else
             Toast.makeText(signUpActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public static boolean isValid(String email) {
@@ -90,41 +86,10 @@ public class CreateAccountController implements View.OnClickListener {
 
     public static boolean areEmpty(String... strings) {
         for (String string : strings) {
-            if (string.equals("") || string.equals(" ")) {
+            if (string.equals("")) {
                 return true;
             }
         }
         return false;
-    }
-
-    private void showConfirmationCodeDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(signUpActivity);
-        LayoutInflater layoutInflater = signUpActivity.getLayoutInflater();
-        View dialogView = layoutInflater.inflate(R.layout.dialog_confirmation_code, null);
-        builder.setView(dialogView);
-        builder.setCancelable(false);
-        final EditText editTextConfirmationCode = dialogView.findViewById(R.id.edit_text_confirmation_code);
-        builder.setPositiveButton("Verifica", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                Toast.makeText(signUpActivity, "click " + editTextConfirmationCode.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.create();
-        builder.show();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_up_sign_up_activity:
-                showConfirmationCodeDialog();
-                doCreate();
-                break;
-            case R.id.floating_action_button_go_back_sign_up_activity:
-                showLoginActivity();
-                break;
-        }
     }
 }

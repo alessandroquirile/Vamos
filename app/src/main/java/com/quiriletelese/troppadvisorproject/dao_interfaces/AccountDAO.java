@@ -13,8 +13,6 @@ public interface AccountDAO {
 
     boolean create(Account account, Context context);
 
-    boolean isNicknameAvailable(String nickname);
-
     boolean updatePassword(Account account, Context context, String newPassword);
 
 }

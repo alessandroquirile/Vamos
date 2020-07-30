@@ -1,7 +1,6 @@
 package com.quiriletelese.troppadvisorproject.cognito;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
@@ -19,8 +18,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.regions.Regions;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -32,37 +29,30 @@ public class CognitoSettings {
 
     public CognitoSettings(Context context) {
         this.context = context;
-        String poolID = "us-east-1_qAD0nAvIx";
-        String clientID = "dtdj2futs2n9p72lg1gk0t2dt";
-        String clientSecret = "m813avdndibpeosk27uq4pfcg1fuko429ktn34hbd63tb9fp33a";
+        String poolID = "us-east-1_Ta8vx4mFy";
+        String clientID = "3lr4t6rq94k63vno3ceahd3ije";
+        String clientSecret = "1m104g5k7g5pbhc9qsuedrukj1a5hgeil6ipni3rl7pfec2q3ikn";
         Regions awsRegion = Regions.US_EAST_1;
         cognitoUserPool = new CognitoUserPool(context, poolID, clientID, clientSecret, awsRegion);
         cognitoUserAttributes = new CognitoUserAttributes();
     }
 
-    public void signUpInBackground(String userId, String password) {
-        cognitoUserPool.signUpInBackground(userId, password, this.cognitoUserAttributes, null, signUpCallback);
+    public void signUpInBackground(String username, String password) {
+        cognitoUserPool.signUpInBackground(username, password, this.cognitoUserAttributes, null, signUpCallback);
     }
 
     SignUpHandler signUpCallback = new SignUpHandler() {
         @Override
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-            // Sign-up was successful
-            Log.d(TAG, "Sign-up success");
-            Toast.makeText(context, "Sign-up success, codice inviato a " + cognitoUserCodeDeliveryDetails.getDestination(), Toast.LENGTH_LONG).show();
-            // Check if this user (cognitoUser) needs to be confirmed
-            if (!userConfirmed) {
-
-            } else {
+            Toast.makeText(context, "Link verifica inviato a " + cognitoUserCodeDeliveryDetails.getDestination(), Toast.LENGTH_LONG)
+                    .show();
+            if (userConfirmed)
                 Toast.makeText(context, "Errore: l'utente era già stato confermato", Toast.LENGTH_LONG).show();
-                // The user has already been confirmed
-            }
         }
 
         @Override
         public void onFailure(Exception exception) {
-            Toast.makeText(context, "Sign-up failed " + exception.getMessage(), Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Sign-up failed: " + exception);
+            Toast.makeText(context, "Errore durante la registrazione: " + exception.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
 
@@ -75,8 +65,7 @@ public class CognitoSettings {
     GenericHandler confirmationCallback = new GenericHandler() {
         @Override
         public void onSuccess() {
-            // User was successfully confirmed
-            Toast.makeText(context, "User Confirmed", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Account confermato", Toast.LENGTH_LONG).show();
         }
 
         @Override

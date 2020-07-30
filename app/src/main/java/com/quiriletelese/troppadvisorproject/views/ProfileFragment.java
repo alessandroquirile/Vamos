@@ -46,43 +46,17 @@ public class ProfileFragment extends Fragment {
         updateProfileController.setListenersOnProfileFragment();
     }
 
-    public EditText getEditTextName() {
-        return editTextName;
-    }
-
-    public void setEditTextName(EditText editTextName) {
-        this.editTextName = editTextName;
-    }
-
-    public EditText getEditTextLastName() {
-        return editTextLastName;
-    }
-
-    public void setEditTextLastName(EditText editTextLastName) {
-        this.editTextLastName = editTextLastName;
-    }
-
-    public EditText getEditTextNickname() {
-        return editTextNickname;
-    }
-
-    public void setEditTextNickname(EditText editTextNickname) {
-        this.editTextNickname = editTextNickname;
-    }
-
     public EditText getEditTextPassword() {
         return editTextPassword;
-    }
-
-    public void setEditTextPassword(EditText editTextPassword) {
-        this.editTextPassword = editTextPassword;
     }
 
     public FloatingActionButton getFloatingActionButton() {
         return floatingActionButton;
     }
 
-    public void setFloatingActionButton(FloatingActionButton floatingActionButton) {
-        this.floatingActionButton = floatingActionButton;
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
     }
 }

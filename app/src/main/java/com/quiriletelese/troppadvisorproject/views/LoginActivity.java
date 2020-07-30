@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initializeViewComponents() {
-        editTextEmail = findViewById(R.id.edit_text_email_login_activity);
+        editTextEmail = findViewById(R.id.edit_text_email_or_username_login_activity);
         editTextPassword = findViewById(R.id.edit_text_password_login_activity);
         buttonLogin = findViewById(R.id.button_login_login_activity);
         textViewSignIn = findViewById(R.id.text_view_sign_in_login_activity);
@@ -42,31 +42,15 @@ public class LoginActivity extends AppCompatActivity {
         return editTextEmail;
     }
 
-    public void setEditTextEmail(EditText editTextEmail) {
-        this.editTextEmail = editTextEmail;
-    }
-
     public EditText getEditTextPassword() {
         return editTextPassword;
-    }
-
-    public void setEditTextPassword(EditText editTextPassword) {
-        this.editTextPassword = editTextPassword;
     }
 
     public Button getButtonLogin() {
         return buttonLogin;
     }
 
-    public void setButtonLogin(Button buttonLogin) {
-        this.buttonLogin = buttonLogin;
-    }
-
     public TextView getTextViewSignIn() {
         return textViewSignIn;
-    }
-
-    public void setTextViewSignIn(TextView textViewSignIn) {
-        this.textViewSignIn = textViewSignIn;
     }
 }

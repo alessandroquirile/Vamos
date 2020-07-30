@@ -19,6 +19,19 @@ public class UpdateProfileController implements View.OnClickListener {
         this.profileFragment = profileFragment;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.floating_action_button_edit_profile_fragment:
+                // TODO: mostra popup per inserire la vecchia password. Se giusta:
+                enablePasswordField();
+                // inserisce nuova password
+                // conferma
+                doUpdate();
+                break;
+        }
+    }
+
     public void setListenersOnProfileFragment() {
         profileFragment.getFloatingActionButton().setOnClickListener(this);
     }
@@ -36,18 +49,5 @@ public class UpdateProfileController implements View.OnClickListener {
         } else {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "PAssowrd NON mod", Toast.LENGTH_LONG).show();
         }*/
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.floating_action_button_edit_profile_fragment:
-                // TODO: mostra popup per inserire la vecchia password. Se giusta:
-                enablePasswordField();
-                // inserisce nuova password
-                // conferma
-                doUpdate();
-                break;
-        }
     }
 }
