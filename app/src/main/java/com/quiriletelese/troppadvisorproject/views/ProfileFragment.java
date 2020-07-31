@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.UpdateProfileController;
+import com.quiriletelese.troppadvisorproject.controllers.ProfileController;
 
 public class ProfileFragment extends Fragment {
 
@@ -26,7 +26,6 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.fragment_profile, container, false);
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         initializeViewComponents();
         initializeController();
@@ -48,8 +47,8 @@ public class ProfileFragment extends Fragment {
     }
 
     public void initializeController() {
-        UpdateProfileController updateProfileController = new UpdateProfileController(this);
-        updateProfileController.setListenersOnProfileFragment();
+        ProfileController profileController = new ProfileController(this);
+        profileController.setListenersOnProfileFragment();
     }
 
     public EditText getEditTextPassword() {

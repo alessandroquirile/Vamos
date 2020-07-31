@@ -63,4 +63,9 @@
     <string name="review_it">Recensisci</string>
     <string name="email_or_username">Email o Username</string>
     <string name="username" translatable="false">Username</string>
+    <string name="insert_password">Inserisci password</string>
+    <string name="dialog_description_insert_password">Inserisci la password per  assicurarci che sia davvero tu a  voler modificare il profilo</string>
+    <string name="verify">Verifica</string>
+    <string name="insert_new_password">Inserisci nuova password</string>
+    <string name="cancel">Annulla</string>
 </resources>

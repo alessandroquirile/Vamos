@@ -45,15 +45,13 @@ public class LoginController implements View.OnClickListener {
     public void doLogin() {
         String email = loginActivity.getEditTextEmail().getText().toString();
         String password = loginActivity.getEditTextPassword().getText().toString();
-
         if (!areEmpty(email, password)) {
             Account account = new Account(email, password);
             daoFactory = DAOFactory.getInstance();
             accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                     loginActivity.getApplicationContext()));
-            if (!accountDAO.authenticate(account, loginActivity.getApplicationContext())) {
+            if (!accountDAO.authenticate(account, loginActivity.getApplicationContext()))
                 Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
-            }
         } else
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
     }

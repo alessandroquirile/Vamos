@@ -58,7 +58,6 @@ public class CreateAccountController implements View.OnClickListener {
         String username = signUpActivity.getEditTextUsername().getText().toString();
         String password = signUpActivity.getEditTextPassword().getText().toString();
         String repeatPassword = signUpActivity.getEditTextRepeatPassword().getText().toString();
-
         if (!areEmpty(email, name, lastName, username, password, repeatPassword)) {
             if (isValid(email)) {
                 if (password.equals(repeatPassword)) {
@@ -66,9 +65,8 @@ public class CreateAccountController implements View.OnClickListener {
                     accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                             signUpActivity.getApplicationContext()));
                     Account account = new Account(name, lastName, username, email, password);
-                    if (!accountDAO.create(account, signUpActivity.getApplicationContext())) {
+                    if (!accountDAO.create(account, signUpActivity.getApplicationContext()))
                         Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
-                    }
                 } else
                     Toast.makeText(signUpActivity.getApplicationContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
             } else
@@ -85,11 +83,9 @@ public class CreateAccountController implements View.OnClickListener {
     }
 
     public static boolean areEmpty(String... strings) {
-        for (String string : strings) {
-            if (string.equals("")) {
+        for (String string : strings)
+            if (string.equals(""))
                 return true;
-            }
-        }
         return false;
     }
 }
