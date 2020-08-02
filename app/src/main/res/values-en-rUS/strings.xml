@@ -50,4 +50,11 @@
     <string name="insert_confirmation_code">Type your confirmation code we have sent you via email to confirm your account</string>
     <string name="review_it">Review it</string>
     <string name="email_or_username">Email or Username</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_new_password">Repeat new password</string>
+    <string name="insert_password">Insert password</string>
+    <string name="dialog_description_insert_password">Insert your password to identify</string>
+    <string name="verify">Verify</string>
+    <string name="insert_new_password">Insert new password</string>
+    <string name="cancel">Cancel</string>
 </resources>

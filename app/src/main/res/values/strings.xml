@@ -68,4 +68,6 @@
     <string name="verify">Verifica</string>
     <string name="insert_new_password">Inserisci nuova password</string>
     <string name="cancel">Annulla</string>
+    <string name="new_password">Nuova password</string>
+    <string name="repeat_new_password">Ripeti la nuova password</string>
 </resources>

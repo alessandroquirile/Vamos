@@ -18,7 +18,7 @@ public class ProfileFragment extends Fragment {
 
     private EditText editTextName;
     private EditText editTextLastName;
-    private EditText editTextNickname;
+    private EditText editTextUsername;
     private EditText editTextPassword;
     private FloatingActionButton floatingActionButton;
     private View view;
@@ -41,7 +41,7 @@ public class ProfileFragment extends Fragment {
     public void initializeViewComponents() {
         editTextName = view.findViewById(R.id.edit_text_name_fragment_profile);
         editTextLastName = view.findViewById(R.id.edit_text_lastname_fragment_profile);
-        editTextNickname = view.findViewById(R.id.edit_text_nickname_fragment_profile);
+        editTextUsername = view.findViewById(R.id.edit_text_nickname_fragment_profile);
         editTextPassword = view.findViewById(R.id.edit_text_password_fragment_profile);
         floatingActionButton = view.findViewById(R.id.floating_action_button_edit_profile_fragment);
     }
@@ -57,5 +57,17 @@ public class ProfileFragment extends Fragment {
 
     public FloatingActionButton getFloatingActionButton() {
         return floatingActionButton;
+    }
+
+    public EditText getEditTextName() {
+        return editTextName;
+    }
+
+    public EditText getEditTextLastName() {
+        return editTextLastName;
+    }
+
+    public EditText getEditTextUsername() {
+        return editTextUsername;
     }
 }
