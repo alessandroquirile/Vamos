@@ -77,45 +77,21 @@ public class ProfileController implements View.OnClickListener {
         final AlertDialog dialog = builder.create();
         dialog.show();
         setOnClickListenerDialogInsertNewPasswordPositiveButton(dialog);
-        setOnClickListenerDialogInsertNewPasswordNegativeButton(dialog);
     }
 
     private void setOnClickListenerDialogInsertNewPasswordPositiveButton(final AlertDialog dialog) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*TextInputLayout textInputLayoutPassword = dialogView.findViewById(R.id.text_input_edit_text_insert_password);
-                TextInputLayout textInputLayoutRepeatPassword = dialogView.findViewById(R.id.text_input_layout_repeat_password);
-                if (areEquals(Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutRepeatPassword.getEditText()).getText().toString())) {
-                    dialog.dismiss();
-                    Toast.makeText(profileFragment.getActivity(), "Implementare modifica password", Toast.LENGTH_SHORT).show();
-                } else {
-                    textInputLayoutPassword.getEditText().setError("Le password non coincidono");
-                    textInputLayoutRepeatPassword.getEditText().setError("Le password non coincidono");
-                }*/
-
-                // Alternativa:
                 EditText editTextNewPassword = dialog.findViewById(R.id.text_input_edit_text_insert_password);
                 EditText editTextRepeatNewPassword = dialog.findViewById(R.id.text_input_edit_text_repeat_password);
                 if (editTextNewPassword.getText().toString().equals(editTextRepeatNewPassword.getText().toString())) {
                     dialog.dismiss();
                     Toast.makeText(profileFragment.getContext(), "Implementare modifica password", Toast.LENGTH_SHORT).show();
+                    // TODO: implementare il cambio password
                 } else {
                     Toast.makeText(profileFragment.getContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-    }
-
-    /*private boolean areEquals(String newPassword, String newPasswordRepeated) {
-        return newPassword.equals(newPasswordRepeated);
-    }*/
-
-    private void setOnClickListenerDialogInsertNewPasswordNegativeButton(final AlertDialog dialog) {
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
             }
         });
     }
