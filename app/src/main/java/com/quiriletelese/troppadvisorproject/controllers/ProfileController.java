@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.models.Account;
+import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
 
 /**
@@ -16,11 +18,17 @@ import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
  */
 public class ProfileController implements View.OnClickListener {
     private ProfileFragment profileFragment;
+    private Account account;
     private AccountDAO accountDAO;
     private DAOFactory daoFactory;
 
     public ProfileController(ProfileFragment profileFragment) {
         this.profileFragment = profileFragment;
+        account = new Account(profileFragment.getEditTextName().getText().toString(),
+                profileFragment.getEditTextLastName().getText().toString(),
+                profileFragment.getEditTextUsername().getText().toString(),
+                profileFragment.getEditTextEmail().getText().toString(),
+                profileFragment.getEditTextPassword().getText().toString());
     }
 
     @Override
@@ -28,12 +36,6 @@ public class ProfileController implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.floating_action_button_edit_profile_fragment:
                 showPasswordDialog();
-                enablePasswordField();
-                /*floatingActionButton = profileFragment.getFloatingActionButton();
-                floatingActionButton.setImageResource(R.drawable.icon_map_white);*/
-                // inserisce nuova password
-                // conferma
-                doUpdatePassword();
                 break;
         }
     }
@@ -54,9 +56,8 @@ public class ProfileController implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 EditText editTextPasswordInsertedInDialog = dialog.findViewById(R.id.text_input_edit_text_password_modify_profile);
-                String actualPassword = profileFragment.getEditTextPassword().getText().toString();
                 String passwordInsetedInDialog = editTextPasswordInsertedInDialog.getText().toString();
-                if (actualPassword.equals(passwordInsetedInDialog)) {
+                if (account.getPassword().equals(passwordInsetedInDialog)) {
                     dialog.dismiss();
                     showInsertNewPasswordDialog();
                 } else {
@@ -88,7 +89,7 @@ public class ProfileController implements View.OnClickListener {
                 if (editTextNewPassword.getText().toString().equals(editTextRepeatNewPassword.getText().toString())) {
                     dialog.dismiss();
                     Toast.makeText(profileFragment.getContext(), "Implementare modifica password", Toast.LENGTH_SHORT).show();
-                    // TODO: implementare il cambio password
+                    doUpdatePassword(editTextNewPassword.getText().toString());
                 } else {
                     Toast.makeText(profileFragment.getContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
                 }
@@ -100,18 +101,14 @@ public class ProfileController implements View.OnClickListener {
         profileFragment.getFloatingActionButton().setOnClickListener(this);
     }
 
-    private void enablePasswordField() {
-        profileFragment.getEditTextPassword().setEnabled(true);
-    }
-
-    private void doUpdatePassword() {
-        /*daoFactory = DAOFactory.getInstance();
+    private void doUpdatePassword(String newPassword) {
+        daoFactory = DAOFactory.getInstance();
         accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                 profileFragment.requireActivity().getApplicationContext()));
-        if (accountDAO.updatePassword(/*argomenti qui) {
-            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "PAssowrd mod", Toast.LENGTH_LONG).show();
+        if (accountDAO.updatePassword(account, profileFragment.getContext(), newPassword)) {
+            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Password aggiornata", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "PAssowrd NON mod", Toast.LENGTH_LONG).show();
-        }*/
+            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Password non aggiornata", Toast.LENGTH_LONG).show();
+        }
     }
 }

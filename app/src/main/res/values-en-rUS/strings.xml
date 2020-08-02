@@ -57,4 +57,5 @@
     <string name="verify">Verify</string>
     <string name="insert_new_password">Insert new password</string>
     <string name="cancel">Cancel</string>
+    <string name="email_profile_fragment_hint" />
 </resources>

@@ -28,6 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
+                    android:text="mio_nome"
                     android:inputType="text"
                     android:enabled="false"
                     android:maxLines="1" />
@@ -47,6 +48,26 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="text"
+                    android:enabled="false"
+                    android:maxLines="1"
+                    android:text="mio_cognome" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_email_profile_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email_profile_fragment_hint"
+                android:theme="@style/AppTheme">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_email_fragment_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:text="mia_email"
                     android:enabled="false"
                     android:maxLines="1" />
 
@@ -89,6 +110,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:enabled="false"
+                    android:text="mio_username"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
