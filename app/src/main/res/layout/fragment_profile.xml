@@ -85,7 +85,7 @@
                 android:layout_marginBottom="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/nickname_profile_hint"
+                android:text="@string/username"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -98,7 +98,7 @@
                 android:layout_marginBottom="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Nickname utente" />
+                android:text="Username utente" />
 
             <TextView
                 android:layout_width="match_parent"

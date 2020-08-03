@@ -1,11 +1,8 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.app.AlertDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -15,6 +12,8 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
+
+import java.util.Objects;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -59,13 +58,12 @@ public class ProfileController implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 TextInputEditText textInputEditTextDialogVerifyPassword = dialog.findViewById(R.id.text_input_edit_text_password_modify_profile);
-                String dialogPassword = textInputEditTextDialogVerifyPassword.getText().toString();
+                String dialogPassword = Objects.requireNonNull(textInputEditTextDialogVerifyPassword.getText()).toString();
                 if (dialogPassword.equals("pass")) {
                     dialog.dismiss();
                     showInsertNewPasswordDialog();
                 } else {
                     textInputEditTextDialogVerifyPassword.setError("Password errata", null);
-                    //Toast.makeText(profileFragment.getContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -90,9 +88,9 @@ public class ProfileController implements View.OnClickListener {
             public void onClick(View v) {
                 TextInputEditText textInputEditTextNewPassword = dialog.findViewById(R.id.text_input_edit_text_insert_password);
                 TextInputEditText textInputEditTextRepeatNewPassword = dialog.findViewById(R.id.text_input_edit_text_repeat_password);
-                if (textInputEditTextNewPassword.getText().toString().equals(textInputEditTextRepeatNewPassword.getText().toString())) {
+                if (Objects.requireNonNull(textInputEditTextNewPassword.getText()).toString()
+                        .equals(Objects.requireNonNull(textInputEditTextRepeatNewPassword.getText()).toString())) {
                     dialog.dismiss();
-                    Toast.makeText(profileFragment.getContext(), "Implementare modifica password", Toast.LENGTH_SHORT).show();
                     doUpdatePassword(textInputEditTextNewPassword.getText().toString());
                 } else {
                     textInputEditTextNewPassword.setError("Le password non coincidono", null);
