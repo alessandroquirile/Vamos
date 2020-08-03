@@ -70,5 +70,5 @@
     <string name="cancel">Annulla</string>
     <string name="new_password">Nuova password</string>
     <string name="repeat_new_password">Ripeti la nuova password</string>
-    <string name="email_profile_fragment_hint" translatable="false">Email</string>
+    <string name="email_profile_hint" translatable="false">Email</string>
 </resources>

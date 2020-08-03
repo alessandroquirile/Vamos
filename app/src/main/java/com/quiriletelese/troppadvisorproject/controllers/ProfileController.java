@@ -1,11 +1,14 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
@@ -24,11 +27,11 @@ public class ProfileController implements View.OnClickListener {
 
     public ProfileController(ProfileFragment profileFragment) {
         this.profileFragment = profileFragment;
-        account = new Account(profileFragment.getEditTextName().getText().toString(),
+        /*account = new Account(profileFragment.getEditTextName().getText().toString(),
                 profileFragment.getEditTextLastName().getText().toString(),
                 profileFragment.getEditTextUsername().getText().toString(),
                 profileFragment.getEditTextEmail().getText().toString(),
-                profileFragment.getEditTextPassword().getText().toString());
+                profileFragment.getEditTextPassword().getText().toString());*/
     }
 
     @Override
@@ -43,7 +46,7 @@ public class ProfileController implements View.OnClickListener {
     private void showPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(profileFragment.getActivity());
         LayoutInflater layoutInflater = profileFragment.requireActivity().getLayoutInflater();
-        final View dialogView = layoutInflater.inflate(R.layout.dialog_request_password, null);
+        final View dialogView = layoutInflater.inflate(R.layout.dialog_verify_password, null);
         builder.setView(dialogView)
                 .setPositiveButton(R.string.verify, null);
         AlertDialog dialog = builder.create();
@@ -55,13 +58,14 @@ public class ProfileController implements View.OnClickListener {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editTextPasswordInsertedInDialog = dialog.findViewById(R.id.text_input_edit_text_password_modify_profile);
-                String passwordInsetedInDialog = editTextPasswordInsertedInDialog.getText().toString();
-                if (account.getPassword().equals(passwordInsetedInDialog)) {
+                TextInputEditText textInputEditTextDialogVerifyPassword = dialog.findViewById(R.id.text_input_edit_text_password_modify_profile);
+                String dialogPassword = textInputEditTextDialogVerifyPassword.getText().toString();
+                if (dialogPassword.equals("pass")) {
                     dialog.dismiss();
                     showInsertNewPasswordDialog();
                 } else {
-                    Toast.makeText(profileFragment.getContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
+                    textInputEditTextDialogVerifyPassword.setError("Password errata", null);
+                    //Toast.makeText(profileFragment.getContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -84,14 +88,15 @@ public class ProfileController implements View.OnClickListener {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editTextNewPassword = dialog.findViewById(R.id.text_input_edit_text_insert_password);
-                EditText editTextRepeatNewPassword = dialog.findViewById(R.id.text_input_edit_text_repeat_password);
-                if (editTextNewPassword.getText().toString().equals(editTextRepeatNewPassword.getText().toString())) {
+                TextInputEditText textInputEditTextNewPassword = dialog.findViewById(R.id.text_input_edit_text_insert_password);
+                TextInputEditText textInputEditTextRepeatNewPassword = dialog.findViewById(R.id.text_input_edit_text_repeat_password);
+                if (textInputEditTextNewPassword.getText().toString().equals(textInputEditTextRepeatNewPassword.getText().toString())) {
                     dialog.dismiss();
                     Toast.makeText(profileFragment.getContext(), "Implementare modifica password", Toast.LENGTH_SHORT).show();
-                    doUpdatePassword(editTextNewPassword.getText().toString());
+                    doUpdatePassword(textInputEditTextNewPassword.getText().toString());
                 } else {
-                    Toast.makeText(profileFragment.getContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
+                    textInputEditTextNewPassword.setError("Le password non coincidono", null);
+                    textInputEditTextRepeatNewPassword.setError("Le password non coincidono", null);
                 }
             }
         });
@@ -108,7 +113,7 @@ public class ProfileController implements View.OnClickListener {
         if (accountDAO.updatePassword(account, profileFragment.getContext(), newPassword)) {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Password aggiornata", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Password non aggiornata", Toast.LENGTH_LONG).show();
+            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Errore, password non aggiornata, riprova", Toast.LENGTH_LONG).show();
         }
     }
 }
