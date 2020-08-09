@@ -56,10 +56,10 @@
     <string name="eccellente">Eccellente</string>
     <string name="informazioni_sulla_struttura">Informazioni sulla struttura</string>
     <string name="leggi_recensioni">Leggi Recensioni</string>
-    <string name="certificato_di_eccellenza">Certificato di Eccellenza</string>
-    <string name="nessuna_stella_selezionata">Nessuna stella selezionata</string>
-    <string name="confirmation_code">Codice verifica</string>
-    <string name="insert_confirmation_code">Inserisci il codice di verifica che ti abbiamo inviato tramite email per verificare il tuo account</string>
+    <string name="certificate_of_excellence">Certificato di Eccellenza</string>
+    <string name="no_star_selected">Nessuna stella selezionata</string>
+    <string name="almost_there">Ci siamo quasi</string>
+    <string name="check_confirmation_link">Controlla la tua email e clicca il link che ti abbiamo inviato per verificare il tuo account</string>
     <string name="review_it">Recensisci</string>
     <string name="email_or_username">Email o Username</string>
     <string name="username" translatable="false">Username</string>

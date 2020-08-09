@@ -1,6 +1,8 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -87,5 +89,15 @@ public class CreateAccountController implements View.OnClickListener {
             if (string.equals(""))
                 return true;
         return false;
+    }
+
+    private void showConfirmAccountDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(signUpActivity.getApplicationContext());
+        LayoutInflater layoutInflater = signUpActivity.getLayoutInflater();
+        View dialogView = layoutInflater.inflate(R.layout.dialog_confirm_account, null);
+        alertDialogBuilder.setView(dialogView).
+                setPositiveButton("ok", null);
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.show();
     }
 }

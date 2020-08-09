@@ -83,7 +83,7 @@
                 android:layout_marginTop="10dp"
                 android:drawableStart="@drawable/icon_loyalty_primary_color"
                 android:drawablePadding="4dp"
-                android:text="@string/certificato_di_eccellenza"
+                android:text="@string/certificate_of_excellence"
                 android:textColor="@color/black" />
 
             <TextView

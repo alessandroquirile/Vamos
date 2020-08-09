@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/nessuna_stella_selezionata" />
+                android:text="@string/no_star_selected" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_button_review_activity"

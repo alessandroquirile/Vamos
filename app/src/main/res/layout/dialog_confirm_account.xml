@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/confirmation_code"
+            android:text="@string/almost_there"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -23,17 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/insert_confirmation_code"
+            android:text="@string/check_confirmation_link"
             android:textAlignment="center" />
-
-        <EditText
-            android:id="@+id/edit_text_confirmation_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/colorAccent"
-            android:hint="@string/confirmation_code"
-            android:textColorHint="@android:color/tab_indicator_text" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

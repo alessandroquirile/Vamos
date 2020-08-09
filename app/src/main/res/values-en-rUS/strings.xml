@@ -44,10 +44,10 @@
     <string name="eccellente">Excellent</string>
     <string name="informazioni_sulla_struttura">About this structure</string>
     <string name="leggi_recensioni">See Reviews</string>
-    <string name="certificato_di_eccellenza">Certificate of Excellence</string>
-    <string name="nessuna_stella_selezionata">No star selected</string>
-    <string name="confirmation_code">Confirmation Code</string>
-    <string name="insert_confirmation_code">Type your confirmation code we have sent you via email to confirm your account</string>
+    <string name="certificate_of_excellence">Certificate of Excellence</string>
+    <string name="no_star_selected">No star selected</string>
+    <string name="almost_there">Confirmation Code</string>
+    <string name="check_confirmation_link">Type your confirmation code we have sent you via email to confirm your account</string>
     <string name="review_it">Review it</string>
     <string name="email_or_username">Email or Username</string>
     <string name="new_password">New password</string>
@@ -57,5 +57,4 @@
     <string name="verify">Verify</string>
     <string name="insert_new_password">Insert new password</string>
     <string name="cancel">Cancel</string>
-    <string name="email_profile_fragment_hint" />
 </resources>
