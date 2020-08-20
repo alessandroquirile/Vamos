@@ -5,13 +5,13 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class Account {
     private String name;
     private String lastname;
     private String username;
     private String email;
     private String password;
-
 
     public Account(String email, String password) {
         this.email = email;

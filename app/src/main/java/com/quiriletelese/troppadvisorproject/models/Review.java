@@ -1,20 +1,29 @@
 package com.quiriletelese.troppadvisorproject.models;
 
+import java.util.Date;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class Review {
 
+    private String id;
     private String title;
     private String description;
-    private int rank;
-    private boolean isAnonymous;
+    private Integer rating;
+    private String user;
+    private Boolean isAnonymous;
+    private String accomodationId;
+    private Date addedDate;
+    private Date lastModificationDate;
 
-    public Review(String title, String description, int rank, boolean isAnonymous) {
-        this.title = title;
-        this.description = description;
-        this.rank = rank;
-        this.isAnonymous = isAnonymous;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -33,29 +42,52 @@ public class Review {
         this.description = description;
     }
 
-    public int getRank() {
-        return rank;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
-    public boolean isAnonymous() {
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public Boolean getAnonymous() {
         return isAnonymous;
     }
 
-    public void setAnonymous(boolean anonymous) {
+    public void setAnonymous(Boolean anonymous) {
         isAnonymous = anonymous;
     }
 
-    @Override
-    public String toString() {
-        return "Review{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", rank=" + rank +
-                ", isAnonymous=" + isAnonymous +
-                '}';
+    public String getAccomodationId() {
+        return accomodationId;
     }
+
+    public void setAccomodationId(String accomodationId) {
+        this.accomodationId = accomodationId;
+    }
+
+    public Date getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(Date addedDate) {
+        this.addedDate = addedDate;
+    }
+
+    public Date getLastModificationDate() {
+        return lastModificationDate;
+    }
+
+    public void setLastModificationDate(Date lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
+
 }
