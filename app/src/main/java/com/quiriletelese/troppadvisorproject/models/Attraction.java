@@ -21,7 +21,7 @@ public class Attraction implements Serializable {
     private Point point;
     private List<Review> reviews;
     private List<String> images;
-    private boolean certificateOfExcellence;
+    private boolean hasCertificateOfExcellence;
     private Date addedDate;
     private Date lastModificationDate;
 
@@ -97,12 +97,12 @@ public class Attraction implements Serializable {
         this.images = images;
     }
 
-    public boolean isCertificateOfExcellence() {
-        return certificateOfExcellence;
+    public boolean isHasCertificateOfExcellence() {
+        return hasCertificateOfExcellence;
     }
 
-    public void setCertificateOfExcellence(boolean certificateOfExcellence) {
-        this.certificateOfExcellence = certificateOfExcellence;
+    public void setHasCertificateOfExcellence(boolean hasCertificateOfExcellence) {
+        this.hasCertificateOfExcellence = hasCertificateOfExcellence;
     }
 
     public Date getAddedDate() {
