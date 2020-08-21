@@ -25,22 +25,6 @@ public class CognitoSettings {
     private CognitoUserPool cognitoUserPool;
     private CognitoUserAttributes cognitoUserAttributes;
     private Context context;
-    private String userPassword;
-
-    public CognitoSettings(Context context) {
-        this.context = context;
-        String poolID = "us-east-1_Ta8vx4mFy";
-        String clientID = "3lr4t6rq94k63vno3ceahd3ije";
-        String clientSecret = "1m104g5k7g5pbhc9qsuedrukj1a5hgeil6ipni3rl7pfec2q3ikn";
-        Regions awsRegion = Regions.US_EAST_1;
-        cognitoUserPool = new CognitoUserPool(context, poolID, clientID, clientSecret, awsRegion);
-        cognitoUserAttributes = new CognitoUserAttributes();
-    }
-
-    public void signUpInBackground(String username, String password) {
-        cognitoUserPool.signUpInBackground(username, password, this.cognitoUserAttributes, null, signUpCallback);
-    }
-
     SignUpHandler signUpCallback = new SignUpHandler() {
         @Override
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
@@ -55,12 +39,6 @@ public class CognitoSettings {
             Toast.makeText(context, "Errore durante la registrazione: " + exception.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
-
-    public void confirmUser(String userId, String code) {
-        CognitoUser cognitoUser = cognitoUserPool.getUser(userId);
-        cognitoUser.confirmSignUpInBackground(code, false, confirmationCallback);
-    }
-
     // Callback handler for confirmSignUp API
     GenericHandler confirmationCallback = new GenericHandler() {
         @Override
@@ -73,17 +51,7 @@ public class CognitoSettings {
             // User confirmation failed. Check exception for the cause.
         }
     };
-
-    public void addAttribute(String key, String value) {
-        cognitoUserAttributes.addAttribute(key, value);
-    }
-
-    public void userLogin(String userId, String password) {
-        CognitoUser cognitoUser = cognitoUserPool.getUser(userId);
-        userPassword = password;
-        cognitoUser.getSessionInBackground(authenticationHandler);
-    }
-
+    private String userPassword;
     // Callback handler for the sign-in process
     AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
         @Override
@@ -124,6 +92,35 @@ public class CognitoSettings {
             Toast.makeText(context, "Sign in Failure " + exception.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
+
+    public CognitoSettings(Context context) {
+        this.context = context;
+        String poolID = "us-east-1_Ta8vx4mFy";
+        String clientID = "3lr4t6rq94k63vno3ceahd3ije";
+        String clientSecret = "1m104g5k7g5pbhc9qsuedrukj1a5hgeil6ipni3rl7pfec2q3ikn";
+        Regions awsRegion = Regions.US_EAST_1;
+        cognitoUserPool = new CognitoUserPool(context, poolID, clientID, clientSecret, awsRegion);
+        cognitoUserAttributes = new CognitoUserAttributes();
+    }
+
+    public void signUpInBackground(String username, String password) {
+        cognitoUserPool.signUpInBackground(username, password, this.cognitoUserAttributes, null, signUpCallback);
+    }
+
+    public void confirmUser(String userId, String code) {
+        CognitoUser cognitoUser = cognitoUserPool.getUser(userId);
+        cognitoUser.confirmSignUpInBackground(code, false, confirmationCallback);
+    }
+
+    public void addAttribute(String key, String value) {
+        cognitoUserAttributes.addAttribute(key, value);
+    }
+
+    public void userLogin(String userId, String password) {
+        CognitoUser cognitoUser = cognitoUserPool.getUser(userId);
+        userPassword = password;
+        cognitoUser.getSessionInBackground(authenticationHandler);
+    }
 
     public void tokenIsValid() {
         CognitoUser cognitoUser = cognitoUserPool.getCurrentUser();

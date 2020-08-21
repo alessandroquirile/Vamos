@@ -22,9 +22,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:weightSum="2"
                     android:layout_marginEnd="5dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
                     <!--
                     <TextView
@@ -57,19 +57,19 @@
                         android:id="@+id/auto_complete_text_view_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/name_profile_hint"
-                        android:maxLines="1"
                         android:drawableStart="@drawable/icon_search_black"
-                        android:drawablePadding="3dp" />
+                        android:drawablePadding="3dp"
+                        android:hint="@string/name_profile_hint"
+                        android:maxLines="1" />
 
                     <AutoCompleteTextView
                         android:id="@+id/auto_complete_text_view_where"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/where"
-                        android:maxLines="1"
                         android:drawableStart="@drawable/icon_location_black"
-                        android:drawablePadding="3dp" />
+                        android:drawablePadding="3dp"
+                        android:hint="@string/where"
+                        android:maxLines="1" />
 
                 </LinearLayout>
 

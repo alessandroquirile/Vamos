@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.models;
+package com.quiriletelese.troppadvisorproject.model_helpers;
 
 import java.io.Serializable;
 

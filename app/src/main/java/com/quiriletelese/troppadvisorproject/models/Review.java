@@ -1,13 +1,13 @@
 package com.quiriletelese.troppadvisorproject.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class Review {
-
+public class Review implements Serializable {
     private String id;
     private String title;
     private String description;

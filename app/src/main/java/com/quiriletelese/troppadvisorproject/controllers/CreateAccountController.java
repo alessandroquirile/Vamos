@@ -30,6 +30,20 @@ public class CreateAccountController implements View.OnClickListener {
         this.signUpActivity = signUpActivity;
     }
 
+    public static boolean isValid(String email) {
+        String emailRegExp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+        Pattern emailPattern = Pattern.compile(emailRegExp, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = emailPattern.matcher(email);
+        return matcher.find();
+    }
+
+    public static boolean areEmpty(String... strings) {
+        for (String string : strings)
+            if (string.equals(""))
+                return true;
+        return false;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -77,21 +91,7 @@ public class CreateAccountController implements View.OnClickListener {
             Toast.makeText(signUpActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
     }
 
-    public static boolean isValid(String email) {
-        String emailRegExp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
-        Pattern emailPattern = Pattern.compile(emailRegExp, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = emailPattern.matcher(email);
-        return matcher.find();
-    }
-
-    public static boolean areEmpty(String... strings) {
-        for (String string : strings)
-            if (string.equals(""))
-                return true;
-        return false;
-    }
-
-    private void showConfirmAccountDialog(){
+    private void showConfirmAccountDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(signUpActivity.getApplicationContext());
         LayoutInflater layoutInflater = signUpActivity.getLayoutInflater();
         View dialogView = layoutInflater.inflate(R.layout.dialog_confirm_account, null);

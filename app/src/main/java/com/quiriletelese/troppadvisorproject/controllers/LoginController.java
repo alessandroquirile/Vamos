@@ -25,6 +25,15 @@ public class LoginController implements View.OnClickListener {
         this.loginActivity = loginActivity;
     }
 
+    private static boolean areEmpty(String... strings) {
+        for (String string : strings) {
+            if (string.equals("")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -54,15 +63,6 @@ public class LoginController implements View.OnClickListener {
                 Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
-    }
-
-    private static boolean areEmpty(String... strings) {
-        for (String string : strings) {
-            if (string.equals("")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void showSignUpActivity() {

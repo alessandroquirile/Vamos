@@ -2,11 +2,13 @@ package com.quiriletelese.troppadvisorproject.models;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class Account {
+public class Account implements Serializable {
     private String name;
     private String lastname;
     private String username;

@@ -35,7 +35,7 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
     }
 
     public void addReview(String title, String description, int numStars, boolean isAnonymous) {
-        Review review = new Review(title, description, numStars, isAnonymous);
+        Review review = new Review(/*title, description, numStars, isAnonymous*/);
         daoFactory = DAOFactory.getInstance();
         reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
                 writeReviewActivity.getApplicationContext()));

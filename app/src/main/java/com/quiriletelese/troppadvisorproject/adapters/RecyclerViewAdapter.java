@@ -43,9 +43,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private Context context;
         //@BindView(R.id.image_view_background)
         ImageView imageViewBackground;
+        private Context context;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
