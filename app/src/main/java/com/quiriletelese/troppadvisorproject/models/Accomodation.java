@@ -12,18 +12,18 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 public abstract class Accomodation implements Serializable {
-    private String id;
-    private String name;
-    private Integer avarageRating;
-    private Double avaragePrice;
-    private String phoneNumber;
-    private Address address;
-    private Point point;
-    private List<Review> reviews;
-    private List<String> images;
-    private boolean hasCertificateOfExcellence;
-    private Date addedDate;
-    private Date lastModificationDate;
+    protected String id;
+    protected String name;
+    protected Integer avarageRating;
+    protected Double avaragePrice;
+    protected String phoneNumber;
+    protected Address address;
+    protected Point point;
+    protected List<Review> reviews;
+    protected List<String> images;
+    protected boolean hasCertificateOfExcellence;
+    protected Date addedDate;
+    protected Date lastModificationDate;
 
     public String getId() {
         return id;
