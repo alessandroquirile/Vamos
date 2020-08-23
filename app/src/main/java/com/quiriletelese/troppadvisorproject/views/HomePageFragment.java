@@ -65,7 +65,7 @@ public class HomePageFragment extends Fragment {
                 startActivity(new Intent(getContext(), LoginActivity.class
                         /*SearchActivity.class*/ /*WriteReviewActivity.class*//*OverviewActivity.class*/));
                 break;
-            case R.id.map_button_menu_home_page_activity:
+            /*case R.id.map_button_menu_home_page_activity:
                 //startActivity(new Intent(getContext(), MapsActivity.class));
                 //addHotel();
                 findHotelById("5f412f2f61fe347e4737bb8");
@@ -79,7 +79,7 @@ public class HomePageFragment extends Fragment {
             case R.id.radio_button_subitem_restaurant:
                 break;
             case R.id.radio_button_subitem_attractions:
-                break;
+                break;*/
         }
         return super.onOptionsItemSelected(item);
     }

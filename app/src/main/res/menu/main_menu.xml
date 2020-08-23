@@ -9,7 +9,7 @@
         android:title="@string/search"
         app:showAsAction="always" />
 
-    <item
+    <!-- <item
         android:id="@+id/map_button_menu_home_page_activity"
         android:icon="@drawable/icon_map_white"
         android:orderInCategory="2"
@@ -41,6 +41,6 @@
                     android:title="@string/attractions" />
             </group>
         </menu>
-    </item>
+    </item>-->
 
 </menu>

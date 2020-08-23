@@ -71,4 +71,7 @@
     <string name="new_password">Nuova password</string>
     <string name="repeat_new_password">Ripeti la nuova password</string>
     <string name="email_profile_hint" translatable="false">Email</string>
+    <string name="all_hotel" translatable="false">Hotel</string>
+    <string name="all_restaurant">Ristoranti</string>
+    <string name="all_attraction">Attrazioni</string>
 </resources>

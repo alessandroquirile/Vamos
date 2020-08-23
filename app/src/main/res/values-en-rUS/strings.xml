@@ -57,4 +57,6 @@
     <string name="verify">Verify</string>
     <string name="insert_new_password">Insert new password</string>
     <string name="cancel">Cancel</string>
+    <string name="all_restaurant">Restaurants</string>
+    <string name="all_attraction">Attractions</string>
 </resources>
