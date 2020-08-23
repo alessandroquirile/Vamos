@@ -1,17 +1,22 @@
 package com.quiriletelese.troppadvisorproject.models;
 
-import android.graphics.Point;
 
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public abstract class Accomodation implements Serializable {
+
     protected String id;
     protected String name;
     protected Integer avarageRating;
@@ -22,8 +27,8 @@ public abstract class Accomodation implements Serializable {
     protected List<Review> reviews;
     protected List<String> images;
     protected boolean hasCertificateOfExcellence;
-    protected Date addedDate;
-    protected Date lastModificationDate;
+    protected String addedDate;
+    protected String lastModificationDate;
 
     public String getId() {
         return id;
@@ -105,19 +110,21 @@ public abstract class Accomodation implements Serializable {
         this.hasCertificateOfExcellence = hasCertificateOfExcellence;
     }
 
-    public Date getAddedDate() {
+    public String getAddedDate() {
         return addedDate;
     }
 
-    public void setAddedDate(Date addedDate) {
+    public void setAddedDate(String addedDate) {
         this.addedDate = addedDate;
     }
 
-    public Date getLastModificationDate() {
+    public String getLastModificationDate() {
         return lastModificationDate;
     }
 
-    public void setLastModificationDate(Date lastModificationDate) {
+    public void setLastModificationDate(String lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
     }
+
+
 }
