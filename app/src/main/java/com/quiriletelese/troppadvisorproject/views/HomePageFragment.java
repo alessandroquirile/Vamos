@@ -2,7 +2,6 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,18 +22,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomePageFragment extends Fragment {
 
@@ -114,7 +105,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void addHotel() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/insert?latitude=40.830051&longitude=14.246908";
         final JSONObject jsonObject = createJSONObject();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObject, new Response.Listener<JSONObject>() {
@@ -134,7 +125,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void findHotelById(String id){
-        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        final RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-by-id/" + id;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
@@ -153,7 +144,7 @@ public class HomePageFragment extends Fragment {
         }){
             @Override
             protected Response<JSONObject> parseNetworkResponse(final NetworkResponse response) {
-                getActivity().runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), response.headers.get("Errore id") + "\nCode: " + response.statusCode, Toast.LENGTH_SHORT).show();
