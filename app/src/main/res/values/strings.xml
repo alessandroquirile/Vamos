@@ -74,4 +74,5 @@
     <string name="all_hotel" translatable="false">Hotel</string>
     <string name="all_restaurant">Ristoranti</string>
     <string name="all_attraction">Attrazioni</string>
+    <string name="no_review">Nessuna recensione</string>
 </resources>

@@ -1,8 +1,15 @@
 package com.quiriletelese.troppadvisorproject.dao_interfaces;
 
+import android.content.Context;
+
+import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallBack;
+import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 public interface RestaurantDAO {
-    // TODO: Add your methods here...
+
+    void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context);
+
 }

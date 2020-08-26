@@ -8,19 +8,19 @@
         android:id="@+id/text_view_position"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Posizione ricerca"
-        android:drawableStart="@drawable/icon_position_green"
+        android:background="@color/white"
         android:drawablePadding="5dp"
         android:padding="10dp"
-        android:background="@color/white"
+        android:text="Posizione ricerca"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/icon_position_green" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view_main"
         android:layout_width="match_parent"
-        android:layout_below="@id/text_view_position"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/text_view_position">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,8 +40,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
-
-            <include layout="@layout/home_page_recycler_view_element"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_hotel"
@@ -63,8 +61,6 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <include layout="@layout/home_page_recycler_view_element"/>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_restaurant"
                 android:layout_width="match_parent"
@@ -84,8 +80,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
-
-            <include layout="@layout/home_page_recycler_view_element"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_attraction"
@@ -135,5 +129,10 @@
             android:textColor="@android:color/white" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include
+        android:id="@+id/home_page_loading_screen"
+        layout="@layout/home_page_loading_screen"
+        android:visibility="gone" />
 
 </RelativeLayout>
