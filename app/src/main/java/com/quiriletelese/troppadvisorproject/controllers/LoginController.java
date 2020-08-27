@@ -1,12 +1,15 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackLogin;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
@@ -25,20 +28,11 @@ public class LoginController implements View.OnClickListener {
         this.loginActivity = loginActivity;
     }
 
-    private static boolean areEmpty(String... strings) {
-        for (String string : strings) {
-            if (string.equals("")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_login_login_activity:
-                doLogin();
+                login();
                 break;
             case R.id.text_view_sign_in_login_activity:
                 showSignUpActivity();
@@ -51,18 +45,30 @@ public class LoginController implements View.OnClickListener {
         loginActivity.getTextViewSignIn().setOnClickListener(this);
     }
 
-    public void doLogin() {
-        String email = loginActivity.getEditTextEmail().getText().toString();
+    public void login() {
+        String username = loginActivity.getEditTextEmail().getText().toString();
         String password = loginActivity.getEditTextPassword().getText().toString();
-        if (!areEmpty(email, password)) {
-            Account account = new Account(email, password);
+        if (!areEmpty(username, password)) {
+            Account account = createAccountForLogin(username, password);
             daoFactory = DAOFactory.getInstance();
-            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
-                    loginActivity.getApplicationContext()));
-            if (!accountDAO.authenticate(account, loginActivity.getApplicationContext()))
-                Toast.makeText(loginActivity.getApplicationContext(), "Non è stata possibile l'autenticazione", Toast.LENGTH_SHORT).show();
+            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology", loginActivity.getApplicationContext()));
+            doLogin(account);
         } else
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doLogin(Account account) {
+        accountDAO.login(new VolleyCallbackLogin() {
+            @Override
+            public void onSuccess(InitiateAuthResult initiateAuthResult) {
+                System.out.println(initiateAuthResult.toString());
+                Toast.makeText(loginActivity, "Login success", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onError() {
+                Toast.makeText(loginActivity, "Login error", Toast.LENGTH_SHORT).show();
+            }
+        }, account, loginActivity.getApplicationContext());
     }
 
     public void showSignUpActivity() {
@@ -70,4 +76,19 @@ public class LoginController implements View.OnClickListener {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         loginActivity.getApplicationContext().startActivity(intent);
     }
+
+    private Account createAccountForLogin(String username, String password) {
+        Account account = new Account();
+        account.setUsername(username);
+        account.setPassword(password);
+        return account;
+    }
+
+    private static boolean areEmpty(String... strings) {
+        for (String string : strings)
+            if (string.equals(""))
+                return true;
+        return false;
+    }
+
 }

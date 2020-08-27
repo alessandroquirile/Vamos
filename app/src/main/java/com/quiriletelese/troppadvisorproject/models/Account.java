@@ -15,31 +15,6 @@ public class Account implements Serializable {
     private String email;
     private String password;
 
-    public Account(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public Account(String name, String lastname, String username, String email, String password) {
-        this.name = name;
-        this.lastname = lastname;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "Account{" +
-                "name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
     public String getName() {
         return name;
     }

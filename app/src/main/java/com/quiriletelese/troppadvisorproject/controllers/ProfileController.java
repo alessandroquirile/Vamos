@@ -108,10 +108,10 @@ public class ProfileController implements View.OnClickListener {
         daoFactory = DAOFactory.getInstance();
         accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                 profileFragment.requireActivity().getApplicationContext()));
-        if (accountDAO.updatePassword(account, profileFragment.getContext(), newPassword)) {
+        /*if (accountDAO.updatePassword(account, profileFragment.getContext(), newPassword)) {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Password aggiornata", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Errore, password non aggiornata, riprova", Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 }

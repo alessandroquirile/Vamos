@@ -80,9 +80,9 @@ public class CreateAccountController implements View.OnClickListener {
                     daoFactory = DAOFactory.getInstance();
                     accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                             signUpActivity.getApplicationContext()));
-                    Account account = new Account(name, lastName, username, email, password);
-                    if (!accountDAO.create(account, signUpActivity.getApplicationContext()))
-                        Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();
+                    //Account account = new Account(name, lastName, username, email, password);
+                    /*if (!accountDAO.createAccount(account, signUpActivity.getApplicationContext()))
+                        Toast.makeText(signUpActivity.getApplicationContext(), "Account non creato", Toast.LENGTH_LONG).show();*/
                 } else
                     Toast.makeText(signUpActivity.getApplicationContext(), "Le password non coincidono", Toast.LENGTH_SHORT).show();
             } else

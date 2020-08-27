@@ -44,7 +44,7 @@ public class HotelDAO_MongoDB implements HotelDAO {
     private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
-        String URL = createFindHotelsByDistanceString(pointSearch);
+        String URL = createFindHotelsByDistanceUrl(pointSearch);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -60,7 +60,7 @@ public class HotelDAO_MongoDB implements HotelDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private String createFindHotelsByDistanceString(PointSearch pointSearch){
+    private String createFindHotelsByDistanceUrl(PointSearch pointSearch){
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL =URL.concat("&longitude=" + pointSearch.getLongitude());

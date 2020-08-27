@@ -15,6 +15,7 @@ import com.quiriletelese.troppadvisorproject.my_exceptions.TechnologyNotSupporte
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class DAOFactory {
 
     private static DAOFactory daoFactorySingletonInstance = null;
