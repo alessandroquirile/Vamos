@@ -5,6 +5,6 @@ import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 public interface VolleyCallbackCreateUser {
 
     void onSuccess(GetUserResult getUserResult);
-    void onError();
+    void onError(String error);
 
 }

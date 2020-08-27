@@ -5,6 +5,8 @@ import android.content.Context;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackCreateUser;
 import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackLogin;
+import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackUpdatePassword;
+import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
 
 /**
@@ -16,6 +18,6 @@ public interface AccountDAO {
 
     void createAccount(VolleyCallbackCreateUser volleyCallbackCreateUser, Account account, Context context);
 
-    void updatePassword(Account account, Context context, String newPassword);
+    void updatePassword(VolleyCallbackUpdatePassword volleyCallbackUpdatePassword, ChangeUserPassword changeUserPassword, Context context);
 
 }

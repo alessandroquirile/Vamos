@@ -5,6 +5,6 @@ import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 public interface VolleyCallbackLogin {
 
     void onSuccess(InitiateAuthResult initiateAuthResult);
-    void onError();
+    void onError(String error);
 
 }

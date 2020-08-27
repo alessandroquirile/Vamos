@@ -1,6 +1,5 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
@@ -52,12 +51,12 @@ public class LoginController implements View.OnClickListener {
             Account account = createAccountForLogin(username, password);
             daoFactory = DAOFactory.getInstance();
             accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology", loginActivity.getApplicationContext()));
-            doLogin(account);
+            loginHelper(account);
         } else
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
     }
 
-    private void doLogin(Account account) {
+    private void loginHelper(Account account) {
         accountDAO.login(new VolleyCallbackLogin() {
             @Override
             public void onSuccess(InitiateAuthResult initiateAuthResult) {
@@ -65,8 +64,8 @@ public class LoginController implements View.OnClickListener {
                 Toast.makeText(loginActivity, "Login success", Toast.LENGTH_SHORT).show();
             }
             @Override
-            public void onError() {
-                Toast.makeText(loginActivity, "Login error", Toast.LENGTH_SHORT).show();
+            public void onError(String error) {
+                Toast.makeText(loginActivity, "Login error code: " + error, Toast.LENGTH_SHORT).show();
             }
         }, account, loginActivity.getApplicationContext());
     }

@@ -55,7 +55,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
-    private void setHotelImage(ViewHolder viewHolder, int position) {
+    private void setRestamage(ViewHolder viewHolder, int position) {
         Picasso.with(context).load(attractions.get(position).getImages().get(0))
                 .fit()
                 .centerCrop()

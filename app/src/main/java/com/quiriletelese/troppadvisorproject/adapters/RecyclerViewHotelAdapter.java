@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -46,7 +45,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setHotelImage(viewHolder, position);
+        setHotelImage(viewHolder, position);
         viewHolder.textViewHotelName.setText(hotels.get(position).getName());
         if (hotels.get(position).getAvarageRating() == 0)
             viewHolder.textViewHotelRating.setText(R.string.no_review);
@@ -56,11 +55,18 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private void setHotelImage(ViewHolder viewHolder, int position) {
-        Picasso.with(context).load(hotels.get(position).getImages().get(0))
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.pizza)
-                .into(viewHolder.imageViewHotel);
+        if (hotelHasImage(position)) {
+            Picasso.with(context).load(hotels.get(position).getImages().get(0))
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.pizza)
+                    .error(R.drawable.pizza)
+                    .into(viewHolder.imageViewHotel);
+        }
+    }
+
+    private boolean hotelHasImage(int position) {
+        return hotels.get(position).getImages().size() > 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

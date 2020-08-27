@@ -15,8 +15,7 @@
             android:id="@+id/image_view_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@drawable/restaurant" />
+            android:scaleType="centerCrop" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
