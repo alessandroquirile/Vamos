@@ -2,10 +2,8 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
 
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -13,7 +11,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.quiriletelese.troppadvisorproject.cognito.CognitoSettings;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackCreateUser;
 import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackLogin;
@@ -61,7 +58,7 @@ public class AccountDAO_Cognito implements AccountDAO {
             }
         }){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
                 return headers;
@@ -73,7 +70,7 @@ public class AccountDAO_Cognito implements AccountDAO {
     private void createUserVolley(final VolleyCallbackCreateUser volleyCallbackCreateUser, Account account, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createNewUserURL();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectNewUSer(account), new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectNewUser(account), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 volleyCallbackCreateUser.onSuccess(getUserResultFromVolley(response));
@@ -94,9 +91,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         return URL;
     }
 
-    private JSONObject jsonObjectNewUSer(Account account) {
+    private JSONObject jsonObjectNewUser(Account account) {
         return createJsonObjectNewUser(account);
-
     }
 
     private JSONObject createJsonObjectNewUser(Account account) {
@@ -126,5 +122,4 @@ public class AccountDAO_Cognito implements AccountDAO {
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), GetUserResult.class);
     }
-
 }

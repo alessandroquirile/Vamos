@@ -37,7 +37,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
     private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
-        String URL = createFindHotelsByDistanceString(pointSearch);
+        String URL = createFindAttractionsByDistanceString(pointSearch);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -53,13 +53,13 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private String createFindHotelsByDistanceString(PointSearch pointSearch){
+    private String createFindAttractionsByDistanceString(PointSearch pointSearch) {
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/attraction/find-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
-        URL =URL.concat("&longitude=" + pointSearch.getLongitude());
+        URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
         URL = URL.concat("&page=0&size=10");
-        return  URL;
+        return URL;
     }
 
     private void getArrayFromResponse(JSONObject response){
