@@ -59,4 +59,8 @@
     <string name="cancel">Cancel</string>
     <string name="all_restaurant">Restaurants</string>
     <string name="all_attraction">Attractions</string>
+    <string name="no_review">No review</string>
+    <string name="password_error">Wrong password</string>
+    <string name="password_updated_correctly">"Password updated successfully "</string>
+    <string name="password_update_error">"Error updating password, please try again "</string>
 </resources>

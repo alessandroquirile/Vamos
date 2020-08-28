@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amazonaws.services.cognitoidentityprovider.model.ChangePasswordResult;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackUpdatePassword;
+import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
@@ -20,29 +23,25 @@ import java.util.Objects;
  */
 public class ProfileController implements View.OnClickListener {
     private ProfileFragment profileFragment;
+    private TextInputEditText textInputEditTextNewPassword, textInputEditTextRepeatNewPassword;
     private Account account;
     private AccountDAO accountDAO;
     private DAOFactory daoFactory;
 
     public ProfileController(ProfileFragment profileFragment) {
         this.profileFragment = profileFragment;
-        /*account = new Account(profileFragment.getEditTextName().getText().toString(),
-                profileFragment.getEditTextLastName().getText().toString(),
-                profileFragment.getEditTextUsername().getText().toString(),
-                profileFragment.getEditTextEmail().getText().toString(),
-                profileFragment.getEditTextPassword().getText().toString());*/
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floating_action_button_edit_profile_fragment:
-                showPasswordDialog();
+                showRequestPasswordDialog();
                 break;
         }
     }
 
-    private void showPasswordDialog() {
+    private void showRequestPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(profileFragment.getActivity());
         LayoutInflater layoutInflater = profileFragment.requireActivity().getLayoutInflater();
         final View dialogView = layoutInflater.inflate(R.layout.dialog_verify_password, null);
@@ -59,11 +58,11 @@ public class ProfileController implements View.OnClickListener {
             public void onClick(View v) {
                 TextInputEditText textInputEditTextDialogVerifyPassword = dialog.findViewById(R.id.text_input_edit_text_password_modify_profile);
                 String dialogPassword = Objects.requireNonNull(textInputEditTextDialogVerifyPassword.getText()).toString();
-                if (dialogPassword.equals("pass")) {
+                if (dialogPassword.equals(profileFragment.getTextViewPasswordProfile().getText().toString())) {
                     dialog.dismiss();
                     showInsertNewPasswordDialog();
                 } else {
-                    textInputEditTextDialogVerifyPassword.setError("Password errata", null);
+                    textInputEditTextDialogVerifyPassword.setError(profileFragment.getResources().getString(R.string.password_error), null);
                 }
             }
         });
@@ -86,12 +85,12 @@ public class ProfileController implements View.OnClickListener {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextInputEditText textInputEditTextNewPassword = dialog.findViewById(R.id.text_input_edit_text_insert_password);
-                TextInputEditText textInputEditTextRepeatNewPassword = dialog.findViewById(R.id.text_input_edit_text_repeat_password);
+                textInputEditTextNewPassword = dialog.findViewById(R.id.text_input_edit_text_insert_password);
+                textInputEditTextRepeatNewPassword = dialog.findViewById(R.id.text_input_edit_text_repeat_password);
                 if (Objects.requireNonNull(textInputEditTextNewPassword.getText()).toString()
                         .equals(Objects.requireNonNull(textInputEditTextRepeatNewPassword.getText()).toString())) {
                     dialog.dismiss();
-                    doUpdatePassword(textInputEditTextNewPassword.getText().toString());
+                    updatePassword(createChangeUserPassword());
                 } else {
                     textInputEditTextNewPassword.setError("Le password non coincidono", null);
                     textInputEditTextRepeatNewPassword.setError("Le password non coincidono", null);
@@ -104,14 +103,28 @@ public class ProfileController implements View.OnClickListener {
         profileFragment.getFloatingActionButton().setOnClickListener(this);
     }
 
-    private void doUpdatePassword(String newPassword) {
+    private void updatePassword(ChangeUserPassword changeUserPassword) {
         daoFactory = DAOFactory.getInstance();
         accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                 profileFragment.requireActivity().getApplicationContext()));
-        /*if (accountDAO.updatePassword(account, profileFragment.getContext(), newPassword)) {
-            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Password aggiornata", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(profileFragment.requireActivity().getApplicationContext(), "Errore, password non aggiornata, riprova", Toast.LENGTH_LONG).show();
-        }*/
+        accountDAO.updatePassword(new VolleyCallbackUpdatePassword() {
+            @Override
+            public void onSuccess(ChangePasswordResult changePasswordResult) {
+                Toast.makeText(profileFragment.getContext(), R.string.password_updated_correctly, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(profileFragment.getContext(), R.string.password_update_error, Toast.LENGTH_SHORT).show();
+            }
+        }, changeUserPassword, profileFragment.getContext());
     }
+
+    private ChangeUserPassword createChangeUserPassword() {
+        ChangeUserPassword changeUserPassword = new ChangeUserPassword();
+        changeUserPassword.setAccessToken("");
+        changeUserPassword.setPreviousPassword(profileFragment.getTextViewPasswordProfile().getText().toString());
+        changeUserPassword.setProposedPassword(Objects.requireNonNull(textInputEditTextNewPassword.getText()).toString());
+        return changeUserPassword;
+    }
+
 }

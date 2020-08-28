@@ -75,4 +75,7 @@
     <string name="all_restaurant">Ristoranti</string>
     <string name="all_attraction">Attrazioni</string>
     <string name="no_review">Nessuna recensione</string>
+    <string name="password_error">Password errata</string>
+    <string name="password_updated_correctly">Password aggiornata correttamente</string>
+    <string name="password_update_error">Errore durante l\'aggiornamento della password, riprova</string>
 </resources>

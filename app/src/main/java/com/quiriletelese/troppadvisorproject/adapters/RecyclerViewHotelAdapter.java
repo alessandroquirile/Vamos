@@ -59,7 +59,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
             Picasso.with(context).load(hotels.get(position).getImages().get(0))
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.pizza)
+                    //.placeholder(R.drawable.pizza)
                     .error(R.drawable.pizza)
                     .into(viewHolder.imageViewHotel);
         }

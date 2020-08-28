@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,35 +17,25 @@ import com.quiriletelese.troppadvisorproject.controllers.ProfileController;
 
 public class ProfileFragment extends Fragment {
 
-    private EditText editTextName;
-    private EditText editTextLastName;
-    private EditText editTextEmail;
-    private EditText editTextUsername;
-    private EditText editTextPassword;
+    private TextView textViewNameProfile, textViewLastnameProfile, textViewEmaiProfile,
+            textViewUserNameProfile, textViewPasswordProfile;
     private FloatingActionButton floatingActionButton;
-    private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
-        initializeViewComponents();
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        initializeViewComponents(view);
         initializeController();
         return view;
     }
 
-    @Nullable
-    @Override
-    public View getView() {
-        return view;
-    }
-
-    public void initializeViewComponents() {
-        /*editTextName = view.findViewById(R.id.edit_text_name_fragment_profile);
-        editTextLastName = view.findViewById(R.id.edit_text_lastname_fragment_profile);
-        editTextEmail = view.findViewById(R.id.edit_text_email_fragment_profile);
-        editTextUsername = view.findViewById(R.id.edit_text_nickname_fragment_profile);
-        editTextPassword = view.findViewById(R.id.edit_text_password_fragment_profile);*/
+    public void initializeViewComponents(View view) {
+        textViewNameProfile = view.findViewById(R.id.text_view_name_profile);
+        textViewLastnameProfile = view.findViewById(R.id.text_view_last_name_profile);
+        textViewEmaiProfile = view.findViewById(R.id.text_view_email_profile);
+        textViewUserNameProfile = view.findViewById(R.id.text_view_username_profile);
+        textViewPasswordProfile = view.findViewById(R.id.text_view_password_profile);
         floatingActionButton = view.findViewById(R.id.floating_action_button_edit_profile_fragment);
     }
 
@@ -53,27 +44,28 @@ public class ProfileFragment extends Fragment {
         profileController.setListenersOnProfileFragment();
     }
 
-    public EditText getEditTextPassword() {
-        return editTextPassword;
-    }
-
     public FloatingActionButton getFloatingActionButton() {
         return floatingActionButton;
     }
 
-    public EditText getEditTextName() {
-        return editTextName;
+    public TextView getTextViewNameProfile() {
+        return textViewNameProfile;
     }
 
-    public EditText getEditTextLastName() {
-        return editTextLastName;
+    public TextView getTextViewLastnameProfile() {
+        return textViewLastnameProfile;
     }
 
-    public EditText getEditTextUsername() {
-        return editTextUsername;
+    public TextView getTextViewEmaiProfile() {
+        return textViewEmaiProfile;
     }
 
-    public EditText getEditTextEmail() {
-        return editTextEmail;
+    public TextView getTextViewUserNameProfile() {
+        return textViewUserNameProfile;
     }
+
+    public TextView getTextViewPasswordProfile() {
+        return textViewPasswordProfile;
+    }
+
 }

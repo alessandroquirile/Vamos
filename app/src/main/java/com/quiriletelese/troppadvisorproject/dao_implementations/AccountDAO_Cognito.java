@@ -44,7 +44,7 @@ public class AccountDAO_Cognito implements AccountDAO {
 
     @Override
     public void updatePassword(VolleyCallbackUpdatePassword volleyCallbackUpdatePassword, ChangeUserPassword changeUserPassword, Context context) {
-
+        updatePasswordVolley(volleyCallbackUpdatePassword, changeUserPassword, context);
     }
 
     private void loginVolley(final VolleyCallbackLogin volleyCallbackLogin, Account account, Context context) {
@@ -129,8 +129,7 @@ public class AccountDAO_Cognito implements AccountDAO {
 
     private JSONObject jsonObjectNewUser(Account account) {
         JSONObject jsonObjectNewUSer = new JSONObject();
-        createJsonObjectNewUser(jsonObjectNewUSer, account);
-        return jsonObjectNewUSer;
+        return createJsonObjectNewUser(jsonObjectNewUSer, account);
     }
 
     private JSONObject createJsonObjectNewUser(JSONObject jsonObjectNewUser, Account account) {
@@ -148,19 +147,18 @@ public class AccountDAO_Cognito implements AccountDAO {
 
     private JSONObject jsonObjectUpdatePassword(ChangeUserPassword changeUserPassword) {
         JSONObject jsonObjectUpdatePassword = new JSONObject();
-        createJsonObjectUpdatePassword(jsonObjectUpdatePassword, changeUserPassword);
-        return jsonObjectUpdatePassword;
+        return createJsonObjectUpdatePassword(jsonObjectUpdatePassword, changeUserPassword);
     }
 
-    private JSONObject createJsonObjectUpdatePassword(JSONObject jsonObjectNewUser, ChangeUserPassword changeUserPassword) {
+    private JSONObject createJsonObjectUpdatePassword(JSONObject jsonObjectUpdatePassword, ChangeUserPassword changeUserPassword) {
         try {
-            jsonObjectNewUser.put("accessToken", changeUserPassword.getAccessToken());
-            jsonObjectNewUser.put("previousPassword", changeUserPassword.getPreviousPassword());
-            jsonObjectNewUser.put("proposedPassword", changeUserPassword.getProposedPassword());
+            jsonObjectUpdatePassword.put("accessToken", changeUserPassword.getAccessToken());
+            jsonObjectUpdatePassword.put("previousPassword", changeUserPassword.getPreviousPassword());
+            jsonObjectUpdatePassword.put("proposedPassword", changeUserPassword.getProposedPassword());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonObjectNewUser;
+        return jsonObjectUpdatePassword;
     }
 
     private InitiateAuthResult getInitiateAuthResultFromVolley(JSONObject response) {
