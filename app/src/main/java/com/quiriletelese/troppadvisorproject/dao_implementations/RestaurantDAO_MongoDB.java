@@ -3,6 +3,7 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -48,22 +49,29 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Errore imprevisto durante il caricamento dei dati RISTO", Toast.LENGTH_SHORT).show();
+
             }
-        });
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (response.statusCode == 204)
+                    volleyCallBack.onError(null, String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
         requestQueue.add(jsonObjectRequest);
     }
 
-    private String createFindHotelsByDistanceString(PointSearch pointSearch){
+    private String createFindHotelsByDistanceString(PointSearch pointSearch) {
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/restaurant/find-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
-        URL =URL.concat("&longitude=" + pointSearch.getLongitude());
+        URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
         URL = URL.concat("&page=0&size=10");
-        return  URL;
+        return URL;
     }
 
-    private void getArrayFromResponse(JSONObject response){
+    private void getArrayFromResponse(JSONObject response) {
         JSONArray jsonArray = new JSONArray();
         Gson gson = new Gson();
         try {

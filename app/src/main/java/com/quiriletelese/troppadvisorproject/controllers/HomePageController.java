@@ -1,8 +1,10 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.pm.PackageManager;
 import android.view.View;
+import android.widget.Toast;
 
-import androidx.paging.PagedList;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionAdapter;
@@ -11,11 +13,9 @@ import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewRestaurantAdap
 import com.quiriletelese.troppadvisorproject.dao_implementations.AttractionDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.HotelDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.RestaurantDAO_MongoDB;
-import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
-import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallBack;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
 import com.quiriletelese.troppadvisorproject.views.HomePageFragment;
 
 import java.util.ArrayList;
@@ -24,31 +24,33 @@ import java.util.List;
 public class HomePageController {
 
     private HomePageFragment homePageFragment;
+    private GPSTracker gpsTracker;
     private RecyclerViewHotelAdapter recyclerViewHotelAdapter;
     private RecyclerViewRestaurantAdapter recyclerViewRestaurantAdapter;
     private RecyclerViewAttractionAdapter recyclerViewAttractionAdapter;
+    private List<Double> pointSearchArguments;
     private int loaded = 0;
 
     public HomePageController(HomePageFragment homePageFragment) {
         this.homePageFragment = homePageFragment;
     }
 
-    public void findHotelsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation){
+    public void findHotelsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
         new HotelDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
-    public void findRestaurantsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation){
+    public void findRestaurantsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
         new RestaurantDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
-    public void findAttractionsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation){
+    public void findAttractionsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
         new AttractionDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
-    private PointSearch setPointSearchInformation(List<Double> pointSearchInformation){
+    private PointSearch setPointSearchInformation(List<Double> pointSearchInformation) {
         PointSearch pointSearch = new PointSearch();
         pointSearch.setLatitude(pointSearchInformation.get(0));
         pointSearch.setLongitude(pointSearchInformation.get(1));
@@ -56,69 +58,182 @@ public class HomePageController {
         return pointSearch;
     }
 
-    public void initializeRecyclerViewHotel() {
+    public void initializeRecyclerViewHotel(List<Double> pointSearchArguments) {
         findHotelsByPointNear(new VolleyCallBack() {
             @Override
             public void onSuccess(List accomodation) {
-                loaded++;
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), accomodation);
-                homePageFragment.getRecyclerViewHotel().setLayoutManager(linearLayoutManager);
-                homePageFragment.getRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
-                if(loaded == 3)
-                    homePageFragment.getFrameLayout().setVisibility(View.GONE);
+                initializeRecyclerViewHotelOnSuccess(accomodation);
             }
+
             @Override
             public void onError(List accomodation, String error) {
-
+                initializeRecyclerViewHotelOnError(accomodation);
             }
-        }, pointSearchInformation());
+        }, pointSearchInformation(pointSearchArguments));
     }
 
-    public void initializeRecyclerViewRestaurant() {
+    private void initializeRecyclerViewHotelOnSuccess(List accomodation) {
+        loaded++;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), accomodation);
+        homePageFragment.getRecyclerViewHotel().setLayoutManager(linearLayoutManager);
+        homePageFragment.getRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
+        if (loaded == 3)
+            homePageFragment.getFrameLayout().setVisibility(View.GONE);
+    }
+
+    private void initializeRecyclerViewHotelOnError(List accomodation) {
+        loaded++;
+        if (accomodation == null)
+            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(homePageFragment.getContext(), "Nessun hotel trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
+                }
+            });
+        if (loaded == 3)
+            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    homePageFragment.getFrameLayout().setVisibility(View.GONE);
+                }
+            });
+    }
+
+    public void initializeRecyclerViewRestaurant(List<Double> pointSearchArguments) {
         findRestaurantsByPointNear(new VolleyCallBack() {
             @Override
             public void onSuccess(List accomodation) {
-                loaded++;
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), accomodation);
-                homePageFragment.getRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
-                homePageFragment.getRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
-                if(loaded == 3)
-                    homePageFragment.getFrameLayout().setVisibility(View.GONE);
+                initializeRecyclerViewRestaurantOnSuccess(accomodation);
             }
+
             @Override
             public void onError(List accomodation, String error) {
-
+                initializeRecyclerViewRestaurantOnError(accomodation);
             }
-        }, pointSearchInformation());
+        }, pointSearchInformation(pointSearchArguments));
     }
 
-    public void initializeRecyclerViewAttraction() {
+    private void initializeRecyclerViewRestaurantOnSuccess(List accomodation) {
+        loaded++;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), accomodation);
+        homePageFragment.getRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
+        homePageFragment.getRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
+        if (loaded == 3)
+            homePageFragment.getFrameLayout().setVisibility(View.GONE);
+    }
+
+    private void initializeRecyclerViewRestaurantOnError(List accomodation) {
+        loaded++;
+        if (accomodation == null)
+            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(homePageFragment.getContext(), "Nessun ristorante trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
+                }
+            });
+        if (loaded == 3)
+            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    homePageFragment.getFrameLayout().setVisibility(View.GONE);
+                }
+            });
+    }
+
+    public void initializeRecyclerViewAttraction(List<Double> pointSearchArguments) {
         findAttractionsByPointNear(new VolleyCallBack() {
             @Override
             public void onSuccess(List accomodation) {
-                loaded++;
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), accomodation);
-                homePageFragment.getRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
-                homePageFragment.getRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
-                if(loaded == 3)
-                    homePageFragment.getFrameLayout().setVisibility(View.GONE);
+                initializeRecyclerViewAttractionOnSuccess(accomodation);
             }
+
             @Override
             public void onError(List accomodation, String error) {
-
+                initializeRecyclerViewAttractionOnError(accomodation);
             }
-        }, pointSearchInformation());
+        }, pointSearchInformation(pointSearchArguments));
     }
 
-    private List<Double> pointSearchInformation() {
+    private void initializeRecyclerViewAttractionOnSuccess(List accomodation) {
+        loaded++;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), accomodation);
+        homePageFragment.getRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
+        homePageFragment.getRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
+        if (loaded == 3)
+            homePageFragment.getFrameLayout().setVisibility(View.GONE);
+    }
+
+    private void initializeRecyclerViewAttractionOnError(List accomodation) {
+        loaded++;
+        if (accomodation == null)
+            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(homePageFragment.getContext(), "Nessun attrazione trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
+                }
+            });
+        if (loaded == 3)
+            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    homePageFragment.getFrameLayout().setVisibility(View.GONE);
+                }
+            });
+    }
+
+    public List<Double> getLocation() {
+        gpsTracker = new GPSTracker(homePageFragment.getActivity());
+        if (gpsTracker.canGetLocation()) {
+            Double latitude = gpsTracker.getLatitude();
+            Double longitude = gpsTracker.getLongitude();
+            return createPointSearchArguments(latitude, longitude, 1.0);
+        } else {
+            Toast.makeText(homePageFragment.getContext(), "NO", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+    private List<Double> createPointSearchArguments(Double latitude, Double longitude, Double distance) {
+        List<Double> pointSearchArguments = new ArrayList<>();
+        pointSearchArguments.add(latitude);
+        pointSearchArguments.add(longitude);
+        pointSearchArguments.add(distance);
+        return pointSearchArguments;
+    }
+
+    private List<Double> pointSearchInformation(List<Double> pointSearchArguments) {
         List<Double> pointSearchInformation = new ArrayList<>();
-        pointSearchInformation.add(40.829914);
-        pointSearchInformation.add(14.247674);
-        pointSearchInformation.add(1.0);
+        pointSearchInformation.add(pointSearchArguments.get(0));
+        pointSearchInformation.add(pointSearchArguments.get(1));
+        pointSearchInformation.add(pointSearchArguments.get(2));
         return pointSearchInformation;
     }
+
+    public boolean checkPermission(String permission) {
+        return ContextCompat.checkSelfPermission(homePageFragment.getContext(), permission) == PackageManager.PERMISSION_DENIED;
+    }
+
+    public void requestPermission(String[] permission, int requestCode) {
+        homePageFragment.requestPermissions(permission, requestCode);
+    }
+
+    /*class VolleyThread extends Thread {
+
+        private VolleyCallBack volleyCallBack;
+        private List<Double> pointSearchInformation;
+
+        VolleyThread(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
+            this.volleyCallBack = volleyCallBack;
+            this.pointSearchInformation = pointSearchInformation;
+        }
+
+        @Override
+        public void run() {
+            initializeRecyclerViewHotel();
+        }
+    }*/
 
 }

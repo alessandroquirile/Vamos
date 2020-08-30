@@ -1,6 +1,8 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,11 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HomePageController;
 
+import java.util.List;
+
 public class HomePageFragment extends Fragment {
 
+    private static final int ACCESS_FINE_LOCATION = 100;
     private HomePageController homePageController;
     private RecyclerView recyclerViewHotel, recyclerViewRestaurant, recyclerViewAttraction;
     private View frameLayout;
+    private List<Double> pointSearchArguments;
 
     @Nullable
     @Override
@@ -34,9 +41,14 @@ public class HomePageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeViewComponents(view);
-        initializeRecyclerViewHotel();
-        initializeRecyclerViewRestaurant();
-        initializeRecyclerViewAttraction();
+        if (checkPermission()) {
+            pointSearchArguments = homePageController.getLocation();
+            Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
+            initializeRecyclerViewHotel(pointSearchArguments);
+            initializeRecyclerViewRestaurant(pointSearchArguments);
+            initializeRecyclerViewAttraction(pointSearchArguments);
+        } else
+            Toast.makeText(getContext(), "NON GRANTED", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -56,6 +68,20 @@ public class HomePageFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pointSearchArguments = homePageController.getLocation();
+                initializeRecyclerViewHotel(pointSearchArguments);
+                initializeRecyclerViewRestaurant(pointSearchArguments);
+                initializeRecyclerViewAttraction(pointSearchArguments);
+            } else
+                Toast.makeText(getContext(), "Camera Permission Denied", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void initializeViewComponents(View view) {
         homePageController = new HomePageController(HomePageFragment.this);
         recyclerViewHotel = view.findViewById(R.id.recycler_view_hotel);
@@ -65,20 +91,29 @@ public class HomePageFragment extends Fragment {
         frameLayout.setVisibility(View.VISIBLE);
     }
 
-    private void startSearchActivity(){
+    private boolean checkPermission() {
+        boolean isGranted = true;
+        if (homePageController.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && homePageController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            isGranted = false;
+            homePageController.requestPermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_FINE_LOCATION);
+        }
+        return isGranted;
+    }
+
+    private void startSearchActivity() {
         startActivity(new Intent(getActivity(), SearchActivity.class));
     }
 
-    private void initializeRecyclerViewHotel() {
-        homePageController.initializeRecyclerViewHotel();
+    private void initializeRecyclerViewHotel(List<Double> pointSearchArguments) {
+        homePageController.initializeRecyclerViewHotel(pointSearchArguments);
     }
 
-    private void initializeRecyclerViewRestaurant() {
-        homePageController.initializeRecyclerViewRestaurant();
+    private void initializeRecyclerViewRestaurant(List<Double> pointSearchArguments) {
+        homePageController.initializeRecyclerViewRestaurant(pointSearchArguments);
     }
 
-    private void initializeRecyclerViewAttraction() {
-        homePageController.initializeRecyclerViewAttraction();
+    private void initializeRecyclerViewAttraction(List<Double> pointSearchArguments) {
+        homePageController.initializeRecyclerViewAttraction(pointSearchArguments);
     }
 
     public RecyclerView getRecyclerViewHotel() {

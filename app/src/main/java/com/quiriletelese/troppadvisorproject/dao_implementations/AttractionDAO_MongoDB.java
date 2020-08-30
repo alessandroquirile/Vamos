@@ -3,6 +3,7 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,9 +48,16 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Errore imprevisto durante il caricamento dei dati ATTRA", Toast.LENGTH_SHORT).show();
+
             }
-        });
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (response.statusCode == 204)
+                    volleyCallBack.onError(null, String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -62,7 +70,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
         return URL;
     }
 
-    private void getArrayFromResponse(JSONObject response){
+    private void getArrayFromResponse(JSONObject response) {
         JSONArray jsonArray = new JSONArray();
         Gson gson = new Gson();
         try {
