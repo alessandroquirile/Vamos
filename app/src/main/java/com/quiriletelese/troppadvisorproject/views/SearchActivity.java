@@ -13,6 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.quiriletelese.troppadvisorproject.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,
@@ -40,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    public void onProgressChanged(@NotNull SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
             case R.id.seekbar_price:
                 if (progress == 0)
@@ -76,7 +78,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(@NotNull View v) {
         switch (v.getId()) {
             case R.id.button_see_results:
                 startActivity(new Intent(SearchActivity.this, SeeResultsActivity.class));

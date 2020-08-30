@@ -2,8 +2,8 @@ package com.quiriletelese.troppadvisorproject.dao_interfaces;
 
 import android.content.Context;
 
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallBack;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 /**
  * @author Alessandro Quirile, Mauro Telese

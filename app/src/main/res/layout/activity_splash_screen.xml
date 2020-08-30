@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorPrimary"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".views.SplashScreenActivity">
 
     <ImageView
+        android:id="@+id/image_view_tropp_advisor_logo"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:src="@drawable/troppadvisor_logo"
-        android:id="@+id/image_view_tropp_advisor_logo"/>
+        android:src="@drawable/troppadvisor_logo" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

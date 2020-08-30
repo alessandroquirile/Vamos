@@ -1,10 +1,11 @@
-package com.quiriletelese.troppadvisorproject.interfaces;
+package com.quiriletelese.troppadvisorproject.volley_interfaces;
 
 import com.amazonaws.services.cognitoidentityprovider.model.ChangePasswordResult;
 
 public interface VolleyCallbackUpdatePassword {
 
     void onSuccess(ChangePasswordResult changePasswordResult);
+
     void onError(String error);
 
 }

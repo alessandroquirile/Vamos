@@ -19,15 +19,15 @@ import androidx.core.app.ActivityCompat;
 public class GPSTracker extends Service implements LocationListener {
 
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
-    private static final long MINIMUM_TIME_BETWEEW_UPDATES = 1000 * 60 * 1; // 1 minute
-    private Context context;
+    private static final long MINIMUM_TIME_BETWEEW_UPDATES = 1000 * 60; // 1 minute
+    protected LocationManager locationManager;
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean canGetLocation = false;
     Location location;
     Double latitude;
     Double longitude;
-    protected LocationManager locationManager;
+    private Context context;
 
     public GPSTracker(Context context) {
         this.context = context;
@@ -63,6 +63,7 @@ public class GPSTracker extends Service implements LocationListener {
     public Location getLocation() {
         try {
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+            assert locationManager != null;
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             if (!isGPSEnabled && !isNetworkEnabled) {
@@ -124,8 +125,8 @@ public class GPSTracker extends Service implements LocationListener {
         return location;
     }
 
-    public double getLatitude(){
-        if(location != null){
+    public double getLatitude() {
+        if (location != null) {
             latitude = location.getLatitude();
         }
         // return latitude
@@ -134,10 +135,10 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to get longitude
-     * */
+     */
 
-    public double getLongitude(){
-        if(location != null){
+    public double getLongitude() {
+        if (location != null) {
             longitude = location.getLongitude();
         }
         // return longitude
@@ -146,8 +147,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to check GPS/wifi enabled
+     *
      * @return boolean
-     * */
+     */
 
     public boolean canGetLocation() {
         return this.canGetLocation;

@@ -10,11 +10,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackUpdatePassword;
 import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackUpdatePassword;
 
 import java.util.Objects;
 
@@ -112,6 +112,7 @@ public class ProfileController implements View.OnClickListener {
             public void onSuccess(ChangePasswordResult changePasswordResult) {
                 Toast.makeText(profileFragment.getContext(), R.string.password_updated_correctly, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onError(String error) {
                 Toast.makeText(profileFragment.getContext(), R.string.password_update_error, Toast.LENGTH_SHORT).show();

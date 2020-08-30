@@ -2,12 +2,11 @@ package com.quiriletelese.troppadvisorproject.dao_interfaces;
 
 import android.content.Context;
 
-import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackCreateUser;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackLogin;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackUpdatePassword;
 import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackCreateUser;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackLogin;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackUpdatePassword;
 
 /**
  * @author Alessandro Quirile, Mauro Telese

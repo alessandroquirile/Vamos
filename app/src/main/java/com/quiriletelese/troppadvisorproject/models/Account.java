@@ -1,7 +1,5 @@
 package com.quiriletelese.troppadvisorproject.models;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 
 /**

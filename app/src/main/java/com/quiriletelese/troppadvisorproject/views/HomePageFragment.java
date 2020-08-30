@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HomePageController;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class HomePageFragment extends Fragment {
@@ -82,7 +84,7 @@ public class HomePageFragment extends Fragment {
         }
     }
 
-    private void initializeViewComponents(View view) {
+    private void initializeViewComponents(@NotNull View view) {
         homePageController = new HomePageController(HomePageFragment.this);
         recyclerViewHotel = view.findViewById(R.id.recycler_view_hotel);
         recyclerViewRestaurant = view.findViewById(R.id.recycler_view_restaurant);

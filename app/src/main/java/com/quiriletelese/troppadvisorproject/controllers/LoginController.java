@@ -8,11 +8,13 @@ import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackLogin;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackLogin;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -27,8 +29,15 @@ public class LoginController implements View.OnClickListener {
         this.loginActivity = loginActivity;
     }
 
+    private static boolean areEmpty(@NotNull String... strings) {
+        for (String string : strings)
+            if (string.equals(""))
+                return true;
+        return false;
+    }
+
     @Override
-    public void onClick(View v) {
+    public void onClick(@NotNull View v) {
         switch (v.getId()) {
             case R.id.button_login_login_activity:
                 login();
@@ -50,7 +59,8 @@ public class LoginController implements View.OnClickListener {
         if (!areEmpty(username, password)) {
             Account account = createAccountForLogin(username, password);
             daoFactory = DAOFactory.getInstance();
-            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology", loginActivity.getApplicationContext()));
+            accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
+                    loginActivity.getApplicationContext()));
             loginHelper(account);
         } else
             Toast.makeText(loginActivity.getApplicationContext(), "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
@@ -63,6 +73,7 @@ public class LoginController implements View.OnClickListener {
                 System.out.println(initiateAuthResult.toString());
                 Toast.makeText(loginActivity, "Login success", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onError(String error) {
                 Toast.makeText(loginActivity, "Login error code: " + error, Toast.LENGTH_SHORT).show();
@@ -82,12 +93,4 @@ public class LoginController implements View.OnClickListener {
         account.setPassword(password);
         return account;
     }
-
-    private static boolean areEmpty(String... strings) {
-        for (String string : strings)
-            if (string.equals(""))
-                return true;
-        return false;
-    }
-
 }

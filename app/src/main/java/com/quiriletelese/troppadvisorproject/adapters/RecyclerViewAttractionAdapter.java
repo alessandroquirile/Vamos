@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;

@@ -1,7 +1,6 @@
 package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -12,11 +11,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallBack;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +52,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO {
             }
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 if (response.statusCode == 204)
                     volleyCallBack.onError(null, String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
@@ -62,7 +61,8 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private String createFindHotelsByDistanceString(PointSearch pointSearch) {
+    @NotNull
+    private String createFindHotelsByDistanceString(@NotNull PointSearch pointSearch) {
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/restaurant/find-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
@@ -71,7 +71,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO {
         return URL;
     }
 
-    private void getArrayFromResponse(JSONObject response) {
+    private void getArrayFromResponse(@NotNull JSONObject response) {
         JSONArray jsonArray = new JSONArray();
         Gson gson = new Gson();
         try {

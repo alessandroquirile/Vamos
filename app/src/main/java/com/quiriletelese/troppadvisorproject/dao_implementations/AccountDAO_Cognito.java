@@ -5,7 +5,6 @@ import android.content.Context;
 import com.amazonaws.services.cognitoidentityprovider.model.ChangePasswordResult;
 import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,12 +13,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackCreateUser;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackLogin;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallbackUpdatePassword;
 import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackCreateUser;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackLogin;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackUpdatePassword;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -101,12 +101,12 @@ public class AccountDAO_Cognito implements AccountDAO {
             public void onErrorResponse(VolleyError error) {
                 volleyCallbackUpdatePassword.onError(String.valueOf(error.networkResponse.statusCode));
             }
-        }){
+        }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
-                return  headers;
+                return headers;
             }
         };
         requestQueue.add(jsonObjectRequest);
@@ -132,7 +132,7 @@ public class AccountDAO_Cognito implements AccountDAO {
         return createJsonObjectNewUser(jsonObjectNewUSer, account);
     }
 
-    private JSONObject createJsonObjectNewUser(JSONObject jsonObjectNewUser, Account account) {
+    private JSONObject createJsonObjectNewUser(@NotNull JSONObject jsonObjectNewUser, @NotNull Account account) {
         try {
             jsonObjectNewUser.put("name", account.getName());
             jsonObjectNewUser.put("lastname", account.getLastname());
@@ -150,7 +150,7 @@ public class AccountDAO_Cognito implements AccountDAO {
         return createJsonObjectUpdatePassword(jsonObjectUpdatePassword, changeUserPassword);
     }
 
-    private JSONObject createJsonObjectUpdatePassword(JSONObject jsonObjectUpdatePassword, ChangeUserPassword changeUserPassword) {
+    private JSONObject createJsonObjectUpdatePassword(@NotNull JSONObject jsonObjectUpdatePassword, @NotNull ChangeUserPassword changeUserPassword) {
         try {
             jsonObjectUpdatePassword.put("accessToken", changeUserPassword.getAccessToken());
             jsonObjectUpdatePassword.put("previousPassword", changeUserPassword.getPreviousPassword());
@@ -161,17 +161,17 @@ public class AccountDAO_Cognito implements AccountDAO {
         return jsonObjectUpdatePassword;
     }
 
-    private InitiateAuthResult getInitiateAuthResultFromVolley(JSONObject response) {
+    private InitiateAuthResult getInitiateAuthResultFromVolley(@NotNull JSONObject response) {
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), InitiateAuthResult.class);
     }
 
-    private GetUserResult getUserResultFromVolley(JSONObject response) {
+    private GetUserResult getUserResultFromVolley(@NotNull JSONObject response) {
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), GetUserResult.class);
     }
 
-    private ChangePasswordResult getChangePasswordResultFromVolley(JSONObject response){
+    private ChangePasswordResult getChangePasswordResultFromVolley(@NotNull JSONObject response) {
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), ChangePasswordResult.class);
     }

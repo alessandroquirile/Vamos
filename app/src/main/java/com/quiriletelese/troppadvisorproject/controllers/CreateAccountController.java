@@ -29,18 +29,6 @@ public class CreateAccountController implements View.OnClickListener {
         this.signUpActivity = signUpActivity;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_up_sign_up_activity:
-                doCreate();
-                break;
-            case R.id.floating_action_button_go_back_sign_up_activity:
-                showLoginActivity();
-                break;
-        }
-    }
-
     public static boolean isValid(String email) {
         String emailRegExp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
         Pattern emailPattern = Pattern.compile(emailRegExp, Pattern.CASE_INSENSITIVE);
@@ -53,6 +41,18 @@ public class CreateAccountController implements View.OnClickListener {
             if (string.equals(""))
                 return true;
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_sign_up_sign_up_activity:
+                doCreate();
+                break;
+            case R.id.floating_action_button_go_back_sign_up_activity:
+                showLoginActivity();
+                break;
+        }
     }
 
     public void setListenersOnSignUpActivity() {

@@ -12,6 +12,8 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.my_exceptions.TechnologyNotSupportedYetException;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -30,35 +32,35 @@ public class DAOFactory {
         return daoFactorySingletonInstance;
     }
 
-    public ReviewDAO getReviewDAO(String reviewStorageTechnology) {
+    public ReviewDAO getReviewDAO(@NotNull String reviewStorageTechnology) {
         if (reviewStorageTechnology.equals("mongodb"))
             return new ReviewDAO_MongoDB();
         else
             throw new TechnologyNotSupportedYetException(reviewStorageTechnology);
     }
 
-    public AccountDAO getAccountDAO(String accountStorageTechnology) {
+    public AccountDAO getAccountDAO(@NotNull String accountStorageTechnology) {
         if (accountStorageTechnology.equals("cognito"))
             return new AccountDAO_Cognito();
         else
             throw new TechnologyNotSupportedYetException(accountStorageTechnology);
     }
 
-    public HotelDAO getHotelDAO(String hotelStorageTechnology) {
+    public HotelDAO getHotelDAO(@NotNull String hotelStorageTechnology) {
         if (hotelStorageTechnology.equals("mongodb"))
             return new HotelDAO_MongoDB();
         else
             throw new TechnologyNotSupportedYetException(hotelStorageTechnology);
     }
 
-    public RestaurantDAO getRestaurantDAO(String restaurantStorageTechnology) {
+    public RestaurantDAO getRestaurantDAO(@NotNull String restaurantStorageTechnology) {
         if (restaurantStorageTechnology.equals("mongodb"))
             return new RestaurantDAO_MongoDB();
         else
             throw new TechnologyNotSupportedYetException(restaurantStorageTechnology);
     }
 
-    public AttractionDAO getAttractionDAO(String attractionStorageTechnology) {
+    public AttractionDAO getAttractionDAO(@NotNull String attractionStorageTechnology) {
         if (attractionStorageTechnology.equals("mongodb"))
             return new AttractionDAO_MongoDB();
         else

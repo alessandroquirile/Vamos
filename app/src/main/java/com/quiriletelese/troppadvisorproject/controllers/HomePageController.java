@@ -10,13 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionAdapter;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewHotelAdapter;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewRestaurantAdapter;
-import com.quiriletelese.troppadvisorproject.dao_implementations.AttractionDAO_MongoDB;
-import com.quiriletelese.troppadvisorproject.dao_implementations.HotelDAO_MongoDB;
-import com.quiriletelese.troppadvisorproject.dao_implementations.RestaurantDAO_MongoDB;
-import com.quiriletelese.troppadvisorproject.interfaces.VolleyCallBack;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
+import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
+import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
 import com.quiriletelese.troppadvisorproject.views.HomePageFragment;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.List;
 public class HomePageController {
 
     private HomePageFragment homePageFragment;
+    private DAOFactory daoFactory;
     private GPSTracker gpsTracker;
     private RecyclerViewHotelAdapter recyclerViewHotelAdapter;
     private RecyclerViewRestaurantAdapter recyclerViewRestaurantAdapter;
@@ -37,20 +42,32 @@ public class HomePageController {
 
     public void findHotelsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
-        new HotelDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
+        //new HotelDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
+        daoFactory = DAOFactory.getInstance();
+        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty("hotel_storage_technology",
+                homePageFragment.requireActivity()));
+        hotelDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
     public void findRestaurantsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
-        new RestaurantDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
+        //new RestaurantDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
+        daoFactory = DAOFactory.getInstance();
+        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty("restaurant_storage_technology",
+                homePageFragment.requireActivity()));
+        restaurantDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
     public void findAttractionsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
-        new AttractionDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
+        //new AttractionDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
+        daoFactory = DAOFactory.getInstance();
+        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty("attraction_storage_technology",
+                homePageFragment.requireActivity()));
+        attractionDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
-    private PointSearch setPointSearchInformation(List<Double> pointSearchInformation) {
+    private PointSearch setPointSearchInformation(@NotNull List<Double> pointSearchInformation) {
         PointSearch pointSearch = new PointSearch();
         pointSearch.setLatitude(pointSearchInformation.get(0));
         pointSearch.setLongitude(pointSearchInformation.get(1));
@@ -85,14 +102,14 @@ public class HomePageController {
     private void initializeRecyclerViewHotelOnError(List accomodation) {
         loaded++;
         if (accomodation == null)
-            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(homePageFragment.getContext(), "Nessun hotel trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
                 }
             });
         if (loaded == 3)
-            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     homePageFragment.getFrameLayout().setVisibility(View.GONE);
@@ -127,14 +144,14 @@ public class HomePageController {
     private void initializeRecyclerViewRestaurantOnError(List accomodation) {
         loaded++;
         if (accomodation == null)
-            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(homePageFragment.getContext(), "Nessun ristorante trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
                 }
             });
         if (loaded == 3)
-            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     homePageFragment.getFrameLayout().setVisibility(View.GONE);
@@ -169,14 +186,15 @@ public class HomePageController {
     private void initializeRecyclerViewAttractionOnError(List accomodation) {
         loaded++;
         if (accomodation == null)
-            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(homePageFragment.getContext(), "Nessun attrazione trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(homePageFragment.getContext(), "Nessun attrazione trovato nelle vicinanze",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         if (loaded == 3)
-            homePageFragment.getActivity().runOnUiThread(new Runnable() {
+            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     homePageFragment.getFrameLayout().setVisibility(View.GONE);
@@ -213,7 +231,7 @@ public class HomePageController {
     }
 
     public boolean checkPermission(String permission) {
-        return ContextCompat.checkSelfPermission(homePageFragment.getContext(), permission) == PackageManager.PERMISSION_DENIED;
+        return ContextCompat.checkSelfPermission(homePageFragment.requireContext(), permission) == PackageManager.PERMISSION_DENIED;
     }
 
     public void requestPermission(String[] permission, int requestCode) {
@@ -235,5 +253,4 @@ public class HomePageController {
             initializeRecyclerViewHotel();
         }
     }*/
-
 }
