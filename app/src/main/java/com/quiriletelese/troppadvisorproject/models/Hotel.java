@@ -5,6 +5,7 @@ package com.quiriletelese.troppadvisorproject.models;
  */
 
 public class Hotel extends Accomodation {
+
     private Integer stars;
 
     public Integer getStars() {
@@ -14,4 +15,5 @@ public class Hotel extends Accomodation {
     public void setStars(Integer stars) {
         this.stars = stars;
     }
+
 }

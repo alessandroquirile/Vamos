@@ -7,6 +7,7 @@
     app:cardCornerRadius="5dp">
 
     <LinearLayout
+        android:id="@+id/linear_layout_home_page_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground"

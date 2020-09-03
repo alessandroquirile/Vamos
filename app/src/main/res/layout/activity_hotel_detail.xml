@@ -5,7 +5,7 @@
     style="@style/AppTheme.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.OverviewActivity">
+    tools:context=".views.HotelDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -14,17 +14,18 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout_hotel_detail_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/colorPrimaryDark"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            app:title="La Masardona">
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-            <ImageView
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager_overview"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/pizza" />
+                android:clipToPadding="false"
+                android:overScrollMode="never" />
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -61,6 +62,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:lineSpacingExtra="8sp"
                 android:text="@string/informazioni_sulla_struttura"
                 android:textColor="@color/black"
@@ -68,52 +70,74 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/text_view_avarage_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_stars_primary_color"
-                android:drawablePadding="4dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
                 android:text="4/5 (63 recensioni)"
                 android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_stars_primary_color"
                 tools:ignore="HardcodedText" />
 
             <TextView
+                android:id="@+id/text_view_certificate_of_excellence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_loyalty_primary_color"
-                android:drawablePadding="4dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
                 android:text="@string/certificate_of_excellence"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 
             <TextView
+                android:id="@+id/text_view_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_location_primary_color"
-                android:drawablePadding="3dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
                 android:text="Via Salvo d'Acquisto, 25 San Giorgio a Cremano, Napoli"
                 android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_location_primary_color"
                 tools:ignore="HardcodedText" />
 
             <TextView
+                android:id="@+id/text_view_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_phone_primary_color"
-                android:drawablePadding="4dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
                 android:text="0817714413"
                 android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_phone_primary_color"
                 tools:ignore="HardcodedText" />
 
             <TextView
+                android:id="@+id/text_view_stars"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableStart="@drawable/icon_schedule_primary_color"
-                android:drawablePadding="4dp"
-                android:text="17:30-23:00"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="4/5"
                 android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_star_hotel_detail_activity_green"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/text_view_avarage_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="100"
+                android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green"
                 tools:ignore="HardcodedText" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

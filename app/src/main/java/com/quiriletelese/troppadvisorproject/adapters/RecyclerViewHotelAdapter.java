@@ -1,10 +1,12 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder> {
     private Context context;
     private List<Hotel> hotels;
+    private int position;
 
     public RecyclerViewHotelAdapter(Context context, List<Hotel> hotels) {
         this.context = context;
@@ -35,6 +39,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHotelAdapter.ViewHolder holder, int position) {
+        this.position = position;
         setFieldsOnBindViewHolder(holder, position);
     }
 
@@ -68,8 +73,15 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         return hotels.get(position).getImages().size() > 0;
     }
 
+    private void startHotelDetailActivity(Hotel hotel){
+        Intent intent = new Intent(context, HotelDetailActivity.class);
+        intent.putExtra("hotel", hotel);
+        context.startActivity(intent);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Context context;
+        private LinearLayout linearLayoutHomePageRecyclerView;
         private ImageView imageViewHotel;
         private TextView textViewHotelName, textViewHotelRating;
 
@@ -80,14 +92,16 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
         private void initializeComponents() {
             context = itemView.getContext();
+            linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewHotel = itemView.findViewById(R.id.image_view_accomodation);
             textViewHotelName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewHotelRating = itemView.findViewById(R.id.text_view_accomodation_rating);
+            linearLayoutHomePageRecyclerView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(context, "Cliccato " + hotels.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            startHotelDetailActivity(hotels.get(this.getAdapterPosition()));
         }
 
     }

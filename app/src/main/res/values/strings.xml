@@ -78,4 +78,7 @@
     <string name="password_error">Password errata</string>
     <string name="password_updated_correctly">Password aggiornata correttamente</string>
     <string name="password_update_error">Errore durante l\'aggiornamento della password, riprova</string>
+    <string name="hotel_stars">Stelle hotel:</string>
+    <string name="avarage_price">Prezzo medio:</string>
+    <string name="currency" translatable="false">€</string>
 </resources>

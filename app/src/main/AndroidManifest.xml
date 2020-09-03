@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".views.FilterMapActivity" />
         <activity
-            android:name=".views.OverviewActivity"
+            android:name=".views.HotelDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.WriteReviewActivity" />
         <activity android:name=".views.SeeResultsFilterActivity" />

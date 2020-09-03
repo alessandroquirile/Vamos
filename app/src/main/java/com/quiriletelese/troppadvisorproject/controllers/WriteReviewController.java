@@ -13,7 +13,7 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
-import com.quiriletelese.troppadvisorproject.views.OverviewActivity;
+import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 
 /**
@@ -22,12 +22,12 @@ import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 public class WriteReviewController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener, SwitchCompat.OnCheckedChangeListener {
     private DAOFactory daoFactory;
     private ReviewDAO reviewDAO;
-    private OverviewActivity overviewActivity;
+    private HotelDetailActivity hotelDetailActivity;
     private WriteReviewActivity writeReviewActivity;
     private boolean isAnonymoys = false;
 
-    public WriteReviewController(OverviewActivity overviewActivity) {
-        this.overviewActivity = overviewActivity;
+    public WriteReviewController(HotelDetailActivity hotelDetailActivity) {
+        this.hotelDetailActivity = hotelDetailActivity;
     }
 
     public WriteReviewController(WriteReviewActivity writeReviewActivity) {
@@ -47,7 +47,7 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
     }
 
     public void setListenersOnOverviewActiviyComponents() {
-        overviewActivity.getFloatingActionButtonWriteReview().setOnClickListener(this);
+        hotelDetailActivity.getFloatingActionButtonWriteReview().setOnClickListener(this);
     }
 
     public void setListenersOnWriteReviewActivityComponents() {
@@ -58,9 +58,9 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
 
 
     public void showWriteReviewActivity() {
-        Intent intent = new Intent(overviewActivity.getApplicationContext(), WriteReviewActivity.class);
+        Intent intent = new Intent(hotelDetailActivity.getApplicationContext(), WriteReviewActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necessario per fare lo start di un'activity da una classe che non estende Activity
-        overviewActivity.getApplicationContext().startActivity(intent);
+        hotelDetailActivity.getApplicationContext().startActivity(intent);
     }
 
     @Override

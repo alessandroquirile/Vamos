@@ -42,28 +42,22 @@ public class HomePageController {
 
     public void findHotelsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
-        //new HotelDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
         daoFactory = DAOFactory.getInstance();
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty("hotel_storage_technology",
-                homePageFragment.requireActivity()));
+        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty("hotel_storage_technology", homePageFragment.requireActivity()));
         hotelDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
     public void findRestaurantsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
-        //new RestaurantDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
         daoFactory = DAOFactory.getInstance();
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty("restaurant_storage_technology",
-                homePageFragment.requireActivity()));
+        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty("restaurant_storage_technology", homePageFragment.requireActivity()));
         restaurantDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
     public void findAttractionsByPointNear(VolleyCallBack volleyCallBack, List<Double> pointSearchInformation) {
         PointSearch pointSearch = setPointSearchInformation(pointSearchInformation);
-        //new AttractionDAO_MongoDB().findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
         daoFactory = DAOFactory.getInstance();
-        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty("attraction_storage_technology",
-                homePageFragment.requireActivity()));
+        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty("attraction_storage_technology", homePageFragment.requireActivity()));
         attractionDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext());
     }
 
@@ -224,9 +218,9 @@ public class HomePageController {
 
     private List<Double> pointSearchInformation(List<Double> pointSearchArguments) {
         List<Double> pointSearchInformation = new ArrayList<>();
-        pointSearchInformation.add(pointSearchArguments.get(0));
-        pointSearchInformation.add(pointSearchArguments.get(1));
-        pointSearchInformation.add(pointSearchArguments.get(2));
+        pointSearchInformation.add(40.829904);
+        pointSearchInformation.add(14.248052);
+        pointSearchInformation.add(1.0);
         return pointSearchInformation;
     }
 

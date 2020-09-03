@@ -63,4 +63,6 @@
     <string name="password_error">Wrong password</string>
     <string name="password_updated_correctly">"Password updated successfully "</string>
     <string name="password_update_error">"Error updating password, please try again "</string>
+    <string name="hotel_stars">Hotel stars:</string>
+    <string name="avarage_price">Avarage price:</string>
 </resources>
