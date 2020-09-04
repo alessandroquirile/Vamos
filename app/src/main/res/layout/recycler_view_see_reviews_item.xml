@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_view_title"
+        style="@style/TextAppearance.AppCompat.Body2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:text="Titolo recensione"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/text_view_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="15dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:text="Valutazione + nome utente"
+        android:textColor="@color/black"
+        app:drawableStartCompat="@drawable/icon_star_yellow"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/text_view_review_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:paddingEnd="10dp"
+        android:text="Corpo valutazione"
+        tools:ignore="HardcodedText" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

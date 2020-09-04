@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<RecyclerViewAttractionAdapter.ViewHolder> {
+
     private Context context;
     private List<Attraction> attractions;
 
@@ -41,7 +42,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        return attractions == null ? 0 : attractions.size();
+        return attractions.size();
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
@@ -63,6 +64,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         private Context context;
         private ImageView imageViewAttraction;
         private TextView textViewAttractionName, textViewAttractionRating;

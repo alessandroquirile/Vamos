@@ -22,53 +22,16 @@ import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 public class WriteReviewController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener, SwitchCompat.OnCheckedChangeListener {
     private DAOFactory daoFactory;
     private ReviewDAO reviewDAO;
-    private HotelDetailActivity hotelDetailActivity;
     private WriteReviewActivity writeReviewActivity;
     private boolean isAnonymoys = false;
-
-    public WriteReviewController(HotelDetailActivity hotelDetailActivity) {
-        this.hotelDetailActivity = hotelDetailActivity;
-    }
 
     public WriteReviewController(WriteReviewActivity writeReviewActivity) {
         this.writeReviewActivity = writeReviewActivity;
     }
 
-    public void addReview(String title, String description, int numStars, boolean isAnonymous) {
-        Review review = new Review(/*title, description, numStars, isAnonymous*/);
-        daoFactory = DAOFactory.getInstance();
-        reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
-                writeReviewActivity.getApplicationContext()));
-        if (reviewDAO.add(review))
-            Toast.makeText(writeReviewActivity.getApplicationContext(), "Add true", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(writeReviewActivity.getApplicationContext(), "Expected reviewDAO.add implementation " + review.toString(),
-                    Toast.LENGTH_LONG).show();
-    }
-
-    public void setListenersOnOverviewActiviyComponents() {
-        hotelDetailActivity.getFloatingActionButtonWriteReview().setOnClickListener(this);
-    }
-
-    public void setListenersOnWriteReviewActivityComponents() {
-        writeReviewActivity.getButtonPublishReview().setOnClickListener(this);
-        writeReviewActivity.getRatingBar().setOnRatingBarChangeListener(this);
-        writeReviewActivity.getSwitchCompatButton().setOnCheckedChangeListener(this);
-    }
-
-
-    public void showWriteReviewActivity() {
-        Intent intent = new Intent(hotelDetailActivity.getApplicationContext(), WriteReviewActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necessario per fare lo start di un'activity da una classe che non estende Activity
-        hotelDetailActivity.getApplicationContext().startActivity(intent);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.floating_action_button_write_review:
-                showWriteReviewActivity();
-                break;
             case R.id.button_publish_review_review_activity:
                 addReview
                         (writeReviewActivity.getTextInputEditTextTitle().getText().toString(),
@@ -108,4 +71,23 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         isAnonymoys = isChecked;
     }
+
+    public void addReview(String title, String description, int numStars, boolean isAnonymous) {
+        Review review = new Review(/*title, description, numStars, isAnonymous*/);
+        daoFactory = DAOFactory.getInstance();
+        reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
+                writeReviewActivity.getApplicationContext()));
+        if (reviewDAO.add(review))
+            Toast.makeText(writeReviewActivity.getApplicationContext(), "Add true", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(writeReviewActivity.getApplicationContext(), "Expected reviewDAO.add implementation " + review.toString(),
+                    Toast.LENGTH_LONG).show();
+    }
+
+    public void setListenersOnViewComponents() {
+        writeReviewActivity.getButtonPublishReview().setOnClickListener(this);
+        writeReviewActivity.getRatingBar().setOnRatingBarChangeListener(this);
+        writeReviewActivity.getSwitchCompatButton().setOnCheckedChangeListener(this);
+    }
+
 }

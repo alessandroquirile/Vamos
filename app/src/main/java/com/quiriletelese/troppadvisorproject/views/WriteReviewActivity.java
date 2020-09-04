@@ -14,6 +14,7 @@ import com.quiriletelese.troppadvisorproject.controllers.WriteReviewController;
 
 public class WriteReviewActivity extends AppCompatActivity {
 
+    private WriteReviewController writeReviewController;
     private EditText textInputEditTextTitle;
     private EditText textInputEditTextDescription;
     private RatingBar ratingBar;
@@ -28,6 +29,7 @@ public class WriteReviewActivity extends AppCompatActivity {
 
         initViewComponents();
         initializeController();
+        setListenerOnViewCOmponents();
     }
 
     public void initViewComponents() {
@@ -40,8 +42,11 @@ public class WriteReviewActivity extends AppCompatActivity {
     }
 
     public void initializeController() {
-        WriteReviewController writeReviewController = new WriteReviewController(this);
-        writeReviewController.setListenersOnWriteReviewActivityComponents();
+        writeReviewController = new WriteReviewController(this);
+    }
+
+    private void setListenerOnViewCOmponents(){
+        writeReviewController.setListenersOnViewComponents();
     }
 
     public EditText getTextInputEditTextTitle() {

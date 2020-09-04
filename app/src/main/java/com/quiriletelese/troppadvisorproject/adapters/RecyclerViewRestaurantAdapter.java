@@ -1,10 +1,12 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,12 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantAdapter.ViewHolder> {
+public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantAdapter.ViewHolder> implements Constants {
     private Context context;
     private List<Restaurant> restaurants;
 
@@ -61,8 +67,15 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
                 .into(viewHolder.imageViewRestaurant);
     }
 
+    private void startRestaurantDetailActivity(Restaurant restaurant){
+        Intent intent = new Intent(context, RestaurantDetailActivity.class);
+        intent.putExtra(RESTAURANT, restaurant);
+        context.startActivity(intent);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Context context;
+        private LinearLayout linearLayoutHomePageRecyclerView;
         private ImageView imageViewRestaurant;
         private TextView textViewRestaurantName, textViewRestaurantRating;
 
@@ -73,14 +86,16 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
 
         private void initializeComponents() {
             context = itemView.getContext();
+            linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewRestaurant = itemView.findViewById(R.id.image_view_accomodation);
             textViewRestaurantName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewRestaurantRating = itemView.findViewById(R.id.text_view_accomodation_rating);
+            linearLayoutHomePageRecyclerView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(context, "Cliccato " + restaurants.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+            startRestaurantDetailActivity(restaurants.get(this.getAdapterPosition()));
         }
 
     }

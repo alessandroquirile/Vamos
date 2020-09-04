@@ -81,4 +81,8 @@
     <string name="hotel_stars">Stelle hotel:</string>
     <string name="avarage_price">Prezzo medio:</string>
     <string name="currency" translatable="false">€</string>
+    <string name="anonymous">Anonimo</string>
+    <string name="type_of_cuisine">Tipi di cucina</string>
+    <string name="no_phone_number">Nessun numero di telefono disponibile</string>
+    <string name="no_information_available">Nessuna informazione disponibile</string>
 </resources>

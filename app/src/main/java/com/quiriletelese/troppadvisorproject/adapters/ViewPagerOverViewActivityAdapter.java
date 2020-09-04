@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.quiriletelese.troppadvisorproject.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
@@ -40,19 +41,24 @@ public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         imageViewOverviewActivity = new ImageView(context);
-        Picasso.with(context)
-                .load(images.get(position))
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.pizza)
-                .into(imageViewOverviewActivity);
+        setViewPagerImages(imageViewOverviewActivity, position);
+
         container.addView(imageViewOverviewActivity);
         return imageViewOverviewActivity;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
+    }
+
+    private void setViewPagerImages(ImageView imageViewOverviewActivity, int position) {
+        Picasso.with(context)
+                .load(images.get(position))
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.troppadvisor_logo)
+                .into(imageViewOverviewActivity);
     }
 
 }
