@@ -98,7 +98,7 @@
                 app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 
             <TextView
-                android:id="@+id/text_view_hotel_address"
+                android:id="@+id/text_view_accomodation_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

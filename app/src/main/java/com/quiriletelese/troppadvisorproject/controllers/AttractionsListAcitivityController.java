@@ -9,38 +9,38 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewHotelsListAdapter;
-import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
+import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionsListAdapter;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
-import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
+import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import java.util.List;
 
-public class HotelsListActivityController implements Constants {
+public class AttractionsListAcitivityController implements Constants {
 
-    private HotelsListActivity hotelsListActivity;
+    private AttractionsListActivity attractionsListActivity;
     private DAOFactory daoFactory;
-    private RecyclerViewHotelsListAdapter recyclerViewHotelsListAdapter;
+    private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private int page = 0, size = 3;
     private boolean loadData = false;
 
-    public HotelsListActivityController(HotelsListActivity hotelsListActivity) {
-        this.hotelsListActivity = hotelsListActivity;
+    public AttractionsListAcitivityController(AttractionsListActivity attractionsListActivity) {
+        this.attractionsListActivity = attractionsListActivity;
     }
 
-    public void findHotelsByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, int page, int size) {
+    public void findAttractionsByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, int page, int size) {
         daoFactory = DAOFactory.getInstance();
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY, hotelsListActivity.getApplicationContext()));
-        hotelDAO.findByPointNear(volleyCallBack, pointSearch, hotelsListActivity.getApplicationContext(), page, size);
+        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty(ATTRACTION_STORAGE_TECHNOLOGY, attractionsListActivity.getApplicationContext()));
+        attractionDAO.findByPointNear(volleyCallBack, pointSearch, attractionsListActivity.getApplicationContext(), page, size);
     }
 
     public void initializeRecyclerView(PointSearch pointSearch) {
-        findHotelsByPointNear(new VolleyCallBack() {
+        findAttractionsByPointNear(new VolleyCallBack() {
             @Override
             public void onSuccess(List<?> accomodation) {
                 initializeRecyclerViewOnSuccess(accomodation);
@@ -54,7 +54,7 @@ public class HotelsListActivityController implements Constants {
     }
 
     public void addRecyclerViewOnScrollListener(final PointSearch pointSearch) {
-        hotelsListActivity.getRecyclerViewHotelsList().addOnScrollListener(new RecyclerView.OnScrollListener() {
+        attractionsListActivity.getRecyclerViewAttractionsList().addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -65,7 +65,7 @@ public class HotelsListActivityController implements Constants {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isScrollingDown(dy))
                     if (isScrolledToLastItem(recyclerView))
-                        loadMoreHotels(pointSearch);
+                        loadMoreAttractions(pointSearch);
             }
         });
     }
@@ -78,24 +78,24 @@ public class HotelsListActivityController implements Constants {
         return !recyclerView.canScrollVertically(1);
     }
 
-    private void loadMoreHotels(PointSearch pointSearch) {
+    private void loadMoreAttractions(PointSearch pointSearch) {
         loadData = true;
         if (loadData) {
             loadData = false;
             setProgressBarLoadMoreVisible();
-            findHotelsByPointNear(new VolleyCallBack() {
+            findAttractionsByPointNear(new VolleyCallBack() {
                 @Override
                 public void onSuccess(List<?> accomodation) {
-                    addNewHotelsToList(accomodation);
+                    addNewAttractionsToList(accomodation);
 
                 }
 
                 @Override
                 public void onError(List<?> accomodation, String error) {
-                    hotelsListActivity.runOnUiThread(new Runnable() {
+                    attractionsListActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showToastNoMoreHotels();
+                            showToastNoMoreAttractions();
                         }
                     });
                 }
@@ -104,30 +104,30 @@ public class HotelsListActivityController implements Constants {
     }
 
     private void initializeRecyclerViewOnSuccess(List<?> accomodation) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(hotelsListActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerViewHotelsListAdapter = new RecyclerViewHotelsListAdapter(hotelsListActivity.getApplicationContext(), (List<Hotel>) accomodation);
-        hotelsListActivity.getRecyclerViewHotelsList().setLayoutManager(linearLayoutManager);
-        hotelsListActivity.getRecyclerViewHotelsList().setAdapter(recyclerViewHotelsListAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(attractionsListActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerViewAttractionsListAdapter = new RecyclerViewAttractionsListAdapter(attractionsListActivity.getApplicationContext(), (List<Attraction>) accomodation);
+        attractionsListActivity.getRecyclerViewAttractionsList().setLayoutManager(linearLayoutManager);
+        attractionsListActivity.getRecyclerViewAttractionsList().setAdapter(recyclerViewAttractionsListAdapter);
     }
 
-    private void addNewHotelsToList(List<?> accomodation) {
-        recyclerViewHotelsListAdapter.addListItems((List<Hotel>) accomodation);
-        recyclerViewHotelsListAdapter.notifyDataSetChanged();
+    private void addNewAttractionsToList(List<?> accomodation) {
+        recyclerViewAttractionsListAdapter.addListItems((List<Attraction>) accomodation);
+        recyclerViewAttractionsListAdapter.notifyDataSetChanged();
         setProgressBarLoadMoreInvisible();
     }
 
-    private void showToastNoMoreHotels() {
+    private void showToastNoMoreAttractions() {
         setProgressBarLoadMoreInvisible();
-        Toast.makeText(hotelsListActivity, hotelsListActivity.getResources().getString(R.string.end_of_results), Toast.LENGTH_SHORT).show();
+        Toast.makeText(attractionsListActivity, attractionsListActivity.getResources().getString(R.string.end_of_results), Toast.LENGTH_SHORT).show();
     }
 
     private void setProgressBarLoadMoreVisible() {
-        ProgressBar progressBar = hotelsListActivity.getProgressBarHotelLoadMore();
+        ProgressBar progressBar = attractionsListActivity.getProgressBarAttractionLoadMore();
         progressBar.setVisibility(View.VISIBLE);
     }
 
     private void setProgressBarLoadMoreInvisible() {
-        ProgressBar progressBar = hotelsListActivity.getProgressBarHotelLoadMore();
+        ProgressBar progressBar = attractionsListActivity.getProgressBarAttractionLoadMore();
         progressBar.setVisibility(View.GONE);
     }
 

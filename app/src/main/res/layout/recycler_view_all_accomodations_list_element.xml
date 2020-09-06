@@ -5,16 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
-    app:cardElevation="10dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:id="@+id/relative_layout_hotel"
+        android:id="@+id/relative_layout_main"
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="image-loading.json"
+            app:lottie_loop="true" />
+
         <ImageView
-            android:id="@+id/image_view_hotel"
+            android:id="@+id/image_view_accomodation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop" />
@@ -31,7 +38,7 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:id="@+id/text_view_hotel_name"
+                android:id="@+id/text_view_accomodation_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -43,7 +50,7 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_hotel_review"
+                android:id="@+id/text_view_accomodation_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
@@ -56,7 +63,7 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_hotel_address"
+                android:id="@+id/text_view_accomodation_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
@@ -78,7 +85,7 @@
                 android:weightSum="2">
 
                 <Button
-                    android:id="@+id/button_write_hotel_review"
+                    android:id="@+id/button_write_accomodation_review"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_marginEnd="10dp"
@@ -88,7 +95,7 @@
                     android:textColor="@color/white" />
 
                 <Button
-                    android:id="@+id/button_see_hotel_on_map"
+                    android:id="@+id/button_see_accomodation_on_map"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_marginEnd="10dp"

@@ -18,7 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.HotelsListActivity"></activity>
+        <activity android:name=".views.AttractionsListActivity"></activity>
+        <activity android:name=".views.RestaurantsListActivity" />
+        <activity android:name=".views.HotelsListActivity" />
         <activity android:name=".views.AttractionDetailActivity" />
         <activity
             android:name=".views.SplashScreenActivity"

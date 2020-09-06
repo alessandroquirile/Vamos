@@ -9,14 +9,13 @@ import android.widget.ProgressBar;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HotelsListActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-
-import java.util.List;
+import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 
 public class HotelsListActivity extends AppCompatActivity implements Constants {
 
     private HotelsListActivityController hotelsListActivityController;
     private RecyclerView recyclerViewHotelsList;
-    private ProgressBar progressBarLoadMore;
+    private ProgressBar progressBarHotelLoadMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +23,18 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_hotels_list);
 
         initializeViewComponents();
-        initializeHotelsListActivityController();
-        hotelsListActivityController.initializeRecyclerViewHotel((List<Double>) getIntent().getSerializableExtra(POINT_SEARCH));
-        hotelsListActivityController.addRecyclerViewOnScrollListener((List<Double>) getIntent().getSerializableExtra(POINT_SEARCH));
+        initializeController();
+        hotelsListActivityController.initializeRecyclerView((PointSearch) getIntent().getSerializableExtra(POINT_SEARCH));
+        hotelsListActivityController.addRecyclerViewOnScrollListener((PointSearch) getIntent().getSerializableExtra(POINT_SEARCH));
 
     }
 
     private void initializeViewComponents() {
         recyclerViewHotelsList = findViewById(R.id.recycler_view_hotels_list);
-        progressBarLoadMore = findViewById(R.id.progress_bar_load_more);
+        progressBarHotelLoadMore = findViewById(R.id.progress_bar_hotel_load_more);
     }
 
-    private void initializeHotelsListActivityController() {
+    private void initializeController() {
         hotelsListActivityController = new HotelsListActivityController(this);
     }
 
@@ -43,7 +42,7 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
         return recyclerViewHotelsList;
     }
 
-    public ProgressBar getProgressBarLoadMore() {
-        return progressBarLoadMore;
+    public ProgressBar getProgressBarHotelLoadMore() {
+        return progressBarHotelLoadMore;
     }
 }

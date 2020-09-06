@@ -14,52 +14,52 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<RecyclerViewHotelsListAdapter.ViewHolder> {
+public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder> {
 
     private Context context;
-    private List<Hotel> hotels;
+    private List<Restaurant> restaurants;
 
-    public RecyclerViewHotelsListAdapter(Context context, List<Hotel> hotels) {
+    public RecyclerViewRestaurantsListAdapter(Context context, List<Restaurant> restaurants) {
         this.context = context;
-        this.hotels = hotels;
+        this.restaurants = restaurants;
     }
 
     @NonNull
     @Override
-    public RecyclerViewHotelsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewRestaurantsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_all_accomodations_list_element, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHotelsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewRestaurantsListAdapter.ViewHolder holder, int position) {
         setFieldsOnBIndViewHolder(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return hotels.size();
+        return restaurants.size();
     }
 
-    public void addListItems(List<Hotel> hotels){
-        this.hotels.addAll(hotels);
+    public void addListItems(List<Restaurant> restaurants){
+        this.restaurants.addAll(restaurants);
     }
 
     private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position){
         setImage(viewHolder, position);
-        viewHolder.textViewAccomodationName.setText(hotels.get(position).getName());
-        viewHolder.textViewAccomodationReview.setText(createReviewString(hotels.get(position).getAvarageRating()));
-        viewHolder.textViewAccomodationAddress.setText(createAddressString(hotels.get(position).getAddress()));
+        viewHolder.textViewAccomodationName.setText(restaurants.get(position).getName());
+        viewHolder.textViewAccomodationReview.setText(createReviewString(restaurants.get(position).getAvarageRating()));
+        viewHolder.textViewAccomodationAddress.setText(createAddressString(restaurants.get(position).getAddress()));
     }
 
-    private void setImage(RecyclerViewHotelsListAdapter.ViewHolder viewHolder, int position) {
+    private void setImage(ViewHolder viewHolder, int position) {
         if (hasImage(position)) {
-            Picasso.with(context).load(hotels.get(position).getImages().get(0))
+            Picasso.with(context).load(restaurants.get(position).getImages().get(0))
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
@@ -69,18 +69,18 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private boolean hasImage(int position) {
-        return hotels.get(position).getImages().size() > 0;
+        return restaurants.get(position).getImages().size() > 0;
     }
 
     private String createAddressString(Address address) {
-        String hotelAddress = "";
-        hotelAddress = hotelAddress.concat(address.getType() + " ");
-        hotelAddress = hotelAddress.concat(address.getStreet() + ", ");
-        hotelAddress = hotelAddress.concat(address.getHouseNumber() + ", ");
-        hotelAddress = hotelAddress.concat(address.getCity() + ", ");
-        hotelAddress = hotelAddress.concat(address.getProvince() + ", ");
-        hotelAddress = hotelAddress.concat(address.getPostalCode());
-        return hotelAddress;
+        String restaurantAddress = "";
+        restaurantAddress = restaurantAddress.concat(address.getType() + " ");
+        restaurantAddress = restaurantAddress.concat(address.getStreet() + ", ");
+        restaurantAddress = restaurantAddress.concat(address.getHouseNumber() + ", ");
+        restaurantAddress = restaurantAddress.concat(address.getCity() + ", ");
+        restaurantAddress = restaurantAddress.concat(address.getProvince() + ", ");
+        restaurantAddress = restaurantAddress.concat(address.getPostalCode());
+        return restaurantAddress;
     }
 
     private String createReviewString(Integer review){
@@ -92,7 +92,6 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
             return rating;
         }
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout relativeLayoutAccomodation;

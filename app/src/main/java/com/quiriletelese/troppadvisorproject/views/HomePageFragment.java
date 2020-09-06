@@ -47,11 +47,11 @@ public class HomePageFragment extends Fragment {
         initializeHomePageFragmentController();
         setListenerOnViewComponents();
         if (checkPermission()) {
-            pointSearchArguments = homePageController.getLocation();
+            //pointSearchArguments = homePageController.getLocation();
             Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
-            initializeRecyclerViewHotel(pointSearchArguments);
-            initializeRecyclerViewRestaurant(pointSearchArguments);
-            initializeRecyclerViewAttraction(pointSearchArguments);
+            initializeRecyclerViewHotel();
+            initializeRecyclerViewRestaurant();
+            initializeRecyclerViewAttraction();
         } else
             Toast.makeText(getContext(), "NON GRANTED", Toast.LENGTH_SHORT).show();
     }
@@ -78,10 +78,9 @@ public class HomePageFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == ACCESS_FINE_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                pointSearchArguments = homePageController.getLocation();
-                initializeRecyclerViewHotel(pointSearchArguments);
-                initializeRecyclerViewRestaurant(pointSearchArguments);
-                initializeRecyclerViewAttraction(pointSearchArguments);
+                initializeRecyclerViewHotel();
+                initializeRecyclerViewRestaurant();
+                initializeRecyclerViewAttraction();
             } else
                 Toast.makeText(getContext(), "Camera Permission Denied", Toast.LENGTH_SHORT).show();
         }
@@ -117,16 +116,16 @@ public class HomePageFragment extends Fragment {
         startActivity(new Intent(getActivity(), SearchActivity.class));
     }
 
-    private void initializeRecyclerViewHotel(List<Double> pointSearchArguments) {
-        homePageController.initializeRecyclerViewHotel(pointSearchArguments);
+    private void initializeRecyclerViewHotel() {
+        homePageController.initializeRecyclerViewHotel(homePageController.getLocation());
     }
 
-    private void initializeRecyclerViewRestaurant(List<Double> pointSearchArguments) {
-        homePageController.initializeRecyclerViewRestaurant(pointSearchArguments);
+    private void initializeRecyclerViewRestaurant() {
+        homePageController.initializeRecyclerViewRestaurant(homePageController.getLocation());
     }
 
-    private void initializeRecyclerViewAttraction(List<Double> pointSearchArguments) {
-        homePageController.initializeRecyclerViewAttraction(pointSearchArguments);
+    private void initializeRecyclerViewAttraction() {
+        homePageController.initializeRecyclerViewAttraction(homePageController.getLocation());
     }
 
     public RecyclerView getRecyclerViewHotel() {

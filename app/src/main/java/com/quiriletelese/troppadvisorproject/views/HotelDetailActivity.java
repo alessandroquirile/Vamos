@@ -37,7 +37,7 @@ public class HotelDetailActivity extends AppCompatActivity {
         floatingActionButtonHotelWriteReview = findViewById(R.id.floating_action_button_hotel_write_review);
         textViewHotelAvarageRating = findViewById(R.id.text_view_hotel_avarage_rating);
         textViewHotelCertificateOfExcellence = findViewById(R.id.text_view_hotel_certificate_of_excellence);
-        textViewHotelAddress = findViewById(R.id.text_view_hotel_address);
+        textViewHotelAddress = findViewById(R.id.text_view_accomodation_address);
         textViewHotelPhoneNumber = findViewById(R.id.text_view_hotel_phone_number);
         textViewHotelStars = findViewById(R.id.text_view_hotel_stars);
         textViewHotelAvaragePrice = findViewById(R.id.text_view_hotel_avarage_price);
