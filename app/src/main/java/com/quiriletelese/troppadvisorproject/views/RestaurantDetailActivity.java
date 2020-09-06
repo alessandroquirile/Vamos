@@ -10,19 +10,18 @@ import android.widget.TextView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.HotelDetailActivityController;
 import com.quiriletelese.troppadvisorproject.controllers.RestaurantDetailActivityController;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     private RestaurantDetailActivityController restaurantDetailActivityController;
     private CollapsingToolbarLayout collapsingToolbarLayoutRestaurantDetailActivity;
-    private ViewPager viewPagerOverview;
+    private ViewPager viewPagerRestaurantDetail;
     private FloatingActionButton floatingActionButtonRestaurantWriteReview;
     private TextView textViewRestaurantAvarageRating, textViewRestaurantCertificateOfExcellence,
             textViewRestaurantAddress, textViewRestaurantPhoneNumber, textViewRestaurantOpeningTime,
             textViewRestaurantAvaragePrice, textViewTypeOfCuisineList;
-    private Button buttonRestaurantRedReviews;
+    private Button buttonRestaurantReadReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +31,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
-        initializaViewPager();
+        initializeViewPager();
         initializeActivityFields();
     }
 
     private void initializeViewComponents() {
         collapsingToolbarLayoutRestaurantDetailActivity = findViewById(R.id.collapsing_toolbar_layout_restaurant_detail_activity);
-        viewPagerOverview = findViewById(R.id.view_pager_overview);
-        floatingActionButtonRestaurantWriteReview = findViewById(R.id.floating_action_button_hotel_write_review);
+        viewPagerRestaurantDetail = findViewById(R.id.view_pager_restaurant_detail);
+        floatingActionButtonRestaurantWriteReview = findViewById(R.id.floating_action_button_restaurant_write_review);
         textViewRestaurantAvarageRating = findViewById(R.id.text_view_restaurant_avarage_rating);
         textViewRestaurantCertificateOfExcellence = findViewById(R.id.text_view_restaurant_certificate_of_excellence);
         textViewRestaurantAddress = findViewById(R.id.text_view_restaurant_address);
@@ -47,7 +46,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         textViewRestaurantPhoneNumber = findViewById(R.id.text_view_restaurant_phone_number);
         textViewRestaurantAvaragePrice = findViewById(R.id.text_view_restaurant_avarage_price);
         textViewTypeOfCuisineList = findViewById(R.id.text_view_restaurant_type_of_cuisine_list);
-        buttonRestaurantRedReviews = findViewById(R.id.button_restaurant_read_reviews);
+        buttonRestaurantReadReviews = findViewById(R.id.button_restaurant_read_reviews);
     }
 
     private void initializeController() {
@@ -58,7 +57,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         restaurantDetailActivityController.setListenerOnViewComponents();
     }
 
-    private void initializaViewPager() {
+    private void initializeViewPager() {
         restaurantDetailActivityController.initializaViewPager();
     }
 
@@ -70,8 +69,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         return collapsingToolbarLayoutRestaurantDetailActivity;
     }
 
-    public ViewPager getViewPagerOverview() {
-        return viewPagerOverview;
+    public ViewPager getViewPagerRestaurantDetail() {
+        return viewPagerRestaurantDetail;
     }
 
     public FloatingActionButton getFloatingActionButtonRestaurantWriteReview() {
@@ -106,8 +105,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         return textViewTypeOfCuisineList;
     }
 
-    public Button getButtonRestaurantRedReviews() {
-        return buttonRestaurantRedReviews;
+    public Button getButtonRestaurantReadReviews() {
+        return buttonRestaurantReadReviews;
     }
 
 }

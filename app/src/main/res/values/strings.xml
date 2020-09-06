@@ -85,4 +85,6 @@
     <string name="type_of_cuisine">Tipi di cucina</string>
     <string name="no_phone_number">Nessun numero di telefono disponibile</string>
     <string name="no_information_available">Nessuna informazione disponibile</string>
+    <string name="gratis" translatable="false">Gratis</string>
+    <string name="end_of_results">Fine dei risultati</string>
 </resources>

@@ -26,7 +26,7 @@
                 android:src="@drawable/troppadvisor_logo" />
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager_overview"
+                android:id="@+id/view_pager_restaurant_detail"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:clipToPadding="false"

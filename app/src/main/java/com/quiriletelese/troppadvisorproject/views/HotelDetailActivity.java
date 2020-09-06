@@ -33,7 +33,7 @@ public class HotelDetailActivity extends AppCompatActivity {
 
     private void initializeViewComponents() {
         collapsingToolbarLayoutHotelDetailActivity = findViewById(R.id.collapsing_toolbar_layout_hotel_detail_activity);
-        viewPagerOverview = findViewById(R.id.view_pager_overview);
+        viewPagerOverview = findViewById(R.id.view_pager_hotel_detail);
         floatingActionButtonHotelWriteReview = findViewById(R.id.floating_action_button_hotel_write_review);
         textViewHotelAvarageRating = findViewById(R.id.text_view_hotel_avarage_rating);
         textViewHotelCertificateOfExcellence = findViewById(R.id.text_view_hotel_certificate_of_excellence);

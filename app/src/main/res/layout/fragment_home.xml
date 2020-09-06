@@ -2,9 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <TextView
+    <!-- <TextView
         android:id="@+id/text_view_position"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,13 +15,12 @@
         android:text="Posizione ricerca"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:drawableStartCompat="@drawable/icon_position_green" />
+        app:drawableStartCompat="@drawable/icon_position_green" /> -->
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/text_view_position">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text-view-hotel-recycler-view"
+                android:id="@+id/text_view_hotel_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -41,14 +41,26 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_hotel"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_hotel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/text-view-restaurant-recycler-view"
+                android:id="@+id/text_view_restaurant_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -61,14 +73,26 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_restaurant"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_restaurant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/text-view-attraction-recycler-view"
+                android:id="@+id/text_view_attraction_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -81,11 +105,23 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_attraction"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_attraction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -130,9 +166,9 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <include
+    <!-- <include
         android:id="@+id/home_page_loading_screen"
         layout="@layout/home_page_loading_screen"
-        android:visibility="gone" />
+        android:visibility="gone" /> -->
 
 </RelativeLayout>

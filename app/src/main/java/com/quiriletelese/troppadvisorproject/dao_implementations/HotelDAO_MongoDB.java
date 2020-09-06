@@ -32,19 +32,14 @@ public class HotelDAO_MongoDB implements HotelDAO {
     private List<Hotel> hotels = new ArrayList<>();
 
     @Override
-    public Optional<Hotel> findById(String id) {
-        return null;
+    public void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context, int page, int size) {
+        findByPointNearVolley(volleyCallBack, pointSearch, context, page, size);
     }
 
-    @Override
-    public void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context) {
-        findByPointNearVolley(volleyCallBack, pointSearch, context);
-    }
-
-    private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context) {
+    private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context, int page, int size) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
-        String URL = createFindHotelsByDistanceUrl(pointSearch);
+        String URL = createFindHotelsByDistanceUrl(pointSearch, page, size);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -67,12 +62,12 @@ public class HotelDAO_MongoDB implements HotelDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private String createFindHotelsByDistanceUrl(PointSearch pointSearch) {
+    private String createFindHotelsByDistanceUrl(PointSearch pointSearch, int page, int size) {
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
-        URL = URL.concat("&page=0&size=10");
+        URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }
 

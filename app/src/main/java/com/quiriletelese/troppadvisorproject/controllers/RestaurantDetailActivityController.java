@@ -33,13 +33,13 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
 
     public void setListenerOnViewComponents(){
         restaurantDetailActivity.getFloatingActionButtonRestaurantWriteReview().setOnClickListener(this);
-        restaurantDetailActivity.getButtonRestaurantRedReviews().setOnClickListener(this);
+        restaurantDetailActivity.getButtonRestaurantReadReviews().setOnClickListener(this);
     }
 
     public void initializaViewPager() {
         Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
         ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(restaurant.getImages(), restaurantDetailActivity.getApplicationContext());
-        restaurantDetailActivity.getViewPagerOverview().setAdapter(viewPagerOverViewActivityAdapter);
+        restaurantDetailActivity.getViewPagerRestaurantDetail().setAdapter(viewPagerOverViewActivityAdapter);
     }
 
     public void initializeActivityFields() {
@@ -87,7 +87,11 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private void setOpeningTime(String openingTime) {
-        restaurantDetailActivity.getTextViewRestaurantOpeningTime().setText(openingTime);
+        if (!openingTime.equals(""))
+            restaurantDetailActivity.getTextViewRestaurantOpeningTime().setText(openingTime);
+        else
+            restaurantDetailActivity.getTextViewRestaurantOpeningTime().setText(restaurantDetailActivity
+                    .getResources().getString(R.string.no_information_available));
     }
 
     private void setPhoneNunmber(String phoneNumber) {

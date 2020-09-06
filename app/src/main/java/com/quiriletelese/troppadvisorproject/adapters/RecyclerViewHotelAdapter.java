@@ -14,13 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder> {
+public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder> implements Constants {
     private Context context;
     private List<Hotel> hotels;
     private int position;
@@ -63,7 +64,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
             Picasso.with(context).load(hotels.get(position).getImages().get(0))
                     .fit()
                     .centerCrop()
-                    //.placeholder(R.drawable.pizza)
+                    .placeholder(R.drawable.troppadvisor_logo)
                     .error(R.drawable.pizza)
                     .into(viewHolder.imageViewHotel);
         }
@@ -75,7 +76,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
     private void startHotelDetailActivity(Hotel hotel){
         Intent intent = new Intent(context, HotelDetailActivity.class);
-        intent.putExtra("hotel", hotel);
+        intent.putExtra(HOTEL, hotel);
         context.startActivity(intent);
     }
 

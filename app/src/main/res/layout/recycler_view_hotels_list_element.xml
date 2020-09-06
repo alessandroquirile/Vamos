@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
@@ -8,11 +9,12 @@
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
+        android:id="@+id/relative_layout_hotel"
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
         <ImageView
-            android:id="@+id/image_view_background"
+            android:id="@+id/image_view_hotel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop" />
@@ -29,7 +31,7 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:id="@+id/text_view_structure_name"
+                android:id="@+id/text_view_hotel_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -37,31 +39,34 @@
                 android:maxLines="1"
                 android:text="Hotel Paradiso, BW Signature Collection "
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_review"
+                android:id="@+id/text_view_hotel_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/icon_star_yellow"
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
                 android:gravity=""
                 android:maxLines="1"
                 android:text="3/5 (324 recensioni)"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/icon_star_yellow"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/text_view_hotel_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/icon_position_white"
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
                 android:gravity=""
                 android:maxLines="1"
                 android:text="Via Catullo, 11, 80122 Napoli NA"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/icon_position_white"
+                tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -72,49 +77,8 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <!--><RelativeLayout
-                     android:layout_width="0dp"
-                     android:layout_height="wrap_content"
-                     android:layout_marginEnd="10dp"
-                     android:paddingTop="5dp"
-                     android:paddingBottom="5dp"
-                     android:background="@drawable/background_review_button_recycler_view"
-                     android:layout_weight="1">
-
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="@string/review_it"
-                         style="@style/TextAppearance.AppCompat.Medium"
-                         android:textColor="@color/white"
-                         android:drawableStart="@drawable/icon_edit_white"
-                         android:drawablePadding="5dp"
-                         android:layout_centerInParent="true"/>
-
-                 </RelativeLayout>
-
-                 <RelativeLayout
-                     android:layout_width="0dp"
-                     android:layout_height="wrap_content"
-                     android:layout_marginStart="10dp"
-                     android:paddingTop="5dp"
-                     android:paddingBottom="5dp"
-                     android:background="@drawable/background_map_button_recycler_view"
-                     android:layout_weight="1">
-
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="@string/map"
-                         style="@style/TextAppearance.AppCompat.Medium"
-                         android:textColor="@color/white"
-                         android:drawableStart="@drawable/ic_location_white"
-                         android:drawablePadding="5dp"
-                         android:layout_centerInParent="true"/>
-
-                 </RelativeLayout>-->
-
                 <Button
+                    android:id="@+id/button_write_hotel_review"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_marginEnd="10dp"
@@ -124,6 +88,7 @@
                     android:textColor="@color/white" />
 
                 <Button
+                    android:id="@+id/button_see_hotel_on_map"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_marginEnd="10dp"

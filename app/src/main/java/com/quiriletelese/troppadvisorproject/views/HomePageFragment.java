@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ public class HomePageFragment extends Fragment {
     private static final int ACCESS_FINE_LOCATION = 100;
     private HomePageController homePageController;
     private RecyclerView recyclerViewHotel, recyclerViewRestaurant, recyclerViewAttraction;
-    private View frameLayout;
+    private TextView textViewHotelRecyclerView, textViewRestaurantRecyclerView, textViewAttractionRecyclerView;
     private List<Double> pointSearchArguments;
 
     @Nullable
@@ -43,6 +44,8 @@ public class HomePageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeViewComponents(view);
+        initializeHomePageFragmentController();
+        setListenerOnViewComponents();
         if (checkPermission()) {
             pointSearchArguments = homePageController.getLocation();
             Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
@@ -85,12 +88,20 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initializeViewComponents(@NotNull View view) {
-        homePageController = new HomePageController(HomePageFragment.this);
         recyclerViewHotel = view.findViewById(R.id.recycler_view_hotel);
         recyclerViewRestaurant = view.findViewById(R.id.recycler_view_restaurant);
         recyclerViewAttraction = view.findViewById(R.id.recycler_view_attraction);
-        frameLayout = view.findViewById(R.id.home_page_loading_screen);
-        frameLayout.setVisibility(View.VISIBLE);
+        textViewHotelRecyclerView = view.findViewById(R.id.text_view_hotel_recycler_view);
+        textViewRestaurantRecyclerView = view.findViewById(R.id.text_view_restaurant_recycler_view);
+        textViewAttractionRecyclerView = view.findViewById(R.id.text_view_attraction_recycler_view);
+    }
+
+    private void initializeHomePageFragmentController(){
+        homePageController = new HomePageController(HomePageFragment.this);
+    }
+
+    private void setListenerOnViewComponents(){
+        homePageController.setListenerOnViewComponents();;
     }
 
     private boolean checkPermission() {
@@ -130,7 +141,16 @@ public class HomePageFragment extends Fragment {
         return recyclerViewAttraction;
     }
 
-    public View getFrameLayout() {
-        return frameLayout;
+    public TextView getTextViewHotelRecyclerView() {
+        return textViewHotelRecyclerView;
     }
+
+    public TextView getTextViewRestaurantRecyclerView() {
+        return textViewRestaurantRecyclerView;
+    }
+
+    public TextView getTextViewAttractionRecyclerView() {
+        return textViewAttractionRecyclerView;
+    }
+
 }

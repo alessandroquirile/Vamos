@@ -9,5 +9,6 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
  * @author Alessandro Quirile, Mauro Telese
  */
 public interface RestaurantDAO {
-    void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context);
+
+    void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context, int page, int size);
 }

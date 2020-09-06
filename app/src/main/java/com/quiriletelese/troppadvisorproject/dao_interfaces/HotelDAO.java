@@ -13,8 +13,6 @@ import java.util.Optional;
  */
 public interface HotelDAO {
 
-    Optional<Hotel> findById(String id);
-
-    void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context);
+    void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context, int page, int size);
 
 }

@@ -5,7 +5,7 @@
     style="@style/AppTheme.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.HotelDetailActivity">
+    tools:context=".views.RestaurantDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -14,7 +14,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout_hotel_detail_activity"
+            android:id="@+id/collapsing_toolbar_layout_attraction_detail_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/colorPrimaryDark"
@@ -26,7 +26,7 @@
                 android:src="@drawable/troppadvisor_logo" />
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager_hotel_detail"
+                android:id="@+id/view_pager_attraction_detail"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:clipToPadding="false"
@@ -42,7 +42,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button_hotel_write_review"
+        android:id="@+id/floating_action_button_attraction_write_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -75,7 +75,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text_view_hotel_avarage_rating"
+                android:id="@+id/text_view_attraction_avarage_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -87,7 +87,7 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_hotel_certificate_of_excellence"
+                android:id="@+id/text_view_attraction_certificate_of_excellence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -98,7 +98,7 @@
                 app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 
             <TextView
-                android:id="@+id/text_view_hotel_address"
+                android:id="@+id/text_view_attraction_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -110,7 +110,19 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_hotel_phone_number"
+                android:id="@+id/text_view_attraction_opening_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="12:00 - 23:00"
+                android:textColor="@color/black"
+                app:drawableStartCompat="@drawable/icon_opening_time_green"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/text_view_attraction_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -122,19 +134,7 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_hotel_stars"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="4/5"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_star_hotel_detail_activity_green"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/text_view_hotel_avarage_price"
+                android:id="@+id/text_view_attraction_avarage_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -154,7 +154,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button_hotel_read_reviews"
+            android:id="@+id/button_attraction_read_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
