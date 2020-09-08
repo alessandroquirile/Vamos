@@ -1,9 +1,14 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -29,6 +34,23 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_hotels_list_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.button_see_on_map:
+                startHotelMapsActivity();;
+                break;
+        }
+        return true;
+    }
+
     private void initializeViewComponents() {
         recyclerViewHotelsList = findViewById(R.id.recycler_view_hotels_list);
         progressBarHotelLoadMore = findViewById(R.id.progress_bar_hotel_load_more);
@@ -36,6 +58,10 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
 
     private void initializeController() {
         hotelsListActivityController = new HotelsListActivityController(this);
+    }
+
+    private void startHotelMapsActivity() {
+        hotelsListActivityController.startHotelMapsActivity();
     }
 
     public RecyclerView getRecyclerViewHotelsList() {

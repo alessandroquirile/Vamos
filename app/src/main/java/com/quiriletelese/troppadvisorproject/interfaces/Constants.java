@@ -7,6 +7,7 @@ public interface Constants {
     String ATTRACTION_STORAGE_TECHNOLOGY = "attraction_storage_technology";
     String ACCOMODATION_TYPE = "accomodation_type";
     String HOTEL = "hotel";
+    String HOTELS_LIST = "hotels_list";
     String RESTAURANT = "restaurant";
     String ATTRACTION = "attraction";
     String POINT_SEARCH = "point_search";

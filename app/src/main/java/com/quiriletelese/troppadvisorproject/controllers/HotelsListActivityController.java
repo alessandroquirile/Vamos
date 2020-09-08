@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.views.HotelMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -129,6 +131,12 @@ public class HotelsListActivityController implements Constants {
     private void setProgressBarLoadMoreInvisible() {
         ProgressBar progressBar = hotelsListActivity.getProgressBarHotelLoadMore();
         progressBar.setVisibility(View.GONE);
+    }
+
+    public void startHotelMapsActivity() {
+        Intent hotelMapsActivity = new Intent(hotelsListActivity.getApplicationContext(), HotelMapsActivity.class);
+        hotelMapsActivity.putExtra(POINT_SEARCH, hotelsListActivity.getIntent().getSerializableExtra(POINT_SEARCH));
+        hotelsListActivity.startActivity(hotelMapsActivity);
     }
 
 }

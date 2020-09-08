@@ -15,4 +15,6 @@ public interface HotelDAO {
 
     void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context, int page, int size);
 
+    void findAllByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context);
+
 }

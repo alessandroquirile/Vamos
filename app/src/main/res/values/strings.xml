@@ -87,4 +87,6 @@
     <string name="no_information_available">Nessuna informazione disponibile</string>
     <string name="gratis" translatable="false">Gratis</string>
     <string name="end_of_results">Fine dei risultati</string>
+    <string name="refresh">Aggiorna</string>
+    <string name="see_on_map">Vedi su mappa</string>
 </resources>

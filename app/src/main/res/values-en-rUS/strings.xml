@@ -70,4 +70,6 @@
     <string name="no_phone_number">"No phone number available "</string>
     <string name="no_information_available">"No information available "</string>
     <string name="end_of_results">End of reuslts</string>
+    <string name="refresh">Refresh</string>
+    <string name="see_on_map">See on map</string>
 </resources>

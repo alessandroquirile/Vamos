@@ -18,7 +18,10 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
+import com.quiriletelese.troppadvisorproject.models.Attraction;
+import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Point;
+import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
@@ -104,25 +107,25 @@ public class HomePageController implements View.OnClickListener, Constants {
     public void initializeRecyclerViewHotel(PointSearch pointSearch) {
         findHotelsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List accomodation) {
+            public void onSuccess(List<?> accomodation) {
                 initializeRecyclerViewHotelOnSuccess(accomodation);
             }
 
             @Override
-            public void onError(List accomodation, String error) {
+            public void onError(List<?> accomodation, String error) {
                 initializeRecyclerViewHotelOnError(accomodation);
             }
         }, pointSearch);
     }
 
-    private void initializeRecyclerViewHotelOnSuccess(List accomodation) {
+    private void initializeRecyclerViewHotelOnSuccess(List<?> accomodation) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), accomodation);
+        recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), (List<Hotel>) accomodation);
         homePageFragment.getRecyclerViewHotel().setLayoutManager(linearLayoutManager);
         homePageFragment.getRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
     }
 
-    private void initializeRecyclerViewHotelOnError(List accomodation) {
+    private void initializeRecyclerViewHotelOnError(List<?> accomodation) {
         if (accomodation == null)
             homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -135,25 +138,25 @@ public class HomePageController implements View.OnClickListener, Constants {
     public void initializeRecyclerViewRestaurant(PointSearch pointSearch) {
         findRestaurantsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List accomodation) {
+            public void onSuccess(List<?> accomodation) {
                 initializeRecyclerViewRestaurantOnSuccess(accomodation);
             }
 
             @Override
-            public void onError(List accomodation, String error) {
+            public void onError(List<?> accomodation, String error) {
                 initializeRecyclerViewRestaurantOnError(accomodation);
             }
         }, pointSearch);
     }
 
-    private void initializeRecyclerViewRestaurantOnSuccess(List accomodation) {
+    private void initializeRecyclerViewRestaurantOnSuccess(List<?> accomodation) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), accomodation);
+        recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), (List<Restaurant>) accomodation);
         homePageFragment.getRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
         homePageFragment.getRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
     }
 
-    private void initializeRecyclerViewRestaurantOnError(List accomodation) {
+    private void initializeRecyclerViewRestaurantOnError(List<?> accomodation) {
         if (accomodation == null)
             homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -166,25 +169,25 @@ public class HomePageController implements View.OnClickListener, Constants {
     public void initializeRecyclerViewAttraction(PointSearch pointSearch) {
         findAttractionsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List accomodation) {
+            public void onSuccess(List<?> accomodation) {
                 initializeRecyclerViewAttractionOnSuccess(accomodation);
             }
 
             @Override
-            public void onError(List accomodation, String error) {
+            public void onError(List<?> accomodation, String error) {
                 initializeRecyclerViewAttractionOnError(accomodation);
             }
         }, pointSearch);
     }
 
-    private void initializeRecyclerViewAttractionOnSuccess(List accomodation) {
+    private void initializeRecyclerViewAttractionOnSuccess(List<?> accomodation) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), accomodation);
+        recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), (List<Attraction>) accomodation);
         homePageFragment.getRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
         homePageFragment.getRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
     }
 
-    private void initializeRecyclerViewAttractionOnError(List accomodation) {
+    private void initializeRecyclerViewAttractionOnError(List<?> accomodation) {
         if (accomodation == null)
             homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
