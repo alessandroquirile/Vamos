@@ -30,13 +30,14 @@
     <string name="active_geolocation">attiva geolocalizzazione</string>
     <string name="what">Cosa:</string>
     <string name="price_search_page">Prezzo: Qualsiasi</string>
-    <string name="distance_search_page">Distanza: Qualsiasi</string>
+    <string name="distance_search_page">Distanza: Fino a 1 km</string>
     <string name="rank_search_page">Voto medio: Qualsiasi</string>
     <string name="see_results">Vedi risultati</string>
     <string name="current_position">Posizione attuale</string>
     <string name="up_to">Fino a</string>
     <string name="price">Prezzo</string>
     <string name="price_up_to_something">Prezzo: Fino a %1$d €</string>
+    <string name="price_over_limit">Prezzo: Oltre %1$d €</string>
     <string name="distance_up_to_something">Distanza: Fino a %1$d km</string>
     <string name="rank_up_to_something">Voto medio: Da %1$d+ </string>
     <string name="title_activity_maps" translatable="false">Map</string>
@@ -89,4 +90,11 @@
     <string name="end_of_results">Fine dei risultati</string>
     <string name="refresh">Aggiorna</string>
     <string name="see_on_map">Vedi su mappa</string>
+    <string name="hotel_stars_filter">Stelle hotel: Qualsiasi</string>
+    <string name="hotel_stars_filter_up_to">Stelle hotel: Fino a %1$d</string>
+    <string name="city">Città</string>
+    <string name="name">Nome</string>
+    <string name="no_hotels_found_by_filter">Nessun hotel trovato in base ai criteri di ricerca</string>
+    <string name="reviews">recensioni</string>
+    <string name="user_reviews">Recensioni degli utenti</string>
 </resources>

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,15 +35,14 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_hotels_list_activity, menu);
+        getMenuInflater().inflate(R.menu.menu_hotels_list_activity, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.button_see_on_map:
+            case R.id.button_see_hotels_on_map:
                 startHotelMapsActivity();;
                 break;
         }

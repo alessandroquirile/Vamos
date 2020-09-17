@@ -19,6 +19,8 @@ import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.w3c.dom.Attr;
+
 import java.util.List;
 
 public class AttractionsListAcitivityController implements Constants {
@@ -42,12 +44,12 @@ public class AttractionsListAcitivityController implements Constants {
     public void initializeRecyclerView(PointSearch pointSearch) {
         findAttractionsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<?> accomodation) {
-                initializeRecyclerViewOnSuccess(accomodation);
+            public void onSuccess(Object object) {
+                initializeRecyclerViewOnSuccess((List<Attraction>) object);
             }
 
             @Override
-            public void onError(List<?> accomodation, String error) {
+            public void onError(String errorCode) {
 
             }
         }, pointSearch, this.page, this.size);
@@ -85,13 +87,13 @@ public class AttractionsListAcitivityController implements Constants {
             setProgressBarLoadMoreVisible();
             findAttractionsByPointNear(new VolleyCallBack() {
                 @Override
-                public void onSuccess(List<?> accomodation) {
-                    addNewAttractionsToList(accomodation);
+                public void onSuccess(Object object) {
+                    addNewAttractionsToList((List<Attraction>) object);
 
                 }
 
                 @Override
-                public void onError(List<?> accomodation, String error) {
+                public void onError(String errorCode) {
                     attractionsListActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -103,15 +105,15 @@ public class AttractionsListAcitivityController implements Constants {
         }
     }
 
-    private void initializeRecyclerViewOnSuccess(List<?> accomodation) {
+    private void initializeRecyclerViewOnSuccess(List<Attraction> attractions) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(attractionsListActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerViewAttractionsListAdapter = new RecyclerViewAttractionsListAdapter(attractionsListActivity.getApplicationContext(), (List<Attraction>) accomodation);
+        recyclerViewAttractionsListAdapter = new RecyclerViewAttractionsListAdapter(attractionsListActivity.getApplicationContext(), attractions);
         attractionsListActivity.getRecyclerViewAttractionsList().setLayoutManager(linearLayoutManager);
         attractionsListActivity.getRecyclerViewAttractionsList().setAdapter(recyclerViewAttractionsListAdapter);
     }
 
-    private void addNewAttractionsToList(List<?> accomodation) {
-        recyclerViewAttractionsListAdapter.addListItems((List<Attraction>) accomodation);
+    private void addNewAttractionsToList(List<Attraction> attractions) {
+        recyclerViewAttractionsListAdapter.addListItems(attractions);
         recyclerViewAttractionsListAdapter.notifyDataSetChanged();
         setProgressBarLoadMoreInvisible();
     }

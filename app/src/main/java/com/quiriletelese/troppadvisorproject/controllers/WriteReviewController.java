@@ -33,11 +33,11 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_publish_review_review_activity:
-                addReview
+                /*addReview
                         (writeReviewActivity.getTextInputEditTextTitle().getText().toString(),
                                 writeReviewActivity.getTextInputEditTextDescription().getText().toString(),
                                 (int) writeReviewActivity.getRatingBar().getRating(),
-                                isAnonymoys);
+                                isAnonymoys);*/
                 break;
         }
     }
@@ -72,17 +72,16 @@ public class WriteReviewController implements View.OnClickListener, RatingBar.On
         isAnonymoys = isChecked;
     }
 
-    public void addReview(String title, String description, int numStars, boolean isAnonymous) {
-        Review review = new Review(/*title, description, numStars, isAnonymous*/);
+    /*public void addReview(String title, String description, int numStars, boolean isAnonymous) {
         daoFactory = DAOFactory.getInstance();
         reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty("review_storage_technology",
                 writeReviewActivity.getApplicationContext()));
-        if (reviewDAO.add(review))
+        if (reviewDAO.insert(review);)
             Toast.makeText(writeReviewActivity.getApplicationContext(), "Add true", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(writeReviewActivity.getApplicationContext(), "Expected reviewDAO.add implementation " + review.toString(),
                     Toast.LENGTH_LONG).show();
-    }
+    }*/
 
     public void setListenersOnViewComponents() {
         writeReviewActivity.getButtonPublishReview().setOnClickListener(this);

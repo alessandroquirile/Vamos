@@ -107,26 +107,26 @@ public class HomePageController implements View.OnClickListener, Constants {
     public void initializeRecyclerViewHotel(PointSearch pointSearch) {
         findHotelsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<?> accomodation) {
-                initializeRecyclerViewHotelOnSuccess(accomodation);
+            public void onSuccess(Object object) {
+                initializeRecyclerViewHotelOnSuccess((List<Hotel>) object);
             }
 
             @Override
-            public void onError(List<?> accomodation, String error) {
-                initializeRecyclerViewHotelOnError(accomodation);
+            public void onError(String errorCode) {
+                initializeRecyclerViewHotelOnError(errorCode);
             }
         }, pointSearch);
     }
 
-    private void initializeRecyclerViewHotelOnSuccess(List<?> accomodation) {
+    private void initializeRecyclerViewHotelOnSuccess(List<Hotel> hotels) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), (List<Hotel>) accomodation);
+        recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), hotels);
         homePageFragment.getRecyclerViewHotel().setLayoutManager(linearLayoutManager);
         homePageFragment.getRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
     }
 
-    private void initializeRecyclerViewHotelOnError(List<?> accomodation) {
-        if (accomodation == null)
+    private void initializeRecyclerViewHotelOnError(String errorCode) {
+        if (errorCode.equals("204"))
             homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -138,26 +138,26 @@ public class HomePageController implements View.OnClickListener, Constants {
     public void initializeRecyclerViewRestaurant(PointSearch pointSearch) {
         findRestaurantsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<?> accomodation) {
-                initializeRecyclerViewRestaurantOnSuccess(accomodation);
+            public void onSuccess(Object object) {
+                initializeRecyclerViewRestaurantOnSuccess((List<Restaurant>)object);
             }
 
             @Override
-            public void onError(List<?> accomodation, String error) {
-                initializeRecyclerViewRestaurantOnError(accomodation);
+            public void onError(String errorCode) {
+                initializeRecyclerViewRestaurantOnError(errorCode);
             }
         }, pointSearch);
     }
 
-    private void initializeRecyclerViewRestaurantOnSuccess(List<?> accomodation) {
+    private void initializeRecyclerViewRestaurantOnSuccess(List<Restaurant> restaurants) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), (List<Restaurant>) accomodation);
+        recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), restaurants);
         homePageFragment.getRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
         homePageFragment.getRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
     }
 
-    private void initializeRecyclerViewRestaurantOnError(List<?> accomodation) {
-        if (accomodation == null)
+    private void initializeRecyclerViewRestaurantOnError(String errorCode) {
+        if (errorCode.equals("204"))
             homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -169,26 +169,26 @@ public class HomePageController implements View.OnClickListener, Constants {
     public void initializeRecyclerViewAttraction(PointSearch pointSearch) {
         findAttractionsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<?> accomodation) {
-                initializeRecyclerViewAttractionOnSuccess(accomodation);
+            public void onSuccess(Object object) {
+                initializeRecyclerViewAttractionOnSuccess((List<Attraction>) object);
             }
 
             @Override
-            public void onError(List<?> accomodation, String error) {
-                initializeRecyclerViewAttractionOnError(accomodation);
+            public void onError(String errorCode) {
+                initializeRecyclerViewAttractionOnError(errorCode);
             }
         }, pointSearch);
     }
 
-    private void initializeRecyclerViewAttractionOnSuccess(List<?> accomodation) {
+    private void initializeRecyclerViewAttractionOnSuccess(List<Attraction> attractions) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), (List<Attraction>) accomodation);
+        recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), attractions);
         homePageFragment.getRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
         homePageFragment.getRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
     }
 
-    private void initializeRecyclerViewAttractionOnError(List<?> accomodation) {
-        if (accomodation == null)
+    private void initializeRecyclerViewAttractionOnError(String errorCode) {
+        if (errorCode.equals("204"))
             homePageFragment.requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

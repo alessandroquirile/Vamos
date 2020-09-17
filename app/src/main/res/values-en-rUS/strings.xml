@@ -20,7 +20,7 @@
     <string name="no_position_error">" Geolocation deactivated, activate it to find nearby structures"</string>
     <string name="posizione_attuale">Current position</string>
     <string name="price_search_page">Price: Any</string>
-    <string name="distance_search_page">Distance: Any</string>
+    <string name="distance_search_page">Distance: Up to 1 km</string>
     <string name="rank_search_page">Average Rank: Any</string>
     <string name="see_results">See results</string>
     <string name="current_position">Current position</string>
@@ -72,4 +72,12 @@
     <string name="end_of_results">End of reuslts</string>
     <string name="refresh">Refresh</string>
     <string name="see_on_map">See on map</string>
+    <string name="price_over_limit">"Price: Over %1$d "</string>
+    <string name="hotel_stars_filter">Hotel stars: Any</string>
+    <string name="city">City</string>
+    <string name="hotel_stars_filter_up_to">Hotel stars: Up to %1$d</string>
+    <string name="name">Name</string>
+    <string name="reviews">reviews</string>
+    <string name="user_reviews">User reviews</string>
+    <string name="no_hotels_found_by_filter">"No hotels were found based on your search criteria "</string>
 </resources>

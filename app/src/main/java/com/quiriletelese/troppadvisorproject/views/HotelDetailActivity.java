@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ public class HotelDetailActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButtonHotelWriteReview;
     private TextView textViewHotelAvarageRating, textViewHotelCertificateOfExcellence, textViewHotelAddress,
             textViewHotelPhoneNumber, textViewHotelStars, textViewHotelAvaragePrice;
+    private Button buttonHotelReadReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class HotelDetailActivity extends AppCompatActivity {
 
         initializeViewComponents();
         initializeController();
+        setListenerOnViewComponents();
         initializaViewPager();
         initializeActivityFields();
     }
@@ -41,19 +44,18 @@ public class HotelDetailActivity extends AppCompatActivity {
         textViewHotelPhoneNumber = findViewById(R.id.text_view_hotel_phone_number);
         textViewHotelStars = findViewById(R.id.text_view_hotel_stars);
         textViewHotelAvaragePrice = findViewById(R.id.text_view_hotel_avarage_price);
+        buttonHotelReadReviews = findViewById(R.id.button_hotel_read_reviews);
     }
 
     private void initializeController() {
         hotelDetailActivityController = new HotelDetailActivityController(this);
-        /*WriteReviewController writeReviewController = new WriteReviewController(this);
-        writeReviewController.setListenersOnOverviewActiviyComponents();*/
+    }
+    private void setListenerOnViewComponents(){
+        hotelDetailActivityController.setListenerOnViewComponents();
     }
 
     private void initializaViewPager() {
         hotelDetailActivityController.initializaViewPager();
-        /*Hotel hotel = (Hotel) getIntent().getSerializableExtra("hotel");
-        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(hotel.getImages(), this);
-        viewPagerOverview.setAdapter(viewPagerOverViewActivityAdapter);*/
     }
 
     private void initializeActivityFields() {
@@ -96,5 +98,8 @@ public class HotelDetailActivity extends AppCompatActivity {
         return textViewHotelAvaragePrice;
     }
 
+    public Button getButtonHotelReadReviews() {
+        return buttonHotelReadReviews;
+    }
 }
 

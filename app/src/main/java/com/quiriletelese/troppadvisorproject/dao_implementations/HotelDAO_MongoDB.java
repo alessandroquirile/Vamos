@@ -11,7 +11,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -32,6 +30,22 @@ import java.util.Optional;
 public class HotelDAO_MongoDB implements HotelDAO {
 
     private List<Hotel> hotels = new ArrayList<>();
+    private List<String> hotelsName = new ArrayList<>();
+
+    @Override
+    public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery, Context context, int page, int size) {
+        findByRsqlVolley(volleyCallBack, pointSearch, rsqlQuery, context, page, size);
+    }
+
+    @Override
+    public void findByRsqlNoPoint(VolleyCallBack volleyCallBack, String rsqlQuery, Context context, int page, int size) {
+        findByRsqlNoPointVolley(volleyCallBack, rsqlQuery, context, page, size);
+    }
+
+    @Override
+    public void findByNameLikeIgnoreCase(VolleyCallBack volleyCallBack, String name, Context context, int page, int size) {
+        findByNameLikeIgnoreCaseVolley(volleyCallBack, name, context, page, size);
+    }
 
     @Override
     public void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context, int page, int size) {
@@ -43,10 +57,15 @@ public class HotelDAO_MongoDB implements HotelDAO {
         findAllByPointNearVolley(volleyCallBack, pointSearch, context);
     }
 
-    private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context, int page, int size) {
+    @Override
+    public void findHotelsName(VolleyCallBack volleyCallBack, String name, Context context) {
+        findHotelsNameVolley(volleyCallBack, name, context);
+    }
+
+    private void findByRsqlVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery, final Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
-        String URL = createFindHotelsByDistanceUrl(pointSearch, page, size);
+        String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -62,7 +81,85 @@ public class HotelDAO_MongoDB implements HotelDAO {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 if (response.statusCode == 204)
-                    volleyCallBack.onError(null, String.valueOf(response.statusCode));
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void findByRsqlNoPointVolley(final VolleyCallBack volleyCallBack, String rsqlQuery, Context context, int page, int size) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
+        String URL = createSearchByRsqlNoPointUrl(rsqlQuery, page, size);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                getArrayFromResponse(response);
+                volleyCallBack.onSuccess(hotels);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (response.statusCode == 204)
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void findByNameLikeIgnoreCaseVolley(final VolleyCallBack volleyCallBack, String name, Context context, int page, int size){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
+        String URL = createFindByNameLikeIgnoreCaseUrl(name, page, size);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                getArrayFromResponse(response);
+                volleyCallBack.onSuccess(hotels);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (response.statusCode == 204)
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context, int page, int size) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
+        String URL = createFindByPointNearUrl(pointSearch, page, size);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                getArrayFromResponse(response);
+                volleyCallBack.onSuccess(hotels);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (response.statusCode == 204)
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -71,7 +168,7 @@ public class HotelDAO_MongoDB implements HotelDAO {
 
     private void findAllByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createFindAllHotelsByDistanceUrl(pointSearch);
+        String URL = createFindAllByPointNearUrl(pointSearch);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -86,7 +183,48 @@ public class HotelDAO_MongoDB implements HotelDAO {
         requestQueue.add(jsonArrayRequest);
     }
 
-    private String createFindHotelsByDistanceUrl(PointSearch pointSearch, int page, int size) {
+    private void findHotelsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String URL = createFindHotelsNameUrl(name);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                getArrayFromResponseHotelsName(response);
+                volleyCallBack.onSuccess(hotelsName);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
+        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/search-by-rsql?";
+        URL = URL.concat("latitude=" + pointSearch.getLatitude());
+        URL = URL.concat("&longitude=" + pointSearch.getLongitude());
+        URL = URL.concat("&distance=" + pointSearch.getDistance());
+        URL = URL.concat("&query=" + "" + rsqlQuery);
+        URL = URL.concat("&page=" + page + "&size=" + size);
+        return URL;
+    }
+
+    private String createSearchByRsqlNoPointUrl(String rsqlQuery, int page, int size) {
+        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/search-by-rsql-no-point?";
+        URL = URL.concat("query=" + "" + rsqlQuery);
+        URL = URL.concat("&page=" + page + "&size=" + size);
+        return URL;
+    }
+
+    private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
+        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-by-name-like-ignore-case?";
+        URL = URL.concat("name=" + name);
+        URL = URL.concat("&page=" + page + "&size=" + size);
+        return URL;
+    }
+
+    private String createFindByPointNearUrl(PointSearch pointSearch, int page, int size) {
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
@@ -95,11 +233,17 @@ public class HotelDAO_MongoDB implements HotelDAO {
         return URL;
     }
 
-    private String createFindAllHotelsByDistanceUrl(PointSearch pointSearch) {
+    private String createFindAllByPointNearUrl(PointSearch pointSearch) {
         String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-all-by-point?";
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
+        return URL;
+    }
+
+    private String createFindHotelsNameUrl(String name) {
+        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/hotel/find-hotels-name/";
+        URL = URL.concat(name);
         return URL;
     }
 
@@ -121,11 +265,20 @@ public class HotelDAO_MongoDB implements HotelDAO {
     }
 
     private void getArrayFromResponseAllHotels(JSONArray response) {
-        System.out.println("BODYYYYYYYYYYYYYYYYYYYYYYY " + response.toString());
         Gson gson = new Gson();
         for (int i = 0; i < response.length(); i++) {
             try {
                 hotels.add(gson.fromJson(response.getString(i), Hotel.class));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void getArrayFromResponseHotelsName(JSONArray response) {
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                hotelsName.add(response.getString(i));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

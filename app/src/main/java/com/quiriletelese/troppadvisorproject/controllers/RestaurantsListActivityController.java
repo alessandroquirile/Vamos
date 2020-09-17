@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -42,12 +44,12 @@ public class RestaurantsListActivityController implements Constants {
     public void initializeRecyclerView(PointSearch pointSearch) {
         findRestaurantsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<?> accomodation) {
-                initializeRecyclerViewOnSuccess(accomodation);
+            public void onSuccess(Object object) {
+                initializeRecyclerViewOnSuccess((List<Restaurant>) object);
             }
 
             @Override
-            public void onError(List<?> accomodation, String error) {
+            public void onError(String errorCode) {
 
             }
         }, pointSearch, this.page, this.size);
@@ -85,13 +87,13 @@ public class RestaurantsListActivityController implements Constants {
             setProgressBarLoadMoreVisible();
             findRestaurantsByPointNear(new VolleyCallBack() {
                 @Override
-                public void onSuccess(List<?> accomodation) {
-                    addNewRestaurantsToList(accomodation);
+                public void onSuccess(Object object) {
+                    addNewRestaurantsToList((List<Restaurant>) object);
 
                 }
 
                 @Override
-                public void onError(List<?> accomodation, String error) {
+                public void onError(String errorCode) {
                     restaurantsListActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -103,15 +105,15 @@ public class RestaurantsListActivityController implements Constants {
         }
     }
 
-    private void initializeRecyclerViewOnSuccess(List<?> accomodation) {
+    private void initializeRecyclerViewOnSuccess(List<Restaurant> restaurants) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(restaurantsListActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerViewRestaurantsListAdapter = new RecyclerViewRestaurantsListAdapter(restaurantsListActivity.getApplicationContext(), (List<Restaurant>) accomodation);
+        recyclerViewRestaurantsListAdapter = new RecyclerViewRestaurantsListAdapter(restaurantsListActivity.getApplicationContext(), restaurants);
         restaurantsListActivity.getRecyclerViewRestaurantsList().setLayoutManager(linearLayoutManager);
         restaurantsListActivity.getRecyclerViewRestaurantsList().setAdapter(recyclerViewRestaurantsListAdapter);
     }
 
-    private void addNewRestaurantsToList(List<?> accomodation) {
-        recyclerViewRestaurantsListAdapter.addListItems((List<Restaurant>) accomodation);
+    private void addNewRestaurantsToList(List<Restaurant> restaurants) {
+        recyclerViewRestaurantsListAdapter.addListItems(restaurants);
         recyclerViewRestaurantsListAdapter.notifyDataSetChanged();
         setProgressBarLoadMoreInvisible();
     }
@@ -129,6 +131,12 @@ public class RestaurantsListActivityController implements Constants {
     private void setProgressBarLoadMoreInvisible() {
         ProgressBar progressBar = restaurantsListActivity.getProgressBarRestaurantLoadMore();
         progressBar.setVisibility(View.GONE);
+    }
+
+    public void startRestaurantMapActivity() {
+        Intent restaurantMapActivity = new Intent(restaurantsListActivity.getApplicationContext(), RestaurantMapActivity.class);
+        restaurantMapActivity.putExtra(POINT_SEARCH, restaurantsListActivity.getIntent().getSerializableExtra(POINT_SEARCH));
+        restaurantsListActivity.startActivity(restaurantMapActivity);
     }
 
 }

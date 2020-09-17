@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder> implements Constants {
+
     private Context context;
     private List<Hotel> hotels;
     private int position;
@@ -46,11 +47,11 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
     @Override
     public int getItemCount() {
-        return hotels == null ? 0 : hotels.size();
+        return hotels.size();
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        setHotelImage(viewHolder, position);
+        //setHotelImage(viewHolder, position);
         viewHolder.textViewHotelName.setText(hotels.get(position).getName());
         if (hotels.get(position).getAvarageRating() == 0)
             viewHolder.textViewHotelRating.setText(R.string.no_review);

@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
@@ -9,6 +10,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 
 import java.util.List;
@@ -28,10 +30,12 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
                 startWriteReviewActivity();
                 break;
             case R.id.button_restaurant_read_reviews:
+                startSeeReviewsActivity();
+                break;
         }
     }
 
-    public void setListenerOnViewComponents(){
+    public void setListenerOnViewComponents() {
         restaurantDetailActivity.getFloatingActionButtonRestaurantWriteReview().setOnClickListener(this);
         restaurantDetailActivity.getButtonRestaurantReadReviews().setOnClickListener(this);
     }
@@ -45,7 +49,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     public void initializeActivityFields() {
         Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
         setCollapsingToolbarLayoutTitle(restaurant.getName());
-        setAvarageRating(restaurant.getAvarageRating());
+        setAvarageRating(restaurant);
         setCertificateOfExcellence(restaurant.isHasCertificateOfExcellence());
         setAddress(restaurant.getAddress());
         setOpeningTime(restaurant.getOpeningTime());
@@ -58,11 +62,23 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         restaurantDetailActivity.getCollapsingToolbarLayoutRestaurantDetailActivity().setTitle(title);
     }
 
-    private void setAvarageRating(Integer avarageRating) {
-        if (avarageRating.equals(0))
+    private void setAvarageRating(Restaurant restaurant) {
+        if (!hasAvarageRating(restaurant.getAvarageRating()))
             restaurantDetailActivity.getTextViewRestaurantAvarageRating().setText(R.string.no_review);
         else
-            restaurantDetailActivity.getTextViewRestaurantAvarageRating().setText(avarageRating + "/5");
+            restaurantDetailActivity.getTextViewRestaurantAvarageRating().setText(createAvarageRatingString(restaurant));
+    }
+
+    private boolean hasAvarageRating(Integer avarageRating) {
+        return !avarageRating.equals(0);
+    }
+
+    private String createAvarageRatingString(Restaurant restaurant) {
+        String avarageRating = "";
+        avarageRating = avarageRating.concat(restaurant.getAvarageRating() + "/5 (");
+        avarageRating = avarageRating.concat(restaurant.getTotalReviews() + " ");
+        avarageRating = avarageRating.concat(restaurantDetailActivity.getResources().getString(R.string.reviews) + ")");
+        return avarageRating;
     }
 
     private void setCertificateOfExcellence(boolean certificateOfExcellence) {
@@ -128,7 +144,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         restaurantDetailActivity.getTextViewTypeOfCuisineList().setText(typeOfCuisine);
     }
 
-    private void setTypeOfCuisineListEmpty(){
+    private void setTypeOfCuisineListEmpty() {
         restaurantDetailActivity.getTextViewTypeOfCuisineList().setText(restaurantDetailActivity
                 .getResources().getString(R.string.no_information_available));
     }
@@ -138,12 +154,41 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         writeReviewActivityIntent.putExtra(ID, getRestaurantId());
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
         restaurantDetailActivity.startActivity(writeReviewActivityIntent);
+    }
 
+    private void startSeeReviewsActivity() {
+        if (hasReviews())
+            restaurantDetailActivity.startActivity(createseeReviewsActivityIntent());
+        else
+            restaurantDetailActivity.runOnUiThread(() -> {
+                Toast.makeText(restaurantDetailActivity, "No Recensioni", Toast.LENGTH_SHORT).show();
+            });
+    }
+
+    private Intent createseeReviewsActivityIntent() {
+        Intent seeReviewsActivityIntent = new Intent(restaurantDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getRestaurantName());
+        seeReviewsActivityIntent.putExtra(ID, getRestaurantId());
+        return seeReviewsActivityIntent;
+    }
+
+    private boolean hasReviews() {
+        return getRestaurant().getReviews().size() > 0;
+    }
+
+    private Restaurant getRestaurant() {
+        return (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
     }
 
     private String getRestaurantId() {
         Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
         return restaurant.getId();
+    }
+
+    private String getRestaurantName() {
+        Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
+        return restaurant.getName();
     }
 
 }

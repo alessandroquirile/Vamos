@@ -2,13 +2,16 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 
 public class HotelDetailActivityController implements View.OnClickListener, Constants {
@@ -26,7 +29,14 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
                 startWriteReviewActivity();
                 break;
             case R.id.button_hotel_read_reviews:
+                startSeeReviewsActivity();
+                break;
         }
+    }
+
+    public void setListenerOnViewComponents() {
+        hotelDetailActivity.getFloatingActionButtonHotelWriteReview().setOnClickListener(this);
+        hotelDetailActivity.getButtonHotelReadReviews().setOnClickListener(this);
     }
 
     public void initializaViewPager() {
@@ -115,6 +125,31 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
         hotelDetailActivity.startActivity(writeReviewActivityIntent);
 
+    }
+
+    private void startSeeReviewsActivity() {
+        if (hasReviews())
+            hotelDetailActivity.startActivity(createseeReviewsActivityIntent());
+        else
+            hotelDetailActivity.runOnUiThread(() -> {
+                Toast.makeText(hotelDetailActivity, "No Recensioni", Toast.LENGTH_SHORT).show();
+            });
+    }
+
+    private Intent createseeReviewsActivityIntent() {
+        Intent seeReviewsActivityIntent = new Intent(hotelDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getHotel());
+        seeReviewsActivityIntent.putExtra(ID, getHotelId());
+        return seeReviewsActivityIntent;
+    }
+
+    private boolean hasReviews() {
+        return getHotel().getReviews().size() > 0;
+    }
+
+    private Hotel getHotel() {
+        return (Hotel) hotelDetailActivity.getIntent().getSerializableExtra(HOTEL);
     }
 
     private String getHotelId() {

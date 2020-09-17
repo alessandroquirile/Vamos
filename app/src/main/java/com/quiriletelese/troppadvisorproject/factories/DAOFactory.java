@@ -2,14 +2,18 @@ package com.quiriletelese.troppadvisorproject.factories;
 
 import com.quiriletelese.troppadvisorproject.dao_implementations.AccountDAO_Cognito;
 import com.quiriletelese.troppadvisorproject.dao_implementations.AttractionDAO_MongoDB;
+import com.quiriletelese.troppadvisorproject.dao_implementations.CityDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.HotelDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.RestaurantDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.ReviewDAO_MongoDB;
+import com.quiriletelese.troppadvisorproject.dao_implementations.TypeOfCuisineDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
 import com.quiriletelese.troppadvisorproject.my_exceptions.TechnologyNotSupportedYetException;
 
 import org.jetbrains.annotations.NotNull;
@@ -66,4 +70,19 @@ public class DAOFactory {
         else
             throw new TechnologyNotSupportedYetException(attractionStorageTechnology);
     }
+
+    public CityDAO getCityDAO(@NotNull String attractionStorageTechnology) {
+        if (attractionStorageTechnology.equals("mongodb"))
+            return new CityDAO_MongoDB();
+        else
+            throw new TechnologyNotSupportedYetException(attractionStorageTechnology);
+    }
+
+    public TypeOfCuisineDAO getTypeOfCuisineDAO(@NotNull String attractionStorageTechnology) {
+        if (attractionStorageTechnology.equals("mongodb"))
+            return new TypeOfCuisineDAO_MongoDB();
+        else
+            throw new TechnologyNotSupportedYetException(attractionStorageTechnology);
+    }
+
 }

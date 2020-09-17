@@ -2,17 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relative_layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.HotelMapsActivity">
+    tools:context=".views.HotelMapActivity">
 
     <fragment
-        android:id="@+id/map"
+        android:id="@+id/hotel_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.HotelMapsActivity" />
+        tools:context=".views.HotelMapActivity" />
 
     <LinearLayout
         android:id="@+id/linear_layout_search_hotels"
@@ -25,45 +24,36 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:visibility="invisible">
+        android:weightSum="2">
 
         <ImageView
             android:id="@+id/image_view_hotel_map_go_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.2"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/icon_back_arrow_black" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_view_search_hotels_on_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_marginStart="15dp"
+            android:layout_weight="1.8"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:drawableEnd="@drawable/icon_filter_black"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/search"
+            android:gravity="center_vertical"/>
 
-            <AutoCompleteTextView
-                android:id="@+id/auto_complete_text_view_search_hotels_on_map"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1.8"
-                android:background="@drawable/search_background"
-                android:completionThreshold="1"
-                android:hint="@string/search"
-                android:imeOptions="actionSearch"
-                android:inputType="text" />
-
-            <ImageView
-                android:id="@+id/image_view_hotel_map_clear_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/icon_clear_text_map_black" />
-
-        </LinearLayout>
+        <!-- <ImageView
+            android:id="@+id/image_view_hotel_map_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_filter_black" /> -->
 
     </LinearLayout>
 
@@ -75,10 +65,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:src="@drawable/icon_center_result_map_black"
-        android:visibility="invisible"
         app:backgroundTint="@color/white"
         app:fabSize="mini"
-        app:rippleColor="@color/black" />
+        app:rippleColor="@color/lightGrey" />
 
     <RelativeLayout
         android:id="@+id/relative_layout_hotel_information"
@@ -90,14 +79,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="10dp"
-        android:visibility="visible">
-
-        <!-- <TextView
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/no_accomodation_selected"/> -->
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,6 +107,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:layout_marginBottom="8dp"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -139,7 +122,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    app:drawableStartCompat="@drawable/icon_star_yellow" />
+                    android:drawableStart="@drawable/icon_star_yellow"/>
 
                 <TextView
                     android:id="@+id/text_view_hotel_address"

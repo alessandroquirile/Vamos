@@ -32,7 +32,7 @@ public class SeeResultsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.map_button_menu_see_results_activity:
-                startActivity(new Intent(SeeResultsActivity.this, HotelMapsActivity.class));
+                startActivity(new Intent(SeeResultsActivity.this, HotelMapActivity.class));
                 break;
             case R.id.filter_button_menu_see_results_activity:
                 startActivity(new Intent(SeeResultsActivity.this, SeeResultsFilterActivity.class));

@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
@@ -9,6 +10,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 
 public class AttractionDetailActivityController implements View.OnClickListener, Constants {
@@ -21,7 +23,14 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.floating_action_button_attraction_write_review:
+                startWriteReviewActivity();
+                break;
+            case R.id.button_attraction_read_reviews:
+                startSeeReviewsActivity();
+                break;
+        }
     }
 
     public void setListenerOnViewComponents() {
@@ -83,7 +92,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             attractionDetailActivity.getTextViewAttractionOpeningTime().setText(openingTime);
         else
             attractionDetailActivity.getTextViewAttractionOpeningTime().setText(attractionDetailActivity
-            .getResources().getString(R.string.no_information_available));
+                    .getResources().getString(R.string.no_information_available));
     }
 
     private void setPhoneNunmber(String phoneNumber) {
@@ -111,14 +120,42 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private void startWriteReviewActivity() {
-        Intent writeReviewActivityIntent = new Intent(attractionDetailActivity.getApplicationContext(), WriteReviewActivity.class);
-        writeReviewActivityIntent.putExtra(ID, getRestaurantId());
-        writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
-        attractionDetailActivity.startActivity(writeReviewActivityIntent);
-
+        attractionDetailActivity.startActivity(createWriteReviewActivityIntent());
     }
 
-    private String getRestaurantId() {
+    private Intent createWriteReviewActivityIntent() {
+        Intent writeReviewActivityIntent = new Intent(attractionDetailActivity.getApplicationContext(), WriteReviewActivity.class);
+        writeReviewActivityIntent.putExtra(ID, getAttractionId());
+        writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
+        return writeReviewActivityIntent;
+    }
+
+    private void startSeeReviewsActivity() {
+        if (hasReviews())
+            attractionDetailActivity.startActivity(createSeeReviewsActivityIntent());
+        else
+            attractionDetailActivity.runOnUiThread(() -> {
+                Toast.makeText(attractionDetailActivity, "No Recensioni", Toast.LENGTH_SHORT).show();
+            });
+    }
+
+    private Intent createSeeReviewsActivityIntent() {
+        Intent seeReviewsActivityIntent = new Intent(attractionDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getAttraction());
+        seeReviewsActivityIntent.putExtra(ID, getAttractionId());
+        return seeReviewsActivityIntent;
+    }
+
+    private boolean hasReviews() {
+        return getAttraction().getReviews().size() > 0;
+    }
+
+    private Attraction getAttraction() {
+        return (Attraction) attractionDetailActivity.getIntent().getSerializableExtra(ATTRACTION);
+    }
+
+    private String getAttractionId() {
         Attraction attraction = (Attraction) attractionDetailActivity.getIntent().getSerializableExtra(ATTRACTION);
         return attraction.getId();
     }

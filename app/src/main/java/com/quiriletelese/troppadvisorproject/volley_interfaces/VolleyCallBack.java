@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface VolleyCallBack {
 
-    void onSuccess(List<?> accomodation);
+    void onSuccess(Object object);
 
-    void onError(List<?> accomodation, String error);
+    void onError(String errorCode);
 
 }

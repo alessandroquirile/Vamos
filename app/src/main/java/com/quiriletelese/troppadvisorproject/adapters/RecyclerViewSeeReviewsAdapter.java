@@ -19,12 +19,16 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
     private Context context;
     private List<Review> reviews;
 
+    public RecyclerViewSeeReviewsAdapter(Context context, List<Review> reviews) {
+        this.context = context;
+        this.reviews = reviews;
+    }
+
     @NonNull
     @Override
     public RecyclerViewSeeReviewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_page_recycler_view_element, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_see_reviews_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override

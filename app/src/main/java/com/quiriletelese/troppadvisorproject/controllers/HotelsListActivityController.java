@@ -17,7 +17,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
-import com.quiriletelese.troppadvisorproject.views.HotelMapsActivity;
+import com.quiriletelese.troppadvisorproject.views.HotelMapActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -44,12 +44,12 @@ public class HotelsListActivityController implements Constants {
     public void initializeRecyclerView(PointSearch pointSearch) {
         findHotelsByPointNear(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<?> accomodation) {
-                initializeRecyclerViewOnSuccess(accomodation);
+            public void onSuccess(Object object) {
+                initializeRecyclerViewOnSuccess((List<Hotel>) object);
             }
 
             @Override
-            public void onError(List<?> accomodation, String error) {
+            public void onError(String errorCode) {
 
             }
         }, pointSearch, this.page, this.size);
@@ -87,13 +87,13 @@ public class HotelsListActivityController implements Constants {
             setProgressBarLoadMoreVisible();
             findHotelsByPointNear(new VolleyCallBack() {
                 @Override
-                public void onSuccess(List<?> accomodation) {
-                    addNewHotelsToList(accomodation);
+                public void onSuccess(Object object) {
+                    addNewHotelsToList((List<Hotel>) object);
 
                 }
 
                 @Override
-                public void onError(List<?> accomodation, String error) {
+                public void onError(String errorCode) {
                     hotelsListActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -105,15 +105,15 @@ public class HotelsListActivityController implements Constants {
         }
     }
 
-    private void initializeRecyclerViewOnSuccess(List<?> accomodation) {
+    private void initializeRecyclerViewOnSuccess(List<Hotel> hotels) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(hotelsListActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerViewHotelsListAdapter = new RecyclerViewHotelsListAdapter(hotelsListActivity.getApplicationContext(), (List<Hotel>) accomodation);
+        recyclerViewHotelsListAdapter = new RecyclerViewHotelsListAdapter(hotelsListActivity.getApplicationContext(), hotels);
         hotelsListActivity.getRecyclerViewHotelsList().setLayoutManager(linearLayoutManager);
         hotelsListActivity.getRecyclerViewHotelsList().setAdapter(recyclerViewHotelsListAdapter);
     }
 
-    private void addNewHotelsToList(List<?> accomodation) {
-        recyclerViewHotelsListAdapter.addListItems((List<Hotel>) accomodation);
+    private void addNewHotelsToList(List<Hotel> hotels) {
+        recyclerViewHotelsListAdapter.addListItems(hotels);
         recyclerViewHotelsListAdapter.notifyDataSetChanged();
         setProgressBarLoadMoreInvisible();
     }
@@ -134,7 +134,7 @@ public class HotelsListActivityController implements Constants {
     }
 
     public void startHotelMapsActivity() {
-        Intent hotelMapsActivity = new Intent(hotelsListActivity.getApplicationContext(), HotelMapsActivity.class);
+        Intent hotelMapsActivity = new Intent(hotelsListActivity.getApplicationContext(), HotelMapActivity.class);
         hotelMapsActivity.putExtra(POINT_SEARCH, hotelsListActivity.getIntent().getSerializableExtra(POINT_SEARCH));
         hotelsListActivity.startActivity(hotelMapsActivity);
     }
