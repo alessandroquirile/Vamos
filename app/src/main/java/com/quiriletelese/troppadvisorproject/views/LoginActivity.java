@@ -7,13 +7,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.LoginController;
+import com.quiriletelese.troppadvisorproject.controllers.LoginActivityController;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText editTextEmail;
-    private EditText editTextPassword;
+    private LoginActivityController loginActivityController;
+    private TextInputLayout textInputLayoutKey, textInputLayoutPassword;
     private Button buttonLogin;
     private TextView textViewSignIn;
 
@@ -24,26 +25,39 @@ public class LoginActivity extends AppCompatActivity {
 
         initializeViewComponents();
         initializeController();
+        setListenerOnViewComponents();
+
     }
 
     private void initializeViewComponents() {
-        editTextEmail = findViewById(R.id.edit_text_email_or_username_login_activity);
-        editTextPassword = findViewById(R.id.edit_text_password_login_activity);
-        buttonLogin = findViewById(R.id.button_login_login_activity);
-        textViewSignIn = findViewById(R.id.text_view_sign_in_login_activity);
+        textInputLayoutKey = findViewById(R.id.text_input_layout_key_login);
+        textInputLayoutPassword = findViewById(R.id.text_input_layout_password_login);
+        buttonLogin = findViewById(R.id.button_login);
+        textViewSignIn = findViewById(R.id.text_view_sign_in);
     }
 
-    public void initializeController() {
-        LoginController loginController = new LoginController(this);
-        loginController.setListenersOnLoginActivity();
+    private void initializeController() {
+         loginActivityController = new LoginActivityController(this);
     }
 
-    public EditText getEditTextEmail() {
-        return editTextEmail;
+    private void setListenerOnViewComponents() {
+        loginActivityController.setListenerOnViewComponents();
     }
 
-    public EditText getEditTextPassword() {
-        return editTextPassword;
+    public TextInputLayout getTextInputLayoutKey() {
+        return textInputLayoutKey;
+    }
+
+    public TextInputLayout getTextInputLayoutPassword() {
+        return textInputLayoutPassword;
+    }
+
+    public EditText getTextInputLayoutEmailEditText() {
+        return textInputLayoutKey.getEditText();
+    }
+
+    public EditText getTextInputLayoutPasswordEditText() {
+        return textInputLayoutPassword.getEditText();
     }
 
     public Button getButtonLogin() {
@@ -53,4 +67,12 @@ public class LoginActivity extends AppCompatActivity {
     public TextView getTextViewSignIn() {
         return textViewSignIn;
     }
+
+    public String getTextInputLayoutKeyValue(){
+        return textInputLayoutKey.getEditText().getText().toString();
+    }
+    public String getTextInputLayoutPasswordValue(){
+        return textInputLayoutPassword.getEditText().getText().toString();
+    }
+
 }

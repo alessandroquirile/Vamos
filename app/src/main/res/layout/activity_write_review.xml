@@ -4,102 +4,113 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_write_review"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar_write_review"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_below="@id/app_bar_layout_write_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_review_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:hint="@string/titolo"
+            android:theme="@style/AppTheme"
+            app:counterEnabled="true"
+            app:counterMaxLength="50">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_title_write_review_activity"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/titolo"
-                android:theme="@style/AppTheme"
-                app:counterEnabled="true"
-                app:counterMaxLength="50">
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_edit_text_title_write_review_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_review_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/descrizione"
+            android:theme="@style/AppTheme"
+            app:counterEnabled="true"
+            app:counterMaxLength="350">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_description_review_activity"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/descrizione"
-                android:theme="@style/AppTheme"
-                app:counterEnabled="true"
-                app:counterMaxLength="350">
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:scrollbars="vertical" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_edit_text_description_review_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/text_view_tap_a_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="@string/tocca_una_stella_per_indicare_un_punteggio" />
 
-            <TextView
-                android:id="@+id/text_view_tap_a_star_review_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:text="@string/tocca_una_stella_per_indicare_un_punteggio" />
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:stepSize="1"
+            android:theme="@style/RatingBar" />
 
-            <RatingBar
-                android:id="@+id/rating_bar_write_review_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:numStars="5"
-                android:stepSize="1"
-                android:theme="@style/RatingBar" />
+        <TextView
+            android:id="@+id/text_view_about_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="@string/no_star_selected" />
 
-            <TextView
-                android:id="@+id/text_view_about_rating_review_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/no_star_selected" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_compat_button_publish_anonymously"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/pubblica_anonimamente"
+            app:switchPadding="20dp" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_button_review_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/pubblica_anonimamente"
-                app:switchPadding="20dp" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <Button
-        android:id="@+id/button_publish_review_review_activity"
+        android:id="@+id/button_publish_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/background_login_button"
+        android:background="@drawable/background_write_review_button_disabled"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
+        android:enabled="false"
         android:text="@string/aggiungi_recensione"
         android:textColor="@android:color/white" />
 

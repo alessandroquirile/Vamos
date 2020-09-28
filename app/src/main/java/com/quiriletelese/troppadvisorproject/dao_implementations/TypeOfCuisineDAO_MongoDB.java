@@ -30,17 +30,11 @@ public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
         String URL = createGetAllUrl();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                getArrayFromResponse(response);
-                volleyCallBack.onSuccess(typeOfCuisine);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+            getArrayFromResponse(response);
+            volleyCallBack.onSuccess(typeOfCuisine);
+        }, error -> {
 
-            }
         });
         requestQueue.add(jsonArrayRequest);
     }

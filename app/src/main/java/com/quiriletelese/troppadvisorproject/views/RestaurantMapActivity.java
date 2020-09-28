@@ -5,19 +5,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.RestaurantMapActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.models.Point;
 
 public class RestaurantMapActivity extends FragmentActivity implements OnMapReadyCallback, Constants {
 
@@ -42,6 +40,7 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         intializeViewComponents(googleMap);
+        setGoogleMapStyle();
         initializeController();
         setListenerOnViewComponents();
         setComponentProperties();
@@ -60,6 +59,10 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
         textViewRestaurantRating = findViewById(R.id.text_view_restaurant_rating);
         textViewRestaurantAddress = findViewById(R.id.text_view_restaurant_address);
         floatingActionButtonCenterPositionOnRestaurants = findViewById(R.id.floating_action_button_center_position_on_restaurants);
+    }
+
+    private void setGoogleMapStyle(){
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.map_style));
     }
 
     private void initializeController() {

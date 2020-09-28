@@ -27,8 +27,8 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
 
         initializeViewComponents();
         initializeController();
-        restaurantsListActivityController.initializeRecyclerView((PointSearch) getIntent().getSerializableExtra(POINT_SEARCH));
-        restaurantsListActivityController.addRecyclerViewOnScrollListener((PointSearch) getIntent().getSerializableExtra(POINT_SEARCH));
+        findByRsql();
+        addRecyclerViewOnScrollListener();
 
     }
 
@@ -52,16 +52,36 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
         restaurantsListActivityController = new RestaurantsListActivityController(this);
     }
 
+    private void findByRsql(){
+        restaurantsListActivityController.findByRsql(null, getPointSearch(), "0");
+    }
+
+    private void addRecyclerViewOnScrollListener(){
+        restaurantsListActivityController.addRecyclerViewOnScrollListener();
+    }
+
     private boolean onOptionItemSelectedHelper(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case R.id.button_see_restaurants_on_map:
                 startRestaurantMapActivity();
+                break;
+            case R.id.button_filter_restaurants_list:
+                showBottomSheetFilters();
+                break;
         }
         return true;
     }
 
     private void startRestaurantMapActivity() {
         restaurantsListActivityController.startRestaurantMapActivity();
+    }
+
+    private void showBottomSheetFilters() {
+        restaurantsListActivityController.showBottomSheetFilters();
+    }
+
+    private PointSearch getPointSearch() {
+        return restaurantsListActivityController.getPointSearch();
     }
 
     public RecyclerView getRecyclerViewRestaurantsList() {

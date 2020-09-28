@@ -17,6 +17,7 @@ import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder> {
@@ -47,6 +48,11 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     public void addListItems(List<Restaurant> restaurants){
+        this.restaurants.addAll(restaurants);
+    }
+
+    public void setListItems(List<Restaurant> restaurants){
+        this.restaurants.clear();
         this.restaurants.addAll(restaurants);
     }
 

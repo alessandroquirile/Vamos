@@ -16,20 +16,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.HomePageController;
+import com.quiriletelese.troppadvisorproject.controllers.HomePageFragmentController;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HomePageFragment extends Fragment {
+public class HomePageFragment extends Fragment implements Constants {
 
     private static final int ACCESS_FINE_LOCATION = 100;
-    private HomePageController homePageController;
-    private RecyclerView recyclerViewHotel, recyclerViewRestaurant, recyclerViewAttraction;
+    private HomePageFragmentController homePageFragmentController;
+    private ShimmerRecyclerView shimmerRecyclerViewHotel, shimmerRecyclerViewRestaurant, shimmerRecyclerViewAttraction;
     private TextView textViewHotelRecyclerView, textViewRestaurantRecyclerView, textViewAttractionRecyclerView;
     private List<Double> pointSearchArguments;
 
@@ -52,6 +53,7 @@ public class HomePageFragment extends Fragment {
             initializeRecyclerViewHotel();
             initializeRecyclerViewRestaurant();
             initializeRecyclerViewAttraction();
+            initializeRecyclerViewsFakeContent();
         } else
             Toast.makeText(getContext(), "NON GRANTED", Toast.LENGTH_SHORT).show();
     }
@@ -65,11 +67,6 @@ public class HomePageFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search_button_menu_home_page_activity:
-                startSearchActivity();
-                break;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -87,57 +84,63 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initializeViewComponents(@NotNull View view) {
-        recyclerViewHotel = view.findViewById(R.id.recycler_view_hotel);
-        recyclerViewRestaurant = view.findViewById(R.id.recycler_view_restaurant);
-        recyclerViewAttraction = view.findViewById(R.id.recycler_view_attraction);
+        shimmerRecyclerViewHotel = view.findViewById(R.id.recycler_view_hotel);
+        shimmerRecyclerViewRestaurant = view.findViewById(R.id.recycler_view_restaurant);
+        shimmerRecyclerViewAttraction = view.findViewById(R.id.recycler_view_attraction);
         textViewHotelRecyclerView = view.findViewById(R.id.text_view_hotel_recycler_view);
         textViewRestaurantRecyclerView = view.findViewById(R.id.text_view_restaurant_recycler_view);
         textViewAttractionRecyclerView = view.findViewById(R.id.text_view_attraction_recycler_view);
     }
 
     private void initializeHomePageFragmentController(){
-        homePageController = new HomePageController(HomePageFragment.this);
+        homePageFragmentController = new HomePageFragmentController(HomePageFragment.this);
     }
 
     private void setListenerOnViewComponents(){
-        homePageController.setListenerOnViewComponents();;
+        homePageFragmentController.setListenerOnViewComponents();;
+    }
+
+    private void initializeRecyclerViewsFakeContent(){
+        homePageFragmentController.initializeRecyclerViewsFakeContent();
     }
 
     private boolean checkPermission() {
         boolean isGranted = true;
-        if (homePageController.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && homePageController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (homePageFragmentController.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && homePageFragmentController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
             isGranted = false;
-            homePageController.requestPermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_FINE_LOCATION);
+            homePageFragmentController.requestPermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_FINE_LOCATION);
         }
         return isGranted;
     }
 
     private void startSearchActivity() {
-        startActivity(new Intent(getActivity(), SearchActivity.class));
+        Intent intent = new Intent(new Intent(getActivity(), WriteReviewActivity.class));
+        intent.putExtra(ACCOMODATION_NAME, "La masardona");
+        startActivity(intent);
     }
 
     private void initializeRecyclerViewHotel() {
-        homePageController.initializeRecyclerViewHotel(homePageController.getLocation());
+        homePageFragmentController.initializeRecyclerViewHotel(homePageFragmentController.getLocation());
     }
 
     private void initializeRecyclerViewRestaurant() {
-        homePageController.initializeRecyclerViewRestaurant(homePageController.getLocation());
+        homePageFragmentController.initializeRecyclerViewRestaurant(homePageFragmentController.getLocation());
     }
 
     private void initializeRecyclerViewAttraction() {
-        homePageController.initializeRecyclerViewAttraction(homePageController.getLocation());
+        homePageFragmentController.initializeRecyclerViewAttraction(homePageFragmentController.getLocation());
     }
 
-    public RecyclerView getRecyclerViewHotel() {
-        return recyclerViewHotel;
+    public ShimmerRecyclerView getShimmerRecyclerViewHotel() {
+        return shimmerRecyclerViewHotel;
     }
 
-    public RecyclerView getRecyclerViewRestaurant() {
-        return recyclerViewRestaurant;
+    public ShimmerRecyclerView getShimmerRecyclerViewRestaurant() {
+        return shimmerRecyclerViewRestaurant;
     }
 
-    public RecyclerView getRecyclerViewAttraction() {
-        return recyclerViewAttraction;
+    public ShimmerRecyclerView getShimmerRecyclerViewAttraction() {
+        return shimmerRecyclerViewAttraction;
     }
 
     public TextView getTextViewHotelRecyclerView() {

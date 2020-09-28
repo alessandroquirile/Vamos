@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,9 +74,9 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         return hotels.get(position).getImages().size() > 0;
     }
 
-    private void startHotelDetailActivity(Hotel hotel){
+    private void startHotelDetailActivity(String id){
         Intent intent = new Intent(context, HotelDetailActivity.class);
-        intent.putExtra(HOTEL, hotel);
+        intent.putExtra(ID, id);
         context.startActivity(intent);
     }
 
@@ -103,7 +102,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
         @Override
         public void onClick(View view) {
-            startHotelDetailActivity(hotels.get(this.getAdapterPosition()));
+            startHotelDetailActivity(hotels.get(this.getAdapterPosition()).getId());
         }
 
     }

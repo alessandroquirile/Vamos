@@ -52,7 +52,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position){
-        setImage(viewHolder, position);
+        //setImage(viewHolder, position);
         viewHolder.textViewAccomodationName.setText(attractions.get(position).getName());
         viewHolder.textViewAccomodationReview.setText(createReviewString(attractions.get(position).getAvarageRating()));
         viewHolder.textViewAccomodationAddress.setText(createAddressString(attractions.get(position).getAddress()));

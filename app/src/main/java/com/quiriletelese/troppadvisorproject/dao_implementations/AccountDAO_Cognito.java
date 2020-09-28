@@ -5,118 +5,90 @@ import android.content.Context;
 import com.amazonaws.services.cognitoidentityprovider.model.ChangePasswordResult;
 import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackCreateUser;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackLogin;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackUpdatePassword;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AccountDAO_Cognito implements AccountDAO {
+public class AccountDAO_Cognito implements AccountDAO, Constants {
 
     @Override
-    public void login(VolleyCallbackLogin volleyCallbackLogin, Account account, Context context) {
-        loginVolley(volleyCallbackLogin, account, context);
+    public void login(VolleyCallBack volleyCallBack, Account account, Context context) {
+        loginVolley(volleyCallBack, account, context);
     }
 
     @Override
-    public void createAccount(VolleyCallbackCreateUser volleyCallbackCreateUser, Account account, Context context) {
-        createAccountVolley(volleyCallbackCreateUser, account, context);
+    public void createAccount(VolleyCallBack volleyCallBack, Account account, Context context) {
+        createAccountVolley(volleyCallBack, account, context);
     }
 
     @Override
-    public void updatePassword(VolleyCallbackUpdatePassword volleyCallbackUpdatePassword, ChangeUserPassword changeUserPassword, Context context) {
-        updatePasswordVolley(volleyCallbackUpdatePassword, changeUserPassword, context);
+    public void updatePassword(VolleyCallBack volleyCallBack, ChangeUserPassword changeUserPassword, Context context) {
+        updatePasswordVolley(volleyCallBack, changeUserPassword, context);
     }
 
-    private void loginVolley(final VolleyCallbackLogin volleyCallbackLogin, Account account, Context context) {
+    private void loginVolley(final VolleyCallBack volleyCallBack, Account account, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createLoginUrl(account);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                volleyCallbackLogin.onSuccess(getInitiateAuthResultFromVolley(response));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                volleyCallbackLogin.onError(String.valueOf(error.networkResponse.statusCode));
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
-        requestQueue.add(jsonObjectRequest);
-    }
+        String URL = createLoginUrl();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectLogin(account), response -> {
+            volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response));
 
-    private void createAccountVolley(final VolleyCallbackCreateUser volleyCallbackCreateUser, Account account, Context context) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createNewUserURL();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectNewUser(account), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                volleyCallbackCreateUser.onSuccess(getUserResultFromVolley(response));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                volleyCallbackCreateUser.onError(String.valueOf(error.networkResponse.statusCode));
-            }
+        }, error -> {
+            volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
         });
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void updatePasswordVolley(final VolleyCallbackUpdatePassword volleyCallbackUpdatePassword, ChangeUserPassword changeUserPassword, Context context) {
+    private void createAccountVolley(final VolleyCallBack volleyCallBack, Account account, Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String URL = createNewUserURL();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectNewUser(account), response -> {
+            volleyCallBack.onSuccess(getUserResultFromVolley(response));
+        }, error -> {
+            if (error.networkResponse.headers.containsKey(USERNAME_ERROR))
+                volleyCallBack.onError(USERNAME_ERROR);
+            else if (error.networkResponse.headers.containsKey(EMAIL_ERROR))
+                volleyCallBack.onError(EMAIL_ERROR);
+            else
+                volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updatePasswordVolley(final VolleyCallBack volleyCallBack, ChangeUserPassword changeUserPassword, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createUpdatePasswordUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, URL, jsonObjectUpdatePassword(changeUserPassword), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                volleyCallbackUpdatePassword.onSuccess(getChangePasswordResultFromVolley(response));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                volleyCallbackUpdatePassword.onError(String.valueOf(error.networkResponse.statusCode));
-            }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, URL, jsonObjectUpdatePassword(changeUserPassword), response -> {
+            volleyCallBack.onSuccess(getChangePasswordResultFromVolley(response));
+        }, error -> {
+            volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
         }) {
             @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                return super.parseNetworkResponse(response);
             }
         };
         requestQueue.add(jsonObjectRequest);
     }
 
-    private String createLoginUrl(Account account) {
-        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/cognito/login?";
-        URL = URL.concat("username=" + account.getUsername());
-        URL = URL.concat("&password=" + account.getPassword());
-        return URL;
+    private String createLoginUrl() {
+        return "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/cognito/login";
     }
 
     private String createNewUserURL() {
@@ -138,6 +110,21 @@ public class AccountDAO_Cognito implements AccountDAO {
             jsonObjectNewUser.put("lastname", account.getLastname());
             jsonObjectNewUser.put("username", account.getUsername());
             jsonObjectNewUser.put("email", account.getEmail());
+            jsonObjectNewUser.put("password", account.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObjectNewUser;
+    }
+
+    private JSONObject jsonObjectLogin(Account account) {
+        JSONObject jsonObjectNewUSer = new JSONObject();
+        return createJsonObjectLogin(jsonObjectNewUSer, account);
+    }
+
+    private JSONObject createJsonObjectLogin(@NotNull JSONObject jsonObjectNewUser, @NotNull Account account) {
+        try {
+            jsonObjectNewUser.put("key", account.getUsername());
             jsonObjectNewUser.put("password", account.getPassword());
         } catch (JSONException e) {
             e.printStackTrace();

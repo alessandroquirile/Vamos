@@ -41,23 +41,11 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <RelativeLayout
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_view_hotel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_hotel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
 
             <TextView
                 android:id="@+id/text_view_restaurant_recycler_view"
@@ -73,23 +61,11 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <RelativeLayout
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_view_restaurant"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_restaurant"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
 
             <TextView
                 android:id="@+id/text_view_attraction_recycler_view"
@@ -105,23 +81,11 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <RelativeLayout
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_view_attraction"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_attraction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
 
         </LinearLayout>
 
@@ -165,10 +129,5 @@
             android:textColor="@android:color/white" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <!-- <include
-        android:id="@+id/home_page_loading_screen"
-        layout="@layout/home_page_loading_screen"
-        android:visibility="gone" /> -->
 
 </RelativeLayout>

@@ -20,7 +20,6 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
-import com.quiriletelese.troppadvisorproject.models.Point;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
@@ -30,13 +29,10 @@ import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomePageController implements View.OnClickListener, Constants {
+public class HomePageFragmentController implements View.OnClickListener, Constants {
 
     private HomePageFragment homePageFragment;
     private DAOFactory daoFactory;
@@ -46,7 +42,7 @@ public class HomePageController implements View.OnClickListener, Constants {
     private RecyclerViewAttractionAdapter recyclerViewAttractionAdapter;
     private PointSearch pointSearch;
 
-    public HomePageController(HomePageFragment homePageFragment) {
+    public HomePageFragmentController(HomePageFragment homePageFragment) {
         this.homePageFragment = homePageFragment;
     }
 
@@ -65,19 +61,19 @@ public class HomePageController implements View.OnClickListener, Constants {
         }
     }
 
-    private void startHotelsListActivity(){
+    private void startHotelsListActivity() {
         Intent hotelsListActivity = new Intent(homePageFragment.getContext(), HotelsListActivity.class);
         hotelsListActivity.putExtra(POINT_SEARCH, pointSearch);
         homePageFragment.getContext().startActivity(hotelsListActivity);
     }
 
-    private void startRestaurantsListActivity(){
+    private void startRestaurantsListActivity() {
         Intent restaurantsListActivity = new Intent(homePageFragment.getContext(), RestaurantsListActivity.class);
         restaurantsListActivity.putExtra(POINT_SEARCH, pointSearch);
         homePageFragment.getContext().startActivity(restaurantsListActivity);
     }
 
-    private void startAttractionsListActivity(){
+    private void startAttractionsListActivity() {
         Intent attractionsListActivity = new Intent(homePageFragment.getContext(), AttractionsListActivity.class);
         attractionsListActivity.putExtra(POINT_SEARCH, pointSearch);
         homePageFragment.getContext().startActivity(attractionsListActivity);
@@ -121,8 +117,8 @@ public class HomePageController implements View.OnClickListener, Constants {
     private void initializeRecyclerViewHotelOnSuccess(List<Hotel> hotels) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), hotels);
-        homePageFragment.getRecyclerViewHotel().setLayoutManager(linearLayoutManager);
-        homePageFragment.getRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
+        homePageFragment.getShimmerRecyclerViewHotel().setLayoutManager(linearLayoutManager);
+        homePageFragment.getShimmerRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
     }
 
     private void initializeRecyclerViewHotelOnError(String errorCode) {
@@ -139,7 +135,7 @@ public class HomePageController implements View.OnClickListener, Constants {
         findRestaurantsByPointNear(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                initializeRecyclerViewRestaurantOnSuccess((List<Restaurant>)object);
+                initializeRecyclerViewRestaurantOnSuccess((List<Restaurant>) object);
             }
 
             @Override
@@ -152,8 +148,8 @@ public class HomePageController implements View.OnClickListener, Constants {
     private void initializeRecyclerViewRestaurantOnSuccess(List<Restaurant> restaurants) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), restaurants);
-        homePageFragment.getRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
-        homePageFragment.getRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
+        homePageFragment.getShimmerRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
+        homePageFragment.getShimmerRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
     }
 
     private void initializeRecyclerViewRestaurantOnError(String errorCode) {
@@ -183,8 +179,8 @@ public class HomePageController implements View.OnClickListener, Constants {
     private void initializeRecyclerViewAttractionOnSuccess(List<Attraction> attractions) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), attractions);
-        homePageFragment.getRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
-        homePageFragment.getRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
+        homePageFragment.getShimmerRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
+        homePageFragment.getShimmerRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
     }
 
     private void initializeRecyclerViewAttractionOnError(String errorCode) {
@@ -214,8 +210,19 @@ public class HomePageController implements View.OnClickListener, Constants {
         PointSearch pointSearch = new PointSearch();
         pointSearch.setLatitude(/*pointSearchInformation.get(0)*/40.829904);
         pointSearch.setLongitude(/*pointSearchInformation.get(1)*/14.248052);
-        pointSearch.setDistance(/*pointSearchInformation.get(2)*/1.0);
+        pointSearch.setDistance(/*pointSearchInformation.get(2)*/5.0);
         return pointSearch;
+    }
+
+    public void initializeRecyclerViewsFakeContent(){
+        homePageFragment.getShimmerRecyclerViewHotel().setLayoutManager(new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false) );
+        homePageFragment.getShimmerRecyclerViewRestaurant().setLayoutManager(new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        homePageFragment.getShimmerRecyclerViewAttraction().setLayoutManager(new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        homePageFragment.getShimmerRecyclerViewHotel().showShimmer();
+        homePageFragment.getShimmerRecyclerViewRestaurant().showShimmer();
+        homePageFragment.getShimmerRecyclerViewAttraction().showShimmer();
+
+
     }
 
     public void setListenerOnViewComponents() {

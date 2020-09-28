@@ -19,12 +19,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
+    <com.todkars.shimmer.ShimmerRecyclerView
         android:id="@+id/recycler_view_see_reviews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_bar_layout_see_reviews" />
+        android:layout_below="@id/app_bar_layout_see_reviews"
+        app:shimmer_recycler_layout="@layout/recycler_view_see_reviews_fake_content"
+        app:shimmer_recycler_item_count="20"/>
 
     <ProgressBar
         android:id="@+id/progress_bar_reviews_load_more"

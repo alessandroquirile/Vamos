@@ -70,9 +70,9 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
                 .into(viewHolder.imageViewAttraction);
     }
 
-    private void startAttractionDetailActivity(Attraction attraction){
+    private void startAttractionDetailActivity(String id){
         Intent intent = new Intent(context, AttractionDetailActivity.class);
-        intent.putExtra(ATTRACTION, attraction);
+        intent.putExtra(ID, id);
         context.startActivity(intent);
     }
 
@@ -99,7 +99,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
         @Override
         public void onClick(View view) {
-            startAttractionDetailActivity(attractions.get(this.getAdapterPosition()));
+            startAttractionDetailActivity(attractions.get(this.getAdapterPosition()).getId());
         }
 
     }

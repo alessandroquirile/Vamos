@@ -1,9 +1,12 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -30,8 +33,8 @@ public class HotelDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
-        initializaViewPager();
         initializeActivityFields();
+
     }
 
     private void initializeViewComponents() {
@@ -54,12 +57,12 @@ public class HotelDetailActivity extends AppCompatActivity {
         hotelDetailActivityController.setListenerOnViewComponents();
     }
 
-    private void initializaViewPager() {
-        hotelDetailActivityController.initializaViewPager();
-    }
+    /*private void initializaViewPager() {
+        hotelDetailActivityController.initializeViewPager();
+    }*/
 
     private void initializeActivityFields() {
-        hotelDetailActivityController.initializeActivityFields();
+        hotelDetailActivityController.findById();
     }
 
     public CollapsingToolbarLayout getCollapsingToolbarLayoutHotelDetailActivity() {

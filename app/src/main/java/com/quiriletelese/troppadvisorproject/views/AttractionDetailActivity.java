@@ -32,7 +32,6 @@ public class AttractionDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
-        initializaViewPager();
         initializeActivityFields();
     }
 
@@ -57,16 +56,8 @@ public class AttractionDetailActivity extends AppCompatActivity {
         attractionDetailActivityController.setListenerOnViewComponents();
     }
 
-    private void initializaViewPager() {
-        attractionDetailActivityController.initializaViewPager();
-    }
-
     private void initializeActivityFields() {
         attractionDetailActivityController.initializeActivityFields();
-    }
-
-    public AttractionDetailActivityController getAttractionDetailActivityController() {
-        return attractionDetailActivityController;
     }
 
     public CollapsingToolbarLayout getCollapsingToolbarLayoutAttractionDetailActivity() {

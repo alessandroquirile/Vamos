@@ -30,7 +30,8 @@
     <string name="active_geolocation">attiva geolocalizzazione</string>
     <string name="what">Cosa:</string>
     <string name="price_search_page">Prezzo: Qualsiasi</string>
-    <string name="distance_search_page">Distanza: Fino a 1 km</string>
+    <string name="distance_filter_page">Distanza: Fino a 1 km</string>
+    <string name="default_distance_filter_page">Distanza: Fino a 5 km</string>
     <string name="rank_search_page">Voto medio: Qualsiasi</string>
     <string name="see_results">Vedi risultati</string>
     <string name="current_position">Posizione attuale</string>
@@ -95,6 +96,20 @@
     <string name="city">Città</string>
     <string name="name">Nome</string>
     <string name="no_hotels_found_by_filter">Nessun hotel trovato in base ai criteri di ricerca</string>
+    <string name="no_restaurants_found_by_filter">Nessun ristorante trovato in base ai criteri di ricerca</string>
+    <string name="no_attractions_found_by_filter">Nessun\'attrazione trovata in base ai criteri di ricerca</string>
     <string name="reviews">recensioni</string>
     <string name="user_reviews">Recensioni degli utenti</string>
+    <string name="field_cannot_be_empty">Questo campo non può essere vuoto</string>
+    <string name="login_error">Si è verificato un errore durante il login, controlla le credenziali o assicurati che il tuo account sia verificato e riprova</string>
+    <string name="passwords_not_match">Le password non coincidono</string>
+    <string name="email_pattern_error">Inserisci un email valida</string>
+    <string name="unexpected_error_during_sign_up">Errore imprevisto durante la registrazione, riprova</string>
+    <string name="email_already_exist">Email già in uso</string>
+    <string name="username_already_exist">Username già in uso</string>
+    <string name="wait_for_login_result">Attendi, verifica delle credenziali in corso</string>
+    <string name="add_review">Aggiungi recensione</string>
+    <string name="no_content_error_hotel_detail">Errore, nessun hotel trovato</string>
+    <string name="no_content_error_restaurant_detail">Errore, nessun ristorante trovato</string>
+    <string name="no_content_error_attraction_detail">Errore, nessun attrazione trovato</string>
 </resources>

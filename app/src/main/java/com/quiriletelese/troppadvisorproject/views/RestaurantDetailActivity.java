@@ -32,7 +32,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
-        initializeViewPager();
         initializeActivityFields();
     }
 
@@ -58,12 +57,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         restaurantDetailActivityController.setListenerOnViewComponents();
     }
 
-    private void initializeViewPager() {
-        restaurantDetailActivityController.initializaViewPager();
-    }
-
     private void initializeActivityFields() {
-        restaurantDetailActivityController.initializeActivityFields();
+        restaurantDetailActivityController.findById();
     }
 
     public CollapsingToolbarLayout getCollapsingToolbarLayoutRestaurantDetailActivity() {

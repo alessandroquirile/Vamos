@@ -1,6 +1,6 @@
 package com.quiriletelese.troppadvisorproject.interfaces;
 
-public interface AutoCompleteTextViewsAccomodationMapTextChangeListener {
+public interface AutoCompleteTextViewsAccomodationFilterTextChangeListener {
 
     void onAutoCompleteTextViewAccomodationNameTextChanged(String newText);
     void onAutoCompleteTextViewAccomodtionCityTextChanged(String newText);

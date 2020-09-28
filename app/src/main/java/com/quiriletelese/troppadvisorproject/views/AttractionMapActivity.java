@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.AttractionMapActivityController;
@@ -29,12 +31,17 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attraction_map);
+        setContentView(R.layout.activity_attractions_map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.attractions_map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         intializeViewComponents(googleMap);
+        setGoogleMapStyle();
         initializeController();
         setListenerOnViewComponents();
         setComponentProperties();
@@ -53,6 +60,10 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
         textViewAttractionRating = findViewById(R.id.text_view_attraction_rating);
         textViewAttractionAddress = findViewById(R.id.text_view_attraction_address);
         floatingActionButtonCenterPositionOnAttractions = findViewById(R.id.floating_action_button_center_position_on_attractions);
+    }
+
+    private void setGoogleMapStyle(){
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.map_style));
     }
 
     private void initializeController() {

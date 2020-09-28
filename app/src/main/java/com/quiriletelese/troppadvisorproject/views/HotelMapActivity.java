@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HotelMapActivityController;
@@ -29,7 +30,7 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_hotel_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.hotel_map);
         assert mapFragment != null;
@@ -39,6 +40,7 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         intializeViewComponents(googleMap);
+        setGoogleMapStyle();
         initializeController();
         setListenerOnViewComponents();
         setComponentProperties();
@@ -57,6 +59,10 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
         textViewHotelRating = findViewById(R.id.text_view_hotel_rating);
         textViewHotelAddress = findViewById(R.id.text_view_hotel_address);
         floatingActionButtonCenterPositionOnHotels = findViewById(R.id.floating_action_button_center_position_on_hotels);
+    }
+
+    private void setGoogleMapStyle(){
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.map_style));
     }
 
     private void initializeController() {

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
@@ -28,8 +27,8 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
 
         initializeViewComponents();
         initializeController();
-        hotelsListActivityController.initializeRecyclerView((PointSearch) getIntent().getSerializableExtra(POINT_SEARCH));
-        hotelsListActivityController.addRecyclerViewOnScrollListener((PointSearch) getIntent().getSerializableExtra(POINT_SEARCH));
+        findByRsql();
+        addRecyclerViewOnScrollListener();
 
     }
 
@@ -43,7 +42,10 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.button_see_hotels_on_map:
-                startHotelMapsActivity();;
+                startMapsActivity();;
+                break;
+            case R.id.search_button_menu_hotels_list:
+                showBottomSheetFilters();
                 break;
         }
         return true;
@@ -58,8 +60,24 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
         hotelsListActivityController = new HotelsListActivityController(this);
     }
 
-    private void startHotelMapsActivity() {
-        hotelsListActivityController.startHotelMapsActivity();
+    private void findByRsql(){
+        hotelsListActivityController.findByRsql(getPointSearch(), "0");
+    }
+
+    private void addRecyclerViewOnScrollListener(){
+        hotelsListActivityController.addRecyclerViewOnScrollListener();
+    }
+
+    private void startMapsActivity() {
+        hotelsListActivityController.startMapsActivity();
+    }
+
+    private void showBottomSheetFilters(){
+        hotelsListActivityController.showBottomSheetFilters();
+    }
+
+    private PointSearch getPointSearch() {
+        return hotelsListActivityController.getPointSearch();
     }
 
     public RecyclerView getRecyclerViewHotelsList() {

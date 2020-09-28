@@ -1,20 +1,14 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
-import android.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
-import com.amazonaws.services.cognitoidentityprovider.model.ChangePasswordResult;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.ChangeUserPassword;
 import com.quiriletelese.troppadvisorproject.models.Account;
-import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallbackUpdatePassword;
 
 import java.util.Objects;
 
@@ -36,12 +30,12 @@ public class ProfileController implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floating_action_button_edit_profile_fragment:
-                showRequestPasswordDialog();
+                //showRequestPasswordDialog();
                 break;
         }
     }
 
-    private void showRequestPasswordDialog() {
+    /*private void showRequestPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(profileFragment.getActivity());
         LayoutInflater layoutInflater = profileFragment.requireActivity().getLayoutInflater();
         final View dialogView = layoutInflater.inflate(R.layout.dialog_verify_password, null);
@@ -50,9 +44,9 @@ public class ProfileController implements View.OnClickListener {
         AlertDialog dialog = builder.create();
         dialog.show();
         setOnClickListenerDialogInsertPassword(dialog);
-    }
+    }*/
 
-    private void setOnClickListenerDialogInsertPassword(final AlertDialog dialog) {
+    /*private void setOnClickListenerDialogInsertPassword(final AlertDialog dialog) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,9 +60,9 @@ public class ProfileController implements View.OnClickListener {
                 }
             }
         });
-    }
+    }*/
 
-    private void showInsertNewPasswordDialog() {
+   /* private void showInsertNewPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(profileFragment.getActivity());
         LayoutInflater layoutInflater = profileFragment.requireActivity().getLayoutInflater();
         final View dialogView = layoutInflater.inflate(R.layout.dialog_insert_new_password, null);
@@ -79,9 +73,9 @@ public class ProfileController implements View.OnClickListener {
         final AlertDialog dialog = builder.create();
         dialog.show();
         setOnClickListenerDialogInsertNewPasswordPositiveButton(dialog);
-    }
+    }*/
 
-    private void setOnClickListenerDialogInsertNewPasswordPositiveButton(final AlertDialog dialog) {
+    /*private void setOnClickListenerDialogInsertNewPasswordPositiveButton(final AlertDialog dialog) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,13 +91,13 @@ public class ProfileController implements View.OnClickListener {
                 }
             }
         });
-    }
+    }/
 
     public void setListenersOnProfileFragment() {
         profileFragment.getFloatingActionButton().setOnClickListener(this);
     }
 
-    private void updatePassword(ChangeUserPassword changeUserPassword) {
+    /*private void updatePassword(ChangeUserPassword changeUserPassword) {
         daoFactory = DAOFactory.getInstance();
         accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty("account_storage_technology",
                 profileFragment.requireActivity().getApplicationContext()));
@@ -118,7 +112,7 @@ public class ProfileController implements View.OnClickListener {
                 Toast.makeText(profileFragment.getContext(), R.string.password_update_error, Toast.LENGTH_SHORT).show();
             }
         }, changeUserPassword, profileFragment.getContext());
-    }
+    }*/
 
     private ChangeUserPassword createChangeUserPassword() {
         ChangeUserPassword changeUserPassword = new ChangeUserPassword();

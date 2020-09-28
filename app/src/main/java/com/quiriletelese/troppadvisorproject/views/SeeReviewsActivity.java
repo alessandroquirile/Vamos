@@ -1,19 +1,19 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.SeeReviewsActivityController;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 public class SeeReviewsActivity extends AppCompatActivity {
 
     private SeeReviewsActivityController seeReviewsActivityController;
-    private RecyclerView recyclerViewSeeReviews;
+    private ShimmerRecyclerView shimmerRecyclerViewSeeReviews;
     private ProgressBar progressBarReviewsLoadMore;
 
     @Override
@@ -30,29 +30,38 @@ public class SeeReviewsActivity extends AppCompatActivity {
         initializeViesComponents();
         initializeController();
         setToolbarSubtitle();
+        initializeRecyclerViewsFakeContent();
         initializeRecyclerView();
-
+        addRecyclerViewOnScrollListener();
     }
 
     private void initializeViesComponents() {
-        recyclerViewSeeReviews = findViewById(R.id.recycler_view_see_reviews);
+        shimmerRecyclerViewSeeReviews = findViewById(R.id.recycler_view_see_reviews);
         progressBarReviewsLoadMore = findViewById(R.id.progress_bar_reviews_load_more);
-    }
-
-    private void initializeController() {
-        seeReviewsActivityController = new SeeReviewsActivityController(this);
     }
 
     private void setToolbarSubtitle(){
         seeReviewsActivityController.setToolbarSubtitle();
     }
 
+    private void initializeController() {
+        seeReviewsActivityController = new SeeReviewsActivityController(this);
+    }
+
+    private void initializeRecyclerViewsFakeContent(){
+        seeReviewsActivityController.initializeRecyclerViewsFakeContent();
+    }
+
     private void initializeRecyclerView() {
         seeReviewsActivityController.intializeRecyclerView();
     }
 
-    public RecyclerView getRecyclerViewSeeReviews() {
-        return recyclerViewSeeReviews;
+    private void addRecyclerViewOnScrollListener(){
+        seeReviewsActivityController.addRecyclerViewOnScrollListener();
+    }
+
+    public ShimmerRecyclerView getShimmerRecyclerViewSeeReviews() {
+        return shimmerRecyclerViewSeeReviews;
     }
 
     public ProgressBar getProgressBarReviewsLoadMore() {

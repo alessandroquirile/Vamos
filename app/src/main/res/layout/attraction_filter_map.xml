@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:padding="5dp"
-                android:text="@string/distance_search_page"
+                android:text="@string/default_distance_filter_page"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:thumbTint="@color/colorPrimaryDark" />
@@ -167,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:max="50"
+                android:progress="5"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <androidx.appcompat.widget.SwitchCompat

@@ -1,21 +1,30 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
+import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
+import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 public class AttractionDetailActivityController implements View.OnClickListener, Constants {
 
     private AttractionDetailActivity attractionDetailActivity;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private Attraction attraction;
 
     public AttractionDetailActivityController(AttractionDetailActivity attractionDetailActivity) {
         this.attractionDetailActivity = attractionDetailActivity;
@@ -28,7 +37,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
                 startWriteReviewActivity();
                 break;
             case R.id.button_attraction_read_reviews:
-                startSeeReviewsActivity();
+                seeReviews();
                 break;
         }
     }
@@ -38,14 +47,29 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         attractionDetailActivity.getButtonAttractionReadReviews().setOnClickListener(this);
     }
 
-    public void initializaViewPager() {
-        Attraction attraction = (Attraction) attractionDetailActivity.getIntent().getSerializableExtra(ATTRACTION);
-        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(attraction.getImages(), attractionDetailActivity.getApplicationContext());
-        attractionDetailActivity.getViewPagerAttractionDetail().setAdapter(viewPagerOverViewActivityAdapter);
+    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id, Context context) {
+        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
+                attractionDetailActivity.getApplicationContext()));
+        attractionDAO.findById(volleyCallBack, id, context);
+    }
+
+    public void findById() {
+        findHotelByIdHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                attraction = (Attraction) object;
+                initializeActivityFields();
+                initializeViewPager();
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                detectVolleyError(errorCode);
+            }
+        }, getAttractionId(), attractionDetailActivity.getApplicationContext());
     }
 
     public void initializeActivityFields() {
-        Attraction attraction = (Attraction) attractionDetailActivity.getIntent().getSerializableExtra(ATTRACTION);
         setCollapsingToolbarLayoutTitle(attraction.getName());
         setAvarageRating(attraction.getAvarageRating());
         setCertificateOfExcellence(attraction.isHasCertificateOfExcellence());
@@ -53,6 +77,19 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         setOpeningTime(attraction.getOpeningTime());
         setPhoneNunmber(attraction.getPhoneNumber());
         setAvaragePrice(attraction.getAvaragePrice());
+    }
+
+    private void initializeViewPager() {
+        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(attraction.getImages(), attractionDetailActivity.getApplicationContext());
+        attractionDetailActivity.getViewPagerAttractionDetail().setAdapter(viewPagerOverViewActivityAdapter);
+    }
+
+    private void detectVolleyError(String errorCode) {
+        switch (errorCode) {
+            case NO_CONTENT:
+                showToastNoContentError();
+                break;
+        }
     }
 
     private void setCollapsingToolbarLayoutTitle(String title) {
@@ -130,34 +167,54 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return writeReviewActivityIntent;
     }
 
-    private void startSeeReviewsActivity() {
+    private void seeReviews() {
         if (hasReviews())
-            attractionDetailActivity.startActivity(createSeeReviewsActivityIntent());
+            startSeeReviewsActivity();
         else
-            attractionDetailActivity.runOnUiThread(() -> {
-                Toast.makeText(attractionDetailActivity, "No Recensioni", Toast.LENGTH_SHORT).show();
-            });
+            showToastNoReviewsError();
+    }
+
+    private void startSeeReviewsActivity() {
+        attractionDetailActivity.startActivity(createSeeReviewsActivityIntent());
     }
 
     private Intent createSeeReviewsActivityIntent() {
         Intent seeReviewsActivityIntent = new Intent(attractionDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getAttraction());
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getAttractionName());
         seeReviewsActivityIntent.putExtra(ID, getAttractionId());
         return seeReviewsActivityIntent;
     }
 
-    private boolean hasReviews() {
-        return getAttraction().getReviews().size() > 0;
+    private void showToastNoContentError() {
+        attractionDetailActivity.runOnUiThread(() -> {
+            Toast.makeText(attractionDetailActivity, getNoContentErrorMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
-    private Attraction getAttraction() {
-        return (Attraction) attractionDetailActivity.getIntent().getSerializableExtra(ATTRACTION);
+    private void showToastNoReviewsError(){
+        attractionDetailActivity.runOnUiThread(() -> {
+            Toast.makeText(attractionDetailActivity, getNoReviewsErrorMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private boolean hasReviews() {
+        return attraction.getReviews().size() > 0;
     }
 
     private String getAttractionId() {
-        Attraction attraction = (Attraction) attractionDetailActivity.getIntent().getSerializableExtra(ATTRACTION);
-        return attraction.getId();
+        return attractionDetailActivity.getIntent().getStringExtra(ID);
+    }
+
+    private String getAttractionName(){
+        return attraction.getName();
+    }
+
+    private String getNoContentErrorMessage(){
+        return attractionDetailActivity.getResources().getString(R.string.no_content_error_attraction_detail);
+    }
+
+    private String getNoReviewsErrorMessage(){
+        return attractionDetailActivity.getResources().getString(R.string.no_review);
     }
 
 }

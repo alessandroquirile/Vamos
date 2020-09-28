@@ -5,7 +5,15 @@
     <item
         android:id="@+id/button_see_hotels_on_map"
         android:icon="@drawable/icon_map_white"
+        android:orderInCategory="1"
         android:title="@string/see_on_map"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/search_button_menu_hotels_list"
+        android:icon="@drawable/icon_search_white"
+        android:orderInCategory="2"
+        android:title="@string/search"
         app:showAsAction="always" />
 
 </menu>

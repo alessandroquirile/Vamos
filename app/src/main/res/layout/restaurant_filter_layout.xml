@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout_bottom_sheet_dialog_hotel_map"
+        android:id="@+id/app_bar_layout_bottom_sheet_dialog_restaurant_map"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -19,7 +19,7 @@
             android:weightSum="3">
 
             <ImageView
-                android:id="@+id/image_view_go_back_hotel_map_filter"
+                android:id="@+id/image_view_go_back_restaurant_map_filter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -28,7 +28,7 @@
                 android:src="@drawable/icon_arrow_back_white" />
 
             <TextView
-                android:id="@+id/tool_bar_title_hotel_map"
+                android:id="@+id/tool_bar_title_restaurant_map"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -39,7 +39,7 @@
                 android:textColor="@color/white" />
 
             <ImageView
-                android:id="@+id/image_view_search_hotel_map_filter"
+                android:id="@+id/image_view_search_restaurant_map_filter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -54,7 +54,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_bar_layout_bottom_sheet_dialog_hotel_map">
+        android:layout_below="@id/app_bar_layout_bottom_sheet_dialog_restaurant_map">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                     android:textStyle="bold" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/auto_complete_text_view_map_hotel_name"
+                    android:id="@+id/auto_complete_text_view_map_restaurant_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.75"
@@ -105,7 +105,7 @@
                     android:textStyle="bold" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/auto_complete_text_view_map_hotel_city"
+                    android:id="@+id/auto_complete_text_view_map_restaurant_city"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.75"
@@ -116,7 +116,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/text_view_hotel_map_price"
+                android:id="@+id/text_view_restaurant_map_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -126,15 +126,16 @@
                 android:textStyle="bold" />
 
             <SeekBar
-                android:id="@+id/seek_bar_hotel_map_price"
+                android:id="@+id/seek_bar_restaurant_map_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:max="150"
+                android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <TextView
-                android:id="@+id/text_view_hotel_map_rating"
+                android:id="@+id/text_view_restaurant_map_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -144,56 +145,47 @@
                 android:textStyle="bold" />
 
             <SeekBar
-                android:id="@+id/seek_bar_hotel_map_rating"
+                android:id="@+id/seek_bar_restaurant_map_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:max="5"
+                android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <TextView
-                android:id="@+id/text_view_hotel_map_stars"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:padding="5dp"
-                android:text="@string/hotel_stars_filter"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
-
-            <SeekBar
-                android:id="@+id/seek_bar_hotel_map_stars"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:max="5"
-                android:thumbTint="@color/colorPrimaryDark" />
-
-            <TextView
-                android:id="@+id/text_view_hotel_map_distance"
+                android:id="@+id/text_view_restaurant_map_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:padding="5dp"
-                android:text="@string/distance_search_page"
+                android:text="@string/default_distance_filter_page"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <SeekBar
-                android:id="@+id/seek_bar_hotel_map_distance"
+                android:id="@+id/seek_bar_restaurant_map_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:max="50"
+                android:progress="5"
+                android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_compat_hotel_map_certificate_of_excellence"
+                android:id="@+id/switch_compat_restaurant_map_certificate_of_excellence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/certificate_of_excellence"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
+            <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
+                android:id="@+id/multi_spinner_search_restaurant_map_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -67,9 +67,9 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
                 .into(viewHolder.imageViewRestaurant);
     }
 
-    private void startRestaurantDetailActivity(Restaurant restaurant){
+    private void startRestaurantDetailActivity(String id){
         Intent intent = new Intent(context, RestaurantDetailActivity.class);
-        intent.putExtra(RESTAURANT, restaurant);
+        intent.putExtra(ID, id);
         context.startActivity(intent);
     }
 
@@ -95,7 +95,7 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
 
         @Override
         public void onClick(View view) {
-            startRestaurantDetailActivity(restaurants.get(this.getAdapterPosition()));
+            startRestaurantDetailActivity(restaurants.get(this.getAdapterPosition()).getId());
         }
 
     }

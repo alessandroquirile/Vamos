@@ -17,6 +17,8 @@ public interface HotelDAO {
 
     void findByRsqlNoPoint(VolleyCallBack volleyCallBack, String rsqlQuery, Context context, int page, int size);
 
+    void findById(VolleyCallBack volleyCallBack, String id, Context context);
+
     void findByNameLikeIgnoreCase(VolleyCallBack volleyCallBack, String name, Context context, int page, int size);
 
     void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context, int page, int size);

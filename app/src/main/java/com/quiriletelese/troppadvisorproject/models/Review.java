@@ -11,7 +11,7 @@ public class Review implements Serializable {
     private String id;
     private String title;
     private String description;
-    private Integer rating;
+    private Float rating;
     private String user;
     private Boolean isAnonymous;
     private String accomodationId;
@@ -42,11 +42,11 @@ public class Review implements Serializable {
         this.description = description;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

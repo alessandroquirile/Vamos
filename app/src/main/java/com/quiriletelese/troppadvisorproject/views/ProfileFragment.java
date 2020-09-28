@@ -40,7 +40,7 @@ public class ProfileFragment extends Fragment {
 
     public void initializeController() {
         ProfileController profileController = new ProfileController(this);
-        profileController.setListenersOnProfileFragment();
+        //profileController.setListenersOnProfileFragment();
     }
 
     public FloatingActionButton getFloatingActionButton() {

@@ -20,7 +20,8 @@
     <string name="no_position_error">" Geolocation deactivated, activate it to find nearby structures"</string>
     <string name="posizione_attuale">Current position</string>
     <string name="price_search_page">Price: Any</string>
-    <string name="distance_search_page">Distance: Up to 1 km</string>
+    <string name="distance_filter_page">Distance: Up to 1 km</string>
+    <string name="default_distance_filter_page">Distance: Up to 5 km</string>
     <string name="rank_search_page">Average Rank: Any</string>
     <string name="see_results">See results</string>
     <string name="current_position">Current position</string>
@@ -80,4 +81,18 @@
     <string name="reviews">reviews</string>
     <string name="user_reviews">User reviews</string>
     <string name="no_hotels_found_by_filter">"No hotels were found based on your search criteria "</string>
+    <string name="field_cannot_be_empty">Field cannot be empty</string>
+    <string name="login_error">An error occurred while logging in, please check your credentials or make sure your account is verified and try again</string>
+    <string name="passwords_not_match">Passwords don\'t match</string>
+    <string name="email_pattern_error">Please enter a valid email</string>
+    <string name="unexpected_error_during_sign_up">Unexpected error during registration, please try again</string>
+    <string name="email_already_exist">Email already in use</string>
+    <string name="username_already_exist">Username already in use</string>
+    <string name="wait_for_login_result">Please wait, verifying your credentials</string>
+    <string name="add_review">Add review</string>
+    <string name="no_content_error_hotel_detail">" Error, no hotel found"</string>
+    <string name="no_content_error_attraction_detail">Error, no attraction found</string>
+    <string name="no_content_error_restaurant_detail">" Error, no restaurant found"</string>
+    <string name="no_restaurants_found_by_filter">No restaurants found based on your search criteria</string>
+    <string name="no_attractions_found_by_filter">No attractions found based on your search criteria</string>
 </resources>

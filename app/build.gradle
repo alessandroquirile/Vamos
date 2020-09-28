@@ -41,6 +41,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.github.pratikbutani:MultiSelectSpinner:-SNAPSHOT'
+    implementation 'com.facebook.shimmer:shimmer:0.4.0'
+    implementation 'com.todkars:shimmer-recyclerview:0.4.0'
     // Lottie dependency
     implementation "com.airbnb.android:lottie:$lottieVersion"
     // AWS dependencies

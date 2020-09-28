@@ -7,18 +7,16 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.CreateAccountController;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    CreateAccountController createAccountController;
     private FloatingActionButton floatingActionButtonGoBack;
-    private EditText editTextEmail;
-    private EditText editTextName;
-    private EditText editTextLastName;
-    private EditText editTextUsername;
-    private EditText editTextPassword;
-    private EditText editTextRepeatPassword;
+    private TextInputLayout textInputLayoutEmail, textInputLayoutName, textInputLayoutLastName,
+    textInputLayoutUsername, textInputLayoutPassword, textInputLayoutRepeatPassword;
     private Button buttonSignUp;
 
     @Override
@@ -28,53 +26,107 @@ public class SignUpActivity extends AppCompatActivity {
 
         initializeViewComponents();
         initializeController();
+        setListenerOnViewComponents();
+
     }
 
     public void initializeViewComponents() {
         floatingActionButtonGoBack = findViewById(R.id.floating_action_button_go_back_sign_up_activity);
-        editTextEmail = findViewById(R.id.edit_text_email_sign_up_activity);
-        editTextName = findViewById(R.id.edit_text_name_sign_up_activity);
-        editTextLastName = findViewById(R.id.edit_text_lastname_sign_up_activity);
-        editTextUsername = findViewById(R.id.edit_text_nickname_sign_up_activity);
-        editTextPassword = findViewById(R.id.edit_text_password_sign_up_activity);
-        editTextRepeatPassword = findViewById(R.id.edit_text_repeat_password_sign_up_activity);
+        textInputLayoutEmail = findViewById(R.id.tex_input_layout_email_sign_up);
+        textInputLayoutName = findViewById(R.id.text_input_layout_name_sign_up);
+        textInputLayoutLastName = findViewById(R.id.text_input_layout_last_name_sign_up);
+        textInputLayoutUsername = findViewById(R.id.text_input_layout_username_sign_up);
+        textInputLayoutPassword = findViewById(R.id.text_input_layout_password_sign_up);
+        textInputLayoutRepeatPassword = findViewById(R.id.text_input_layout_repeat_password_sign_up);
         buttonSignUp = findViewById(R.id.button_sign_up_sign_up_activity);
     }
 
     public void initializeController() {
-        CreateAccountController createAccountController = new CreateAccountController(this);
-        createAccountController.setListenersOnSignUpActivity();
+        createAccountController = new CreateAccountController(this);
+    }
+
+    private void setListenerOnViewComponents(){
+        createAccountController.setListenerOnViewComponents();
     }
 
     public FloatingActionButton getFloatingActionButtonGoBack() {
         return floatingActionButtonGoBack;
     }
 
-    public EditText getEditTextEmail() {
-        return editTextEmail;
+    public TextInputLayout getTextInputLayoutEmail() {
+        return textInputLayoutEmail;
     }
 
-    public EditText getEditTextName() {
-        return editTextName;
+    public TextInputLayout getTextInputLayoutName() {
+        return textInputLayoutName;
     }
 
-    public EditText getEditTextLastName() {
-        return editTextLastName;
+    public TextInputLayout getTextInputLayoutLastName() {
+        return textInputLayoutLastName;
     }
 
-    public EditText getEditTextUsername() {
-        return editTextUsername;
+    public TextInputLayout getTextInputLayoutUsername() {
+        return textInputLayoutUsername;
     }
 
-    public EditText getEditTextPassword() {
-        return editTextPassword;
+    public TextInputLayout getTextInputLayoutPassword() {
+        return textInputLayoutPassword;
     }
 
-    public EditText getEditTextRepeatPassword() {
-        return editTextRepeatPassword;
+    public TextInputLayout getTextInputLayoutRepeatPassword() {
+        return textInputLayoutRepeatPassword;
+    }
+
+    public EditText getTextInputLayoutEmailEditText() {
+        return textInputLayoutEmail.getEditText();
+    }
+
+    public EditText getTextInputLayoutNameEditText() {
+        return textInputLayoutName.getEditText();
+    }
+
+    public EditText getTextInputLayoutLastNameEditText() {
+        return textInputLayoutLastName.getEditText();
+    }
+
+    public EditText getTextInputLayoutUsernameEditText() {
+        return textInputLayoutUsername.getEditText();
+    }
+
+    public EditText getTextInputLayoutPasswordEditText() {
+        return textInputLayoutPassword.getEditText();
+    }
+
+    public EditText getTextInputLayoutRepeatPasswordEditText() {
+        return textInputLayoutRepeatPassword.getEditText();
     }
 
     public Button getButtonSignUp() {
         return buttonSignUp;
     }
+
+    public String getTextInputLayoutEmailValue(){
+        return textInputLayoutEmail.getEditText().getText().toString();
+    }
+
+    public String getTextInputLayoutNameValue(){
+        return textInputLayoutName.getEditText().getText().toString();
+    }
+
+    public String getTextInputLayoutLastNameValue(){
+        return textInputLayoutLastName.getEditText().getText().toString();
+    }
+
+    public String getTextInputLayoutUsernameValue(){
+        return textInputLayoutUsername.getEditText().getText().toString();
+    }
+
+    public String getTextInputLayoutPasswordValue(){
+        return textInputLayoutPassword.getEditText().getText().toString();
+    }
+
+    public String getTextInputLayoutRepeatPasswordValue(){
+        return textInputLayoutRepeatPassword.getEditText().getText().toString();
+    }
+
 }

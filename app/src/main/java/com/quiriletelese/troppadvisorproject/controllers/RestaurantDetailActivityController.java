@@ -1,23 +1,30 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
+import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
+import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import java.util.List;
 
 public class RestaurantDetailActivityController implements View.OnClickListener, Constants {
 
     private RestaurantDetailActivity restaurantDetailActivity;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private Restaurant restaurant;
 
     public RestaurantDetailActivityController(RestaurantDetailActivity restaurantDetailActivity) {
         this.restaurantDetailActivity = restaurantDetailActivity;
@@ -30,7 +37,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
                 startWriteReviewActivity();
                 break;
             case R.id.button_restaurant_read_reviews:
-                startSeeReviewsActivity();
+                seeReviews();
                 break;
         }
     }
@@ -40,14 +47,30 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         restaurantDetailActivity.getButtonRestaurantReadReviews().setOnClickListener(this);
     }
 
-    public void initializaViewPager() {
-        Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
-        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(restaurant.getImages(), restaurantDetailActivity.getApplicationContext());
-        restaurantDetailActivity.getViewPagerRestaurantDetail().setAdapter(viewPagerOverViewActivityAdapter);
+    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id, Context context) {
+        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
+                restaurantDetailActivity.getApplicationContext()));
+        restaurantDAO.findById(volleyCallBack, id, context);
     }
 
-    public void initializeActivityFields() {
-        Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
+    public void findById() {
+        findHotelByIdHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                restaurant = (Restaurant) object;
+                initializeActivityFields();
+                initializeViewPager();
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                detectVolleyError(errorCode);
+            }
+        }, getRestaurantId(), restaurantDetailActivity.getApplicationContext());
+    }
+
+
+    private void initializeActivityFields() {
         setCollapsingToolbarLayoutTitle(restaurant.getName());
         setAvarageRating(restaurant);
         setCertificateOfExcellence(restaurant.isHasCertificateOfExcellence());
@@ -56,6 +79,20 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         setPhoneNunmber(restaurant.getPhoneNumber());
         setAvaragePrice(restaurant.getAvaragePrice());
         setTypeOfCuisineList(restaurant.getTypeOfCuisine());
+    }
+
+    private void initializeViewPager() {
+        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(
+                restaurant.getImages(), restaurantDetailActivity.getApplicationContext());
+        restaurantDetailActivity.getViewPagerRestaurantDetail().setAdapter(viewPagerOverViewActivityAdapter);
+    }
+
+    private void detectVolleyError(String errorCode) {
+        switch (errorCode) {
+            case NO_CONTENT:
+                showToastNoContentError();
+                break;
+        }
     }
 
     private void setCollapsingToolbarLayoutTitle(String title) {
@@ -156,39 +193,54 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         restaurantDetailActivity.startActivity(writeReviewActivityIntent);
     }
 
-    private void startSeeReviewsActivity() {
+    private void seeReviews() {
         if (hasReviews())
-            restaurantDetailActivity.startActivity(createseeReviewsActivityIntent());
+            startSeeReviewsActivity();
         else
-            restaurantDetailActivity.runOnUiThread(() -> {
-                Toast.makeText(restaurantDetailActivity, "No Recensioni", Toast.LENGTH_SHORT).show();
-            });
+            showToastNoReviewsError();
     }
 
-    private Intent createseeReviewsActivityIntent() {
+    private void startSeeReviewsActivity() {
+        restaurantDetailActivity.startActivity(createSeeReviewsActivityIntent());
+    }
+
+    private Intent createSeeReviewsActivityIntent() {
         Intent seeReviewsActivityIntent = new Intent(restaurantDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
         seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getRestaurantName());
         seeReviewsActivityIntent.putExtra(ID, getRestaurantId());
         return seeReviewsActivityIntent;
     }
 
-    private boolean hasReviews() {
-        return getRestaurant().getReviews().size() > 0;
+    private void showToastNoContentError() {
+        restaurantDetailActivity.runOnUiThread(() -> {
+            Toast.makeText(restaurantDetailActivity, getNoContentErrorMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
-    private Restaurant getRestaurant() {
-        return (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
+    private void showToastNoReviewsError(){
+        restaurantDetailActivity.runOnUiThread(() -> {
+            Toast.makeText(restaurantDetailActivity, getNoReviewsErrorMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private boolean hasReviews() {
+        return restaurant.getReviews().size() > 0;
     }
 
     private String getRestaurantId() {
-        Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
-        return restaurant.getId();
+        return restaurantDetailActivity.getIntent().getStringExtra(ID);
     }
 
     private String getRestaurantName() {
-        Restaurant restaurant = (Restaurant) restaurantDetailActivity.getIntent().getSerializableExtra(RESTAURANT);
         return restaurant.getName();
+    }
+
+    private String getNoContentErrorMessage(){
+        return restaurantDetailActivity.getResources().getString(R.string.no_content_error_hotel_detail);
+    }
+
+    private String getNoReviewsErrorMessage(){
+        return restaurantDetailActivity.getResources().getString(R.string.no_review);
     }
 
 }
