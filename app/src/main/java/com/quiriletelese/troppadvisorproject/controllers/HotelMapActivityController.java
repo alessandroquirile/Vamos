@@ -50,12 +50,13 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     private HotelMapActivity hotelMapActivity;
     private BottomSheetFilterHotels bottomSheetFilterHotels;
     private AccomodationHotelFilter accomodationHotelFilter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();;
+    boolean isRelativeLayoutHotelInformationVisible = false;
     private Hotel hotel = null;
     private List<Hotel> hotels = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
-    boolean isRelativeLayoutHotelInformationVisible = false, isLinearLayoutSearchHotelsVisible = true,
-            isFloatingActionButtonCenterPositionOnHotelsVisible = true;
+    boolean isLinearLayoutSearchHotelsVisible = true;
+    boolean isFloatingActionButtonCenterPositionOnHotelsVisible = true;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
 
     public HotelMapActivityController(HotelMapActivity hotelMapActivity) {
         this.hotelMapActivity = hotelMapActivity;

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
@@ -64,7 +63,7 @@ public class CreateAccountController implements View.OnClickListener, DialogInte
 
     private void checkUserInformations() {
         getAccountInformation();
-        if (isFieldsCorrectlyInserted() && isEmailCorrectlyFilled() && isPasswordsAreEquals())
+        if (areFieldsCorrectlyInserted() && isEmailCorrectlyFilled() && arePasswordsEquals())
             createAccount();
     }
 
@@ -143,7 +142,7 @@ public class CreateAccountController implements View.OnClickListener, DialogInte
         }
     }
 
-    private boolean isFieldsCorrectlyInserted() {
+    private boolean areFieldsCorrectlyInserted() {
         return isEmailCorrectlyInserted() && isNameCorrectlyInserted() && isLastNameCorrectlyInserted()
                 && isUsernameCorrectlyInserted() && isPasswordCorrectlyInserted() && isRepeatPasswordCorrectlyInserted();
     }
@@ -212,7 +211,7 @@ public class CreateAccountController implements View.OnClickListener, DialogInte
         textInputLayout.setError(error);
     }
 
-    private boolean isPasswordsAreEquals() {
+    private boolean arePasswordsEquals() {
         if (!password.equals(repeatPassword)) {
             signUpActivity.getTextInputLayoutPassword().setError(getPasswordsNotMatchErrorMessage());
             signUpActivity.getTextInputLayoutRepeatPassword().setError(getPasswordsNotMatchErrorMessage());
@@ -298,5 +297,4 @@ public class CreateAccountController implements View.OnClickListener, DialogInte
     private String getUnexpectedErrorDuringSignUpErrorMessage() {
         return signUpActivity.getResources().getString(R.string.unexpected_error_during_sign_up);
     }
-
 }
