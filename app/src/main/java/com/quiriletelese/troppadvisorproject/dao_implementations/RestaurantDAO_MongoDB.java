@@ -29,13 +29,13 @@ import java.util.List;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     @Override
     public void findByRsql(VolleyCallBack volleyCallBack, List<String> typesOfCuisine, PointSearch pointSearch,
                            String rsqlQuery, Context context, int page, int size) {
-        findByRsqlVolley(volleyCallBack, typesOfCuisine, pointSearch, rsqlQuery,
-                context, page, size);
+        findByRsqlVolley(volleyCallBack, typesOfCuisine, pointSearch, rsqlQuery, context, page, size);
     }
 
     @Override
@@ -47,12 +47,6 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     public void findByNameLikeIgnoreCase(VolleyCallBack volleyCallBack, String name, Context context,
                                          int page, int size) {
         findByNameLikeIgnoreCaseVolley(volleyCallBack, name, context, page, size);
-    }
-
-    @Override
-    public void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context,
-                                int page, int size) {
-        findByPointNearVolley(volleyCallBack, pointSearch, context, page, size);
     }
 
     @Override
@@ -74,7 +68,8 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -88,11 +83,12 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
             volleyCallBack.onSuccess(getRestaurantFromResponse(response));
         }, error -> {
-            volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -106,7 +102,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             volleyCallBack.onSuccess(getArrayFromResponseRestaurantsName(response));
         }, error -> {
-            //volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+
         });
         requestQueue.start();
         requestQueue.add(jsonArrayRequest);
@@ -114,34 +110,15 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     private void findByNameLikeIgnoreCaseVolley(final VolleyCallBack volleyCallBack, String name, Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.start();
         String URL = createFindByNameLikeIgnoreCaseUrl(name, page, size);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
             volleyCallBack.onSuccess(getArrayFromResponse(response));
         }, error -> {
-            //volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                if (response.statusCode == 204)
-                    volleyCallBack.onError(String.valueOf(response.statusCode));
-                return super.parseNetworkResponse(response);
-            }
-        };
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context, int page, int size) {
-        final RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createFindByPointNearUrl(pointSearch, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponse(response));
-        }, error -> {
-            //volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
-        }) {
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
-                if (response.statusCode == 204)
+                if (!isStatusCodeOk(response.statusCode))
                     volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
@@ -152,6 +129,20 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
         String URL = BASE_URL + "/restaurant/search-by-rsql?";
+        if (pointSearch != null)
+            URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
+        else
+            URL = createStringSearchByRsqlUrlNoPointSearch(URL, rsqlQuery, page, size);
+        return URL;
+    }
+
+    private String createStringSearchByRsqlUrlNoPointSearch(String URL, String rsqlQuery, int page, int size){
+        URL = URL.concat("query=" + rsqlQuery);
+        URL = URL.concat("&page=" + page + "&size=" + size);
+        return URL;
+    }
+    private String createStringSearchByRsqlUrlWithPointSearch(String URL, PointSearch pointSearch,
+                                                              String rsqlQuery, int page, int size){
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
@@ -173,16 +164,6 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return URL;
     }
 
-    @NotNull
-    private String createFindByPointNearUrl(@NotNull PointSearch pointSearch, int page, int size) {
-        String URL = BASE_URL + "/restaurant/find-by-point?";
-        URL = URL.concat("latitude=" + pointSearch.getLatitude());
-        URL = URL.concat("&longitude=" + pointSearch.getLongitude());
-        URL = URL.concat("&distance=" + pointSearch.getDistance());
-        URL = URL.concat("&page=" + page + "&size=" + size);
-        return URL;
-    }
-
     private String createFindRestaurantsNameUrl(String name) {
         String URL = BASE_URL + "/restaurant/find-restaurants-name/";
         URL = URL.concat(name);
@@ -196,10 +177,8 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     private JSONArray createJsonObjectTypesOfCuisine(@NotNull JSONArray jsonObjectTypesOfCuisine,
                                                      @NotNull List<String> typesOfCuisine) {
-        System.out.println("TIPIIIIIIIIIIIIIIII = " + typesOfCuisine.toString());
         for (String typeOfCuisine : typesOfCuisine)
             jsonObjectTypesOfCuisine.put(typeOfCuisine);
-        System.out.println("OOOOOOOOOOOOOOOOOOO = " + jsonObjectTypesOfCuisine.toString());
         return jsonObjectTypesOfCuisine;
     }
 
@@ -236,6 +215,10 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     private Restaurant getRestaurantFromResponse(JSONObject response) {
         return new Gson().fromJson(response.toString(), Restaurant.class);
+    }
+
+    private boolean isStatusCodeOk(int statusCode){
+        return statusCode == 200;
     }
 
 }

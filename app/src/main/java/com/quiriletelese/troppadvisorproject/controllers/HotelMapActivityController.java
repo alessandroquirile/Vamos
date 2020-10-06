@@ -270,11 +270,11 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     private String getHotelNameValueFromBottomSheetFilter() {
-        return bottomSheetFilterHotels.getAutoCompleteTextViewMapHotelNameValue();
+        return bottomSheetFilterHotels.getAutoCompleteTextViewNameValue();
     }
 
     private String getCityNameValueFromBottomSheetFilter() {
-        return extractCityName(bottomSheetFilterHotels.getAutoCompleteTextViewMapHotelCityValue());
+        return extractCityName(bottomSheetFilterHotels.getAutoCompleteTextViewCityValue());
     }
 
     private Integer getPriceValueFromBottomSheetFilter() {

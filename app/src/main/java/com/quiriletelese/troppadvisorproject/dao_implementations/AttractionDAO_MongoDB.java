@@ -6,7 +6,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -28,18 +27,13 @@ import java.util.List;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
 
     @Override
     public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
                            Context context, int page, int size) {
         findByRsqlVolley(volleyCallBack, pointSearch, rsqlQuery, context, page, size);
-    }
-
-    @Override
-    public void findByRsqlNoPoint(VolleyCallBack volleyCallBack, String rsqlQuery, Context context,
-                                  int page, int size) {
-        findByRsqlNoPointVolley(volleyCallBack, rsqlQuery, context, page, size);
     }
 
     @Override
@@ -54,17 +48,6 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
     }
 
     @Override
-    public void findByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context,
-                                int page, int size) {
-        findByPointNearVolley(volleyCallBack, pointSearch, context, page, size);
-    }
-
-    @Override
-    public void findAllByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch, Context context) {
-        findAllByPointNearVolley(volleyCallBack, pointSearch, context);
-    }
-
-    @Override
     public void findHotelsName(VolleyCallBack volleyCallBack, String name, Context context) {
         findHotelsNameVolley(volleyCallBack, name, context);
     }
@@ -72,7 +55,6 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
     private void findByRsqlVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
                                   final Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.start();
         String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
             volleyCallBack.onSuccess(getArrayFromResponse(response));
@@ -81,43 +63,27 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    private void findByRsqlNoPointVolley(final VolleyCallBack volleyCallBack, String rsqlQuery, Context context,
-                                         int page, int size) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
-        String URL = createSearchByRsqlNoPointUrl(rsqlQuery, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponse(response));
-        }, error -> {
-
-        }) {
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
-                return super.parseNetworkResponse(response);
-            }
-        };
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void findByIdVolley(VolleyCallBack volleyCallBack, String id, Context context){
+    private void findByIdVolley(VolleyCallBack volleyCallBack, String id, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindByIdUrl(id);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
             volleyCallBack.onSuccess(getAttractionFromResponse(response));
         }, error -> {
 
-        }){
+        }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -126,9 +92,8 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
     }
 
     private void findByNameLikeIgnoreCaseVolley(final VolleyCallBack volleyCallBack, String name, Context context,
-                                                int page, int size){
+                                                int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.start();
         String URL = createFindByNameLikeIgnoreCaseUrl(name, page, size);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
             volleyCallBack.onSuccess(getArrayFromResponse(response));
@@ -137,47 +102,13 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    private void findByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context,
-                                       int page, int size) {
-        final RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
-        String URL = createFindByPointNearUrl(pointSearch, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponse(response));
-        }, error -> {
-
-        }) {
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
-                return super.parseNetworkResponse(response);
-            }
-        };
         requestQueue.add(jsonObjectRequest);
-    }
-
-    private void findAllByPointNearVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, final Context context) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createFindAllByPointNearUrl(pointSearch);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponseAllAttractions(response));
-        }, error -> {
-
-        }){
-            @Override
-            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
-                return super.parseNetworkResponse(response);
-            }
-        };
-        requestQueue.add(jsonArrayRequest);
     }
 
     private void findHotelsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
@@ -187,29 +118,38 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
             volleyCallBack.onSuccess(getArrayFromResponseAtractionsName(response));
         }, error -> {
 
-        }){
+        }) {
             @Override
             protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
-                volleyCallBack.onError(String.valueOf(response.statusCode));
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
+        requestQueue.start();
         requestQueue.add(jsonArrayRequest);
     }
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
         String URL = BASE_URL + "/attraction/search-by-rsql?";
+        if (pointSearch != null)
+            URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
+        else
+            URL = createStringSearchByRsqlUrlNoPointSearch(URL, rsqlQuery, page, size);
+        return URL;
+    }
+
+    private String createStringSearchByRsqlUrlNoPointSearch(String URL, String rsqlQuery, int page, int size){
+        URL = URL.concat("query=" + rsqlQuery);
+        URL = URL.concat("&page=" + page + "&size=" + size);
+        return URL;
+    }
+    private String createStringSearchByRsqlUrlWithPointSearch(String URL, PointSearch pointSearch,
+                                                              String rsqlQuery, int page, int size){
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
         URL = URL.concat("&query=" + "" + rsqlQuery);
-        URL = URL.concat("&page=" + page + "&size=" + size);
-        return URL;
-    }
-
-    private String createSearchByRsqlNoPointUrl(String rsqlQuery, int page, int size) {
-        String URL = BASE_URL + "/attraction/search-by-rsql-no-point?";
-        URL = URL.concat("query=" + "" + rsqlQuery);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }
@@ -224,24 +164,6 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
         String URL = BASE_URL + "/attraction/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
         URL = URL.concat("&page=" + page + "&size=" + size);
-        return URL;
-    }
-
-    @NotNull
-    private String createFindByPointNearUrl(@NotNull PointSearch pointSearch, int page, int size) {
-        String URL = BASE_URL + "/attraction/find-by-point?";
-        URL = URL.concat("latitude=" + pointSearch.getLatitude());
-        URL = URL.concat("&longitude=" + pointSearch.getLongitude());
-        URL = URL.concat("&distance=" + pointSearch.getDistance());
-        URL = URL.concat("&page=" + page + "&size=" + size);
-        return URL;
-    }
-
-    private String createFindAllByPointNearUrl(PointSearch pointSearch) {
-        String URL = BASE_URL + "/attraction/find-all-by-point?";
-        URL = URL.concat("latitude=" + pointSearch.getLatitude());
-        URL = URL.concat("&longitude=" + pointSearch.getLongitude());
-        URL = URL.concat("&distance=" + pointSearch.getDistance());
         return URL;
     }
 
@@ -270,19 +192,6 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
         return attractions;
     }
 
-    private List<Attraction> getArrayFromResponseAllAttractions(JSONArray response) {
-        List<Attraction> attractions = new ArrayList<>();
-        Gson gson = new Gson();
-        for (int i = 0; i < response.length(); i++) {
-            try {
-                attractions.add(gson.fromJson(response.getString(i), Attraction.class));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return attractions;
-    }
-
     private List<String> getArrayFromResponseAtractionsName(JSONArray response) {
         List<String> attractionsName = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
@@ -295,8 +204,12 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
         return attractionsName;
     }
 
-    private Attraction getAttractionFromResponse(JSONObject response){
+    private Attraction getAttractionFromResponse(JSONObject response) {
         return new Gson().fromJson(response.toString(), Attraction.class);
+    }
+
+    private boolean isStatusCodeOk(int statusCode){
+        return statusCode == 200;
     }
 
 }

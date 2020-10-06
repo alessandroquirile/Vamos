@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.BottomSheetFilterAttractions;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionsListAdapter;
+import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewHotelsListAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
@@ -26,6 +27,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearc
 import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationAttractionFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
+import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
@@ -38,10 +40,10 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private AttractionsListActivity attractionsListActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
     private BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
     private AccomodationAttractionFilter accomodationAttractionFilter;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
     private int page = 0, size = 3;
     private boolean isLoadingData = false, isPointSearchNull = false;
 
@@ -64,29 +66,23 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         findCitiesName(newText);
     }
 
-    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
-                                  Context context, int page, int size) {
-        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty(ATTRACTION_STORAGE_TECHNOLOGY,
-                getContext()));
-        attractionDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, context, page, size);
+    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery) {
+        AttractionDAO attractionDAO = getAttractionDAO();
+        attractionDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size);
     }
 
-    private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name, Context context,
-                                                int page, int size) {
-        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty(ATTRACTION_STORAGE_TECHNOLOGY,
-                getContext()));
-        attractionDAO.findByNameLikeIgnoreCase(volleyCallBack, name, context, page, size);
+    private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
+        AttractionDAO attractionDAO = getAttractionDAO();
+        attractionDAO.findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), page, size);
     }
 
     public void findAttractionsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty(ATTRACTION_STORAGE_TECHNOLOGY,
-                getContext()));
+        AttractionDAO attractionDAO = getAttractionDAO();
         attractionDAO.findHotelsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
-        CityDAO cityDAO = daoFactory.getCityDAO(ConfigFileReader.getProperty(CITY_STORAGE_TECHNOLOGY,
-                getContext()));
+        CityDAO cityDAO = getCityDAO();
         cityDAO.findCitiesByName(volleyCallBackCity, name, getContext());
     }
 
@@ -95,7 +91,6 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
             @Override
             public void onSuccess(Object object) {
                 volleyCallbackOnSuccess(object);
-                dismissBottomSheetFilterAttractions();
             }
 
             @Override
@@ -103,7 +98,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
                 volleyCallbackOnError(errorCode);
             }
 
-        }, pointSearch, rsqlQuery, getContext(), page, size);
+        }, pointSearch, rsqlQuery);
     }
 
     private void findByNameLikeIgnoreCase() {
@@ -117,7 +112,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
             public void onError(String errorCode) {
                 volleyCallbackOnError(errorCode);
             }
-        }, bottomSheetFilterAttractions.getAutoCompleteTextViewNameValue(), getContext(), page, size);
+        }, getAccomodationFilterNameValue());
     }
 
     private void findHotelsName(String newText) {
@@ -156,9 +151,8 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
             enableFieldsOnAutoCompleteTextViewCityChanged();
     }
 
-
     public void addRecyclerViewOnScrollListener() {
-        attractionsListActivity.getRecyclerViewAttractionsList().addOnScrollListener(new RecyclerView.OnScrollListener() {
+        getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -182,18 +176,10 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return !recyclerView.canScrollVertically(1);
     }
 
-    private void showToastNoMoreResults() {
-        isLoadingData = false;
-        setProgressBarLoadMoreInvisible();
-        attractionsListActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionsListActivity, getResources().getString(R.string.end_of_results), Toast.LENGTH_SHORT).show();
-        });
-    }
-
     private void loadMoreAttractions() {
         page += 1;
         isLoadingData = true;
-        setProgressBarLoadMoreVisible();
+        setProgressBarVisibilityOnUiThred(View.VISIBLE);
         detectSearchType();
     }
 
@@ -257,8 +243,8 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     private void detectSearchType() {
         if (!isAccomodationFilterNull()) {
             if (!isSearchingForName()) {
-                findByRsql(isSearchingForCity() ? createNullPointSearch() : createPointSearch(),
-                        !createRsqlString().equals("") ? createRsqlString() : "0");
+                findByRsql(isSearchingForCity() ? null : createPointSearch(),
+                        isRsqlEmpty() ? "0" : createRsqlString());
             } else
                 findByNameLikeIgnoreCase();
         } else
@@ -266,35 +252,61 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     }
 
     private void volleyCallbackOnSuccess(Object object) {
+        List<Attraction> attractions = (List<Attraction>) object;
         if (isLoadingData)
-            addNewAttractionsToList((List<Attraction>) object);
+            addNewAttractionsToList(attractions);
         else
-            initializeRecyclerViewOnSuccess((List<Attraction>) object);
+            initializeRecyclerViewOnSuccess(attractions);
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
     }
 
     private void volleyCallbackOnError(String errorCode) {
-        if (errorCode.equals("204")) {
-            if (isLoadingData)
-                showToastNoMoreResults();
-            else
-                showToastNoResults();
+        switch (errorCode) {
+            case "204":
+                handle204VolleyError();
+                break;
+            default:
+                handleOtherVolleyError();
+                break;
         }
+    }
+
+    private void handle204VolleyError() {
+        if (isLoadingData)
+            showToastVolleyError(R.string.end_of_results);
+        else
+            showToastVolleyError(R.string.no_attractions_found_by_filter);
+    }
+
+    private void handleOtherVolleyError() {
+        showToastVolleyError(R.string.unexpected_error_while_fetch_data);
     }
 
     private void initializeRecyclerViewOnSuccess(List<Attraction> attractions) {
         dismissBottomSheetFilterAttractions();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerViewAttractionsListAdapter = new RecyclerViewAttractionsListAdapter(getContext(), attractions);
-        attractionsListActivity.getRecyclerViewAttractionsList().setLayoutManager(linearLayoutManager);
+        recyclerViewAttractionsListAdapter = createRecyclerViewAdapter(attractions);
+        attractionsListActivity.getRecyclerViewAttractionsList().setLayoutManager(createLinearLayoutManager());
         attractionsListActivity.getRecyclerViewAttractionsList().setAdapter(recyclerViewAttractionsListAdapter);
         attractionsListActivity.getRecyclerViewAttractionsList().smoothScrollToPosition(0);
         recyclerViewAttractionsListAdapter.notifyDataSetChanged();
     }
 
+    private RecyclerViewAttractionsListAdapter createRecyclerViewAdapter(List<Attraction> attractions) {
+        return new RecyclerViewAttractionsListAdapter(getContext(), attractions);
+    }
+
+    private LinearLayoutManager createLinearLayoutManager() {
+        return new LinearLayoutManager(getContext(), setRecyclerViewVerticalOrientation(), false);
+    }
+
+    private int setRecyclerViewVerticalOrientation() {
+        return RecyclerView.VERTICAL;
+    }
+
     private void addNewAttractionsToList(List<Attraction> attractions) {
         recyclerViewAttractionsListAdapter.addListItems(attractions);
         recyclerViewAttractionsListAdapter.notifyDataSetChanged();
-        setProgressBarLoadMoreInvisible();
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
     }
 
     public void showBottomSheetFilters() {
@@ -311,25 +323,22 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return pointSearch;
     }
 
-    private PointSearch createNullPointSearch() {
-        isPointSearchNull = true;
-        PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(0d);
-        pointSearch.setLongitude(0d);
-        pointSearch.setDistance(0d);
-        return pointSearch;
-    }
-
-    private void setAutoCompleteTextViewHotelNameAdapter(List<String> hotelsName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.select_dialog_item, hotelsName);
+    private void setAutoCompleteTextViewHotelNameAdapter(List<String> attractionsNames) {
+        ArrayAdapter<String> arrayAdapter = createAutoCompleteTextViewAdapter(attractionsNames);
         bottomSheetFilterAttractions.getAutoCompleteTextViewName().setAdapter(arrayAdapter);
     }
 
-    private void setAutoCompleteTextViewHotelCityAdapter(List<String> citiesName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.select_dialog_item, citiesName);
+    private void setAutoCompleteTextViewHotelCityAdapter(List<String> citiesNames) {
+        ArrayAdapter<String> arrayAdapter = createAutoCompleteTextViewAdapter(citiesNames);
         bottomSheetFilterAttractions.getAutoCompleteTextViewCity().setAdapter(arrayAdapter);
+    }
+
+    private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> content) {
+        return new ArrayAdapter<>(getContext(), getAutoCompleteTextViewAdapterLayout(), content);
+    }
+
+    private int getAutoCompleteTextViewAdapterLayout() {
+        return android.R.layout.select_dialog_item;
     }
 
     private void dismissBottomSheetFilterAttractions() {
@@ -337,19 +346,22 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
             bottomSheetFilterAttractions.dismiss();
     }
 
-    private void showToastNoMoreAttractions() {
-        setProgressBarLoadMoreInvisible();
-        Toast.makeText(attractionsListActivity, attractionsListActivity.getResources().getString(R.string.end_of_results), Toast.LENGTH_SHORT).show();
+    private void showToastVolleyError(int string) {
+        setIsLoadingData(false);
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
+        runToastOnUiThred(string);
     }
 
-    private void setProgressBarLoadMoreVisible() {
-        ProgressBar progressBar = attractionsListActivity.getProgressBarAttractionLoadMore();
-        progressBar.setVisibility(View.VISIBLE);
+    private void runToastOnUiThred(int string) {
+        attractionsListActivity.runOnUiThread(() -> {
+            Toast.makeText(attractionsListActivity, getString(string), Toast.LENGTH_SHORT).show();
+        });
     }
 
-    private void setProgressBarLoadMoreInvisible() {
-        ProgressBar progressBar = attractionsListActivity.getProgressBarAttractionLoadMore();
-        progressBar.setVisibility(View.GONE);
+    private void setProgressBarVisibilityOnUiThred(int visibility) {
+        attractionsListActivity.runOnUiThread(() -> {
+            getProgressBarLoadMore().setVisibility(visibility);
+        });
     }
 
     public void startMapsActivity() {
@@ -362,12 +374,12 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     }
 
     private void putPointSearch(Intent attractionMapsActivityIntent) {
-        attractionMapsActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? createNullPointSearch() : createPointSearch());
+        attractionMapsActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? null : createPointSearch());
     }
 
     private void putRsqlQuery(Intent attractionMapsActivityIntent) {
         if (!isAccomodationFilterNull())
-            attractionMapsActivityIntent.putExtra(RSQL_QUERY, createRsqlString().equals("") ? "0" : createRsqlString());
+            attractionMapsActivityIntent.putExtra(RSQL_QUERY, isRsqlEmpty() ? "0" : createRsqlString());
         else
             attractionMapsActivityIntent.putExtra(RSQL_QUERY, "0");
     }
@@ -462,18 +474,36 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return rsqlString;
     }
 
-    private void showToastNoResults() {
-        attractionsListActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionsListActivity, getResources().getString(R.string.no_hotels_found_by_filter), Toast.LENGTH_SHORT).show();
-        });
+    private ProgressBar getProgressBarLoadMore() {
+        return attractionsListActivity.getProgressBarAttractionLoadMore();
     }
 
     private Context getContext() {
         return attractionsListActivity.getApplicationContext();
     }
 
+    private RecyclerView getRecyclerView() {
+        return attractionsListActivity.getRecyclerViewAttractionsList();
+    }
+
+    private boolean isRsqlEmpty(){
+        return createRsqlString().equals("");
+    }
+
     private FragmentManager getSupportFragmentManager() {
         return attractionsListActivity.getSupportFragmentManager();
+    }
+
+    private AttractionDAO getAttractionDAO(){
+        return daoFactory.getAttractionDAO(getStorageTechnology(ATTRACTION_STORAGE_TECHNOLOGY));
+    }
+
+    private CityDAO getCityDAO() {
+        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
     private String getBottomSheetFilterTag() {
@@ -482,6 +512,10 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
 
     private Resources getResources() {
         return attractionsListActivity.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
     }
 
     private Intent getIntent() {
@@ -494,6 +528,10 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
 
     private boolean isBottomSheetFilterHotelsVisible() {
         return bottomSheetFilterAttractions.isAdded();
+    }
+
+    private void setIsLoadingData(boolean value) {
+        isLoadingData = value;
     }
 
     private String getAccomodationFilterNameValue() {

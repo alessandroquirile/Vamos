@@ -2,22 +2,32 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDetailActivityController implements View.OnClickListener, Constants {
@@ -42,15 +52,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         }
     }
 
-    public void setListenerOnViewComponents() {
-        restaurantDetailActivity.getFloatingActionButtonRestaurantWriteReview().setOnClickListener(this);
-        restaurantDetailActivity.getButtonRestaurantReadReviews().setOnClickListener(this);
-    }
-
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id, Context context) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                restaurantDetailActivity.getApplicationContext()));
-        restaurantDAO.findById(volleyCallBack, id, context);
+    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
+        getResaurantDAO().findById(volleyCallBack, id, getContext());
     }
 
     public void findById() {
@@ -66,25 +69,31 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
             public void onError(String errorCode) {
                 detectVolleyError(errorCode);
             }
-        }, getRestaurantId(), restaurantDetailActivity.getApplicationContext());
+        }, getId());
     }
 
+    public void setListenerOnViewComponents() {
+        getFloatingActionButtonWriteReview().setOnClickListener(this);
+        getButtonReadReviews().setOnClickListener(this);
+    }
 
     private void initializeActivityFields() {
-        setCollapsingToolbarLayoutTitle(restaurant.getName());
+        setCollapsingToolbarLayoutTitle(getName());
         setAvarageRating(restaurant);
-        setCertificateOfExcellence(restaurant.isHasCertificateOfExcellence());
-        setAddress(restaurant.getAddress());
-        setOpeningTime(restaurant.getOpeningTime());
-        setPhoneNunmber(restaurant.getPhoneNumber());
-        setAvaragePrice(restaurant.getAvaragePrice());
-        setTypeOfCuisineList(restaurant.getTypeOfCuisine());
+        setCertificateOfExcellence(isHasCertificateOfExcellence());
+        setAddress(getAddress());
+        setOpeningTime(getOpeningTime());
+        setPhoneNunmber(getPhoneNumber());
+        setAvaragePrice(getAvaragePrice());
+        setTypeOfCuisineList(getTypeOfCuisine());
     }
 
     private void initializeViewPager() {
-        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(
-                restaurant.getImages(), restaurantDetailActivity.getApplicationContext());
-        restaurantDetailActivity.getViewPagerRestaurantDetail().setAdapter(viewPagerOverViewActivityAdapter);
+        getViewPager().setAdapter(createViewPagerOverViewActivityAdapter());
+    }
+
+    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter(){
+        return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
     }
 
     private void detectVolleyError(String errorCode) {
@@ -96,36 +105,32 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private void setCollapsingToolbarLayoutTitle(String title) {
-        restaurantDetailActivity.getCollapsingToolbarLayoutRestaurantDetailActivity().setTitle(title);
+        getCollapsingToolbarLayout().setTitle(title);
     }
 
     private void setAvarageRating(Restaurant restaurant) {
         if (!hasAvarageRating(restaurant.getAvarageRating()))
-            restaurantDetailActivity.getTextViewRestaurantAvarageRating().setText(R.string.no_review);
+            getTextViewAvarageRating().setText(R.string.no_review);
         else
-            restaurantDetailActivity.getTextViewRestaurantAvarageRating().setText(createAvarageRatingString(restaurant));
-    }
-
-    private boolean hasAvarageRating(Integer avarageRating) {
-        return !avarageRating.equals(0);
+            getTextViewAvarageRating().setText(createAvarageRatingString(restaurant));
     }
 
     private String createAvarageRatingString(Restaurant restaurant) {
         String avarageRating = "";
         avarageRating = avarageRating.concat(restaurant.getAvarageRating() + "/5 (");
         avarageRating = avarageRating.concat(restaurant.getTotalReviews() + " ");
-        avarageRating = avarageRating.concat(restaurantDetailActivity.getResources().getString(R.string.reviews) + ")");
+        avarageRating = avarageRating.concat(getString(R.string.reviews) + ")");
         return avarageRating;
     }
 
     private void setCertificateOfExcellence(boolean certificateOfExcellence) {
         if (!certificateOfExcellence)
-            restaurantDetailActivity.getTextViewRestaurantCertificateOfExcellence().setVisibility(View.GONE);
+            getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
     private void setAddress(Address address) {
         String restaurantAddress = createAddressString(address);
-        restaurantDetailActivity.getTextViewRestaurantAddress().setText(restaurantAddress);
+        getTextViewAddress().setText(restaurantAddress);
     }
 
     private String createAddressString(Address address) {
@@ -141,29 +146,27 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
 
     private void setOpeningTime(String openingTime) {
         if (!openingTime.equals(""))
-            restaurantDetailActivity.getTextViewRestaurantOpeningTime().setText(openingTime);
+            getTextViewOpeningTime().setText(openingTime);
         else
-            restaurantDetailActivity.getTextViewRestaurantOpeningTime().setText(restaurantDetailActivity
-                    .getResources().getString(R.string.no_information_available));
+            getTextViewOpeningTime().setText(getString(R.string.no_information_available));
     }
 
     private void setPhoneNunmber(String phoneNumber) {
         if (!phoneNumber.equals(""))
-            restaurantDetailActivity.getTextViewRestaurantPhoneNumber().setText(phoneNumber);
+            getTextViewPhoneNumber().setText(phoneNumber);
         else
-            restaurantDetailActivity.getTextViewRestaurantPhoneNumber().setText(restaurantDetailActivity
-                    .getResources().getString(R.string.no_phone_number));
+            getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
     private void setAvaragePrice(Integer price) {
-        restaurantDetailActivity.getTextViewRestaurantAvaragePrice().setText(createAvaragePriceString(price));
+        getTextViewAvaragePrice().setText(createAvaragePriceString(price));
     }
 
     private String createAvaragePriceString(Integer price) {
         String avaragePrice = "";
-        avaragePrice = avaragePrice.concat(restaurantDetailActivity.getResources().getString(R.string.avarage_price) + " ");
+        avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
         avaragePrice = avaragePrice.concat(price + " ");
-        avaragePrice = avaragePrice.concat(restaurantDetailActivity.getResources().getString(R.string.currency));
+        avaragePrice = avaragePrice.concat(getString(R.string.currency));
         return avaragePrice;
     }
 
@@ -176,21 +179,35 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private void setTypeOfCuisineListHelper(String cuisine) {
-        String typeOfCuisine = restaurantDetailActivity.getTextViewTypeOfCuisineList().getText().toString();
+        String typeOfCuisine = getTextViewTypeOfCuisineListText();
         typeOfCuisine = typeOfCuisine.concat("- " + cuisine + "\n");
-        restaurantDetailActivity.getTextViewTypeOfCuisineList().setText(typeOfCuisine);
+        getTextViewTypeOfCuisineList().setText(typeOfCuisine);
     }
 
     private void setTypeOfCuisineListEmpty() {
-        restaurantDetailActivity.getTextViewTypeOfCuisineList().setText(restaurantDetailActivity
-                .getResources().getString(R.string.no_information_available));
+        getTextViewTypeOfCuisineList().setText(getString(R.string.no_information_available));
     }
 
     private void startWriteReviewActivity() {
-        Intent writeReviewActivityIntent = new Intent(restaurantDetailActivity.getApplicationContext(), WriteReviewActivity.class);
-        writeReviewActivityIntent.putExtra(ID, getRestaurantId());
+        restaurantDetailActivity.startActivity(createWriteReviewActivityIntent());
+    }
+
+    private void startSeeReviewsActivity() {
+        restaurantDetailActivity.startActivity(createSeeReviewsActivityIntent());
+    }
+
+    private Intent createWriteReviewActivityIntent() {
+        Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
+        writeReviewActivityIntent.putExtra(ID, getId());
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
-        restaurantDetailActivity.startActivity(writeReviewActivityIntent);
+        return writeReviewActivityIntent;
+    }
+
+    private Intent createSeeReviewsActivityIntent() {
+        Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
+        seeReviewsActivityIntent.putExtra(ID, getId());
+        return seeReviewsActivityIntent;
     }
 
     private void seeReviews() {
@@ -198,17 +215,6 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
             startSeeReviewsActivity();
         else
             showToastNoReviewsError();
-    }
-
-    private void startSeeReviewsActivity() {
-        restaurantDetailActivity.startActivity(createSeeReviewsActivityIntent());
-    }
-
-    private Intent createSeeReviewsActivityIntent() {
-        Intent seeReviewsActivityIntent = new Intent(restaurantDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getRestaurantName());
-        seeReviewsActivityIntent.putExtra(ID, getRestaurantId());
-        return seeReviewsActivityIntent;
     }
 
     private void showToastNoContentError() {
@@ -223,24 +229,132 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         });
     }
 
+    private CollapsingToolbarLayout getCollapsingToolbarLayout(){
+        return restaurantDetailActivity.getCollapsingToolbarLayout();
+    }
+
+    private TextView getTextViewOpeningTime(){
+        return restaurantDetailActivity.getTextViewOpeningTime();
+    }
+
+    private TextView getTextViewPhoneNumber(){
+        return restaurantDetailActivity.getTextViewPhoneNumber();
+    }
+
+    private TextView getTextViewAddress(){
+        return restaurantDetailActivity.getTextViewAddress();
+    }
+
+    private TextView getTextViewCertificateOfExcellence(){
+        return restaurantDetailActivity.getTextViewCertificateOfExcellence();
+    }
+
+    private TextView getTextViewAvarageRating(){
+        return restaurantDetailActivity.getTextViewAvarageRating();
+    }
+
+    private TextView getTextViewAvaragePrice(){
+        return restaurantDetailActivity.getTextViewAvaragePrice();
+    }
+
+    private TextView getTextViewTypeOfCuisineList() {
+        return restaurantDetailActivity.getTextViewTypeOfCuisineList();
+    }
+
+    private String getTextViewTypeOfCuisineListText(){
+        return getTextViewTypeOfCuisineList().getText().toString();
+    }
+
+    private FloatingActionButton getFloatingActionButtonWriteReview(){
+        return restaurantDetailActivity.getFloatingActionButtonWriteReview();
+    }
+
+    private Button getButtonReadReviews(){
+        return restaurantDetailActivity.getButtonReadReviews();
+    }
+
+    private boolean hasAvarageRating(Integer avarageRating) {
+        return !avarageRating.equals(0);
+    }
+
     private boolean hasReviews() {
-        return restaurant.getReviews().size() > 0;
+        return getReviews().size() > 0;
     }
 
-    private String getRestaurantId() {
-        return restaurantDetailActivity.getIntent().getStringExtra(ID);
+    private ViewPager getViewPager(){
+        return restaurantDetailActivity.getViewPager();
     }
 
-    private String getRestaurantName() {
+    private List<String> getImages(){
+        return restaurant.getImages();
+    }
+
+    private List<Review> getReviews(){
+        return restaurant.getReviews();
+    }
+
+    private Intent getIntent(){
+        return restaurantDetailActivity.getIntent();
+    }
+
+    private String getId() {
+        return getIntent().getStringExtra(ID);
+    }
+
+    private String getName(){
         return restaurant.getName();
     }
 
+    private Integer getAvaragePrice(){
+        return restaurant.getAvaragePrice();
+    }
+
+    private boolean isHasCertificateOfExcellence(){
+        return restaurant.isHasCertificateOfExcellence();
+    }
+
+    private Address getAddress(){
+        return restaurant.getAddress();
+    }
+
+    private String getOpeningTime() {
+        return restaurant.getOpeningTime();
+    }
+
+    private String getPhoneNumber(){
+        return restaurant.getPhoneNumber();
+    }
+
+    private List<String> getTypeOfCuisine(){
+        return restaurant.getTypeOfCuisine();
+    }
+
+    private Context getContext() {
+        return restaurantDetailActivity.getApplicationContext();
+    }
+
+    private Resources getResources(){
+        return restaurantDetailActivity.getResources();
+    }
+
+    private String getString(int id){
+        return getResources().getString(id);
+    }
+
+    private RestaurantDAO getResaurantDAO() {
+        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
     private String getNoContentErrorMessage(){
-        return restaurantDetailActivity.getResources().getString(R.string.no_content_error_hotel_detail);
+        return getString(R.string.no_content_error_hotel_detail);
     }
 
     private String getNoReviewsErrorMessage(){
-        return restaurantDetailActivity.getResources().getString(R.string.no_review);
+        return getString(R.string.no_review);
     }
 
 }

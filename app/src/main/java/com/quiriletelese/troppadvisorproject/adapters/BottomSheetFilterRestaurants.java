@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -224,6 +225,14 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
 
     public AutoCompleteTextView getAutoCompleteTextViewCity() {
         return autoCompleteTextViewCity;
+    }
+
+    public void setAutoCompleteTextViewNameAdapter(ArrayAdapter<String> arrayAdapter ) {
+        autoCompleteTextViewName.setAdapter(arrayAdapter);
+    }
+
+    public void setAutoCompleteTextViewCityAdapter(ArrayAdapter<String> arrayAdapter ) {
+        autoCompleteTextViewCity.setAdapter(arrayAdapter);
     }
 
     public SeekBar getSeekBarPrice() {

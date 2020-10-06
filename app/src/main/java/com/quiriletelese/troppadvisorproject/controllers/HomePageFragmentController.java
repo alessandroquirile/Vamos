@@ -1,12 +1,16 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionAdapter;
@@ -28,6 +32,7 @@ import com.quiriletelese.troppadvisorproject.views.HomePageFragment;
 import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,15 +40,17 @@ import java.util.List;
 public class HomePageFragmentController implements View.OnClickListener, Constants {
 
     private HomePageFragment homePageFragment;
-    private DAOFactory daoFactory;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
     private GPSTracker gpsTracker;
     private RecyclerViewHotelAdapter recyclerViewHotelAdapter;
     private RecyclerViewRestaurantAdapter recyclerViewRestaurantAdapter;
     private RecyclerViewAttractionAdapter recyclerViewAttractionAdapter;
+    private LinearLayoutManager linearLayoutManager;
     private PointSearch pointSearch;
 
     public HomePageFragmentController(HomePageFragment homePageFragment) {
         this.homePageFragment = homePageFragment;
+        gpsTracker = createGpsTracker();
     }
 
     @Override
@@ -59,6 +66,165 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
                 startAttractionsListActivity();
                 break;
         }
+    }
+
+    public void findHotelsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch,
+                                       String rsqlQuery) {
+        this.pointSearch = pointSearch;
+        HotelDAO hotelDAO = getHotelDAO();
+        hotelDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10);
+    }
+
+    public void findRestaurantsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch,
+                                            String rsqlQuery) {
+        this.pointSearch = pointSearch;
+        RestaurantDAO restaurantDAO = getRestaurantDAO();
+        restaurantDAO.findByRsql(volleyCallBack, null, pointSearch, rsqlQuery, getContext(),
+                0, 10);
+    }
+
+    public void findAttractionsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch,
+                                            String rsqlQuery) {
+        this.pointSearch = pointSearch;
+        AttractionDAO attractionDAO = getAttractionDAO();
+        attractionDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10);
+    }
+
+    public void initializeRecyclerViewHotel(PointSearch pointSearch) {
+        findHotelsByRsqlHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                initializeRecyclerViewHotelOnSuccess((List<Hotel>) object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                initializeRecyclerViewHotelsOnError(errorCode);
+            }
+        }, pointSearch, "0");
+    }
+
+    public void initializeRecyclerViewRestaurant(PointSearch pointSearch) {
+        findRestaurantsByRsqlHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                initializeRecyclerViewRestaurantOnSuccess((List<Restaurant>) object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                initializeRecyclerViewRestaurantOnError(errorCode);
+            }
+        }, pointSearch, "0");
+    }
+
+    public void initializeRecyclerViewAttraction(PointSearch pointSearch) {
+        findAttractionsByRsqlHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                initializeRecyclerViewAttractionOnSuccess((List<Attraction>) object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                initializeRecyclerViewAttractionOnError(errorCode);
+            }
+        }, pointSearch, "0");
+    }
+
+    private void initializeRecyclerViewHotelOnSuccess(List<Hotel> hotels) {
+        setViewNoHotelsErrorInvisible();
+        linearLayoutManager = createLinearLayoutManager();
+        recyclerViewHotelAdapter = createRecyclerViewHotelAdapter(hotels);
+        setShimmerRecyclerViewHotelOnSuccess();
+    }
+
+    private void initializeRecyclerViewHotelsOnError(String errorCode) {
+        runNoHotelsErrorOnUiThread(errorCode);
+    }
+
+    private void initializeRecyclerViewRestaurantOnSuccess(List<Restaurant> restaurants) {
+        setViewNoRestaurantsErrorInvisible();
+        linearLayoutManager = createLinearLayoutManager();
+        recyclerViewRestaurantAdapter = createRecyclerViewRestaurantAdapter(restaurants);
+        setShimmerRecyclerViewRestaurantOnSuccess();
+    }
+
+    private void initializeRecyclerViewRestaurantOnError(String errorCode) {
+        runNoRestaurantsErrorOnUiThread(errorCode);
+    }
+
+    private void initializeRecyclerViewAttractionOnSuccess(List<Attraction> attractions) {
+        setViewNoAttractionsErrorInvisible();
+        linearLayoutManager = createLinearLayoutManager();
+        recyclerViewAttractionAdapter = createRecyclerViewAttractionAdapter(attractions);
+        setShimmerRecyclerViewAttractionOnSuccess();
+    }
+
+    private void initializeRecyclerViewAttractionOnError(String errorCode) {
+        runNoAttractionsErrorOnUiThread(errorCode);
+    }
+
+    public PointSearch getLocation() {
+        Double latitude = gpsTracker.getLatitude();
+        Double longitude = gpsTracker.getLongitude();
+        return createPointSearch(Arrays.asList(latitude, longitude, 5.0));
+    }
+
+    private PointSearch createPointSearch(List<Double> pointSearchInformation) {
+        PointSearch pointSearch = new PointSearch();
+        pointSearch.setLatitude(/*pointSearchInformation.get(0)*/40.829904);
+        pointSearch.setLongitude(/*pointSearchInformation.get(1)*/14.248052);
+        pointSearch.setDistance(/*pointSearchInformation.get(2)*/5.0);
+        return pointSearch;
+    }
+
+    public void initializeRecyclerViewsFakeContent() {
+        linearLayoutManager = createLinearLayoutManager();
+        setShimmerRecyclerViewHotelOnStart();
+        setShimmerRecyclerViewRestaurantOnStart();
+        setShimmerRecyclerViewAttractionOnStart();
+    }
+
+    public void setListenerOnViewComponents() {
+        getTextViewHotelRecyclerView().setOnClickListener(this);
+        getTextViewRestaurantRecyclerView().setOnClickListener(this);
+        getTextViewAttractionRecyclerView().setOnClickListener(this);
+    }
+
+    private LinearLayoutManager createLinearLayoutManager() {
+        return new LinearLayoutManager(getContext(), setRecyclerViewHorizontalOrientation(), false);
+    }
+
+    private int setRecyclerViewHorizontalOrientation() {
+        return RecyclerView.HORIZONTAL;
+    }
+
+    private RecyclerViewHotelAdapter createRecyclerViewHotelAdapter(List<Hotel> hotels) {
+        return new RecyclerViewHotelAdapter(getContext(), hotels);
+    }
+
+    private RecyclerViewRestaurantAdapter createRecyclerViewRestaurantAdapter(List<Restaurant> restaurants) {
+        return new RecyclerViewRestaurantAdapter(getContext(), restaurants);
+    }
+
+    private RecyclerViewAttractionAdapter createRecyclerViewAttractionAdapter(List<Attraction> attractions) {
+        return new RecyclerViewAttractionAdapter(getContext(), attractions);
+    }
+
+    private void runNoHotelsErrorOnUiThread(String errorCode) {
+        if (errorCode.equals("204"))
+            requireActivity().runOnUiThread(this::setViewNoHotelsErrorVisible);
+    }
+
+    private void runNoRestaurantsErrorOnUiThread(String errorCode) {
+        if (errorCode.equals("204"))
+            requireActivity().runOnUiThread(this::setViewNoRestaurantsErrorVisible);
+    }
+
+    private void runNoAttractionsErrorOnUiThread(String errorCode) {
+        if (errorCode.equals("204"))
+            requireActivity().runOnUiThread(this::setViewNoAttractionsErrorVisible);
     }
 
     private void startHotelsListActivity() {
@@ -79,164 +245,138 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         homePageFragment.getContext().startActivity(attractionsListActivity);
     }
 
-    public void findHotelsByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
-        this.pointSearch = pointSearch;
-        daoFactory = DAOFactory.getInstance();
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty("hotel_storage_technology", homePageFragment.requireActivity()));
-        hotelDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext(), 0, 10);
-    }
-
-    public void findRestaurantsByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
-        this.pointSearch = pointSearch;
-        daoFactory = DAOFactory.getInstance();
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty("restaurant_storage_technology", homePageFragment.requireActivity()));
-        restaurantDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext(), 0, 10);
-    }
-
-    public void findAttractionsByPointNear(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
-        this.pointSearch = pointSearch;
-        daoFactory = DAOFactory.getInstance();
-        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty("attraction_storage_technology", homePageFragment.requireActivity()));
-        attractionDAO.findByPointNear(volleyCallBack, pointSearch, homePageFragment.getContext(), 0, 10);
-    }
-
-    public void initializeRecyclerViewHotel(PointSearch pointSearch) {
-        findHotelsByPointNear(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                initializeRecyclerViewHotelOnSuccess((List<Hotel>) object);
-            }
-
-            @Override
-            public void onError(String errorCode) {
-                initializeRecyclerViewHotelOnError(errorCode);
-            }
-        }, pointSearch);
-    }
-
-    private void initializeRecyclerViewHotelOnSuccess(List<Hotel> hotels) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewHotelAdapter = new RecyclerViewHotelAdapter(homePageFragment.getActivity(), hotels);
-        homePageFragment.getShimmerRecyclerViewHotel().setLayoutManager(linearLayoutManager);
-        homePageFragment.getShimmerRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
-    }
-
-    private void initializeRecyclerViewHotelOnError(String errorCode) {
-        if (errorCode.equals("204"))
-            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(homePageFragment.getContext(), "Nessun hotel trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
-                }
-            });
-    }
-
-    public void initializeRecyclerViewRestaurant(PointSearch pointSearch) {
-        findRestaurantsByPointNear(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                initializeRecyclerViewRestaurantOnSuccess((List<Restaurant>) object);
-            }
-
-            @Override
-            public void onError(String errorCode) {
-                initializeRecyclerViewRestaurantOnError(errorCode);
-            }
-        }, pointSearch);
-    }
-
-    private void initializeRecyclerViewRestaurantOnSuccess(List<Restaurant> restaurants) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewRestaurantAdapter = new RecyclerViewRestaurantAdapter(homePageFragment.getActivity(), restaurants);
-        homePageFragment.getShimmerRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
-        homePageFragment.getShimmerRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
-    }
-
-    private void initializeRecyclerViewRestaurantOnError(String errorCode) {
-        if (errorCode.equals("204"))
-            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(homePageFragment.getContext(), "Nessun ristorante trovato nelle vicinanze", Toast.LENGTH_SHORT).show();
-                }
-            });
-    }
-
-    public void initializeRecyclerViewAttraction(PointSearch pointSearch) {
-        findAttractionsByPointNear(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                initializeRecyclerViewAttractionOnSuccess((List<Attraction>) object);
-            }
-
-            @Override
-            public void onError(String errorCode) {
-                initializeRecyclerViewAttractionOnError(errorCode);
-            }
-        }, pointSearch);
-    }
-
-    private void initializeRecyclerViewAttractionOnSuccess(List<Attraction> attractions) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewAttractionAdapter = new RecyclerViewAttractionAdapter(homePageFragment.getActivity(), attractions);
-        homePageFragment.getShimmerRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
-        homePageFragment.getShimmerRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
-    }
-
-    private void initializeRecyclerViewAttractionOnError(String errorCode) {
-        if (errorCode.equals("204"))
-            homePageFragment.requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(homePageFragment.getContext(), "Nessun attrazione trovato nelle vicinanze",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-    }
-
-    public PointSearch getLocation() {
-        gpsTracker = new GPSTracker(homePageFragment.getActivity());
-        if (gpsTracker.canGetLocation()) {
-            Double latitude = gpsTracker.getLatitude();
-            Double longitude = gpsTracker.getLongitude();
-            return createPointSearch(Arrays.asList(latitude, longitude, 1.0));
-        } else {
-            Toast.makeText(homePageFragment.getContext(), "NO", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-    }
-
-    private PointSearch createPointSearch(List<Double> pointSearchInformation) {
-        PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(/*pointSearchInformation.get(0)*/40.829904);
-        pointSearch.setLongitude(/*pointSearchInformation.get(1)*/14.248052);
-        pointSearch.setDistance(/*pointSearchInformation.get(2)*/5.0);
-        return pointSearch;
-    }
-
-    public void initializeRecyclerViewsFakeContent(){
-        homePageFragment.getShimmerRecyclerViewHotel().setLayoutManager(new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false) );
-        homePageFragment.getShimmerRecyclerViewRestaurant().setLayoutManager(new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        homePageFragment.getShimmerRecyclerViewAttraction().setLayoutManager(new LinearLayoutManager(homePageFragment.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        homePageFragment.getShimmerRecyclerViewHotel().showShimmer();
-        homePageFragment.getShimmerRecyclerViewRestaurant().showShimmer();
-        homePageFragment.getShimmerRecyclerViewAttraction().showShimmer();
-
-
-    }
-
-    public void setListenerOnViewComponents() {
-        homePageFragment.getTextViewHotelRecyclerView().setOnClickListener(this);
-        homePageFragment.getTextViewRestaurantRecyclerView().setOnClickListener(this);
-        homePageFragment.getTextViewAttractionRecyclerView().setOnClickListener(this);
-    }
-
     public boolean checkPermission(String permission) {
         return ContextCompat.checkSelfPermission(homePageFragment.requireContext(), permission) == PackageManager.PERMISSION_DENIED;
     }
 
     public void requestPermission(String[] permission, int requestCode) {
         homePageFragment.requestPermissions(permission, requestCode);
+    }
+
+    private Context getContext() {
+        return homePageFragment.getContext();
+    }
+
+    private FragmentActivity requireActivity() {
+        return homePageFragment.requireActivity();
+    }
+
+    private GPSTracker createGpsTracker() {
+        return new GPSTracker(homePageFragment.getActivity());
+    }
+
+    public boolean canGeolocate() {
+        return gpsTracker.canGetLocation();
+    }
+
+    public boolean areCoordinatesNull() {
+        return gpsTracker.getLatitude() == 0 || gpsTracker.getLongitude() == 0;
+    }
+
+    private HotelDAO getHotelDAO() {
+        return daoFactory.getHotelDAO(getStorageTechnology(HOTEL_STORAGE_TECHNOLOGY));
+    }
+
+    private RestaurantDAO getRestaurantDAO() {
+        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+    }
+
+    private AttractionDAO getAttractionDAO() {
+        return daoFactory.getAttractionDAO(getStorageTechnology(ATTRACTION_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    private TextView getTextViewHotelRecyclerView() {
+        return homePageFragment.getTextViewHotelRecyclerView();
+    }
+
+    private TextView getTextViewRestaurantRecyclerView() {
+        return homePageFragment.getTextViewRestaurantRecyclerView();
+    }
+
+    private TextView getTextViewAttractionRecyclerView() {
+        return homePageFragment.getTextViewAttractionRecyclerView();
+    }
+
+    private ShimmerRecyclerView getShimmerRecyclerViewHotel() {
+        return homePageFragment.getShimmerRecyclerViewHotel();
+    }
+
+    private void setShimmerRecyclerViewHotelOnSuccess() {
+        getShimmerRecyclerViewHotel().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewHotel().setAdapter(recyclerViewHotelAdapter);
+    }
+
+    private void setShimmerRecyclerViewHotelOnStart() {
+        getShimmerRecyclerViewHotel().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewHotel().showShimmer();
+    }
+
+    private ShimmerRecyclerView getShimmerRecyclerViewRestaurant() {
+        return homePageFragment.getShimmerRecyclerViewRestaurant();
+    }
+
+    private void setShimmerRecyclerViewRestaurantOnSuccess() {
+        getShimmerRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewRestaurant().setAdapter(recyclerViewRestaurantAdapter);
+    }
+
+    private void setShimmerRecyclerViewRestaurantOnStart() {
+        getShimmerRecyclerViewRestaurant().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewRestaurant().showShimmer();
+    }
+
+    private ShimmerRecyclerView getShimmerRecyclerViewAttraction() {
+        return homePageFragment.getShimmerRecyclerViewAttraction();
+    }
+
+    private void setShimmerRecyclerViewAttractionOnSuccess() {
+        getShimmerRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewAttraction().setAdapter(recyclerViewAttractionAdapter);
+    }
+
+    private void setShimmerRecyclerViewAttractionOnStart() {
+        getShimmerRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewAttraction().showShimmer();
+    }
+
+    private View getViewNoHotelsError() {
+        return homePageFragment.getViewNoHotelsError();
+    }
+
+    private void setViewNoHotelsErrorVisible() {
+        getViewNoHotelsError().setVisibility(View.VISIBLE);
+    }
+
+    private void setViewNoHotelsErrorInvisible() {
+        getViewNoHotelsError().setVisibility(View.GONE);
+    }
+
+    private View getViewNoRestaurantsError() {
+        return homePageFragment.getViewNoRestaurantsError();
+    }
+
+    private void setViewNoRestaurantsErrorVisible() {
+        getViewNoRestaurantsError().setVisibility(View.VISIBLE);
+    }
+
+    private void setViewNoRestaurantsErrorInvisible() {
+        getViewNoRestaurantsError().setVisibility(View.GONE);
+    }
+
+    private View getViewNoAttractionsError() {
+        return homePageFragment.getViewNoAttractionsError();
+    }
+
+    private void setViewNoAttractionsErrorVisible() {
+        getViewNoAttractionsError().setVisibility(View.VISIBLE);
+    }
+
+    private void setViewNoAttractionsErrorInvisible() {
+        getViewNoAttractionsError().setVisibility(View.GONE);
     }
 
 }

@@ -36,7 +36,7 @@
         <activity android:name=".views.AttractionDetailActivity" />
         <activity
             android:name=".views.SplashScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

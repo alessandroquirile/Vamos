@@ -3,12 +3,19 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -23,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.BottomSheetFilterRestaurants;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
@@ -35,7 +43,6 @@ import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearc
 import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationRestaurantFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
@@ -51,7 +58,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         Constants {
 
     private RestaurantMapActivity restaurantMapActivity;
-    private BottomSheetFilterRestaurants bottomSheetFilterRestaurants;
+    private BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
     private AccomodationRestaurantFilter accomodationRestaurantFilter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant = null;
@@ -63,7 +70,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     public RestaurantMapActivityController(RestaurantMapActivity restaurantMapActivity) {
         this.restaurantMapActivity = restaurantMapActivity;
-        accomodationRestaurantFilter = getAccomodationRestaurantFilter();
+        accomodationRestaurantFilter = getAccomodationFilter();
     }
 
     @Override
@@ -84,7 +91,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
                 showBottomSheetMapFilters();
                 break;
             case R.id.image_view_restaurant_map_go_back:
-                restaurantMapActivity.onBackPressed();
+                onBackPressed();
                 break;
             case R.id.floating_action_button_center_position_on_restaurants:
                 zoomOnMap();
@@ -108,35 +115,24 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void findByRsqlHelper(VolleyCallBack volleyCallBack, List<String> typesOfCuisine, PointSearch pointSearch,
-                                  String rsqlQuery, Context context, int page, int size) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                restaurantMapActivity.getApplicationContext()));
-        restaurantDAO.findByRsql(volleyCallBack, typesOfCuisine, pointSearch, rsqlQuery, context, page, size);
+                                  String rsqlQuery) {
+        getResaurantDAO().findByRsql(volleyCallBack, typesOfCuisine, pointSearch, rsqlQuery, getContext(), 0, 10000);
     }
 
-    private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name, Context context,
-                                                int page, int size) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                restaurantMapActivity.getApplicationContext()));
-        restaurantDAO.findByNameLikeIgnoreCase(volleyCallBack, name, context, page, size);
+    private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
+        getResaurantDAO().findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), 0, 10000);
     }
 
     public void findRestaurantsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                restaurantMapActivity.getApplicationContext()));
-        restaurantDAO.findRestaurantsName(volleyCallBack, name, restaurantMapActivity.getApplicationContext());
+        getResaurantDAO().findRestaurantsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
-        CityDAO cityDAO = daoFactory.getCityDAO(ConfigFileReader.getProperty(CITY_STORAGE_TECHNOLOGY,
-                restaurantMapActivity.getApplicationContext()));
-        cityDAO.findCitiesByName(volleyCallBackCity, name, restaurantMapActivity.getApplicationContext());
+        getCityDAO().findCitiesByName(volleyCallBackCity, name, getContext());
     }
 
     public void findTypeOfCuisineHelper(VolleyCallBack volleyCallBack) {
-        TypeOfCuisineDAO typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(ConfigFileReader.getProperty(CITY_STORAGE_TECHNOLOGY,
-                restaurantMapActivity.getApplicationContext()));
-        typeOfCuisineDAO.getAll(volleyCallBack, restaurantMapActivity.getApplicationContext());
+        getTypeOfCuisineDAO().getAll(volleyCallBack, getContext());
     }
 
     private void findByRsql(List<String> typesOfCuisine, PointSearch pointSearch, String rsqlQuery) {
@@ -148,11 +144,10 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
             @Override
             public void onError(String errorCode) {
-                if (errorCode.equals("204"))
-                    showToastNoResults();
+                volleyCallbackOnError(errorCode);
             }
 
-        }, typesOfCuisine, pointSearch, rsqlQuery, getContext(), 0, 10000);
+        }, typesOfCuisine, pointSearch, rsqlQuery);
     }
 
     private void findByNameLikeIgnoreCase(String name) {
@@ -164,9 +159,9 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
             @Override
             public void onError(String errorCode) {
-
+                volleyCallbackOnError(errorCode);
             }
-        }, name, getContext(), 0, 10000);
+        }, name);
     }
 
     private void findRestarantsName(String newText) {
@@ -175,7 +170,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             findRestaurantsNameHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
-                    setAutoCompleteTextViewHotelNameAdapter((List<String>) object);
+                    setAutoCompleteTextViewNameAdapter((List<String>) object);
                 }
 
                 @Override
@@ -193,7 +188,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             findCitiesNameHelper(new VolleyCallBackCity() {
                 @Override
                 public void onSuccess(Object object) {
-                    setAutoCompleteTextViewHotelCityAdapter((List<String>) object);
+                    setAutoCompleteTextViewCityAdapter((List<String>) object);
                 }
 
                 @Override
@@ -222,8 +217,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     private void setMapOnSuccess(List<Restaurant> restaurants) {
         this.restaurants = restaurants;
-        if (isBottomSheetFilterRestaurantsVisible())
-            bottomSheetFilterRestaurants.dismiss();
+        dismissBottomSheetFilterRestaurants();
         addMarkersOnSuccess(restaurants);
         zoomOnMap();
     }
@@ -261,48 +255,46 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     private void createAccomodationFilter() {
         accomodationRestaurantFilter = new AccomodationRestaurantFilter();
-        accomodationRestaurantFilter.setName(getRestaurantNameValue());
-        accomodationRestaurantFilter.setCity(getCityNameValue());
-        accomodationRestaurantFilter.setAvaragePrice(getPriceValue());
-        accomodationRestaurantFilter.setAvarageRating(getRatingValue());
-        accomodationRestaurantFilter.setDistance(getDistanceValue());
-        accomodationRestaurantFilter.setTypesOfCuisine(getMultiSpinnerSearchSelectedItems());
-        accomodationRestaurantFilter.setHasCertificateOfExcellence(getCertificateOfExcellence());
+        accomodationRestaurantFilter.setName(getRestaurantNameValueFromBottomSheetFilter());
+        accomodationRestaurantFilter.setCity(getCityNameValueFromBottomSheetFilter());
+        accomodationRestaurantFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
+        accomodationRestaurantFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
+        accomodationRestaurantFilter.setDistance(getDistanceValueFromBottomSheetFilter());
+        accomodationRestaurantFilter.setTypesOfCuisine(getMultiSpinnerSearchSelectedItemsFromBottomSheetFilter());
+        accomodationRestaurantFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
     }
 
     private void detectSearchType() {
         if (!isSearchingForName())
             findByRsql(isTypesOfCuisineListSelected() ? getAccomodationFilterTypesOfCuisine() : null,
-                    isSearchingForCity() ? createNullPointSearch() : createPointSearch(),
+                    isSearchingForCity() ? null : createPointSearch(),
                     !createRsqlString().equals("") ? createRsqlString() : "0");
         else
-            findByNameLikeIgnoreCase(bottomSheetFilterRestaurants.getAutoCompleteTextViewNameValue());
+            findByNameLikeIgnoreCase(getAccomodationFilterNameValue());
     }
 
-    private String getRestaurantNameValue() {
+    private String getRestaurantNameValueFromBottomSheetFilter() {
         return bottomSheetFilterRestaurants.getAutoCompleteTextViewNameValue();
     }
 
-    private String getCityNameValue() {
+    private String getCityNameValueFromBottomSheetFilter() {
         return extractCityName(bottomSheetFilterRestaurants.getAutoCompleteTextViewCityValue());
     }
 
-    private Integer getPriceValue() {
+    private Integer getPriceValueFromBottomSheetFilter() {
         return bottomSheetFilterRestaurants.getSeekBarPriceValue();
     }
 
-    private Integer getRatingValue() {
+    private Integer getRatingValueFromBottomSheetFilter() {
         return bottomSheetFilterRestaurants.getSeekBarRatingValue();
     }
 
-    private Double getDistanceValue() {
-        if (bottomSheetFilterRestaurants.getSeekBarDistanceValue() != 0)
-            return (double) bottomSheetFilterRestaurants.getSeekBarDistanceValue();
-        else
-            return 1d;
+    private Double getDistanceValueFromBottomSheetFilter() {
+        return isDistanceSeekbarEnabled() && isDistanceDifferentFromZero() ?
+                (double) bottomSheetFilterRestaurants.getSeekBarDistanceValue() : 1d;
     }
 
-    private boolean getCertificateOfExcellence() {
+    private boolean getCertificateOfExcellenceFromBottomSheetFilter() {
         return bottomSheetFilterRestaurants.getSwitchCompatCertificateOfExcellenceIsSelected();
     }
 
@@ -347,7 +339,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return rsqlString;
     }
 
-    private List<String> getMultiSpinnerSearchSelectedItems() {
+    private List<String> getMultiSpinnerSearchSelectedItemsFromBottomSheetFilter() {
         List<String> typeOfCuisine = new ArrayList<>();
         List<KeyPairBoolData> keyPairBoolDataList = bottomSheetFilterRestaurants.getMultiSpinnerSearchSelectedItems();
         for (KeyPairBoolData keyPairBoolData : keyPairBoolDataList)
@@ -363,7 +355,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         rsqlString = checkCertificateOfExcellence(rsqlString);
         if (!rsqlString.equals(""))
             rsqlString = rsqlString.substring(0, rsqlString.lastIndexOf(";"));
-        System.out.println("RSQLSTRING = " + rsqlString);
+        Log.d("RSQL-STRING", rsqlString);
         return rsqlString;
     }
 
@@ -373,24 +365,16 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return pointSearch;
     }
 
-    private PointSearch createNullPointSearch() {
-        PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(0d);
-        pointSearch.setLongitude(0d);
-        pointSearch.setDistance(0d);
-        return pointSearch;
+    private void setAutoCompleteTextViewNameAdapter(List<String> hotelsName) {
+        getAutoCompleteTextViewName().setAdapter(createAutoCompleteTextViewAdapter(hotelsName));
     }
 
-    private void setAutoCompleteTextViewHotelNameAdapter(List<String> hotelsName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(restaurantMapActivity.getApplicationContext(),
-                android.R.layout.select_dialog_item, hotelsName);
-        bottomSheetFilterRestaurants.getAutoCompleteTextViewName().setAdapter(arrayAdapter);
+    private void setAutoCompleteTextViewCityAdapter(List<String> citiesName) {
+        getAutoCompleteTextViewCity().setAdapter(createAutoCompleteTextViewAdapter(citiesName));
     }
 
-    private void setAutoCompleteTextViewHotelCityAdapter(List<String> citiesName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(restaurantMapActivity.getApplicationContext(),
-                android.R.layout.select_dialog_item, citiesName);
-        bottomSheetFilterRestaurants.getAutoCompleteTextViewCity().setAdapter(arrayAdapter);
+    private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> values) {
+        return new ArrayAdapter<>(getContext(), getArrayAdapterLayout(), values);
     }
 
     public void addMarkersOnMap() {
@@ -403,19 +387,35 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     private void addMarkersOnSuccess(List<Restaurant> restaurants) {
         clearAllMarkersOnMap();
         for (Restaurant restaurant : restaurants)
-            markers.add(restaurantMapActivity.getGoogleMap().addMarker(createMarkerOptions(restaurant)));
+            markers.add(addMarker(restaurant));
+    }
+
+    private Marker addMarker(Restaurant restaurant) {
+        return getGoogleMap().addMarker(createMarkerOptions(restaurant));
     }
 
     private void clearAllMarkersOnMap() {
-        restaurantMapActivity.getGoogleMap().clear();
+        getGoogleMap().clear();
         markers = new ArrayList<>();
     }
 
     private MarkerOptions createMarkerOptions(Restaurant restaurant) {
         return new MarkerOptions()
-                .position(new LatLng(restaurant.getPoint().getX(), restaurant.getPoint().getY()))
-                .icon(setCustomMarker(restaurantMapActivity.getApplicationContext(), R.drawable.restaurant_marker))
+                .position(createCoordinates(restaurant))
+                .icon(setCustomMarker(getContext(), getRestaurantMarker()))
                 .title(restaurant.getName());
+    }
+
+    private LatLng createCoordinates(Restaurant restaurant) {
+        return new LatLng(getLatitude(restaurant), getLongitude(restaurant));
+    }
+
+    private Double getLatitude(Restaurant restaurant) {
+        return restaurant.getPoint().getX();
+    }
+
+    private Double getLongitude(Restaurant restaurant) {
+        return restaurant.getPoint().getY();
     }
 
     private BitmapDescriptor setCustomMarker(Context context, int id) {
@@ -434,17 +434,17 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             builder.include(marker.getPosition());
         LatLngBounds bounds = builder.build();
         int padding = 200;
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        restaurantMapActivity.getGoogleMap().animateCamera(cu);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        getGoogleMap().animateCamera(cameraUpdate);
     }
 
     @SuppressLint("MissingPermission")
     public void setMapProperties() {
-        restaurantMapActivity.getGoogleMap().getUiSettings().setMyLocationButtonEnabled(false);
-        restaurantMapActivity.getGoogleMap().getUiSettings().setMapToolbarEnabled(false);
-        restaurantMapActivity.getGoogleMap().setMyLocationEnabled(true);
-        restaurantMapActivity.getGoogleMap().setOnMarkerClickListener(this);
-        restaurantMapActivity.getGoogleMap().setOnMapClickListener(this);
+        getGoogleMap().getUiSettings().setMyLocationButtonEnabled(false);
+        getGoogleMap().getUiSettings().setMapToolbarEnabled(false);
+        getGoogleMap().setMyLocationEnabled(true);
+        getGoogleMap().setOnMarkerClickListener(this);
+        getGoogleMap().setOnMapClickListener(this);
     }
 
     private void onMapClickHelper() {
@@ -472,41 +472,41 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             setLinearLayoutSearchRestaurantsVisible();
         if (!isFloatingActionButtonCenterPositionOnRestaurantsVisible)
             setFloatingActionButtonCenterPositionOnRestaurantsVisible();
-        setRelativeLayoutHotelInformationHotelFields(marker);
+        setRelativeLayoutInformationHotelFields(marker);
     }
 
     private void setRelativeLayoutHotelInformationVisible() {
         isRelativeLayoutRestaurantInformationVisible = true;
-        restaurantMapActivity.getRelativeLayoutRestaurantInformation().setVisibility(View.VISIBLE);
-        restaurantMapActivity.getRelativeLayoutRestaurantInformation().animate().translationY(0);
+        getRelativeLayoutDetails().setVisibility(View.VISIBLE);
+        getRelativeLayoutDetails().animate().translationY(0);
     }
 
     private void setRelativeLayoutHotelInformationInvisible() {
         isRelativeLayoutRestaurantInformationVisible = false;
-        restaurantMapActivity.getRelativeLayoutRestaurantInformation().animate().translationY(restaurantMapActivity.
-                getRelativeLayoutRestaurantInformation().getHeight() + 100);
+        getRelativeLayoutDetails().animate().translationY(
+                getRelativeLayoutDetails().getHeight() + 100);
     }
 
-    private void setRelativeLayoutHotelInformationHotelFields(Marker marker) {
+    private void setRelativeLayoutInformationHotelFields(Marker marker) {
         restaurant = getRestaurantFromMarkerClick(marker.getTitle());
-        //setHotelImage(hotel);
-        restaurantMapActivity.getTextViewRestaurantName().setText(restaurant.getName());
-        restaurantMapActivity.getTextViewRestaurantRating().setText(createReviewString(restaurant.getAvarageRating()));
-        restaurantMapActivity.getTextViewRestaurantAddress().setText(createAddressString(restaurant.getAddress()));
+        //setRestaurantImage(restaurant);
+        getTextViewName().setText(restaurant.getName());
+        getTextViewRating().setText(createReviewString(restaurant.getAvarageRating()));
+        getTextViewAddress().setText(createAddressString(restaurant.getAddress()));
     }
 
-    private void setRestaurantImage(Hotel hotel) {
-        if (hasImage(hotel))
-            Picasso.with(restaurantMapActivity.getApplicationContext())
-                    .load(hotel.getImages().get(0))
+    private void setRestaurantImage(Restaurant restaurant) {
+        if (hasImage(restaurant))
+            Picasso.with(getContext())
+                    .load(restaurant.getImages().get(0))
                     .placeholder(R.drawable.troppadvisor_logo)
-                    .into(restaurantMapActivity.getImageViewRestaurant());
+                    .into(getImageViewRestaurant());
         else
-            restaurantMapActivity.getImageViewRestaurant().setImageDrawable(null);
+            getImageViewRestaurant().setImageDrawable(null);
     }
 
-    private boolean hasImage(Hotel hotel) {
-        return hotel.getImages().size() > 0;
+    private boolean hasImage(Restaurant restaurant) {
+        return restaurant.getImages().size() > 0;
     }
 
     private String createAddressString(Address address) {
@@ -541,28 +541,35 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void setLinearLayoutSearchRestaurantsVisible() {
-        isLinearLayoutSearchRestaurantsVisible = true;
-        restaurantMapActivity.getLinearLayoutSearchRestaurants().animate().translationY(0);
+        setIsLinearLayoutSearchRestaurantsVisible(true);
+        getLinearLayoutSearchRestaurants().animate().translationY(0);
     }
 
     private void setLinearLayoutSearchRestaurantsInvisible() {
-        isLinearLayoutSearchRestaurantsVisible = false;
-        restaurantMapActivity.getLinearLayoutSearchRestaurants().animate().translationY(-restaurantMapActivity.
-                getLinearLayoutSearchRestaurants().getHeight() - 100);
+        setIsLinearLayoutSearchRestaurantsVisible(false);
+        getLinearLayoutSearchRestaurants().animate().translationY(-getLinearLayoutSearchRestaurants()
+                .getHeight() - 100);
     }
 
     private void setFloatingActionButtonCenterPositionOnRestaurantsVisible() {
-        isFloatingActionButtonCenterPositionOnRestaurantsVisible = true;
-        restaurantMapActivity.getFloatingActionButtonCenterPositionOnRestaurants().show();
+        setIsFloatingActionButtonCenterPositionOnRestaurantsVisible(true);
+        getFloatingActionButtonCenterPositionOnRestaurants().show();
     }
 
     private void setFloatingActionButtonCenterPositionOnRestaurantsInvisible() {
-        isFloatingActionButtonCenterPositionOnRestaurantsVisible = false;
-        restaurantMapActivity.getFloatingActionButtonCenterPositionOnRestaurants().hide();
+        setIsFloatingActionButtonCenterPositionOnRestaurantsVisible(false);
+        getFloatingActionButtonCenterPositionOnRestaurants().hide();
+    }
+
+    private void setIsFloatingActionButtonCenterPositionOnRestaurantsVisible(boolean value) {
+        isFloatingActionButtonCenterPositionOnRestaurantsVisible = value;
+    }
+
+    private void setIsLinearLayoutSearchRestaurantsVisible(boolean value) {
+        isLinearLayoutSearchRestaurantsVisible = value;
     }
 
     private void showBottomSheetMapFilters() {
-        bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
         bottomSheetFilterRestaurants.show(restaurantMapActivity.getSupportFragmentManager(), bottomSheetFilterRestaurants.getTag());
         setBottomSheetFiltersFields();
         setTypesOfCuisine();
@@ -594,38 +601,94 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void setFields() {
-        bottomSheetFilterRestaurants.getAutoCompleteTextViewName().setText(getAccomodationFilterNameValue());
-        bottomSheetFilterRestaurants.getAutoCompleteTextViewCity().setText(getAccomodationFilterCityValue());
-        bottomSheetFilterRestaurants.getSeekBarPrice().setProgress(getAccomodationFilterAvaragePriceValue());
-        bottomSheetFilterRestaurants.getSeekBarRating().setProgress(getAccomodationFilterAvarageRatingValue());
-        bottomSheetFilterRestaurants.getSeekBarDistance().setProgress(getAccomodationFilterDistanceValue().intValue());
+        bottomSheetFilterRestaurants.setAutoCompleteTextViewNameText(getAccomodationFilterNameValue());
+        bottomSheetFilterRestaurants.setAutoCompleteTextViewCityText(getAccomodationFilterCityValue());
+        bottomSheetFilterRestaurants.setSeekBarPriceProgress(getAccomodationFilterAvaragePriceValue());
+        bottomSheetFilterRestaurants.setSeekBarRatingProgress(getAccomodationFilterAvarageRatingValue());
+        bottomSheetFilterRestaurants.setSeekBarDistanceProgress(getAccomodationFilterDistanceValue().intValue());
         if (isSearchingForCity() || isSearchingForName())
             bottomSheetFilterRestaurants.setSeekBarDistanceEnabled(false);
-        bottomSheetFilterRestaurants.getSwitchCompatCertificateOfExcellence().setChecked(accomodationRestaurantFilter.isHasCertificateOfExcellence());
+        bottomSheetFilterRestaurants.getSwitchCompatCertificateOfExcellence().setChecked(getAccomodationFilterHasCertificateOfExcellenceValue());
     }
 
-    private void showToastNoResults() {
+    private void volleyCallbackOnError(String errorCode) {
+        switch (errorCode) {
+            case "204":
+                handle204VolleyError();
+                break;
+            default:
+                handleOtherVolleyError();
+                break;
+        }
+    }
+
+    private void handle204VolleyError() {
+        showToastVolleyError(R.string.no_restaurants_found_by_filter);
+    }
+
+    private void handleOtherVolleyError() {
+        showToastVolleyError(R.string.unexpected_error_while_fetch_data);
+    }
+
+    private void showToastVolleyError(int string) {
+        showToastOnUiThred(string);
+    }
+
+    private void showToastOnUiThred(int string) {
         restaurantMapActivity.runOnUiThread(() -> {
-            Toast.makeText(restaurantMapActivity, restaurantMapActivity.getResources().getString(R.string.no_hotels_found_by_filter), Toast.LENGTH_SHORT).show();
+            Toast.makeText(restaurantMapActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
     }
 
     public void setComponentProperties() {
-        restaurantMapActivity.getRelativeLayoutRestaurantInformation().animate().translationY(restaurantMapActivity.
-                getRelativeLayoutRestaurantInformation().getHeight() + 100);
+        getRelativeLayoutDetails().animate().translationY(
+                getRelativeLayoutDetails().getHeight() + 100);
     }
 
     public void setListenerOnViewComponents() {
-        restaurantMapActivity.getTextViewSearchRestaurantsOnMap().setOnClickListener(this);
-        restaurantMapActivity.getImageViewRestaurantMapGoBack().setOnClickListener(this);
-        restaurantMapActivity.getFloatingActionButtonCenterPositionOnRestaurants().setOnClickListener(this);
+        getTextViewSearchOnMap().setOnClickListener(this);
+        getImageViewRestaurantMapGoBack().setOnClickListener(this);
+        getFloatingActionButtonCenterPositionOnRestaurants().setOnClickListener(this);
+    }
+
+    private RestaurantDAO getResaurantDAO() {
+        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+    }
+
+    private CityDAO getCityDAO() {
+        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+    }
+
+    private TypeOfCuisineDAO getTypeOfCuisineDAO() {
+        return daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    private void dismissBottomSheetFilterRestaurants() {
+        if (isBottomSheetFilterRestaurantsVisible())
+            bottomSheetFilterRestaurants.dismiss();
+    }
+
+    private void onBackPressed() {
+        restaurantMapActivity.onBackPressed();
     }
 
     private Context getContext() {
         return restaurantMapActivity.getApplicationContext();
     }
 
-    private Intent getIntent(){
+    private Resources getResources() {
+        return restaurantMapActivity.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
+    }
+
+    private Intent getIntent() {
         return restaurantMapActivity.getIntent();
     }
 
@@ -641,8 +704,28 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return getIntent().getBooleanExtra(SEARCH_FOR_NAME, false);
     }
 
-    private AccomodationRestaurantFilter getAccomodationRestaurantFilter(){
+    private AccomodationRestaurantFilter getAccomodationFilter() {
         return (AccomodationRestaurantFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
+    }
+
+    private AutoCompleteTextView getAutoCompleteTextViewName() {
+        return bottomSheetFilterRestaurants.getAutoCompleteTextViewName();
+    }
+
+    private AutoCompleteTextView getAutoCompleteTextViewCity() {
+        return bottomSheetFilterRestaurants.getAutoCompleteTextViewCity();
+    }
+
+    private int getArrayAdapterLayout() {
+        return android.R.layout.select_dialog_item;
+    }
+
+    private GoogleMap getGoogleMap() {
+        return restaurantMapActivity.getGoogleMap();
+    }
+
+    private int getRestaurantMarker() {
+        return R.drawable.restaurant_marker;
     }
 
     private String getRestaurantName() {
@@ -681,6 +764,50 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return accomodationRestaurantFilter.isHasCertificateOfExcellence();
     }
 
+    private TextView getTextViewSearchOnMap() {
+        return restaurantMapActivity.getTextViewSearchOnMap();
+    }
+
+    private ImageView getImageViewRestaurantMapGoBack() {
+        return restaurantMapActivity.getImageViewMapGoBack();
+    }
+
+    private RelativeLayout getRelativeLayoutDetails() {
+        return restaurantMapActivity.getRelativeLayoutDetails();
+    }
+
+    private TextView getTextViewName() {
+        return restaurantMapActivity.getTextViewName();
+    }
+
+    private TextView getTextViewRating() {
+        return restaurantMapActivity.getTextViewRating();
+    }
+
+    private TextView getTextViewAddress() {
+        return restaurantMapActivity.getTextViewAddress();
+    }
+
+    private ImageView getImageViewRestaurant() {
+        return restaurantMapActivity.getImageViewRestaurant();
+    }
+
+    private LinearLayout getLinearLayoutSearchRestaurants() {
+        return restaurantMapActivity.getLinearLayoutSearchRestaurants();
+    }
+
+    private FloatingActionButton getFloatingActionButtonCenterPositionOnRestaurants() {
+        return restaurantMapActivity.getFloatingActionButtonCenterPositionOnRestaurants();
+    }
+
+    private boolean isDistanceSeekbarEnabled(){
+        return bottomSheetFilterRestaurants.getSeekBarDistance().isEnabled();
+    }
+
+    private boolean isDistanceDifferentFromZero() {
+        return bottomSheetFilterRestaurants.getSeekBarDistanceValue() != 0;
+    }
+
     private boolean isSearchingForName() {
         return !getAccomodationFilterNameValue().equals("");
     }
@@ -714,7 +841,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private boolean isBottomSheetFilterRestaurantsVisible() {
-        return bottomSheetFilterRestaurants != null && bottomSheetFilterRestaurants.isAdded();
+        return bottomSheetFilterRestaurants.isAdded();
     }
 
     private boolean isTypesOfCuisineEmpty() {

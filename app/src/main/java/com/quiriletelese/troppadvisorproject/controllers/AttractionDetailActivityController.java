@@ -2,23 +2,32 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
-import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
+
+import java.util.List;
 
 public class AttractionDetailActivityController implements View.OnClickListener, Constants {
 
@@ -42,15 +51,8 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         }
     }
 
-    public void setListenerOnViewComponents() {
-        attractionDetailActivity.getFloatingActionButtonAttractionWriteReview().setOnClickListener(this);
-        attractionDetailActivity.getButtonAttractionReadReviews().setOnClickListener(this);
-    }
-
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id, Context context) {
-        AttractionDAO attractionDAO = daoFactory.getAttractionDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                attractionDetailActivity.getApplicationContext()));
-        attractionDAO.findById(volleyCallBack, id, context);
+    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
+        getAttractionDAO().findById(volleyCallBack, id, getContext());
     }
 
     public void findById() {
@@ -66,22 +68,30 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             public void onError(String errorCode) {
                 detectVolleyError(errorCode);
             }
-        }, getAttractionId(), attractionDetailActivity.getApplicationContext());
+        }, getId());
+    }
+
+    public void setListenerOnViewComponents() {
+        getFloatingActionButtonWriteReview().setOnClickListener(this);
+        getButtonReadReviews().setOnClickListener(this);
     }
 
     public void initializeActivityFields() {
-        setCollapsingToolbarLayoutTitle(attraction.getName());
-        setAvarageRating(attraction.getAvarageRating());
-        setCertificateOfExcellence(attraction.isHasCertificateOfExcellence());
-        setAddress(attraction.getAddress());
-        setOpeningTime(attraction.getOpeningTime());
-        setPhoneNunmber(attraction.getPhoneNumber());
-        setAvaragePrice(attraction.getAvaragePrice());
+        setCollapsingToolbarLayoutTitle(getName());
+        setAvaragePrice(getAvaragePrice());
+        setAvarageRating(attraction);
+        setCertificateOfExcellence(isHasCertificateOfExcellence());
+        setAddress(getAddress());
+        setOpeningTime(getOpeningTime());
+        setPhoneNunmber(getPhoneNumber());
     }
 
     private void initializeViewPager() {
-        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(attraction.getImages(), attractionDetailActivity.getApplicationContext());
-        attractionDetailActivity.getViewPagerAttractionDetail().setAdapter(viewPagerOverViewActivityAdapter);
+        getViewPager().setAdapter(createViewPagerOverViewActivityAdapter());
+    }
+
+    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter(){
+        return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
     }
 
     private void detectVolleyError(String errorCode) {
@@ -93,24 +103,31 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private void setCollapsingToolbarLayoutTitle(String title) {
-        attractionDetailActivity.getCollapsingToolbarLayoutAttractionDetailActivity().setTitle(title);
+        getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(Integer avarageRating) {
-        if (avarageRating.equals(0))
-            attractionDetailActivity.getTextViewAttractionAvarageRating().setText(R.string.no_review);
+    private void setAvarageRating(Attraction attraction) {
+        if (!hasAvarageRating(attraction.getAvarageRating()))
+            getTextViewAvarageRating().setText(R.string.no_review);
         else
-            attractionDetailActivity.getTextViewAttractionAvarageRating().setText(avarageRating + "/5");
+            getTextViewAvarageRating().setText(createAvarageRatingString(attraction));
+    }
+
+    private String createAvarageRatingString(Attraction attraction) {
+        String avarageRating = "";
+        avarageRating = avarageRating.concat(attraction.getAvarageRating() + "/5 (");
+        avarageRating = avarageRating.concat(attraction.getTotalReviews() + " ");
+        avarageRating = avarageRating.concat(getString(R.string.reviews) + ")");
+        return avarageRating;
     }
 
     private void setCertificateOfExcellence(boolean certificateOfExcellence) {
         if (!certificateOfExcellence)
-            attractionDetailActivity.getTextViewAttractionCertificateOfExcellence().setVisibility(View.GONE);
+            getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
     private void setAddress(Address address) {
-        String restaurantAddress = createAddressString(address);
-        attractionDetailActivity.getTextViewAttractionAddress().setText(restaurantAddress);
+        getTextViewAddress().setText(createAddressString(address));
     }
 
     private String createAddressString(Address address) {
@@ -126,33 +143,30 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private void setOpeningTime(String openingTime) {
         if (!openingTime.equals(""))
-            attractionDetailActivity.getTextViewAttractionOpeningTime().setText(openingTime);
+            getTextViewOpeningTime().setText(openingTime);
         else
-            attractionDetailActivity.getTextViewAttractionOpeningTime().setText(attractionDetailActivity
-                    .getResources().getString(R.string.no_information_available));
+            getTextViewOpeningTime().setText(getString(R.string.no_information_available));
     }
 
     private void setPhoneNunmber(String phoneNumber) {
         if (!phoneNumber.equals(""))
-            attractionDetailActivity.getTextViewAttractionPhoneNumber().setText(phoneNumber);
+            getTextViewPhoneNumber().setText(phoneNumber);
         else
-            attractionDetailActivity.getTextViewAttractionPhoneNumber().setText(attractionDetailActivity
-                    .getResources().getString(R.string.no_phone_number));
+            getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
     private void setAvaragePrice(Integer price) {
         if (!price.equals(0))
-            attractionDetailActivity.getTextViewAttractionAvaragePrice().setText(createAvaragePriceString(price));
+            getTextViewAvaragePrice().setText(createAvaragePriceString(price));
         else
-            attractionDetailActivity.getTextViewAttractionAvaragePrice().setText(attractionDetailActivity
-                    .getResources().getString(R.string.gratis));
+            getTextViewAvaragePrice().setText(getString(R.string.gratis));
     }
 
     private String createAvaragePriceString(Integer price) {
         String avaragePrice = "";
-        avaragePrice = avaragePrice.concat(attractionDetailActivity.getResources().getString(R.string.avarage_price) + " ");
+        avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
         avaragePrice = avaragePrice.concat(price + " ");
-        avaragePrice = avaragePrice.concat(attractionDetailActivity.getResources().getString(R.string.currency));
+        avaragePrice = avaragePrice.concat(getString(R.string.currency));
         return avaragePrice;
     }
 
@@ -160,11 +174,22 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         attractionDetailActivity.startActivity(createWriteReviewActivityIntent());
     }
 
+    private void startSeeReviewsActivity() {
+        attractionDetailActivity.startActivity(createSeeReviewsActivityIntent());
+    }
+
     private Intent createWriteReviewActivityIntent() {
-        Intent writeReviewActivityIntent = new Intent(attractionDetailActivity.getApplicationContext(), WriteReviewActivity.class);
-        writeReviewActivityIntent.putExtra(ID, getAttractionId());
+        Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
+        writeReviewActivityIntent.putExtra(ID, getId());
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
         return writeReviewActivityIntent;
+    }
+
+    private Intent createSeeReviewsActivityIntent() {
+        Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
+        seeReviewsActivityIntent.putExtra(ID, getId());
+        return seeReviewsActivityIntent;
     }
 
     private void seeReviews() {
@@ -172,17 +197,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             startSeeReviewsActivity();
         else
             showToastNoReviewsError();
-    }
-
-    private void startSeeReviewsActivity() {
-        attractionDetailActivity.startActivity(createSeeReviewsActivityIntent());
-    }
-
-    private Intent createSeeReviewsActivityIntent() {
-        Intent seeReviewsActivityIntent = new Intent(attractionDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getAttractionName());
-        seeReviewsActivityIntent.putExtra(ID, getAttractionId());
-        return seeReviewsActivityIntent;
     }
 
     private void showToastNoContentError() {
@@ -197,24 +211,120 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         });
     }
 
+    private CollapsingToolbarLayout getCollapsingToolbarLayout(){
+        return attractionDetailActivity.getCollapsingToolbarLayout();
+    }
+
+    private TextView getTextViewOpeningTime(){
+        return attractionDetailActivity.getTextViewOpeningTime();
+    }
+
+    private TextView getTextViewPhoneNumber(){
+        return attractionDetailActivity.getTextViewPhoneNumber();
+    }
+
+    private TextView getTextViewAddress(){
+        return attractionDetailActivity.getTextViewAddress();
+    }
+
+    private TextView getTextViewCertificateOfExcellence(){
+        return attractionDetailActivity.getTextViewCertificateOfExcellence();
+    }
+
+    private TextView getTextViewAvarageRating(){
+        return attractionDetailActivity.getTextViewAvarageRating();
+    }
+
+    private TextView getTextViewAvaragePrice(){
+        return attractionDetailActivity.getTextViewAvaragePrice();
+    }
+
+    private FloatingActionButton getFloatingActionButtonWriteReview(){
+        return attractionDetailActivity.getFloatingActionButtonWriteReview();
+    }
+
+    private Button getButtonReadReviews(){
+        return attractionDetailActivity.getButtonReadReviews();
+    }
+
+    private boolean hasAvarageRating(Integer avarageRating) {
+        return !avarageRating.equals(0);
+    }
+
     private boolean hasReviews() {
-        return attraction.getReviews().size() > 0;
+        return getReviews().size() > 0;
     }
 
-    private String getAttractionId() {
-        return attractionDetailActivity.getIntent().getStringExtra(ID);
+    private ViewPager getViewPager(){
+        return attractionDetailActivity.getViewPager();
     }
 
-    private String getAttractionName(){
+    private List<String> getImages(){
+        return attraction.getImages();
+    }
+
+    private List<Review> getReviews(){
+        return attraction.getReviews();
+    }
+
+    private Intent getIntent(){
+        return attractionDetailActivity.getIntent();
+    }
+
+    private String getId() {
+        return getIntent().getStringExtra(ID);
+    }
+
+    private String getName(){
         return attraction.getName();
     }
 
+    private Integer getAvaragePrice(){
+        return attraction.getAvaragePrice();
+    }
+
+    private boolean isHasCertificateOfExcellence(){
+        return attraction.isHasCertificateOfExcellence();
+    }
+
+    private Address getAddress(){
+        return attraction.getAddress();
+    }
+
+    private String getOpeningTime() {
+        return attraction.getOpeningTime();
+    }
+
+    private String getPhoneNumber(){
+        return attraction.getPhoneNumber();
+    }
+
+    private Context getContext() {
+        return attractionDetailActivity.getApplicationContext();
+    }
+
+    private Resources getResources(){
+        return attractionDetailActivity.getResources();
+    }
+
+    private String getString(int id){
+        return getResources().getString(id);
+    }
+
+    private AttractionDAO getAttractionDAO() {
+        return daoFactory.getAttractionDAO(getStorageTechnology(ATTRACTION_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
     private String getNoContentErrorMessage(){
-        return attractionDetailActivity.getResources().getString(R.string.no_content_error_attraction_detail);
+        return getString(R.string.no_content_error_attraction_detail);
     }
 
     private String getNoReviewsErrorMessage(){
-        return attractionDetailActivity.getResources().getString(R.string.no_review);
+        return getString(R.string.no_review);
     }
 
 }

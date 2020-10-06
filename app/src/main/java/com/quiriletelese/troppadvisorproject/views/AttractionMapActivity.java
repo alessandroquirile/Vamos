@@ -22,10 +22,9 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
     private AttractionMapActivityController attractionMapActivityController;
     private GoogleMap googleMap;
     private LinearLayout linearLayoutSearchAttractions;
-    private RelativeLayout relativeLayoutAttractionInformation;
-    private ImageView imageViewAttractionMapGoBack, imageViewAttraction;
-    private TextView textViewSearchAttractionsOnMap, textViewAttractionName, textViewAttractionRating,
-            textViewAttractionAddress;
+    private RelativeLayout relativeLayoutDetails;
+    private ImageView imageViewMapGoBack, imageViewAttraction;
+    private TextView textViewSearchOnMap, textViewName, textViewRating, textViewAddress;
     private FloatingActionButton floatingActionButtonCenterPositionOnAttractions;
 
     @Override
@@ -52,13 +51,13 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
     private void intializeViewComponents(GoogleMap googleMap) {
         this.googleMap = googleMap;
         linearLayoutSearchAttractions = findViewById(R.id.linear_layout_search_attractions);
-        relativeLayoutAttractionInformation = findViewById(R.id.relative_layout_attraction_information);
-        imageViewAttractionMapGoBack = findViewById(R.id.image_view_attraction_map_go_back);
+        relativeLayoutDetails = findViewById(R.id.relative_layout_attraction_information);
+        imageViewMapGoBack = findViewById(R.id.image_view_attraction_map_go_back);
         imageViewAttraction = findViewById(R.id.image_view_attraction);
-        textViewSearchAttractionsOnMap = findViewById(R.id.text_view_search_attractions_on_map);
-        textViewAttractionName = findViewById(R.id.text_view_attraction_name);
-        textViewAttractionRating = findViewById(R.id.text_view_attraction_rating);
-        textViewAttractionAddress = findViewById(R.id.text_view_attraction_address);
+        textViewSearchOnMap = findViewById(R.id.text_view_search_attractions_on_map);
+        textViewName = findViewById(R.id.text_view_attraction_name);
+        textViewRating = findViewById(R.id.text_view_attraction_rating);
+        textViewAddress = findViewById(R.id.text_view_attraction_address);
         floatingActionButtonCenterPositionOnAttractions = findViewById(R.id.floating_action_button_center_position_on_attractions);
     }
 
@@ -94,32 +93,32 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
         return linearLayoutSearchAttractions;
     }
 
-    public RelativeLayout getRelativeLayoutAttractionInformation() {
-        return relativeLayoutAttractionInformation;
+    public RelativeLayout getRelativeLayoutDetails() {
+        return relativeLayoutDetails;
     }
 
-    public ImageView getImageViewAttractionMapGoBack() {
-        return imageViewAttractionMapGoBack;
+    public ImageView getImageViewMapGoBack() {
+        return imageViewMapGoBack;
     }
 
     public ImageView getImageViewAttraction() {
         return imageViewAttraction;
     }
 
-    public TextView getTextViewSearchAttractionsOnMap() {
-        return textViewSearchAttractionsOnMap;
+    public TextView getTextViewSearchOnMap() {
+        return textViewSearchOnMap;
     }
 
-    public TextView getTextViewAttractionName() {
-        return textViewAttractionName;
+    public TextView getTextViewName() {
+        return textViewName;
     }
 
-    public TextView getTextViewAttractionRating() {
-        return textViewAttractionRating;
+    public TextView getTextViewRating() {
+        return textViewRating;
     }
 
-    public TextView getTextViewAttractionAddress() {
-        return textViewAttractionAddress;
+    public TextView getTextViewAddress() {
+        return textViewAddress;
     }
 
     public FloatingActionButton getFloatingActionButtonCenterPositionOnAttractions() {

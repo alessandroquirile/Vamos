@@ -21,7 +21,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     private WriteReviewActivityController writeReviewActivityController;
     private TextInputLayout textInputLayoutReviewTitle, textInputLayoutReviewDescription;
     private RatingBar ratingBar;
-    private TextView textViewAboutRating;
+    private TextView textViewRating;
     private SwitchCompat switchCompatButtonPublishAnonymously;
     private Button buttonPublishReview;
 
@@ -36,7 +36,9 @@ public class WriteReviewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeViewComponents();
+        setRatingBarDefaultValue();
         initializeController();
+        checkLogin();
         setToolbarSubtitle();
         setListenerOnViewComponents();
     }
@@ -55,15 +57,22 @@ public class WriteReviewActivity extends AppCompatActivity {
         writeReviewActivityController.setToolbarSubtitle();
     }
 
+    private void checkLogin(){
+        writeReviewActivityController.checkLogin();
+    }
+
     public void initializeViewComponents() {
         textInputLayoutReviewTitle = findViewById(R.id.text_input_layout_review_title);
         textInputLayoutReviewDescription = findViewById(R.id.text_input_layout_review_description);
         ratingBar = findViewById(R.id.rating_bar);
-        textViewAboutRating = findViewById(R.id.text_view_about_rating);
+        textViewRating = findViewById(R.id.text_view_about_rating);
         switchCompatButtonPublishAnonymously = findViewById(R.id.switch_compat_button_publish_anonymously);
         buttonPublishReview = findViewById(R.id.button_publish_review);
+    }
+
+    private void setRatingBarDefaultValue(){
         ratingBar.setRating(3);
-        textViewAboutRating.setText(getResources().getString(R.string.nella_media));
+        textViewRating.setText(getResources().getString(R.string.nella_media));
     }
 
     public void initializeController() {
@@ -72,14 +81,6 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     private void setListenerOnViewComponents(){
         writeReviewActivityController.setListenersOnViewComponents();
-    }
-
-    public TextInputLayout getTextInputLayoutReviewTitle() {
-        return textInputLayoutReviewTitle;
-    }
-
-    public TextInputLayout getTextInputLayoutReviewDescription() {
-        return textInputLayoutReviewDescription;
     }
 
     public EditText getTextInputLayoutReviewTitleEditText() {
@@ -106,8 +107,8 @@ public class WriteReviewActivity extends AppCompatActivity {
         return ratingBar.getRating();
     }
 
-    public TextView getTextViewAboutRating() {
-        return textViewAboutRating;
+    public TextView getTextViewRating() {
+        return textViewRating;
     }
 
     public SwitchCompat getSwitchCompatButtonPublishAnonymously() {

@@ -112,4 +112,9 @@
     <string name="no_content_error_hotel_detail">Errore, nessun hotel trovato</string>
     <string name="no_content_error_restaurant_detail">Errore, nessun ristorante trovato</string>
     <string name="no_content_error_attraction_detail">Errore, nessun attrazione trovato</string>
+    <string name="unexpected_error_while_fetch_data">Errore imprevisto durante il recupero dei dati, riprova</string>
+    <string name="no_attractions_found_home_page">Non è stato possibile trovare attrazioni nelle tue vicinanze, accedi alla lista delle attrazioni e modifica i filtri di ricerca</string>
+    <string name="no_hotels_found_nearby">Nessun hotel trovato nelle vicinanze</string>
+    <string name="no_hotels_found_home_page">Non è stato possibile trovare hotel nelle tue vicinanze, accedi alla lista degli hotel e modifica i filtri di ricerca</string>
+    <string name="no_restaurants_found_home_page">Non è stato possibile trovare ristoranti nelle tue vicinanze, accedi alla lista dei ristoranti e modifica i filtri di ricerca</string>
 </resources>

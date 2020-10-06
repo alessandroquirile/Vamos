@@ -70,7 +70,7 @@
         app:rippleColor="@color/lightGrey" />
 
     <RelativeLayout
-        android:id="@+id/relative_layout_restaurant_information"
+        android:id="@+id/relative_layout_restaurant_details"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentBottom="true"

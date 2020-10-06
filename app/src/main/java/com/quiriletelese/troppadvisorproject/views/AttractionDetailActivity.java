@@ -11,18 +11,16 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.AttractionDetailActivityController;
-import com.quiriletelese.troppadvisorproject.controllers.RestaurantDetailActivityController;
 
 public class AttractionDetailActivity extends AppCompatActivity {
 
     private AttractionDetailActivityController attractionDetailActivityController;
-    private CollapsingToolbarLayout collapsingToolbarLayoutAttractionDetailActivity;
-    private ViewPager viewPagerAttractionDetail;
-    private FloatingActionButton floatingActionButtonAttractionWriteReview;
-    private TextView textViewAttractionAvarageRating, textViewAttractionCertificateOfExcellence,
-            textViewAttractionAddress, textViewAttractionPhoneNumber, textViewAttractionOpeningTime,
-            textViewAttractionAvaragePrice;
-    private Button buttonAttractionReadReviews;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ViewPager viewPager;
+    private FloatingActionButton floatingActionButtonWriteReview;
+    private TextView textViewAvarageRating, textViewCertificateOfExcellence, textViewAddress,
+            textViewPhoneNumber, textViewOpeningTime, textViewAvaragePrice;
+    private Button buttonReadReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +34,16 @@ public class AttractionDetailActivity extends AppCompatActivity {
     }
 
     private void initializeViewComponents() {
-        collapsingToolbarLayoutAttractionDetailActivity = findViewById(R.id.collapsing_toolbar_layout_attraction_detail_activity);
-        viewPagerAttractionDetail = findViewById(R.id.view_pager_attraction_detail);
-        floatingActionButtonAttractionWriteReview = findViewById(R.id.floating_action_button_attraction_write_review);
-        textViewAttractionAvarageRating = findViewById(R.id.text_view_attraction_avarage_rating);
-        textViewAttractionCertificateOfExcellence = findViewById(R.id.text_view_attraction_certificate_of_excellence);
-        textViewAttractionAddress = findViewById(R.id.text_view_attraction_address);
-        textViewAttractionOpeningTime = findViewById(R.id.text_view_attraction_opening_time);
-        textViewAttractionPhoneNumber = findViewById(R.id.text_view_attraction_phone_number);
-        textViewAttractionAvaragePrice = findViewById(R.id.text_view_attraction_avarage_price);
-        buttonAttractionReadReviews = findViewById(R.id.button_attraction_read_reviews);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_attraction_detail_activity);
+        viewPager = findViewById(R.id.view_pager_attraction_detail);
+        floatingActionButtonWriteReview = findViewById(R.id.floating_action_button_attraction_write_review);
+        textViewAvarageRating = findViewById(R.id.text_view_attraction_avarage_rating);
+        textViewCertificateOfExcellence = findViewById(R.id.text_view_attraction_certificate_of_excellence);
+        textViewAddress = findViewById(R.id.text_view_attraction_address);
+        textViewOpeningTime = findViewById(R.id.text_view_attraction_opening_time);
+        textViewPhoneNumber = findViewById(R.id.text_view_attraction_phone_number);
+        textViewAvaragePrice = findViewById(R.id.text_view_attraction_avarage_price);
+        buttonReadReviews = findViewById(R.id.button_attraction_read_reviews);
     }
 
     private void initializeController() {
@@ -57,46 +55,46 @@ public class AttractionDetailActivity extends AppCompatActivity {
     }
 
     private void initializeActivityFields() {
-        attractionDetailActivityController.initializeActivityFields();
+        attractionDetailActivityController.findById();
     }
 
-    public CollapsingToolbarLayout getCollapsingToolbarLayoutAttractionDetailActivity() {
-        return collapsingToolbarLayoutAttractionDetailActivity;
+    public CollapsingToolbarLayout getCollapsingToolbarLayout() {
+        return collapsingToolbarLayout;
     }
 
-    public ViewPager getViewPagerAttractionDetail() {
-        return viewPagerAttractionDetail;
+    public ViewPager getViewPager() {
+        return viewPager;
     }
 
-    public FloatingActionButton getFloatingActionButtonAttractionWriteReview() {
-        return floatingActionButtonAttractionWriteReview;
+    public FloatingActionButton getFloatingActionButtonWriteReview() {
+        return floatingActionButtonWriteReview;
     }
 
-    public TextView getTextViewAttractionAvarageRating() {
-        return textViewAttractionAvarageRating;
+    public TextView getTextViewAvarageRating() {
+        return textViewAvarageRating;
     }
 
-    public TextView getTextViewAttractionCertificateOfExcellence() {
-        return textViewAttractionCertificateOfExcellence;
+    public TextView getTextViewCertificateOfExcellence() {
+        return textViewCertificateOfExcellence;
     }
 
-    public TextView getTextViewAttractionAddress() {
-        return textViewAttractionAddress;
+    public TextView getTextViewAddress() {
+        return textViewAddress;
     }
 
-    public TextView getTextViewAttractionPhoneNumber() {
-        return textViewAttractionPhoneNumber;
+    public TextView getTextViewPhoneNumber() {
+        return textViewPhoneNumber;
     }
 
-    public TextView getTextViewAttractionOpeningTime() {
-        return textViewAttractionOpeningTime;
+    public TextView getTextViewOpeningTime() {
+        return textViewOpeningTime;
     }
 
-    public TextView getTextViewAttractionAvaragePrice() {
-        return textViewAttractionAvaragePrice;
+    public TextView getTextViewAvaragePrice() {
+        return textViewAvaragePrice;
     }
 
-    public Button getButtonAttractionReadReviews() {
-        return buttonAttractionReadReviews;
+    public Button getButtonReadReviews() {
+        return buttonReadReviews;
     }
 }

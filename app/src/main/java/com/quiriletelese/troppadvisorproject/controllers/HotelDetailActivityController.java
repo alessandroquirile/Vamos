@@ -2,21 +2,32 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
+import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
+
+import java.util.List;
 
 public class HotelDetailActivityController implements View.OnClickListener, Constants {
 
@@ -40,15 +51,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         }
     }
 
-    public void setListenerOnViewComponents() {
-        hotelDetailActivity.getFloatingActionButtonHotelWriteReview().setOnClickListener(this);
-        hotelDetailActivity.getButtonHotelReadReviews().setOnClickListener(this);
-    }
-
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id, Context context) {
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                hotelDetailActivity.getApplicationContext()));
-        hotelDAO.findById(volleyCallBack, id, context);
+    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
+        getHotelDAO().findById(volleyCallBack, id, getContext());
     }
 
     public void findById() {
@@ -64,23 +68,30 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
             public void onError(String errorCode) {
                 detectVolleyError(errorCode);
             }
-        }, getHotelId(), hotelDetailActivity.getApplicationContext());
+        }, getId());
+    }
+
+    public void setListenerOnViewComponents() {
+        getFloatingActionButtonWriteReview().setOnClickListener(this);
+        getButtonReadReviews().setOnClickListener(this);
     }
 
     private void initializeActivityFields() {
-        setCollapsingToolbarLayoutTitle(hotel.getName());
-        setAvarageRating(hotel.getAvarageRating());
-        setCertificateOfExcellence(hotel.isHasCertificateOfExcellence());
-        setAddress(hotel.getAddress());
-        setPhoneNunmber(hotel.getPhoneNumber());
-        setHotelStars(hotel.getStars());
-        setAvaragePrice(hotel.getAvaragePrice());
+        setCollapsingToolbarLayoutTitle(getName());
+        setAvaragePrice(getAvaragePrice());
+        setAvarageRating(hotel);
+        setCertificateOfExcellence(isHasCertificateOfExcellence());
+        setAddress(getAddress());
+        setPhoneNunmber(getPhoneNumber());
+        setHotelStars(getStars());
     }
 
     private void initializeViewPager() {
-        ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(
-                hotel.getImages(), hotelDetailActivity.getApplicationContext());
-        hotelDetailActivity.getViewPagerOverview().setAdapter(viewPagerOverViewActivityAdapter);
+        getViewPager().setAdapter(createViewPagerOverViewActivityAdapter());
+    }
+
+    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter(){
+        return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
     }
 
     private void detectVolleyError(String errorCode) {
@@ -92,24 +103,31 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     }
 
     private void setCollapsingToolbarLayoutTitle(String title) {
-        hotelDetailActivity.getCollapsingToolbarLayoutHotelDetailActivity().setTitle(title);
+        getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(Integer avarageRating) {
-        if (avarageRating.equals(0))
-            hotelDetailActivity.getTextViewHotelAvarageRating().setText(R.string.no_review);
+    private void setAvarageRating(Hotel hotel) {
+        if (!hasAvarageRating(hotel.getAvarageRating()))
+            getTextViewAvarageRating().setText(R.string.no_review);
         else
-            hotelDetailActivity.getTextViewHotelAvarageRating().setText(avarageRating + "/5");
+            getTextViewAvarageRating().setText(createAvarageRatingString(hotel));
+    }
+
+    private String createAvarageRatingString(Hotel hotel) {
+        String avarageRating = "";
+        avarageRating = avarageRating.concat(hotel.getAvarageRating() + "/5 (");
+        avarageRating = avarageRating.concat(hotel.getTotalReviews() + " ");
+        avarageRating = avarageRating.concat(getString(R.string.reviews) + ")");
+        return avarageRating;
     }
 
     private void setCertificateOfExcellence(boolean certificateOfExcellence) {
         if (!certificateOfExcellence)
-            hotelDetailActivity.getTextViewHotelCertificateOfExcellence().setVisibility(View.GONE);
+            getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
     private void setAddress(Address address) {
-        String hotelAddress = createAddressString(address);
-        hotelDetailActivity.getTextViewHotelAddress().setText(hotelAddress);
+        getTextViewAddress().setText(createAddressString(address));
     }
 
     private String createAddressString(Address address) {
@@ -125,41 +143,54 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     private void setPhoneNunmber(String phoneNumber) {
         if (!phoneNumber.equals(""))
-            hotelDetailActivity.getTextViewHotelPhoneNumber().setText(phoneNumber);
+            getTextViewPhoneNumber().setText(phoneNumber);
         else
-            hotelDetailActivity.getTextViewHotelPhoneNumber().setText(hotelDetailActivity
-                    .getResources().getString(R.string.no_phone_number));
+            getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
     private void setHotelStars(Integer stars) {
-        hotelDetailActivity.getTextViewHotelStars().setText(createHotelStarsString(stars));
+        getTextViewStars().setText(createHotelStarsString(stars));
     }
 
     private String createHotelStarsString(Integer stars) {
         String hotelStars = "";
-        hotelStars = hotelStars.concat(hotelDetailActivity.getResources().getString(R.string.hotel_stars) + " ");
+        hotelStars = hotelStars.concat(getString(R.string.hotel_stars) + " ");
         hotelStars = hotelStars.concat(stars.toString());
         return hotelStars;
     }
 
     private void setAvaragePrice(Integer price) {
-        hotelDetailActivity.getTextViewHotelAvaragePrice().setText(createAvaragePriceString(price));
+        getTextViewAvaragePrice().setText(createAvaragePriceString(price));
     }
 
     private String createAvaragePriceString(Integer price) {
         String avaragePrice = "";
-        avaragePrice = avaragePrice.concat(hotelDetailActivity.getResources().getString(R.string.avarage_price) + " ");
+        avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
         avaragePrice = avaragePrice.concat(price + " ");
-        avaragePrice = avaragePrice.concat(hotelDetailActivity.getResources().getString(R.string.currency));
+        avaragePrice = avaragePrice.concat(getString(R.string.currency));
         return avaragePrice;
     }
 
     private void startWriteReviewActivity() {
-        Intent writeReviewActivityIntent = new Intent(hotelDetailActivity.getApplicationContext(), WriteReviewActivity.class);
-        writeReviewActivityIntent.putExtra(ID, getHotelId());
-        writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
-        hotelDetailActivity.startActivity(writeReviewActivityIntent);
+        hotelDetailActivity.startActivity(createWriteReviewActivityIntent());
+    }
 
+    private void startSeeReviewsActivity() {
+        hotelDetailActivity.startActivity(createSeeReviewsActivityIntent());
+    }
+
+    private Intent createWriteReviewActivityIntent() {
+        Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
+        writeReviewActivityIntent.putExtra(ID, getId());
+        writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
+        return writeReviewActivityIntent;
+    }
+
+    private Intent createSeeReviewsActivityIntent() {
+        Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
+        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
+        seeReviewsActivityIntent.putExtra(ID, getId());
+        return seeReviewsActivityIntent;
     }
 
     private void seeReviews() {
@@ -167,17 +198,6 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
             startSeeReviewsActivity();
         else
             showToastNoReviewsError();
-    }
-
-    private void startSeeReviewsActivity() {
-        hotelDetailActivity.startActivity(createSeeReviewsActivityIntent());
-    }
-
-    private Intent createSeeReviewsActivityIntent() {
-        Intent seeReviewsActivityIntent = new Intent(hotelDetailActivity.getApplicationContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getHotelName());
-        seeReviewsActivityIntent.putExtra(ID, getHotelId());
-        return seeReviewsActivityIntent;
     }
 
     private void showToastNoContentError() {
@@ -192,24 +212,120 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         });
     }
 
+    private CollapsingToolbarLayout getCollapsingToolbarLayout(){
+        return hotelDetailActivity.getCollapsingToolbarLayout();
+    }
+
+    private TextView getTextViewPhoneNumber(){
+        return hotelDetailActivity.getTextViewPhoneNumber();
+    }
+
+    private TextView getTextViewAddress(){
+        return hotelDetailActivity.getTextViewAddress();
+    }
+
+    private TextView getTextViewCertificateOfExcellence(){
+        return hotelDetailActivity.getTextViewCertificateOfExcellence();
+    }
+
+    private TextView getTextViewAvarageRating(){
+        return hotelDetailActivity.getTextViewAvarageRating();
+    }
+
+    private TextView getTextViewAvaragePrice(){
+        return hotelDetailActivity.getTextViewAvaragePrice();
+    }
+
+    private TextView getTextViewStars(){
+        return hotelDetailActivity.getTextViewStars();
+    }
+
+    private FloatingActionButton getFloatingActionButtonWriteReview(){
+        return hotelDetailActivity.getFloatingActionButtonWriteReview();
+    }
+
+    private Button getButtonReadReviews(){
+        return hotelDetailActivity.getButtonReadReviews();
+    }
+
+    private boolean hasAvarageRating(Integer avarageRating) {
+        return !avarageRating.equals(0);
+    }
+
     private boolean hasReviews() {
-        return hotel.getReviews().size() > 0;
+        return getReviews().size() > 0;
     }
 
-    private String getHotelId() {
-        return hotelDetailActivity.getIntent().getStringExtra(ID);
+    private ViewPager getViewPager(){
+        return hotelDetailActivity.getViewPager();
     }
 
-    private String getHotelName(){
+    private List<String> getImages(){
+        return hotel.getImages();
+    }
+
+    private List<Review> getReviews(){
+        return hotel.getReviews();
+    }
+
+    private Intent getIntent(){
+        return hotelDetailActivity.getIntent();
+    }
+
+    private String getId() {
+        return getIntent().getStringExtra(ID);
+    }
+
+    private String getName(){
         return hotel.getName();
     }
 
+    private Integer getAvaragePrice(){
+        return hotel.getAvaragePrice();
+    }
+
+    private boolean isHasCertificateOfExcellence(){
+        return hotel.isHasCertificateOfExcellence();
+    }
+
+    private Address getAddress(){
+        return hotel.getAddress();
+    }
+
+    private String getPhoneNumber(){
+        return hotel.getPhoneNumber();
+    }
+
+    private Integer getStars(){
+        return hotel.getStars();
+    }
+
+    private Context getContext() {
+        return hotelDetailActivity.getApplicationContext();
+    }
+
+    private Resources getResources(){
+        return hotelDetailActivity.getResources();
+    }
+
+    private String getString(int id){
+        return getResources().getString(id);
+    }
+
+    private HotelDAO getHotelDAO() {
+        return daoFactory.getHotelDAO(getStorageTechnology(HOTEL_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
     private String getNoContentErrorMessage(){
-        return hotelDetailActivity.getResources().getString(R.string.no_content_error_restaurant_detail);
+        return getString(R.string.no_content_error_restaurant_detail);
     }
 
     private String getNoReviewsErrorMessage(){
-        return hotelDetailActivity.getResources().getString(R.string.no_review);
+        return getString(R.string.no_review);
     }
 
 }

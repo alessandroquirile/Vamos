@@ -22,9 +22,9 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
     private RestaurantMapActivityController restaurantMapActivityController;
     private GoogleMap googleMap;
     private LinearLayout linearLayoutSearchRestaurants;
-    private RelativeLayout relativeLayoutRestaurantInformation;
-    private ImageView imageViewRestaurantMapGoBack, imageViewRestaurant;
-    private TextView textViewSearchRestaurantsOnMap, textViewRestaurantName, textViewRestaurantRating, textViewRestaurantAddress;
+    private RelativeLayout relativeLayoutDetails;
+    private ImageView imageViewMapGoBack, imageViewRestaurant;
+    private TextView textViewSearchOnMap, textViewName, textViewRating, textViewAddress;
     private FloatingActionButton floatingActionButtonCenterPositionOnRestaurants;
 
     @Override
@@ -51,13 +51,13 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
     private void intializeViewComponents(GoogleMap googleMap) {
         this.googleMap = googleMap;
         linearLayoutSearchRestaurants = findViewById(R.id.linear_layout_search_restaurants);
-        relativeLayoutRestaurantInformation = findViewById(R.id.relative_layout_restaurant_information);
-        imageViewRestaurantMapGoBack = findViewById(R.id.image_view_restaurant_map_go_back);
+        relativeLayoutDetails = findViewById(R.id.relative_layout_restaurant_details);
+        imageViewMapGoBack = findViewById(R.id.image_view_restaurant_map_go_back);
         imageViewRestaurant = findViewById(R.id.image_view_restaurant);
-        textViewSearchRestaurantsOnMap = findViewById(R.id.text_view_search_restaurants_on_map);
-        textViewRestaurantName = findViewById(R.id.text_view_restaurant_name);
-        textViewRestaurantRating = findViewById(R.id.text_view_restaurant_rating);
-        textViewRestaurantAddress = findViewById(R.id.text_view_restaurant_address);
+        textViewSearchOnMap = findViewById(R.id.text_view_search_restaurants_on_map);
+        textViewName = findViewById(R.id.text_view_restaurant_name);
+        textViewRating = findViewById(R.id.text_view_restaurant_rating);
+        textViewAddress = findViewById(R.id.text_view_restaurant_address);
         floatingActionButtonCenterPositionOnRestaurants = findViewById(R.id.floating_action_button_center_position_on_restaurants);
     }
 
@@ -93,32 +93,32 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
         return linearLayoutSearchRestaurants;
     }
 
-    public RelativeLayout getRelativeLayoutRestaurantInformation() {
-        return relativeLayoutRestaurantInformation;
+    public RelativeLayout getRelativeLayoutDetails() {
+        return relativeLayoutDetails;
     }
 
-    public ImageView getImageViewRestaurantMapGoBack() {
-        return imageViewRestaurantMapGoBack;
+    public ImageView getImageViewMapGoBack() {
+        return imageViewMapGoBack;
     }
 
     public ImageView getImageViewRestaurant() {
         return imageViewRestaurant;
     }
 
-    public TextView getTextViewSearchRestaurantsOnMap() {
-        return textViewSearchRestaurantsOnMap;
+    public TextView getTextViewSearchOnMap() {
+        return textViewSearchOnMap;
     }
 
-    public TextView getTextViewRestaurantName() {
-        return textViewRestaurantName;
+    public TextView getTextViewName() {
+        return textViewName;
     }
 
-    public TextView getTextViewRestaurantRating() {
-        return textViewRestaurantRating;
+    public TextView getTextViewRating() {
+        return textViewRating;
     }
 
-    public TextView getTextViewRestaurantAddress() {
-        return textViewRestaurantAddress;
+    public TextView getTextViewAddress() {
+        return textViewAddress;
     }
 
     public FloatingActionButton getFloatingActionButtonCenterPositionOnRestaurants() {

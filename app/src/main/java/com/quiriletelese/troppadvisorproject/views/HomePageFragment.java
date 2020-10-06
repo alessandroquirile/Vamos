@@ -1,7 +1,6 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,7 +31,9 @@ public class HomePageFragment extends Fragment implements Constants {
     private HomePageFragmentController homePageFragmentController;
     private ShimmerRecyclerView shimmerRecyclerViewHotel, shimmerRecyclerViewRestaurant, shimmerRecyclerViewAttraction;
     private TextView textViewHotelRecyclerView, textViewRestaurantRecyclerView, textViewAttractionRecyclerView;
+    private View viewNoGeolocationError, viewNoHotelsError, viewNoRestaurantsError, viewNoAttractionsError;
     private List<Double> pointSearchArguments;
+    private boolean ok = false;
 
     @Nullable
     @Override
@@ -47,27 +48,32 @@ public class HomePageFragment extends Fragment implements Constants {
         initializeViewComponents(view);
         initializeHomePageFragmentController();
         setListenerOnViewComponents();
-        if (checkPermission()) {
-            //pointSearchArguments = homePageController.getLocation();
-            Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
-            initializeRecyclerViewHotel();
-            initializeRecyclerViewRestaurant();
-            initializeRecyclerViewAttraction();
-            initializeRecyclerViewsFakeContent();
-        } else
-            Toast.makeText(getContext(), "NON GRANTED", Toast.LENGTH_SHORT).show();
+        initializeRecyclerViews();
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.main_menu, menu);
+        inflateMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        onOptionsItemSelectedHelper(item);
+        return true;
+    }
+
+    private void inflateMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.main_menu, menu);
+    }
+
+    private void onOptionsItemSelectedHelper(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh_button_menu_home_page_activity:
+                initializeRecyclerViews();
+                break;
+        }
     }
 
     @Override
@@ -90,17 +96,22 @@ public class HomePageFragment extends Fragment implements Constants {
         textViewHotelRecyclerView = view.findViewById(R.id.text_view_hotel_recycler_view);
         textViewRestaurantRecyclerView = view.findViewById(R.id.text_view_restaurant_recycler_view);
         textViewAttractionRecyclerView = view.findViewById(R.id.text_view_attraction_recycler_view);
+        viewNoGeolocationError = view.findViewById(R.id.no_geolocation_activated_error_layout);
+        viewNoHotelsError = view.findViewById(R.id.no_hotels_error);
+        viewNoRestaurantsError = view.findViewById(R.id.no_restaurants_error);
+        viewNoAttractionsError = view.findViewById(R.id.no_attractions_error);
     }
 
-    private void initializeHomePageFragmentController(){
+    private void initializeHomePageFragmentController() {
         homePageFragmentController = new HomePageFragmentController(HomePageFragment.this);
     }
 
-    private void setListenerOnViewComponents(){
-        homePageFragmentController.setListenerOnViewComponents();;
+    private void setListenerOnViewComponents() {
+        homePageFragmentController.setListenerOnViewComponents();
+        ;
     }
 
-    private void initializeRecyclerViewsFakeContent(){
+    private void initializeRecyclerViewsFakeContent() {
         homePageFragmentController.initializeRecyclerViewsFakeContent();
     }
 
@@ -113,10 +124,23 @@ public class HomePageFragment extends Fragment implements Constants {
         return isGranted;
     }
 
-    private void startSearchActivity() {
-        Intent intent = new Intent(new Intent(getActivity(), WriteReviewActivity.class));
-        intent.putExtra(ACCOMODATION_NAME, "La masardona");
-        startActivity(intent);
+    private void initializeRecyclerViews() {
+        if (checkPermission()) {
+            //pointSearchArguments = homePageController.getLocation();
+            Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
+            if (canGeolocate()) {
+                do {
+                    if (!areCoordinatesNull()) {
+                        initializeRecyclerViewHotel();
+                        initializeRecyclerViewRestaurant();
+                        initializeRecyclerViewAttraction();
+                        initializeRecyclerViewsFakeContent();
+                    }
+                } while (areCoordinatesNull());
+            } else
+                setViewNoGeolocationErrorVisible();
+        } else
+            Toast.makeText(getContext(), "NON GRANTED", Toast.LENGTH_SHORT).show();
     }
 
     private void initializeRecyclerViewHotel() {
@@ -129,6 +153,18 @@ public class HomePageFragment extends Fragment implements Constants {
 
     private void initializeRecyclerViewAttraction() {
         homePageFragmentController.initializeRecyclerViewAttraction(homePageFragmentController.getLocation());
+    }
+
+    private void setViewNoGeolocationErrorVisible() {
+        viewNoGeolocationError.setVisibility(View.VISIBLE);
+    }
+
+    private boolean canGeolocate() {
+        return homePageFragmentController.canGeolocate();
+    }
+
+    private boolean areCoordinatesNull() {
+        return homePageFragmentController.areCoordinatesNull();
     }
 
     public ShimmerRecyclerView getShimmerRecyclerViewHotel() {
@@ -153,6 +189,18 @@ public class HomePageFragment extends Fragment implements Constants {
 
     public TextView getTextViewAttractionRecyclerView() {
         return textViewAttractionRecyclerView;
+    }
+
+    public View getViewNoHotelsError() {
+        return viewNoHotelsError;
+    }
+
+    public View getViewNoRestaurantsError() {
+        return viewNoRestaurantsError;
+    }
+
+    public View getViewNoAttractionsError() {
+        return viewNoAttractionsError;
     }
 
 }

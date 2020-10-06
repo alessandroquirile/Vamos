@@ -30,16 +30,11 @@ public class CityDAO_MongoDB implements CityDAO {
     private void findCitiesNameVolley(final VolleyCallBackCity volleyCallBackCity, String name, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindCitiesUrl(name);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                getArrayFromResponseCitiesName(response);
-                volleyCallBackCity.onSuccess(citiesName);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+            getArrayFromResponseCitiesName(response);
+            volleyCallBackCity.onSuccess(citiesName);
+        }, error -> {
+            
         });
         requestQueue.add(jsonArrayRequest);
     }

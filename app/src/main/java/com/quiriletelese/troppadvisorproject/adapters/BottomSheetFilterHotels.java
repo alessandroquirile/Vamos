@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -200,12 +201,20 @@ public class BottomSheetFilterHotels extends BottomSheetDialogFragment implement
         return seekBarDistance;
     }
 
-    public String getAutoCompleteTextViewMapHotelNameValue() {
+    public String getAutoCompleteTextViewNameValue() {
         return autoCompleteTextViewName.getText().toString();
     }
 
-    public String getAutoCompleteTextViewMapHotelCityValue() {
+    public String getAutoCompleteTextViewCityValue() {
         return autoCompleteTextViewCity.getText().toString();
+    }
+
+    public void setAutoCompleteTextViewNameAdapter(ArrayAdapter<String> arrayAdapter ) {
+        autoCompleteTextViewName.setAdapter(arrayAdapter);
+    }
+
+    public void setAutoCompleteTextViewCityAdapter(ArrayAdapter<String> arrayAdapter ) {
+        autoCompleteTextViewCity.setAdapter(arrayAdapter);
     }
 
     public int getSeekBarPriceValue() {

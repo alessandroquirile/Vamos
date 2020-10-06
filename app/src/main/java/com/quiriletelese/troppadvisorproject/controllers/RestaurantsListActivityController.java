@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -9,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,10 +41,10 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private RestaurantsListActivity restaurantsListActivity;
-    private BottomSheetFilterRestaurants bottomSheetFilterRestaurants;
+    private BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
     private AccomodationRestaurantFilter accomodationRestaurantFilter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
     private RecyclerViewRestaurantsListAdapter recyclerViewRestaurantsListAdapter;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
     private List<String> typesOfCuisine = new ArrayList<>();
     private int page = 0, size = 3;
     private boolean isLoadingData = false, isPointSearchNull = false;
@@ -68,27 +70,27 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
 
     private void findByRsqlHelper(VolleyCallBack volleyCallBack, List<String> typesOfCuisine, PointSearch pointSearch,
                                   String rsqlQuery) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        RestaurantDAO restaurantDAO = getRestaurantDAO();
         restaurantDAO.findByRsql(volleyCallBack, typesOfCuisine, pointSearch, rsqlQuery, getContext(), page, size);
     }
 
     private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        RestaurantDAO restaurantDAO = getRestaurantDAO();
         restaurantDAO.findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), page, size);
     }
 
     public void findRestaurantsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        RestaurantDAO restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        RestaurantDAO restaurantDAO = getRestaurantDAO();
         restaurantDAO.findRestaurantsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
-        CityDAO cityDAO = daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        CityDAO cityDAO = getCityDAO();
         cityDAO.findCitiesByName(volleyCallBackCity, name, getContext());
     }
 
     public void findTypeOfCuisineHelper(VolleyCallBack volleyCallBack) {
-        TypeOfCuisineDAO typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_TECHNOLOGY));
+        TypeOfCuisineDAO typeOfCuisineDAO = getTypeOfCuisineDAO();
         typeOfCuisineDAO.getAll(volleyCallBack, getContext());
     }
 
@@ -102,7 +104,7 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
             @Override
             public void onError(String errorCode) {
                 if (errorCode.equals("204"))
-                    showToastNoResults();
+                    volleyCallbackOnError(errorCode);
             }
 
         }, typesOfCuisine, pointSearch, rsqlQuery);
@@ -128,7 +130,7 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
             findRestaurantsNameHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
-                    setAutoCompleteTextViewHotelNameAdapter((List<String>) object);
+                    setAutoCompleteTextViewNameAdapter((List<String>) object);
                 }
 
                 @Override
@@ -146,7 +148,7 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
             findCitiesNameHelper(new VolleyCallBackCity() {
                 @Override
                 public void onSuccess(Object object) {
-                    setAutoCompleteTextViewHotelCityAdapter((List<String>) object);
+                    setAutoCompleteTextViewCityAdapter((List<String>) object);
                 }
 
                 @Override
@@ -192,27 +194,39 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
 
     private void volleyCallbackOnSuccess(Object object) {
         List<Restaurant> restaurants = (List<Restaurant>) object;
-        if (isLoadingData) {
+        if (isLoadingData)
             addNewRestaurantsToList(restaurants);
-        } else {
+        else
             initializeRecyclerViewOnSuccess(restaurants);
-        }
-        setProgressBarLoadMoreInvisible();
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
     }
 
     private void volleyCallbackOnError(String errorCode) {
-        if (errorCode.equals("204")) {
-            if (isLoadingData)
-                showToastNoMoreResults();
-            else
-                showToastNoResults();
+        switch (errorCode) {
+            case "204":
+                handle204VolleyError();
+                break;
+            default:
+                handleOtherVolleyError();
+                break;
         }
+    }
+
+    private void handle204VolleyError() {
+        if (isLoadingData)
+            showToastVolleyError(R.string.end_of_results);
+        else
+            showToastVolleyError(R.string.no_restaurants_found_by_filter);
+    }
+
+    private void handleOtherVolleyError(){
+        showToastVolleyError(R.string.unexpected_error_while_fetch_data);
     }
 
     private void loadMoreRestaurants() {
         page += 1;
         setIsLoadingData(true);
-        setProgressBarLoadMoreVisible();
+        setProgressBarVisibilityOnUiThred(View.VISIBLE);
         detectSearchType();
     }
 
@@ -298,7 +312,8 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         if (!isAccomodationFilterNull()) {
             if (!isSearchingForName()) {
                 findByRsql(isTypesOfCuisineListSelected() ? getAccomodationFilterTypesOfCuisine() : null,
-                        isSearchingForCity() ? createNullPointSearch() : createPointSearch(), !createRsqlString().equals("") ? createRsqlString() : "0");
+                        isSearchingForCity() ? null : createPointSearch(),
+                        isRsqlEmpty() ? "0" : createRsqlString());
             } else
                 findByNameLikeIgnoreCase();
         } else
@@ -306,21 +321,26 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
                     createPointSearch(), "0");
     }
 
-    private void setAutoCompleteTextViewHotelNameAdapter(List<String> hotelsName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(restaurantsListActivity.getApplicationContext(),
-                android.R.layout.select_dialog_item, hotelsName);
-        bottomSheetFilterRestaurants.getAutoCompleteTextViewName().setAdapter(arrayAdapter);
+    private void setAutoCompleteTextViewNameAdapter(List<String> restaurantsNames) {
+        ArrayAdapter<String> arrayAdapter = createAutoCompleteTextViewAdapter(restaurantsNames);
+        bottomSheetFilterRestaurants.setAutoCompleteTextViewNameAdapter(arrayAdapter);
     }
 
-    private void setAutoCompleteTextViewHotelCityAdapter(List<String> citiesName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(restaurantsListActivity.getApplicationContext(),
-                android.R.layout.select_dialog_item, citiesName);
-        bottomSheetFilterRestaurants.getAutoCompleteTextViewCity().setAdapter(arrayAdapter);
+    private void setAutoCompleteTextViewCityAdapter(List<String> citiesNames) {
+        ArrayAdapter<String> arrayAdapter = createAutoCompleteTextViewAdapter(citiesNames);
+        bottomSheetFilterRestaurants.setAutoCompleteTextViewCityAdapter(arrayAdapter);
+    }
+
+    private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> content) {
+        return new ArrayAdapter<>(getContext(), getAutoCompleteTextViewAdapterLayout(), content);
+    }
+
+    private int getAutoCompleteTextViewAdapterLayout() {
+        return android.R.layout.select_dialog_item;
     }
 
     public void showBottomSheetFilters() {
-        bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
-        bottomSheetFilterRestaurants.show(restaurantsListActivity.getSupportFragmentManager(), bottomSheetFilterRestaurants.getTag());
+        bottomSheetFilterRestaurants.show(getSupportFragmentManager(), getBottomSheetFilterTag());
         setBottomSheetFiltersFields();
         setTypesOfCuisine();
         bottomSheetFilterRestaurants.setOnBottomSheetFilterSearchButtonClick(this);
@@ -329,26 +349,29 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
 
     private void initializeRecyclerViewOnSuccess(List<Restaurant> restaurants) {
         dismissBottomSheetFilterRestaurants();
-        LinearLayoutManager linearLayoutManager = createLinearLayoutManager();
-        recyclerViewRestaurantsListAdapter = createRecyclerViewHotelsListAdapter(restaurants);
-        getRecyclerView().setLayoutManager(linearLayoutManager);
+        recyclerViewRestaurantsListAdapter = createRecyclerViewAdapter(restaurants);
+        getRecyclerView().setLayoutManager(createLinearLayoutManager());
         getRecyclerView().setAdapter(recyclerViewRestaurantsListAdapter);
         getRecyclerView().smoothScrollToPosition(0);
         recyclerViewRestaurantsListAdapter.notifyDataSetChanged();
     }
 
-    private LinearLayoutManager createLinearLayoutManager(){
-        return new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+    private RecyclerViewRestaurantsListAdapter createRecyclerViewAdapter(List<Restaurant> restaurants) {
+        return new RecyclerViewRestaurantsListAdapter(getContext(), restaurants);
     }
 
-    private RecyclerViewRestaurantsListAdapter createRecyclerViewHotelsListAdapter(List<Restaurant> restaurants){
-        return new RecyclerViewRestaurantsListAdapter(getContext(), restaurants);
+    private LinearLayoutManager createLinearLayoutManager() {
+        return new LinearLayoutManager(getContext(), setRecyclerViewVerticalOrientation(), false);
+    }
+
+    private int setRecyclerViewVerticalOrientation() {
+        return RecyclerView.VERTICAL;
     }
 
     private void addNewRestaurantsToList(List<Restaurant> restaurants) {
         recyclerViewRestaurantsListAdapter.addListItems(restaurants);
         recyclerViewRestaurantsListAdapter.notifyDataSetChanged();
-        setProgressBarLoadMoreInvisible();
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
     }
 
     private String getRestaurantNameValueFromBottomSheetFilter() {
@@ -368,10 +391,8 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private Double getDistanceValueFromBottomSheetFilter() {
-        if (bottomSheetFilterRestaurants.getSeekBarDistanceValue() != 0)
-            return (double) bottomSheetFilterRestaurants.getSeekBarDistanceValue();
-        else
-            return 1d;
+        return bottomSheetFilterRestaurants.getSeekBarDistanceValue() != 0 ? (double) bottomSheetFilterRestaurants.
+                getSeekBarDistanceValue() : 1d;
     }
 
     private boolean getCertificateOfExcellenceFromBottomSheetFilter() {
@@ -446,41 +467,27 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         return pointSearch;
     }
 
-    private PointSearch createNullPointSearch() {
-        isPointSearchNull = true;
-        PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(0d);
-        pointSearch.setLongitude(0d);
-        pointSearch.setDistance(0d);
-        return pointSearch;
-    }
-
     private void dismissBottomSheetFilterRestaurants() {
         if (isBottomSheetFilterRestaurantsVisible())
             bottomSheetFilterRestaurants.dismiss();
     }
 
-    private void showToastNoMoreResults() {
+    private void showToastVolleyError(int string) {
         setIsLoadingData(false);
-        setProgressBarLoadMoreInvisible();
-        Toast.makeText(restaurantsListActivity, restaurantsListActivity.getResources().getString(R.string.end_of_results), Toast.LENGTH_SHORT).show();
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
+        showToastOnUiThred(string);
     }
 
-    private void showToastNoResults() {
-        setProgressBarLoadMoreInvisible();
+    private void showToastOnUiThred(int string){
         restaurantsListActivity.runOnUiThread(() -> {
-            Toast.makeText(restaurantsListActivity, restaurantsListActivity.getResources().getString(R.string.no_restaurants_found_by_filter), Toast.LENGTH_SHORT).show();
+            Toast.makeText(restaurantsListActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void setProgressBarLoadMoreVisible() {
-        ProgressBar progressBar = restaurantsListActivity.getProgressBarRestaurantLoadMore();
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void setProgressBarLoadMoreInvisible() {
-        ProgressBar progressBar = restaurantsListActivity.getProgressBarRestaurantLoadMore();
-        progressBar.setVisibility(View.GONE);
+    private void setProgressBarVisibilityOnUiThred(int visibility){
+        restaurantsListActivity.runOnUiThread(() -> {
+            getProgressBarLoadMore().setVisibility(visibility);
+        });
     }
 
     public void startRestaurantMapActivity() {
@@ -493,14 +500,12 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private void putPointSearch(Intent restaurantMapActivityIntent) {
-        restaurantMapActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? createNullPointSearch()
-                : createPointSearch());
+        restaurantMapActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? null : createPointSearch());
     }
 
     private void putRsqlQuery(Intent restaurantMapActivityIntent) {
         if (!isAccomodationFilterNull())
-            restaurantMapActivityIntent.putExtra(RSQL_QUERY, createRsqlString().equals("") ? "0"
-                    : createRsqlString());
+            restaurantMapActivityIntent.putExtra(RSQL_QUERY, isRsqlEmpty() ? "0" : createRsqlString());
         else
             restaurantMapActivityIntent.putExtra(RSQL_QUERY, "0");
     }
@@ -516,16 +521,40 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private void putAccomodationRestaurantFilter(Intent restaurantMapActivityIntent) {
-            restaurantMapActivityIntent.putExtra(ACCOMODATION_FILTER, isAccomodationFilterNull() ? null
-                    : accomodationRestaurantFilter);
+        restaurantMapActivityIntent.putExtra(ACCOMODATION_FILTER, isAccomodationFilterNull() ? null
+                : accomodationRestaurantFilter);
+    }
+
+    private ProgressBar getProgressBarLoadMore(){
+        return restaurantsListActivity.getProgressBarRestaurantLoadMore();
+    }
+
+    private Resources getResources() {
+        return restaurantsListActivity.getResources();
+    }
+
+    private String getString(int string){
+        return getResources().getString(string);
     }
 
     public PointSearch getPointSearch() {
         return (PointSearch) restaurantsListActivity.getIntent().getSerializableExtra(POINT_SEARCH);
     }
 
+    private FragmentManager getSupportFragmentManager() {
+        return restaurantsListActivity.getSupportFragmentManager();
+    }
+
+    private boolean isRsqlEmpty(){
+        return createRsqlString().equals("");
+    }
+
+    private String getBottomSheetFilterTag() {
+        return bottomSheetFilterRestaurants.getTag();
+    }
+
     private boolean isBottomSheetFilterRestaurantsVisible() {
-        return bottomSheetFilterRestaurants != null && bottomSheetFilterRestaurants.isAdded();
+        return bottomSheetFilterRestaurants.isAdded();
     }
 
     private void setIsLoadingData(boolean value) {
@@ -540,15 +569,27 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         return !recyclerView.canScrollVertically(1);
     }
 
-    private String getStorageTechnology(String storageTechnology){
+    private RestaurantDAO getRestaurantDAO(){
+        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+    }
+
+    private CityDAO getCityDAO() {
+        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+    }
+
+    private TypeOfCuisineDAO getTypeOfCuisineDAO(){
+        return  daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
-    private Context getContext(){
+    private Context getContext() {
         return restaurantsListActivity.getApplicationContext();
     }
 
-    private RecyclerView getRecyclerView(){
+    private RecyclerView getRecyclerView() {
         return restaurantsListActivity.getRecyclerViewRestaurantsList();
     }
 
@@ -588,7 +629,7 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         return !getAccomodationFilterCityValue().equals("");
     }
 
-    private boolean isBottomSheetFilterRestaurantsNull(){
+    private boolean isBottomSheetFilterRestaurantsNull() {
         return bottomSheetFilterRestaurants == null;
     }
 
@@ -612,6 +653,10 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         return getAccomodationFilterDistanceValue().equals(0d);
     }
 
+    private boolean isBottomSheetFilterDistanceEqualsToZero() {
+        return getAccomodationFilterDistanceValue().equals(0d);
+    }
+
     private boolean isAccomodationFilterTypesOfCuisineNull() {
         return getAccomodationFilterTypesOfCuisine() == null;
     }
@@ -621,7 +666,8 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private boolean isTypesOfCuisineListSelected() {
-        return !isAccomodationFilterNull() && !isAccomodationFilterTypesOfCuisineNull() && !isAccomodationFilterTypesOfCuisineEmpty();
+        return !isAccomodationFilterNull() && !isAccomodationFilterTypesOfCuisineNull() &&
+                !isAccomodationFilterTypesOfCuisineEmpty();
     }
 
     private boolean isAccomodationFilterHasCertificateOfExcellence() {

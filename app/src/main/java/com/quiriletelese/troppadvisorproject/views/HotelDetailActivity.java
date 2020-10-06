@@ -1,12 +1,9 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,12 +15,12 @@ import com.quiriletelese.troppadvisorproject.controllers.HotelDetailActivityCont
 public class HotelDetailActivity extends AppCompatActivity {
 
     private HotelDetailActivityController hotelDetailActivityController;
-    private CollapsingToolbarLayout collapsingToolbarLayoutHotelDetailActivity;
-    private ViewPager viewPagerOverview;
-    private FloatingActionButton floatingActionButtonHotelWriteReview;
-    private TextView textViewHotelAvarageRating, textViewHotelCertificateOfExcellence, textViewHotelAddress,
-            textViewHotelPhoneNumber, textViewHotelStars, textViewHotelAvaragePrice;
-    private Button buttonHotelReadReviews;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ViewPager viewPager;
+    private FloatingActionButton floatingActionButtonWriteReview;
+    private TextView textViewAvarageRating, textViewCertificateOfExcellence, textViewAddress,
+            textViewPhoneNumber, textViewStars, textViewAvaragePrice;
+    private Button buttonReadReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +35,16 @@ public class HotelDetailActivity extends AppCompatActivity {
     }
 
     private void initializeViewComponents() {
-        collapsingToolbarLayoutHotelDetailActivity = findViewById(R.id.collapsing_toolbar_layout_hotel_detail_activity);
-        viewPagerOverview = findViewById(R.id.view_pager_hotel_detail);
-        floatingActionButtonHotelWriteReview = findViewById(R.id.floating_action_button_hotel_write_review);
-        textViewHotelAvarageRating = findViewById(R.id.text_view_hotel_avarage_rating);
-        textViewHotelCertificateOfExcellence = findViewById(R.id.text_view_hotel_certificate_of_excellence);
-        textViewHotelAddress = findViewById(R.id.text_view_accomodation_address);
-        textViewHotelPhoneNumber = findViewById(R.id.text_view_hotel_phone_number);
-        textViewHotelStars = findViewById(R.id.text_view_hotel_stars);
-        textViewHotelAvaragePrice = findViewById(R.id.text_view_hotel_avarage_price);
-        buttonHotelReadReviews = findViewById(R.id.button_hotel_read_reviews);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_hotel_detail_activity);
+        viewPager = findViewById(R.id.view_pager_hotel_detail);
+        floatingActionButtonWriteReview = findViewById(R.id.floating_action_button_hotel_write_review);
+        textViewAvarageRating = findViewById(R.id.text_view_hotel_avarage_rating);
+        textViewCertificateOfExcellence = findViewById(R.id.text_view_hotel_certificate_of_excellence);
+        textViewAddress = findViewById(R.id.text_view_accomodation_address);
+        textViewPhoneNumber = findViewById(R.id.text_view_hotel_phone_number);
+        textViewStars = findViewById(R.id.text_view_hotel_stars);
+        textViewAvaragePrice = findViewById(R.id.text_view_hotel_avarage_price);
+        buttonReadReviews = findViewById(R.id.button_hotel_read_reviews);
     }
 
     private void initializeController() {
@@ -57,52 +54,48 @@ public class HotelDetailActivity extends AppCompatActivity {
         hotelDetailActivityController.setListenerOnViewComponents();
     }
 
-    /*private void initializaViewPager() {
-        hotelDetailActivityController.initializeViewPager();
-    }*/
-
     private void initializeActivityFields() {
         hotelDetailActivityController.findById();
     }
 
-    public CollapsingToolbarLayout getCollapsingToolbarLayoutHotelDetailActivity() {
-        return collapsingToolbarLayoutHotelDetailActivity;
+    public CollapsingToolbarLayout getCollapsingToolbarLayout() {
+        return collapsingToolbarLayout;
     }
 
-    public ViewPager getViewPagerOverview() {
-        return viewPagerOverview;
+    public ViewPager getViewPager() {
+        return viewPager;
     }
 
-    public FloatingActionButton getFloatingActionButtonHotelWriteReview() {
-        return floatingActionButtonHotelWriteReview;
+    public FloatingActionButton getFloatingActionButtonWriteReview() {
+        return floatingActionButtonWriteReview;
     }
 
-    public TextView getTextViewHotelAvarageRating() {
-        return textViewHotelAvarageRating;
+    public TextView getTextViewAvarageRating() {
+        return textViewAvarageRating;
     }
 
-    public TextView getTextViewHotelCertificateOfExcellence() {
-        return textViewHotelCertificateOfExcellence;
+    public TextView getTextViewCertificateOfExcellence() {
+        return textViewCertificateOfExcellence;
     }
 
-    public TextView getTextViewHotelAddress() {
-        return textViewHotelAddress;
+    public TextView getTextViewAddress() {
+        return textViewAddress;
     }
 
-    public TextView getTextViewHotelPhoneNumber() {
-        return textViewHotelPhoneNumber;
+    public TextView getTextViewPhoneNumber() {
+        return textViewPhoneNumber;
     }
 
-    public TextView getTextViewHotelStars() {
-        return textViewHotelStars;
+    public TextView getTextViewStars() {
+        return textViewStars;
     }
 
-    public TextView getTextViewHotelAvaragePrice() {
-        return textViewHotelAvaragePrice;
+    public TextView getTextViewAvaragePrice() {
+        return textViewAvaragePrice;
     }
 
-    public Button getButtonHotelReadReviews() {
-        return buttonHotelReadReviews;
+    public Button getButtonReadReviews() {
+        return buttonReadReviews;
     }
 }
 

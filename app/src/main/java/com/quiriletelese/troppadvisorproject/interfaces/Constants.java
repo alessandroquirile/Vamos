@@ -2,14 +2,14 @@ package com.quiriletelese.troppadvisorproject.interfaces;
 
 public interface Constants {
 
-    /* ========== Storage technology ========== */
+    /* ========== Storage technology utils ========== */
     String HOTEL_STORAGE_TECHNOLOGY = "hotel_storage_technology";
     String RESTAURANT_STORAGE_TECHNOLOGY = "restaurant_storage_technology";
     String ATTRACTION_STORAGE_TECHNOLOGY = "attraction_storage_technology";
     String CITY_STORAGE_TECHNOLOGY = "city_storage_technology";
     String ACCOUNT_STORAGE_TECHNOLOGY = "account_storage_technology";
     String REVIEW_STORAGE_TECHNOLOGY = "review_storage_technology";
-    String TYPES_OF_CUISINE_TECHNOLOGY = "types_of_cuisine_storage_technology";
+    String TYPES_OF_CUISINE_STORAGE_TECHNOLOGY = "types_of_cuisine_storage_technology";
 
     /* ========== Accomodation utils ========== */
     String ID = "id";

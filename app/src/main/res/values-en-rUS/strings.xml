@@ -95,4 +95,9 @@
     <string name="no_content_error_restaurant_detail">" Error, no restaurant found"</string>
     <string name="no_restaurants_found_by_filter">No restaurants found based on your search criteria</string>
     <string name="no_attractions_found_by_filter">No attractions found based on your search criteria</string>
+    <string name="unexpected_error_while_fetch_data">" Unexpected error while retrieving data, please try again"</string>
+    <string name="no_attractions_found_home_page">Could not find nearby attractions, access the list of attractions and change the search filters</string>
+    <string name="no_hotels_found_nearby">No hotels found nearby</string>
+    <string name="no_hotels_found_home_page">Could not find nearby hotels, access the list of attractions and change the search filters</string>
+    <string name="no_restaurants_found_home_page">Could not find nearby restaurants, access the list of attractions and change the search filters</string>
 </resources>

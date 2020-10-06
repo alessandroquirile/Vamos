@@ -2,20 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <!-- <TextView
-        android:id="@+id/text_view_position"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:drawablePadding="5dp"
-        android:padding="10dp"
-        android:text="Posizione ricerca"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        app:drawableStartCompat="@drawable/icon_position_green" /> -->
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view_main"
@@ -41,11 +28,22 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <com.todkars.shimmer.ShimmerRecyclerView
-                android:id="@+id/recycler_view_hotel"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
+                android:layout_height="wrap_content">
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recycler_view_hotel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
+
+                <include
+                    android:id="@+id/no_hotels_error"
+                    layout="@layout/no_hotels_error_home_page_layout"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/text_view_restaurant_recycler_view"
@@ -61,11 +59,22 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <com.todkars.shimmer.ShimmerRecyclerView
-                android:id="@+id/recycler_view_restaurant"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
+                android:layout_height="wrap_content">
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recycler_view_restaurant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
+
+                <include
+                    android:id="@+id/no_restaurants_error"
+                    layout="@layout/no_restaurants_error_home_page_layout"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/text_view_attraction_recycler_view"
@@ -81,53 +90,32 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
 
-            <com.todkars.shimmer.ShimmerRecyclerView
-                android:id="@+id/recycler_view_attraction"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
+                android:layout_height="wrap_content">
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recycler_view_attraction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
+
+                <include
+                    android:visibility="gone"
+                    android:id="@+id/no_attractions_error"
+                    layout="@layout/no_attractions_error_home_page_layout" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linear_layout_no_geolocation_activated"
+    <include
+        android:id="@+id/no_geolocation_activated_error_layout"
+        layout="@layout/no_geolocation_activated_error_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="10dp"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="no_position_error_lottie.json"
-            app:lottie_loop="true" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/no_position_error"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_login_button"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="@string/active_geolocation"
-            android:textColor="@android:color/white" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>
