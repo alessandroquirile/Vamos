@@ -70,7 +70,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     public AttractionMapActivityController(AttractionMapActivity attractionMapActivity) {
         this.attractionMapActivity = attractionMapActivity;
-        attractionFilter = getAccomodationFilter();
+        attractionFilter = getAttractionFilter();
     }
 
     @Override
@@ -193,7 +193,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void onBottomSheetFilterSearchButtonClickHelper() {
-        createAccomodationFilter();
+        createAttractionFilter();
         detectSearchType();
     }
 
@@ -236,19 +236,19 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void setBottomSheetFiltersFields() {
-        if (!isBottomSheetFilterHotelsNull() && !isAccomodationFilterNull())
+        if (!isBottomSheetFilterHotelsNull() && !isAttractionFilterNull())
             new Handler().postDelayed(this::setFields, 100);
     }
 
     private void setFields() {
-        bottomSheetFilterAttractions.setAutoCompleteTextViewNameText(getAccomodationFilterNameValue());
-        bottomSheetFilterAttractions.setAutoCompleteTextViewCityText(getAccomodationFilterCityValue());
-        bottomSheetFilterAttractions.setSeekBarPriceProgress(getAccomodationFilterAvaragePriceValue());
-        bottomSheetFilterAttractions.setSeekBarRatingProgress(getAccomodationFilterAvarageRatingValue());
-        bottomSheetFilterAttractions.setSeekBarDistanceProgress(getAccomodationFilterDistanceValue().intValue());
+        bottomSheetFilterAttractions.setAutoCompleteTextViewNameText(getAttractionFilterNameValue());
+        bottomSheetFilterAttractions.setAutoCompleteTextViewCityText(getAttractionFilterCityValue());
+        bottomSheetFilterAttractions.setSeekBarPriceProgress(getAttractionFilterAvaragePriceValue());
+        bottomSheetFilterAttractions.setSeekBarRatingProgress(getAttractionFilterAvarageRatingValue());
+        bottomSheetFilterAttractions.setSeekBarDistanceProgress(getAttractionFilterDistanceValue().intValue());
         if (isSearchingForCity())
             bottomSheetFilterAttractions.setSeekBarDistanceEnabled(false);
-        bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceChecked(isAccomodationFilterHasCertificateOfExcellence());
+        bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceChecked(isAttractionFilterHasCertificateOfExcellence());
     }
 
     private void volleyCallbackOnError(String errorCode) {
@@ -276,7 +276,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         });
     }
 
-    private void createAccomodationFilter() {
+    private void createAttractionFilter() {
         attractionFilter = new AttractionFilter();
         attractionFilter.setName(getAttractionNameValueFromBottomSheetFilter());
         attractionFilter.setCity(getCityNameValueFromBottomSheetFilter());
@@ -321,7 +321,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private String checkCityNameValue(String rsqlString) {
         if (isSearchingForCity()) {
-            String cityName = extractCityName(getAccomodationFilterCityValue());
+            String cityName = extractCityName(getAttractionFilterCityValue());
             rsqlString = rsqlString.concat("address.city==" + cityName + ";");
         }
         return rsqlString;
@@ -332,30 +332,30 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private String checkPriceValue(String rsqlString) {
-        if (!isAccomodationFilterAvaragePriceEqualsToZero()) {
-            if (isAccomodationFilterAvaragePriceGreaterEqualsThan150())
-                rsqlString = rsqlString.concat("avaragePrice=ge=" + getAccomodationFilterAvaragePriceValue() + ";");
+        if (!isAttractionFilterAvaragePriceEqualsToZero()) {
+            if (isAttractionFilterAvaragePriceGreaterEqualsThan150())
+                rsqlString = rsqlString.concat("avaragePrice=ge=" + getAttractionFilterAvaragePriceValue() + ";");
             else
-                rsqlString = rsqlString.concat("avaragePrice=le=" + getAccomodationFilterAvaragePriceValue() + ";");
+                rsqlString = rsqlString.concat("avaragePrice=le=" + getAttractionFilterAvaragePriceValue() + ";");
         }
         return rsqlString;
     }
 
     private String checkRatingValue(String rsqlString) {
-        if (!isAccomodationFilterAvarageRatingEqualsToZero())
-            rsqlString = rsqlString.concat("avarageRating=ge=" + getAccomodationFilterAvarageRatingValue() + ";");
+        if (!isAttractionFilterAvarageRatingEqualsToZero())
+            rsqlString = rsqlString.concat("avarageRating=ge=" + getAttractionFilterAvarageRatingValue() + ";");
         return rsqlString;
     }
 
     private Double checkDistanceValue() {
         double distance = 1.0;
-        if (!isAccomodationFilterDistanceEqualsToZero())
-            distance = getAccomodationFilterDistanceValue();
+        if (!isAttractionFilterDistanceEqualsToZero())
+            distance = getAttractionFilterDistanceValue();
         return distance;
     }
 
     private String checkCertificateOfExcellence(String rsqlString) {
-        if (isAccomodationFilterHasCertificateOfExcellence())
+        if (isAttractionFilterHasCertificateOfExcellence())
             rsqlString = rsqlString.concat("certificateOfExcellence==" + "true;");
         return rsqlString;
     }
@@ -374,7 +374,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private PointSearch createPointSearch() {
         PointSearch pointSearch = getPointSearch();
-        pointSearch.setDistance(isAccomodationFilterNull() ? 5d : checkDistanceValue());
+        pointSearch.setDistance(isAttractionFilterNull() ? 5d : checkDistanceValue());
         return pointSearch;
     }
 
@@ -636,7 +636,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         return !(getIntent().getStringExtra(NAME) == null) && !getIntent().getStringExtra(NAME).equals("");
     }
 
-    private AttractionFilter getAccomodationFilter() {
+    private AttractionFilter getAttractionFilter() {
         return (AttractionFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
     }
 
@@ -664,31 +664,31 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         return getIntent().getStringExtra(NAME);
     }
 
-    private boolean isAccomodationFilterNull() {
+    private boolean isAttractionFilterNull() {
         return attractionFilter == null;
     }
 
-    private String getAccomodationFilterNameValue() {
+    private String getAttractionFilterNameValue() {
         return attractionFilter.getName();
     }
 
-    private String getAccomodationFilterCityValue() {
+    private String getAttractionFilterCityValue() {
         return attractionFilter.getCity();
     }
 
-    private Integer getAccomodationFilterAvaragePriceValue() {
+    private Integer getAttractionFilterAvaragePriceValue() {
         return attractionFilter.getAvaragePrice();
     }
 
-    private Integer getAccomodationFilterAvarageRatingValue() {
+    private Integer getAttractionFilterAvarageRatingValue() {
         return attractionFilter.getAvarageRating();
     }
 
-    private Double getAccomodationFilterDistanceValue() {
+    private Double getAttractionFilterDistanceValue() {
         return attractionFilter.getDistance();
     }
 
-    private boolean getAccomodationFilterHasCertificateOfExcellenceValue() {
+    private boolean getAttractionFilterHasCertificateOfExcellenceValue() {
         return attractionFilter.isHasCertificateOfExcellence();
     }
 
@@ -737,35 +737,35 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private boolean isSearchingForName() {
-        return !getAccomodationFilterNameValue().equals("");
+        return !getAttractionFilterNameValue().equals("");
     }
 
     private boolean isSearchingForCity() {
-        return !getAccomodationFilterCityValue().equals("");
+        return !getAttractionFilterCityValue().equals("");
     }
 
     private boolean isBottomSheetFilterHotelsNull() {
         return bottomSheetFilterAttractions == null;
     }
 
-    private boolean isAccomodationFilterAvaragePriceEqualsToZero() {
-        return getAccomodationFilterAvaragePriceValue().equals(0);
+    private boolean isAttractionFilterAvaragePriceEqualsToZero() {
+        return getAttractionFilterAvaragePriceValue().equals(0);
     }
 
-    private boolean isAccomodationFilterAvaragePriceGreaterEqualsThan150() {
-        return getAccomodationFilterAvaragePriceValue() >= 150;
+    private boolean isAttractionFilterAvaragePriceGreaterEqualsThan150() {
+        return getAttractionFilterAvaragePriceValue() >= 150;
     }
 
-    private boolean isAccomodationFilterAvarageRatingEqualsToZero() {
-        return getAccomodationFilterAvarageRatingValue().equals(0);
+    private boolean isAttractionFilterAvarageRatingEqualsToZero() {
+        return getAttractionFilterAvarageRatingValue().equals(0);
     }
 
-    private boolean isAccomodationFilterDistanceEqualsToZero() {
-        return getAccomodationFilterDistanceValue().equals(0d);
+    private boolean isAttractionFilterDistanceEqualsToZero() {
+        return getAttractionFilterDistanceValue().equals(0d);
     }
 
-    private boolean isAccomodationFilterHasCertificateOfExcellence() {
-        return getAccomodationFilterHasCertificateOfExcellenceValue();
+    private boolean isAttractionFilterHasCertificateOfExcellence() {
+        return getAttractionFilterHasCertificateOfExcellenceValue();
     }
 
     private boolean isBottomSheetFilterAttractionsVisible() {
