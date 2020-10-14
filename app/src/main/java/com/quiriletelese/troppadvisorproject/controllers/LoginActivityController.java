@@ -3,10 +3,15 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.services.cognitoidentityprovider.model.AttributeType;
+import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
@@ -16,24 +21,32 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
+import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class LoginActivityController implements View.OnClickListener, Constants {
 
     private LoginActivity loginActivity;
-    private DAOFactory daoFactory;
-    private String key, password;
-    private AlertDialog dialog;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private String key;
+    private char[] password;
+    private UserSharedPreferences userSharedPreferences;
+    private AlertDialog alertDialogWaitForLoginResult;
+    private View dialogView;
 
     public LoginActivityController(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
+        this.userSharedPreferences = new UserSharedPreferences(getContext());
     }
 
     @Override
@@ -43,57 +56,131 @@ public class LoginActivityController implements View.OnClickListener, Constants 
                 checkUserInformations();
                 break;
             case R.id.text_view_sign_in:
-                showSignUpActivity();
+                startSignUpActivity();
+                break;
+            case R.id.text_view_cancel_login:
+                finish();
                 break;
         }
     }
 
-    public void setListenerOnViewComponents() {
-        loginActivity.getButtonLogin().setOnClickListener(this);
-        loginActivity.getTextViewSignIn().setOnClickListener(this);
+    private void loginHelper(VolleyCallBack volleyCallBack) {
+        getAccountDAO().login(volleyCallBack, createAccountForLogin(), getContext());
     }
 
-    private void getUserInformation() {
-        key = loginActivity.getTextInputLayoutKeyValue().trim();
-        password = loginActivity.getTextInputLayoutPasswordValue().trim();
-    }
-
-    private void checkUserInformations() {
-        getUserInformation();
-        if (isFieldsCorrectlyInserted()) {
-            showWaitForLoginResultDialog();
-            login();
-        }
-    }
-
-    private void loginHelper(VolleyCallBack volleyCallBack, Account account, Context context) {
-        daoFactory = DAOFactory.getInstance();
-        AccountDAO accountDAO = daoFactory.getAccountDAO(ConfigFileReader.getProperty(ACCOUNT_STORAGE_TECHNOLOGY,
-                loginActivity.getApplicationContext()));
-        accountDAO.login(volleyCallBack, account, context);
+    private void getUserDetailsHelper(VolleyCallBack volleyCallBack) {
+        getAccountDAO().getUserDetails(volleyCallBack, getAccessToken(), getContext());
     }
 
     private void login() {
         loginHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                dialog.dismiss();
-                writeSharedPreferences(object);
+                volleyCallbackLoginOnSuccess(object);
             }
 
             @Override
             public void onError(String errorCode) {
-                dialog.dismiss();
-                if (errorCode.equals(INTERNAL_ERROR_SERVER))
-                    showToastLoginError();
+                System.out.println("ERRORE LOGIN");
+                volleyCallbackOnError(errorCode);
             }
-        }, createAccountForLogin(), loginActivity.getApplicationContext());
+        });
     }
 
-    public void showSignUpActivity() {
-        Intent intent = new Intent(loginActivity.getApplicationContext(), SignUpActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        loginActivity.getApplicationContext().startActivity(intent);
+    private void getUserDetails() {
+        getUserDetailsHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                volleyCallbackGetUserDetailsOnSuccess(object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                System.out.println("ERRORE DETAILS");
+                volleyCallbackOnError(errorCode);
+            }
+        });
+    }
+
+    private void volleyCallbackLoginOnSuccess(Object object) {
+        writeLoginSharedPreferences((InitiateAuthResult) object);
+        setAlertDialogTextViewText(getString(R.string.retrieving_user_details));
+        getUserDetails();
+    }
+
+    private void volleyCallbackGetUserDetailsOnSuccess(Object object) {
+        writeUserDetailsSharedPreferences((GetUserResult) object);
+        dismissWaitForLoginResultDialog();
+        finish();
+    }
+
+    private void volleyCallbackOnError(String errorCode) {
+        switch (errorCode) {
+            case INTERNAL_ERROR_SERVER:
+                clearSharedPreferences();
+                handle500VolleyError();
+                dismissWaitForLoginResultDialog();
+                break;
+        }
+    }
+
+    private void handle500VolleyError() {
+        showToast500VolleyError(R.string.login_error);
+    }
+
+    private void showToast500VolleyError(int string) {
+        showToastOnUiThred(string);
+    }
+
+    private void showToastOnUiThred(int string) {
+        loginActivity.runOnUiThread(() -> {
+            Toast.makeText(loginActivity, getString(string), Toast.LENGTH_LONG).show();
+        });
+    }
+
+    public void setListenerOnViewComponents() {
+        getButtonLogin().setOnClickListener(this);
+        getTextViewSignIn().setOnClickListener(this);
+        getTextViewCancelLogin().setOnClickListener(this);
+    }
+
+    private void getUserInformations() {
+        key = getTextInputLayoutKeyValue();
+        password = getTextInputLayoutPasswordValue();
+    }
+
+    private void checkUserInformations() {
+        getUserInformations();
+        if (isFieldsCorrectlyInserted()) {
+            showWaitForLoginResultDialog();
+            login();
+        }
+    }
+
+    public void startSignUpActivity() {
+        Intent intentSignUpActivity = createSignUpActivityIntent();
+        getContext().startActivity(intentSignUpActivity);
+    }
+
+    private Intent createSignUpActivityIntent() {
+        Intent intentSignUpActivity = new Intent(getContext(), SignUpActivity.class);
+        intentSignUpActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentSignUpActivity;
+    }
+
+    public void startHomePageActivity() {
+        Intent intentSignUpActivity = createHomePageActivityIntent();
+        getContext().startActivity(intentSignUpActivity);
+    }
+
+    private Intent createHomePageActivityIntent() {
+        Intent intentHomePageActivity = new Intent(getContext(), HomePageActivity.class);
+        intentHomePageActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentHomePageActivity;
+    }
+
+    private void finish() {
+        loginActivity.finish();
     }
 
     private Account createAccountForLogin() {
@@ -104,25 +191,25 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private boolean isFieldsCorrectlyInserted() {
-         return isKeyCorrectlyInserted() && isPasswordCorrectlyInserted();
+        return isKeyCorrectlyInserted() && isPasswordCorrectlyInserted();
     }
 
     private boolean isKeyCorrectlyInserted() {
         if (isKeyEmpty()) {
-            showFieldErrorMessage(loginActivity.getTextInputLayoutKey(), getFieldCannotBeEmptyErrorMessage());
+            showFieldErrorMessage(getTextInputLayoutKey(), getFieldCannotBeEmptyErrorMessage());
             return false;
         } else {
-            showFieldErrorMessage(loginActivity.getTextInputLayoutKey(), null);
+            showFieldErrorMessage(getTextInputLayoutKey(), null);
             return true;
         }
     }
 
     private boolean isPasswordCorrectlyInserted() {
         if (isPasswordEmpty()) {
-            showFieldErrorMessage(loginActivity.getTextInputLayoutPassword(), getFieldCannotBeEmptyErrorMessage());
+            showFieldErrorMessage(getTextInputLayoutPassword(), getFieldCannotBeEmptyErrorMessage());
             return false;
         } else {
-            showFieldErrorMessage(loginActivity.getTextInputLayoutPassword(), null);
+            showFieldErrorMessage(getTextInputLayoutPassword(), null);
             return true;
         }
     }
@@ -131,20 +218,44 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         textInputLayout.setError(error);
     }
 
-    private void writeSharedPreferences(Object object) {
-        InitiateAuthResult initiateAuthResult = (InitiateAuthResult) object;
-        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(loginActivity.getApplicationContext());
-        userSharedPreferences.putSharedPreferencesString(ACCESS_TOKEN, initiateAuthResult.getAuthenticationResult().getAccessToken());
-        userSharedPreferences.putSharedPreferencesString(ID_TOKEN, initiateAuthResult.getAuthenticationResult().getIdToken());
+    private void writeLoginSharedPreferences(InitiateAuthResult initiateAuthResult) {
+        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));
+    }
+
+    private void writeUserDetailsSharedPreferences(GetUserResult getUserResult) {
+        userSharedPreferences.putStringSharedPreferences(USERNAME, getUserName(getUserResult));
+        userSharedPreferences.putStringSharedPreferences(USER_FIRST_NAME, getName(getUserResult.getUserAttributes()));
+        userSharedPreferences.putStringSharedPreferences(FAMILY_NAME, getFamilyName(getUserResult.getUserAttributes()));
+        userSharedPreferences.putStringSharedPreferences(EMAIL, getEmail(getUserResult.getUserAttributes()));
+    }
+
+    private void clearSharedPreferences() {
+        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, "");
+        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, "");
+        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, "");
+        userSharedPreferences.putStringSharedPreferences(USERNAME, "");
+        userSharedPreferences.putStringSharedPreferences(USER_FIRST_NAME, "");
+        userSharedPreferences.putStringSharedPreferences(FAMILY_NAME, "");
+        userSharedPreferences.putStringSharedPreferences(EMAIL, "");
     }
 
     private void showWaitForLoginResultDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginActivity);
-        LayoutInflater layoutInflater = loginActivity.getLayoutInflater();
-        View dialogView = layoutInflater.inflate(R.layout.dialog_wait_login, null);
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        LayoutInflater layoutInflater = getLayoutInflater();
+        dialogView = layoutInflater.inflate(getAlertDialogLayout(), null);
         alertDialogBuilder.setView(dialogView);
-        dialog = alertDialogBuilder.create();
-        dialog.show();
+        alertDialogWaitForLoginResult = alertDialogBuilder.create();
+        alertDialogWaitForLoginResult.show();
+    }
+
+    private AlertDialog.Builder createAlertDialogBuilder() {
+        return new AlertDialog.Builder(loginActivity);
+    }
+
+    private void dismissWaitForLoginResultDialog() {
+        alertDialogWaitForLoginResult.dismiss();
     }
 
     private boolean isKeyEmpty() {
@@ -152,21 +263,108 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private boolean isPasswordEmpty() {
-        return password.isEmpty();
+        return password.length == 0;
     }
 
-    private void showToastLoginError() {
-        loginActivity.runOnUiThread(() -> {
-            Toast.makeText(loginActivity, getLoginErrorMessage(), Toast.LENGTH_LONG).show();
-        });
+    private AccountDAO getAccountDAO() {
+        return daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    private Button getButtonLogin() {
+        return loginActivity.getButtonLogin();
+    }
+
+    private TextView getTextViewSignIn() {
+        return loginActivity.getTextViewSignIn();
+    }
+
+    private TextView getTextViewCancelLogin() {
+        return loginActivity.getTextViewCancelLogin();
+    }
+
+    private TextInputLayout getTextInputLayoutKey() {
+        return loginActivity.getTextInputLayoutKey();
+    }
+
+    private TextInputLayout getTextInputLayoutPassword() {
+        return loginActivity.getTextInputLayoutPassword();
+    }
+
+    private String getTextInputLayoutKeyValue() {
+        return loginActivity.getTextInputLayoutKeyValue();
+    }
+
+    private char[] getTextInputLayoutPasswordValue() {
+        return loginActivity.getTextInputLayoutPasswordValue();
+    }
+
+    private LayoutInflater getLayoutInflater() {
+        return loginActivity.getLayoutInflater();
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_wait_login_layout;
+    }
+
+    private String getAccessToken(InitiateAuthResult initiateAuthResult) {
+        return initiateAuthResult.getAuthenticationResult().getAccessToken();
+    }
+
+    private String getAccessToken() {
+        return userSharedPreferences.getStringSharedPreferences(ACCESS_TOKEN);
+    }
+
+    private String getIdToken(InitiateAuthResult initiateAuthResult) {
+        return initiateAuthResult.getAuthenticationResult().getIdToken();
+    }
+
+    private String getRefreshToken(InitiateAuthResult initiateAuthResult) {
+        return initiateAuthResult.getAuthenticationResult().getRefreshToken();
+    }
+
+    private String getUserName(GetUserResult getUserResult) {
+        return getUserResult.getUsername();
+    }
+
+    private String getName(List<AttributeType> userAttributes) {
+        return userAttributes.get(2).getValue();
+    }
+
+    private String getFamilyName(List<AttributeType> userAttributes) {
+        return userAttributes.get(3).getValue();
+    }
+
+    private String getEmail(List<AttributeType> userAttributes) {
+        return userAttributes.get(4).getValue();
     }
 
     private String getFieldCannotBeEmptyErrorMessage() {
         return loginActivity.getResources().getString(R.string.field_cannot_be_empty);
     }
 
-    private String getLoginErrorMessage() {
-        return loginActivity.getResources().getString(R.string.login_error);
+    private Context getContext() {
+        return loginActivity.getApplicationContext();
+    }
+
+    private Resources getResources() {
+        return loginActivity.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
+    }
+
+    private TextView getAlertDialogWaitForLoginTextView() {
+        return dialogView.findViewById(R.id.text_view_wait_for_login_message);
+    }
+
+    private void setAlertDialogTextViewText(String value) {
+        //alertDialogWaitForLoginResult.setMessage(value);
+        getAlertDialogWaitForLoginTextView().setText(value);
     }
 
 }

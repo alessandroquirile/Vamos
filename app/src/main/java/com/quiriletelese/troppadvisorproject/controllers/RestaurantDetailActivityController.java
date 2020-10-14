@@ -1,8 +1,10 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +16,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
-import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
@@ -27,7 +28,6 @@ import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDetailActivityController implements View.OnClickListener, Constants {
@@ -35,6 +35,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     private RestaurantDetailActivity restaurantDetailActivity;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant;
+    private AlertDialog alertDialogLoadingInProgress;
 
     public RestaurantDetailActivityController(RestaurantDetailActivity restaurantDetailActivity) {
         this.restaurantDetailActivity = restaurantDetailActivity;
@@ -63,6 +64,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
                 restaurant = (Restaurant) object;
                 initializeActivityFields();
                 initializeViewPager();
+                dismissLoadingInProgressDialog();
             }
 
             @Override
@@ -110,7 +112,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
 
     private void setAvarageRating(Restaurant restaurant) {
         if (!hasAvarageRating(restaurant.getAvarageRating()))
-            getTextViewAvarageRating().setText(R.string.no_review);
+            getTextViewAvarageRating().setText(R.string.no_reviews);
         else
             getTextViewAvarageRating().setText(createAvarageRatingString(restaurant));
     }
@@ -215,6 +217,20 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
             startSeeReviewsActivity();
         else
             showToastNoReviewsError();
+    }
+
+    public void showLoadingInProgressDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(restaurantDetailActivity);
+        LayoutInflater layoutInflater = restaurantDetailActivity.getLayoutInflater();
+        View dialogView = layoutInflater.inflate(R.layout.dialog_loading_in_progress, null);
+        alertDialogBuilder.setView(dialogView);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogLoadingInProgress = alertDialogBuilder.create();
+        alertDialogLoadingInProgress.show();
+    }
+
+    private void dismissLoadingInProgressDialog(){
+        alertDialogLoadingInProgress.dismiss();
     }
 
     private void showToastNoContentError() {
@@ -354,7 +370,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private String getNoReviewsErrorMessage(){
-        return getString(R.string.no_review);
+        return getString(R.string.no_reviews);
     }
 
 }

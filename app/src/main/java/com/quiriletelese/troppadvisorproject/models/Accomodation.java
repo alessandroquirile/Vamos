@@ -139,5 +139,36 @@ public abstract class Accomodation implements Serializable {
         this.lastModificationDate = lastModificationDate;
     }
 
+    public String getCity(){
+        return this.address.getCity();
+    }
+
+    public String getStreet(){
+        return this.address.getStreet();
+    }
+
+    public String getHouseNumber(){
+        return this.address.getHouseNumber();
+    }
+
+    public String getPostalCode(){
+        return this.address.getPostalCode();
+    }
+
+    public String getProvince(){
+        return this.address.getProvince();
+    }
+
+    public String getTypeOfAddress(){
+        return this.address.getType();
+    }
+
+    public boolean isImagesGraterThanZero(){
+        return this.images.size() > 0;
+    }
+
+    public boolean hasReviews(){
+        return this.totalReviews > 0;
+    }
 
 }

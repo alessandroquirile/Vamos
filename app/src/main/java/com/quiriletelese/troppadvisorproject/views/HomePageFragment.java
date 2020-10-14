@@ -9,8 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,13 +27,12 @@ import java.util.List;
 
 public class HomePageFragment extends Fragment implements Constants {
 
-    private static final int ACCESS_FINE_LOCATION = 100;
     private HomePageFragmentController homePageFragmentController;
     private ShimmerRecyclerView shimmerRecyclerViewHotel, shimmerRecyclerViewRestaurant, shimmerRecyclerViewAttraction;
     private TextView textViewHotelRecyclerView, textViewRestaurantRecyclerView, textViewAttractionRecyclerView;
-    private View viewNoGeolocationError, viewNoHotelsError, viewNoRestaurantsError, viewNoAttractionsError;
-    private List<Double> pointSearchArguments;
-    private boolean ok = false;
+    private View viewNoGeolocationError, viewNoHotelsError, viewNoRestaurantsError, viewNoAttractionsError,
+            viewMissingLocationPermissionError;
+    private Button buttonEnablePosition, buttonProvidePermission;
 
     @Nullable
     @Override
@@ -64,7 +63,19 @@ public class HomePageFragment extends Fragment implements Constants {
         return true;
     }
 
-    private void inflateMenu(Menu menu, MenuInflater inflater){
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        onRequestPermissionsResultHelper(requestCode, grantResults);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializeRecyclerViews();
+    }
+
+    private void inflateMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
     }
 
@@ -76,17 +87,8 @@ public class HomePageFragment extends Fragment implements Constants {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == ACCESS_FINE_LOCATION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initializeRecyclerViewHotel();
-                initializeRecyclerViewRestaurant();
-                initializeRecyclerViewAttraction();
-            } else
-                Toast.makeText(getContext(), "Camera Permission Denied", Toast.LENGTH_SHORT).show();
-        }
+    private void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults){
+        homePageFragmentController.onRequestPermissionsResultHelper(requestCode, grantResults);
     }
 
     private void initializeViewComponents(@NotNull View view) {
@@ -100,6 +102,9 @@ public class HomePageFragment extends Fragment implements Constants {
         viewNoHotelsError = view.findViewById(R.id.no_hotels_error);
         viewNoRestaurantsError = view.findViewById(R.id.no_restaurants_error);
         viewNoAttractionsError = view.findViewById(R.id.no_attractions_error);
+        viewMissingLocationPermissionError = view.findViewById(R.id.missing_location_permission_error_layout);
+        buttonEnablePosition = view.findViewById(R.id.button_enable_position);
+        buttonProvidePermission = view.findViewById(R.id.button_provide_permission);
     }
 
     private void initializeHomePageFragmentController() {
@@ -116,19 +121,13 @@ public class HomePageFragment extends Fragment implements Constants {
     }
 
     private boolean checkPermission() {
-        boolean isGranted = true;
-        if (homePageFragmentController.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && homePageFragmentController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            isGranted = false;
-            homePageFragmentController.requestPermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_FINE_LOCATION);
-        }
-        return isGranted;
+        return homePageFragmentController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
-    private void initializeRecyclerViews() {
+    public void initializeRecyclerViews() {
         if (checkPermission()) {
-            //pointSearchArguments = homePageController.getLocation();
-            Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
             if (canGeolocate()) {
+                setViewNoGeolocationErrorVisibility(View.INVISIBLE);
                 do {
                     if (!areCoordinatesNull()) {
                         initializeRecyclerViewHotel();
@@ -138,25 +137,29 @@ public class HomePageFragment extends Fragment implements Constants {
                     }
                 } while (areCoordinatesNull());
             } else
-                setViewNoGeolocationErrorVisible();
+                setViewNoGeolocationErrorVisibility(View.VISIBLE);
         } else
-            Toast.makeText(getContext(), "NON GRANTED", Toast.LENGTH_SHORT).show();
+            setViewMissingLocationPermissionErrorVisibility(View.VISIBLE);
     }
 
     private void initializeRecyclerViewHotel() {
-        homePageFragmentController.initializeRecyclerViewHotel(homePageFragmentController.getLocation());
+        homePageFragmentController.initializeRecyclerViewHotel();
     }
 
     private void initializeRecyclerViewRestaurant() {
-        homePageFragmentController.initializeRecyclerViewRestaurant(homePageFragmentController.getLocation());
+        homePageFragmentController.initializeRecyclerViewRestaurant();
     }
 
     private void initializeRecyclerViewAttraction() {
-        homePageFragmentController.initializeRecyclerViewAttraction(homePageFragmentController.getLocation());
+        homePageFragmentController.initializeRecyclerViewAttraction();
     }
 
-    private void setViewNoGeolocationErrorVisible() {
-        viewNoGeolocationError.setVisibility(View.VISIBLE);
+    private void setViewNoGeolocationErrorVisibility(int visibility) {
+        viewNoGeolocationError.setVisibility(visibility);
+    }
+
+    private void setViewMissingLocationPermissionErrorVisibility(int visibility) {
+        viewMissingLocationPermissionError.setVisibility(visibility);
     }
 
     private boolean canGeolocate() {
@@ -201,6 +204,18 @@ public class HomePageFragment extends Fragment implements Constants {
 
     public View getViewNoAttractionsError() {
         return viewNoAttractionsError;
+    }
+
+    public Button getButtonEnablePosition() {
+        return buttonEnablePosition;
+    }
+
+    public Button getButtonProvidePermission() {
+        return buttonProvidePermission;
+    }
+
+    private boolean isPermissionGranted(@NonNull int[] grantResults) {
+        return homePageFragmentController.isPermissionGranted(grantResults);
     }
 
 }

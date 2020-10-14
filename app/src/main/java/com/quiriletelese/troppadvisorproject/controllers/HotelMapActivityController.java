@@ -3,15 +3,22 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.BottomSheetFilterHotels;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
@@ -31,26 +39,24 @@ import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAcc
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationHotelFilter;
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.HotelMapActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBackCity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelMapActivityController implements GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
-        View.OnClickListener, OnBottomSheetFilterSearchButtonClick,
-        AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
+        View.OnClickListener, OnBottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
+        Constants {
 
     private HotelMapActivity hotelMapActivity;
-    private BottomSheetFilterHotels bottomSheetFilterHotels;
+    private BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
     private AccomodationHotelFilter accomodationHotelFilter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
     private Hotel hotel = null;
     private List<Hotel> hotels = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
@@ -80,7 +86,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
                 showBottomSheetMapFilters();
                 break;
             case R.id.image_view_hotel_map_go_back:
-                hotelMapActivity.onBackPressed();
+                onBackPressed();
                 break;
             case R.id.floating_action_button_center_position_on_hotels:
                 zoomOnMap();
@@ -103,30 +109,20 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         findCitiesName(newText);
     }
 
-    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
-                                  Context context, int page, int size) {
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                hotelMapActivity.getApplicationContext()));
-        hotelDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, context, page, size);
+    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery) {
+        getHotelDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10000);
     }
 
-    private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name, Context context,
-                                                int page, int size) {
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                hotelMapActivity.getApplicationContext()));
-        hotelDAO.findByNameLikeIgnoreCase(volleyCallBack, name, context, page, size);
+    private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
+        getHotelDAO().findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), 0, 10000);
     }
 
     public void findHotelsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        HotelDAO hotelDAO = daoFactory.getHotelDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY,
-                hotelMapActivity.getApplicationContext()));
-        hotelDAO.findHotelsName(volleyCallBack, name, hotelMapActivity.getApplicationContext());
+        getHotelDAO().findHotelsName(volleyCallBack, name, getContext());
     }
 
-    public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
-        CityDAO cityDAO = daoFactory.getCityDAO(ConfigFileReader.getProperty(CITY_STORAGE_TECHNOLOGY,
-                hotelMapActivity.getApplicationContext()));
-        cityDAO.findCitiesByName(volleyCallBackCity, name, hotelMapActivity.getApplicationContext());
+    public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
+        getCityDAO().findCitiesByName(volleyCallBack, name, getContext());
     }
 
     public void findByRsql(PointSearch pointSearch, String rsqlQuery) {
@@ -134,16 +130,14 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
             @Override
             public void onSuccess(Object object) {
                 setMapOnSuccess((List<Hotel>) object);
-
             }
 
             @Override
             public void onError(String errorCode) {
-                if (errorCode.equals("204"))
-                    showToastNoResults();
+                volleyCallbackOnError(errorCode);
             }
 
-        }, pointSearch, rsqlQuery, getContext(), 0, 10000);
+        }, pointSearch, rsqlQuery);
     }
 
     private void findByNameLikeIgnoreCase(String name) {
@@ -155,9 +149,9 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
             @Override
             public void onError(String errorCode) {
-
+                volleyCallbackOnError(errorCode);
             }
-        }, name, getContext(), 0, 10000);
+        }, name);
     }
 
     private void findHotelsName(String newText) {
@@ -181,14 +175,14 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     private void findCitiesName(String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
-            findCitiesNameHelper(new VolleyCallBackCity() {
+            findCitiesNameHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     setAutoCompleteTextViewHotelCityAdapter((List<String>) object);
                 }
 
                 @Override
-                public void onError(String error) {
+                public void onError(String errorCode) {
 
                 }
             }, newText);
@@ -198,8 +192,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private void setMapOnSuccess(List<Hotel> hotels) {
         this.hotels = hotels;
-        if (isBottomSheetFilterHotelsVisible())
-            bottomSheetFilterHotels.dismiss();
+        dismissBottomSheetFilterHotels();
         addMarkersOnSuccess(hotels);
         zoomOnMap();
     }
@@ -250,6 +243,35 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         bottomSheetFilterHotels.setSwitchCompatCertificateOfExcellenceChecked(isAccomodationFilterHasCertificateOfExcellence());
     }
 
+    private void volleyCallbackOnError(String errorCode) {
+        switch (errorCode) {
+            case "204":
+                handle204VolleyError();
+                break;
+            default:
+                handleOtherVolleyError();
+                break;
+        }
+    }
+
+    private void handle204VolleyError() {
+        showToastVolleyError(R.string.no_restaurants_found_by_filter);
+    }
+
+    private void handleOtherVolleyError() {
+        showToastVolleyError(R.string.unexpected_error_while_fetch_data);
+    }
+
+    private void showToastVolleyError(int string) {
+        showToastOnUiThred(string);
+    }
+
+    private void showToastOnUiThred(int string) {
+        hotelMapActivity.runOnUiThread(() -> {
+            Toast.makeText(hotelMapActivity, getString(string), Toast.LENGTH_SHORT).show();
+        });
+    }
+
     private void createAccomodationFilter() {
         accomodationHotelFilter = new AccomodationHotelFilter();
         accomodationHotelFilter.setName(getHotelNameValueFromBottomSheetFilter());
@@ -263,7 +285,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private void detectSearchType() {
         if (!isSearchingForName()) {
-            findByRsql(isSearchingForCity() ? createNullPointSearch() : createPointSearch(),
+            findByRsql(isSearchingForCity() ? null : createPointSearch(),
                     !createRsqlString().equals("") ? createRsqlString() : "0");
         } else
             findByNameLikeIgnoreCase(getHotelNameValueFromBottomSheetFilter());
@@ -290,14 +312,8 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     private Double getDistanceValueFromBottomSheetFilter() {
-        Double distance = 0d;
-        if (bottomSheetFilterHotels.getSeekBarDistance().isEnabled()) {
-            if (bottomSheetFilterHotels.getSeekBarDistanceValue() != 0)
-                distance = (double) bottomSheetFilterHotels.getSeekBarDistanceValue();
-            else
-                distance = 1d;
-        }
-        return distance;
+        return isDistanceSeekbarEnabled() && isDistanceDifferentFromZero() ?
+                (double) bottomSheetFilterHotels.getSeekBarDistanceValue() : 1d;
     }
 
     private boolean getCertificateOfExcellenceFromBottomSheetFilter() {
@@ -369,24 +385,16 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         return pointSearch;
     }
 
-    private PointSearch createNullPointSearch() {
-        PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(0d);
-        pointSearch.setLongitude(0d);
-        pointSearch.setDistance(0d);
-        return pointSearch;
-    }
-
     private void setAutoCompleteTextViewHotelNameAdapter(List<String> hotelsName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(hotelMapActivity.getApplicationContext(),
-                android.R.layout.select_dialog_item, hotelsName);
-        bottomSheetFilterHotels.getAutoCompleteTextViewName().setAdapter(arrayAdapter);
+        getAutoCompleteTextViewName().setAdapter(createAutoCompleteTextViewAdapter(hotelsName));
     }
 
     private void setAutoCompleteTextViewHotelCityAdapter(List<String> citiesName) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(hotelMapActivity.getApplicationContext(),
-                android.R.layout.select_dialog_item, citiesName);
-        bottomSheetFilterHotels.getAutoCompleteTextViewCity().setAdapter(arrayAdapter);
+        getAutoCompleteTextViewCity().setAdapter(createAutoCompleteTextViewAdapter(citiesName));
+    }
+
+    private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> values) {
+        return new ArrayAdapter<>(getContext(), getArrayAdapterLayout(), values);
     }
 
     public void addMarkersOnMap() {
@@ -399,19 +407,23 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     private void addMarkersOnSuccess(List<Hotel> hotels) {
         clearAllMarkerOnMap();
         for (Hotel hotel : hotels)
-            markers.add(hotelMapActivity.getGoogleMap().addMarker(createMarkerOptions(hotel)));
+            markers.add(addMarker(hotel));
+    }
+
+    private Marker addMarker(Hotel hotel) {
+        return getGoogleMap().addMarker(createMarkerOptions(hotel));
     }
 
     private void clearAllMarkerOnMap() {
-        hotelMapActivity.getGoogleMap().clear();
+        getGoogleMap().clear();
         markers = new ArrayList<>();
     }
 
     private MarkerOptions createMarkerOptions(Hotel hotel) {
         return new MarkerOptions()
                 .position(new LatLng(hotel.getPoint().getX(), hotel.getPoint().getY()))
-                .icon(setCustomMarker(hotelMapActivity.getApplicationContext(), R.drawable.hotel_marker))
-                .title(hotel.getName());
+                .icon(setCustomMarker(getContext(), getHotelMarker()))
+                .title(hotel.getId());
     }
 
     private BitmapDescriptor setCustomMarker(Context context, int id) {
@@ -436,11 +448,11 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     @SuppressLint("MissingPermission")
     public void setMapProperties() {
-        hotelMapActivity.getGoogleMap().getUiSettings().setMyLocationButtonEnabled(false);
-        hotelMapActivity.getGoogleMap().getUiSettings().setMapToolbarEnabled(false);
-        hotelMapActivity.getGoogleMap().setMyLocationEnabled(true);
-        hotelMapActivity.getGoogleMap().setOnMarkerClickListener(this);
-        hotelMapActivity.getGoogleMap().setOnMapClickListener(this);
+        getGoogleMap().getUiSettings().setMyLocationButtonEnabled(false);
+        getGoogleMap().getUiSettings().setMapToolbarEnabled(false);
+        getGoogleMap().setMyLocationEnabled(true);
+        getGoogleMap().setOnMarkerClickListener(this);
+        getGoogleMap().setOnMapClickListener(this);
     }
 
     private void onMapClickHelper() {
@@ -473,63 +485,64 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private void setRelativeLayoutHotelInformationVisible() {
         isRelativeLayoutHotelInformationVisible = true;
-        hotelMapActivity.getRelativeLayoutHotelInformation().setVisibility(View.VISIBLE);
-        hotelMapActivity.getRelativeLayoutHotelInformation().animate().translationY(0);
+        getRelativeLayoutDetails().setVisibility(View.VISIBLE);
+        getRelativeLayoutDetails().animate().translationY(0);
     }
 
     private void setRelativeLayoutHotelInformationInvisible() {
         isRelativeLayoutHotelInformationVisible = false;
-        hotelMapActivity.getRelativeLayoutHotelInformation().animate().translationY(hotelMapActivity.
-                getRelativeLayoutHotelInformation().getHeight() + 100);
+        getRelativeLayoutDetails().animate().translationY(getRelativeLayoutDetails().getHeight() + 100);
     }
 
     private void setRelativeLayoutHotelInformationHotelFields(Marker marker) {
         hotel = getHotelFromMarkerClick(marker.getTitle());
         //setHotelImage(hotel);
-        hotelMapActivity.getTextViewHotelName().setText(hotel.getName());
-        hotelMapActivity.getTextViewHotelRating().setText(createReviewString(hotel.getAvarageRating()));
-        hotelMapActivity.getTextViewHotelAddress().setText(createAddressString(hotel.getAddress()));
+        getTextViewName().setText(hotel.getName());
+        getTextViewRating().setText(createAvarageRatingString(hotel));
+        getTextViewAddress().setText(createAddressString(hotel));
     }
 
     private void setHotelImage(Hotel hotel) {
         if (hasImage(hotel))
-            Picasso.with(hotelMapActivity.getApplicationContext())
+            Picasso.with(getContext())
                     .load(hotel.getImages().get(0))
                     .placeholder(R.drawable.troppadvisor_logo)
-                    .into(hotelMapActivity.getImageViewHotel());
+                    .into(getImageViewHotel());
         else
-            hotelMapActivity.getImageViewHotel().setImageDrawable(null);
+            getImageViewHotel().setImageDrawable(null);
     }
 
     private boolean hasImage(Hotel hotel) {
-        return hotel.getImages().size() > 0;
+        return hotel.isImagesGraterThanZero();
     }
 
-    private String createAddressString(Address address) {
+    private String createAddressString(Hotel hotel) {
         String hotelAddress = "";
-        hotelAddress = hotelAddress.concat(address.getType() + " ");
-        hotelAddress = hotelAddress.concat(address.getStreet() + ", ");
-        hotelAddress = hotelAddress.concat(address.getHouseNumber() + ", ");
-        hotelAddress = hotelAddress.concat(address.getCity() + ", ");
-        hotelAddress = hotelAddress.concat(address.getProvince() + ", ");
-        hotelAddress = hotelAddress.concat(address.getPostalCode());
+        hotelAddress = hotelAddress.concat(hotel.getTypeOfAddress() + " ");
+        hotelAddress = hotelAddress.concat(hotel.getStreet() + ", ");
+        hotelAddress = hotelAddress.concat(hotel.getHouseNumber() + ", ");
+        hotelAddress = hotelAddress.concat(hotel.getCity() + ", ");
+        hotelAddress = hotelAddress.concat(hotel.getProvince() + ", ");
+        hotelAddress = hotelAddress.concat(hotel.getPostalCode());
         return hotelAddress;
     }
 
-    private String createReviewString(Integer review) {
-        if (review.equals(0))
-            return hotelMapActivity.getResources().getString(R.string.no_review);
-        else {
-            String rating = "";
-            rating = rating.concat(review + "/5");
-            return rating;
-        }
+    private String createAvarageRatingString(Hotel hotel) {
+        return !hasReviews(hotel) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(hotel);
     }
 
-    private Hotel getHotelFromMarkerClick(String hotelName) {
+    private String createAvarageRatingStringHelper(Hotel hotel) {
+        return hotel.getAvarageRating() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    }
+
+    private boolean hasReviews(Hotel hotel) {
+        return !hotel.getAvarageRating().equals(0);
+    }
+
+    private Hotel getHotelFromMarkerClick(String hotelId) {
         Hotel hotelToReturn = null;
         for (Hotel hotel : hotels)
-            if (hotel.getName().equals(hotelName)) {
+            if (hotel.getId().equals(hotelId)) {
                 hotelToReturn = hotel;
                 break;
             }
@@ -538,55 +551,83 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private void setLinearLayoutSearchHotelsVisible() {
         isLinearLayoutSearchHotelsVisible = true;
-        hotelMapActivity.getLinearLayoutSearchHotels().animate().translationY(0);
+        getLinearLayoutSearchHotels().animate().translationY(0);
     }
 
     private void setLinearLayoutSearchHotelsInvisible() {
         isLinearLayoutSearchHotelsVisible = false;
-        hotelMapActivity.getLinearLayoutSearchHotels().animate().translationY(-hotelMapActivity.
-                getLinearLayoutSearchHotels().getHeight() - 100);
+        getLinearLayoutSearchHotels().animate().translationY(-getLinearLayoutSearchHotels().getHeight() - 100);
     }
 
     private void setFloatingActionButtonCenterPositionOnHotelsVisible() {
         isFloatingActionButtonCenterPositionOnHotelsVisible = true;
-        hotelMapActivity.getFloatingActionButtonCenterPositionOnHotels().show();
+        getFloatingActionButtonCenterPositionOnHotels().show();
     }
 
     private void setFloatingActionButtonCenterPositionOnHotelsInvisible() {
         isFloatingActionButtonCenterPositionOnHotelsVisible = false;
-        hotelMapActivity.getFloatingActionButtonCenterPositionOnHotels().hide();
+        getFloatingActionButtonCenterPositionOnHotels().hide();
     }
 
     private void showBottomSheetMapFilters() {
-        bottomSheetFilterHotels = new BottomSheetFilterHotels();
-        bottomSheetFilterHotels.show(hotelMapActivity.getSupportFragmentManager(), bottomSheetFilterHotels.getTag());
+        bottomSheetFilterHotels.show(getSupportFragmentManager(), getTag());
         setBottomSheetFiltersFields();
         bottomSheetFilterHotels.setOnBottomSheetFilterSearchButtonClick(this);
         bottomSheetFilterHotels.setAutoCompleteTextViewsAccomodationFilterTextChangeListener(this);
     }
 
-    private void showToastNoResults() {
-        hotelMapActivity.runOnUiThread(() -> {
-            Toast.makeText(hotelMapActivity, hotelMapActivity.getResources().getString(R.string.no_hotels_found_by_filter), Toast.LENGTH_SHORT).show();
-        });
-    }
-
     public void setComponentProperties() {
-        hotelMapActivity.getRelativeLayoutHotelInformation().animate().translationY(hotelMapActivity.
-                getRelativeLayoutHotelInformation().getHeight() + 100);
+        getRelativeLayoutDetails().animate().translationY(getRelativeLayoutDetails().getHeight() + 100);
     }
 
     public void setListenerOnViewComponents() {
-        hotelMapActivity.getTextViewSearchHotelsOnMap().setOnClickListener(this);
-        hotelMapActivity.getImageViewHotelMapGoBack().setOnClickListener(this);
-        hotelMapActivity.getFloatingActionButtonCenterPositionOnHotels().setOnClickListener(this);
+        getTextViewSearchOnMap().setOnClickListener(this);
+        getImageViewMapGoBack().setOnClickListener(this);
+        getFloatingActionButtonCenterPositionOnHotels().setOnClickListener(this);
+    }
+
+    private HotelDAO getHotelDAO() {
+        return daoFactory.getHotelDAO(getStorageTechnology(HOTEL_STORAGE_TECHNOLOGY));
+    }
+
+    private CityDAO getCityDAO() {
+        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    private void dismissBottomSheetFilterHotels() {
+        if (isBottomSheetFilterHotelsVisible())
+            bottomSheetFilterHotels.dismiss();
+    }
+
+    private void onBackPressed() {
+        hotelMapActivity.onBackPressed();
+    }
+
+    private FragmentManager getSupportFragmentManager() {
+        return hotelMapActivity.getSupportFragmentManager();
+    }
+
+    private String getTag() {
+        return bottomSheetFilterHotels.getTag();
     }
 
     private Context getContext() {
         return hotelMapActivity.getApplicationContext();
     }
 
-    private Intent getIntent(){
+    private Resources getResources() {
+        return hotelMapActivity.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
+    }
+
+    private Intent getIntent() {
         return hotelMapActivity.getIntent();
     }
 
@@ -602,16 +643,32 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         return getIntent().getBooleanExtra(SEARCH_FOR_NAME, false);
     }
 
-    private AccomodationHotelFilter getAccomodationFilter(){
+    private AccomodationHotelFilter getAccomodationFilter() {
         return (AccomodationHotelFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
+    }
+
+    private AutoCompleteTextView getAutoCompleteTextViewName() {
+        return bottomSheetFilterHotels.getAutoCompleteTextViewName();
+    }
+
+    private AutoCompleteTextView getAutoCompleteTextViewCity() {
+        return bottomSheetFilterHotels.getAutoCompleteTextViewCity();
+    }
+
+    private int getArrayAdapterLayout() {
+        return android.R.layout.select_dialog_item;
+    }
+
+    private GoogleMap getGoogleMap() {
+        return hotelMapActivity.getGoogleMap();
+    }
+
+    private int getHotelMarker() {
+        return R.drawable.hotel_marker;
     }
 
     private String getHotelName() {
         return getIntent().getStringExtra(NAME);
-    }
-
-    private boolean isBottomSheetFilterHotelsVisible() {
-        return bottomSheetFilterHotels != null && bottomSheetFilterHotels.isAdded();
     }
 
     private boolean isAccomodationFilterNull() {
@@ -646,6 +703,50 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         return accomodationHotelFilter.isHasCertificateOfExcellence();
     }
 
+    private TextView getTextViewSearchOnMap() {
+        return hotelMapActivity.getTextViewSearchOnMap();
+    }
+
+    private ImageView getImageViewMapGoBack() {
+        return hotelMapActivity.getImageViewMapGoBack();
+    }
+
+    private RelativeLayout getRelativeLayoutDetails() {
+        return hotelMapActivity.getRelativeLayoutDetails();
+    }
+
+    private TextView getTextViewName() {
+        return hotelMapActivity.getTextViewName();
+    }
+
+    private TextView getTextViewRating() {
+        return hotelMapActivity.getTextViewRating();
+    }
+
+    private TextView getTextViewAddress() {
+        return hotelMapActivity.getTextViewAddress();
+    }
+
+    private ImageView getImageViewHotel() {
+        return hotelMapActivity.getImageViewHotel();
+    }
+
+    private LinearLayout getLinearLayoutSearchHotels() {
+        return hotelMapActivity.getLinearLayoutSearchHotels();
+    }
+
+    private FloatingActionButton getFloatingActionButtonCenterPositionOnHotels() {
+        return hotelMapActivity.getFloatingActionButtonCenterPositionOnHotels();
+    }
+
+    private boolean isDistanceSeekbarEnabled() {
+        return bottomSheetFilterHotels.getSeekBarDistance().isEnabled();
+    }
+
+    private boolean isDistanceDifferentFromZero() {
+        return bottomSheetFilterHotels.getSeekBarDistanceValue() != 0;
+    }
+
     private boolean isSearchingForName() {
         return !getAccomodationFilterNameValue().equals("");
     }
@@ -654,7 +755,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         return !getAccomodationFilterCityValue().equals("");
     }
 
-    private boolean isBottomSheetFilterHotelsNull(){
+    private boolean isBottomSheetFilterHotelsNull() {
         return bottomSheetFilterHotels == null;
     }
 
@@ -680,6 +781,10 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private boolean isAccomodationFilterHasCertificateOfExcellence() {
         return getAccomodationFilterHasCertificateOfExcellenceValue();
+    }
+
+    private boolean isBottomSheetFilterHotelsVisible() {
+        return bottomSheetFilterHotels.isAdded();
     }
 
 }

@@ -2,24 +2,21 @@ package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
-import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -53,27 +50,54 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setHotelImage(viewHolder, position);
+        //setImage(viewHolder, position);
         viewHolder.textViewAttractionName.setText(attractions.get(position).getName());
-        if (attractions.get(position).getAvarageRating() == 0)
-            viewHolder.textViewAttractionRating.setText(R.string.no_review);
-        else
-            viewHolder.textViewAttractionRating.setText(attractions.get(position).getAvarageRating() + "/5");
+        viewHolder.textViewAttractionRating.setText(createAvarageRatingString(attractions.get(position)));
 
     }
 
-    private void setRestamage(ViewHolder viewHolder, int position) {
-        Picasso.with(context).load(attractions.get(position).getImages().get(0))
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.pizza)
-                .into(viewHolder.imageViewAttraction);
+    private void setImage(ViewHolder viewHolder, int position) {
+        if (hasImage(position)) {
+            Picasso.with(context).load(getFirtsImage(position))
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.pizza)
+                    .into(viewHolder.imageViewAttraction);
+        }
     }
 
-    private void startAttractionDetailActivity(String id){
+    private void startAttractionDetailActivity(String id) {
         Intent intent = new Intent(context, AttractionDetailActivity.class);
         intent.putExtra(ID, id);
         context.startActivity(intent);
+    }
+
+    private boolean hasImage(int position) {
+        return attractions.get(position).isImagesGraterThanZero();
+    }
+
+    private String getFirtsImage(int position) {
+        return attractions.get(position).getImages().get(0);
+    }
+
+    private String createAvarageRatingString(Attraction attraction) {
+        return !hasReviews(attraction) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(attraction);
+    }
+
+    private String createAvarageRatingStringHelper(Attraction attraction) {
+        return attraction.getAvarageRating() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    }
+
+    private Resources getResources() {
+        return context.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
+    }
+
+    private boolean hasReviews(Attraction attraction) {
+        return !attraction.getAvarageRating().equals(0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

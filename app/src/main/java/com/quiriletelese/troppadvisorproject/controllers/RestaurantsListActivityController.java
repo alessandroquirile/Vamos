@@ -32,7 +32,6 @@ import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBackCity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,9 +83,9 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
         restaurantDAO.findRestaurantsName(volleyCallBack, name, getContext());
     }
 
-    public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
+    public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
         CityDAO cityDAO = getCityDAO();
-        cityDAO.findCitiesByName(volleyCallBackCity, name, getContext());
+        cityDAO.findCitiesByName(volleyCallBack, name, getContext());
     }
 
     public void findTypeOfCuisineHelper(VolleyCallBack volleyCallBack) {
@@ -145,15 +144,15 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     private void findCitiesName(String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
-            findCitiesNameHelper(new VolleyCallBackCity() {
+            findCitiesNameHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     setAutoCompleteTextViewCityAdapter((List<String>) object);
                 }
 
                 @Override
-                public void onError(String error) {
-                    volleyCallbackOnError(error);
+                public void onError(String errorCode) {
+
                 }
             }, newText);
         } else

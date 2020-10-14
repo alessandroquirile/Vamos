@@ -1,12 +1,15 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,7 +53,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     public HomePageFragmentController(HomePageFragment homePageFragment) {
         this.homePageFragment = homePageFragment;
-        gpsTracker = createGpsTracker();
+        this.gpsTracker = createGpsTracker();
     }
 
     @Override
@@ -65,32 +68,32 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
             case R.id.text_view_attraction_recycler_view:
                 startAttractionsListActivity();
                 break;
+            case R.id.button_enable_position:
+                startEnablePositionActivity();
+                break;
+            case R.id.button_provide_permission:
+                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION);
+                break;
         }
     }
 
-    public void findHotelsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch,
-                                       String rsqlQuery) {
+    public void findHotelsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
         this.pointSearch = pointSearch;
-        HotelDAO hotelDAO = getHotelDAO();
-        hotelDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10);
+        getHotelDAO().findByRsql(volleyCallBack, pointSearch, "0", getContext(), 0, 10);
     }
 
-    public void findRestaurantsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch,
-                                            String rsqlQuery) {
+    public void findRestaurantsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
         this.pointSearch = pointSearch;
-        RestaurantDAO restaurantDAO = getRestaurantDAO();
-        restaurantDAO.findByRsql(volleyCallBack, null, pointSearch, rsqlQuery, getContext(),
+        getRestaurantDAO().findByRsql(volleyCallBack, null, pointSearch, "0", getContext(),
                 0, 10);
     }
 
-    public void findAttractionsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch,
-                                            String rsqlQuery) {
+    public void findAttractionsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
         this.pointSearch = pointSearch;
-        AttractionDAO attractionDAO = getAttractionDAO();
-        attractionDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10);
+        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, "0", getContext(), 0, 10);
     }
 
-    public void initializeRecyclerViewHotel(PointSearch pointSearch) {
+    public void initializeRecyclerViewHotel() {
         findHotelsByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -101,10 +104,10 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
             public void onError(String errorCode) {
                 initializeRecyclerViewHotelsOnError(errorCode);
             }
-        }, pointSearch, "0");
+        }, getLocation());
     }
 
-    public void initializeRecyclerViewRestaurant(PointSearch pointSearch) {
+    public void initializeRecyclerViewRestaurant() {
         findRestaurantsByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -115,10 +118,10 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
             public void onError(String errorCode) {
                 initializeRecyclerViewRestaurantOnError(errorCode);
             }
-        }, pointSearch, "0");
+        }, getLocation());
     }
 
-    public void initializeRecyclerViewAttraction(PointSearch pointSearch) {
+    public void initializeRecyclerViewAttraction() {
         findAttractionsByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -129,7 +132,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
             public void onError(String errorCode) {
                 initializeRecyclerViewAttractionOnError(errorCode);
             }
-        }, pointSearch, "0");
+        }, getLocation());
     }
 
     private void initializeRecyclerViewHotelOnSuccess(List<Hotel> hotels) {
@@ -168,14 +171,14 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     public PointSearch getLocation() {
         Double latitude = gpsTracker.getLatitude();
         Double longitude = gpsTracker.getLongitude();
-        return createPointSearch(Arrays.asList(latitude, longitude, 5.0));
+        return createPointSearch(Arrays.asList(latitude, longitude));
     }
 
     private PointSearch createPointSearch(List<Double> pointSearchInformation) {
         PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(/*pointSearchInformation.get(0)*/40.829904);
-        pointSearch.setLongitude(/*pointSearchInformation.get(1)*/14.248052);
-        pointSearch.setDistance(/*pointSearchInformation.get(2)*/5.0);
+        pointSearch.setLatitude(pointSearchInformation.get(0)/*40.829904*/);
+        pointSearch.setLongitude(pointSearchInformation.get(1)/*14.248052*/);
+        pointSearch.setDistance(5.0);
         return pointSearch;
     }
 
@@ -190,6 +193,25 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         getTextViewHotelRecyclerView().setOnClickListener(this);
         getTextViewRestaurantRecyclerView().setOnClickListener(this);
         getTextViewAttractionRecyclerView().setOnClickListener(this);
+        getButtonEnablePosition().setOnClickListener(this);
+        getButtonProvidePermission().setOnClickListener(this);
+    }
+
+    public void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults){
+        switch (requestCode) {
+            case ACCESS_FINE_LOCATION:
+            checkPermissionResult(grantResults);
+            break;
+        }
+    }
+
+    private void checkPermissionResult(@NonNull int[] grantResults) {
+        if (isPermissionGranted(grantResults))
+            initializeRecyclerViews();
+    }
+
+    private void initializeRecyclerViews() {
+       homePageFragment.initializeRecyclerViews();
     }
 
     private LinearLayoutManager createLinearLayoutManager() {
@@ -228,29 +250,56 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     }
 
     private void startHotelsListActivity() {
-        Intent hotelsListActivity = new Intent(homePageFragment.getContext(), HotelsListActivity.class);
-        hotelsListActivity.putExtra(POINT_SEARCH, pointSearch);
-        homePageFragment.getContext().startActivity(hotelsListActivity);
+        Intent hotelsListActivityIntent = createHotelsListActivityIntent();
+        getContext().startActivity(hotelsListActivityIntent);
+    }
+
+    private Intent createHotelsListActivityIntent() {
+        Intent hotelsListActivityIntent = new Intent(getContext(), HotelsListActivity.class);
+        hotelsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
+        return hotelsListActivityIntent;
     }
 
     private void startRestaurantsListActivity() {
-        Intent restaurantsListActivity = new Intent(homePageFragment.getContext(), RestaurantsListActivity.class);
-        restaurantsListActivity.putExtra(POINT_SEARCH, pointSearch);
-        homePageFragment.getContext().startActivity(restaurantsListActivity);
+        Intent restaurantsListActivityIntent = createRestaurantsListActivityIntent();
+        getContext().startActivity(restaurantsListActivityIntent);
+    }
+
+    private Intent createRestaurantsListActivityIntent() {
+        Intent restaurantsListActivityIntent = new Intent(getContext(), RestaurantsListActivity.class);
+        restaurantsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
+        return restaurantsListActivityIntent;
     }
 
     private void startAttractionsListActivity() {
-        Intent attractionsListActivity = new Intent(homePageFragment.getContext(), AttractionsListActivity.class);
-        attractionsListActivity.putExtra(POINT_SEARCH, pointSearch);
-        homePageFragment.getContext().startActivity(attractionsListActivity);
+        Intent attractionsListActivityIntent = createAttractionsListActivityIntent();
+        getContext().startActivity(attractionsListActivityIntent);
+    }
+
+    private Intent createAttractionsListActivityIntent() {
+        Intent attractionsListActivityIntent = new Intent(getContext(), AttractionsListActivity.class);
+        attractionsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
+        return attractionsListActivityIntent;
+    }
+
+    private void startEnablePositionActivity() {
+        getContext().startActivity(createEnablePositionActivityIntent());
+    }
+
+    private Intent createEnablePositionActivityIntent() {
+        return new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
     }
 
     public boolean checkPermission(String permission) {
-        return ContextCompat.checkSelfPermission(homePageFragment.requireContext(), permission) == PackageManager.PERMISSION_DENIED;
+        if (ContextCompat.checkSelfPermission(getContext(), permission)
+                == PackageManager.PERMISSION_DENIED)
+            return false;
+        else
+            return true;
     }
 
-    public void requestPermission(String[] permission, int requestCode) {
-        homePageFragment.requestPermissions(permission, requestCode);
+    public void requestPermission(String permission, int requestCode) {
+        ActivityCompat.requestPermissions(homePageFragment.requireActivity(), new String[]{permission}, requestCode);
     }
 
     private Context getContext() {
@@ -266,7 +315,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     }
 
     public boolean canGeolocate() {
-        return gpsTracker.canGetLocation();
+        return createGpsTracker().canGetLocation();
     }
 
     public boolean areCoordinatesNull() {
@@ -359,6 +408,10 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         return homePageFragment.getViewNoRestaurantsError();
     }
 
+    private Button getButtonProvidePermission() {
+        return homePageFragment.getButtonProvidePermission();
+    }
+
     private void setViewNoRestaurantsErrorVisible() {
         getViewNoRestaurantsError().setVisibility(View.VISIBLE);
     }
@@ -371,12 +424,20 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         return homePageFragment.getViewNoAttractionsError();
     }
 
+    public Button getButtonEnablePosition() {
+        return homePageFragment.getButtonEnablePosition();
+    }
+
     private void setViewNoAttractionsErrorVisible() {
         getViewNoAttractionsError().setVisibility(View.VISIBLE);
     }
 
     private void setViewNoAttractionsErrorInvisible() {
         getViewNoAttractionsError().setVisibility(View.GONE);
+    }
+
+    public boolean isPermissionGranted(@NonNull int[] grantResults) {
+        return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
 }

@@ -76,7 +76,7 @@
     <string name="all_hotel" translatable="false">Hotel</string>
     <string name="all_restaurant">Ristoranti</string>
     <string name="all_attraction">Attrazioni</string>
-    <string name="no_review">Nessuna recensione</string>
+    <string name="no_reviews">Nessuna recensione</string>
     <string name="password_error">Password errata</string>
     <string name="password_updated_correctly">Password aggiornata correttamente</string>
     <string name="password_update_error">Errore durante l\'aggiornamento della password, riprova</string>
@@ -111,10 +111,29 @@
     <string name="add_review">Aggiungi recensione</string>
     <string name="no_content_error_hotel_detail">Errore, nessun hotel trovato</string>
     <string name="no_content_error_restaurant_detail">Errore, nessun ristorante trovato</string>
-    <string name="no_content_error_attraction_detail">Errore, nessun attrazione trovato</string>
+    <string name="no_content_error_attraction_detail">Errore, nessun attrazione trovata</string>
     <string name="unexpected_error_while_fetch_data">Errore imprevisto durante il recupero dei dati, riprova</string>
-    <string name="no_attractions_found_home_page">Non è stato possibile trovare attrazioni nelle tue vicinanze, accedi alla lista delle attrazioni e modifica i filtri di ricerca</string>
+    <string name="no_attractions_found_home_page">Non è stato possibile trovare attrazioni nelle vicinanze, accedi alla lista delle attrazioni e modifica i filtri di ricerca</string>
     <string name="no_hotels_found_nearby">Nessun hotel trovato nelle vicinanze</string>
-    <string name="no_hotels_found_home_page">Non è stato possibile trovare hotel nelle tue vicinanze, accedi alla lista degli hotel e modifica i filtri di ricerca</string>
-    <string name="no_restaurants_found_home_page">Non è stato possibile trovare ristoranti nelle tue vicinanze, accedi alla lista dei ristoranti e modifica i filtri di ricerca</string>
+    <string name="no_hotels_found_home_page">Non è stato possibile trovare hotel nelle vicinanze, accedi alla lista degli hotel e modifica i filtri di ricerca</string>
+    <string name="no_restaurants_found_home_page">Non è stato possibile trovare ristoranti nelle vicinanze, accedi alla lista dei ristoranti e modifica i filtri di ricerca</string>
+    <string name="title_activity_accomodation_detail_maps" translatable="false">Map</string>
+    <string name="loading_in_progress">Caricamento in corso</string>
+    <string name="review_successfully_submitted">Recensione inserita con successo</string>
+    <string name="unexpected_error_while_entering_the_review">Errore imprevisto durante l\'inserimento della recensione, riprova</string>
+    <string name="wait_while_insert_review">Attendi, sto salvando la tua recensione</string>
+    <string name="no_login_profile_error">Sembra che tu non abbia ancora effettuato il login. Collega un account cliccando il tasto in alto a destra per poter accedere a funzionalità aggiuntive</string>
+    <string name="logout">Esci</string>
+    <string name="add_make_login">Effettua un nuovo login</string>
+    <string name="retrieving_user_details">Attendi, sto recuperando le informazioni del tuo account</string>
+    <string name="forward">Avanti</string>
+    <string name="welcome_tropp_advisor">Benvenuto in TroppAdvisor, l\'app che ti aiuta a scegliere</string>
+    <string name="travel_intro">Consulta l\'app e scegli tra migliaia di hotel, ristoranti e attrazioni da visitare nelle tue vicinanze. L\'app le cerca in un raggio di 5km dalla tua posizione</string>
+    <string name="see_on_map_intro">Puoi vedere le strutture attorno a te anche sulla mappa</string>
+    <string name="see_reviews_intro">Attraverso le recensioni puoi essere sicuro di scegliere solo il meglio per te</string>
+    <string name="enjoy_intro">Goditi i tuoi viaggi, clicca avanti e fornisci i permessi all\'app per accedere alla tua posizione</string>
+    <string name="access_location_permission_requested">Per poter proseguire è necessario fornire l\'autorizzazione per l\'accesso alla posizione</string>
+    <string name="missing_location_permission">L\'app non è in grado di cercare le strutture nelle tue vicinanze se il permesso per accedere alla posizione è negato. Fornisci il permesso per permettere all\'app di funzionare correttamente</string>
+    <string name="provide_permission">Fornisci autorizzazione</string>
+    <string name="wait_for_account_creation">Attendi, creazione account in corso</string>
 </resources>

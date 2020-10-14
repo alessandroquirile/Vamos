@@ -30,6 +30,7 @@ public class HotelDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
+        showLoadingInProgressDialog();
         initializeActivityFields();
 
     }
@@ -52,6 +53,10 @@ public class HotelDetailActivity extends AppCompatActivity {
     }
     private void setListenerOnViewComponents(){
         hotelDetailActivityController.setListenerOnViewComponents();
+    }
+
+    public void showLoadingInProgressDialog() {
+        hotelDetailActivityController.showLoadingInProgressDialog();;
     }
 
     private void initializeActivityFields() {

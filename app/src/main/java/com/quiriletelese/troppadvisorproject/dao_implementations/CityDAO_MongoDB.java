@@ -4,13 +4,10 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBackCity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,16 +20,16 @@ public class CityDAO_MongoDB implements CityDAO {
     private List<String> citiesName = new ArrayList<>();
 
     @Override
-    public void findCitiesByName(VolleyCallBackCity volleyCallBackCity, String name, Context context) {
-        findCitiesNameVolley(volleyCallBackCity, name, context);
+    public void findCitiesByName(VolleyCallBack volleyCallBack, String name, Context context) {
+        findCitiesNameVolley(volleyCallBack, name, context);
     }
 
-    private void findCitiesNameVolley(final VolleyCallBackCity volleyCallBackCity, String name, final Context context) {
+    private void findCitiesNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindCitiesUrl(name);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             getArrayFromResponseCitiesName(response);
-            volleyCallBackCity.onSuccess(citiesName);
+            volleyCallBack.onSuccess(citiesName);
         }, error -> {
             
         });

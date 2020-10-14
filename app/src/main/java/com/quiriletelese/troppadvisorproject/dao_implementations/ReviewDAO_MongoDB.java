@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -24,10 +25,9 @@ import java.util.List;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
-public class ReviewDAO_MongoDB implements ReviewDAO {
+public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
 
     private List<Review> reviews = new ArrayList<>();
-    private Review review;
 
     @Override
     public void insertHotelReview(VolleyCallBack volleyCallBack, Review review, Context context) {
@@ -53,9 +53,7 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertHotelReviewUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review), response -> {
-            this.review = getReviewFromResponse(response);
-            System.out.println(this.review.toString());
-            volleyCallBack.onSuccess(review);
+            volleyCallBack.onSuccess(getReviewFromResponse(response));
         }, error -> {
 
         });
@@ -67,8 +65,7 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertRestaurantReviewUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review), response -> {
-            this.review = getReviewFromResponse(response);
-            volleyCallBack.onSuccess(review);
+            volleyCallBack.onSuccess(getReviewFromResponse(response));
         }, error -> {
 
         });
@@ -80,9 +77,7 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertAttractionReviewUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review), response -> {
-            this.review = getReviewFromResponse(response);
-            System.out.println(this.review.toString());
-            volleyCallBack.onSuccess(review);
+            volleyCallBack.onSuccess(getReviewFromResponse(response));
         }, error -> {
 
         });
@@ -94,8 +89,7 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindAccomodationReviewsUrl(id, page, size);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            getArrayFromResponse(response);
-            volleyCallBack.onSuccess(reviews);
+            volleyCallBack.onSuccess(getArrayFromResponse(response));
         }, error -> {
 
         }){
@@ -111,19 +105,19 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
     }
 
     private String createInsertHotelReviewUrl() {
-        return "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/review/insert-hotel-review";
+        return BASE_URL_HTTPS + "review/insert-hotel-review";
     }
 
     private String createInsertRestaurantReviewUrl() {
-        return "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/review/insert-restaurant-review";
+        return BASE_URL_HTTPS + "review/insert-restaurant-review";
     }
 
     private String createInsertAttractionReviewUrl() {
-        return "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/review/insert-attraction-review";
+        return BASE_URL_HTTPS + "review/insert-attraction-review";
     }
 
     private String createFindAccomodationReviewsUrl(String id, int page, int size) {
-        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/review/find-accomodation-reviews?";
+        String URL = BASE_URL_HTTPS + "review/find-accomodation-reviews?";
         URL = URL.concat("id=" + id);
         URL = URL.concat("&page=" + page);
         URL = URL.concat("&size=" + size);
@@ -154,7 +148,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         return gson.fromJson(response.toString(), Review.class);
     }
 
-    private void getArrayFromResponse(JSONObject response) {
+    private List<Review> getArrayFromResponse(JSONObject response) {
+        List<Review> reviews = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         Gson gson = new Gson();
         try {
@@ -169,6 +164,7 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
                 e.printStackTrace();
             }
         }
+        return reviews;
     }
 
 }

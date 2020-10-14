@@ -22,9 +22,9 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
     private HotelMapActivityController hotelMapsActivityController;
     private GoogleMap googleMap;
     private LinearLayout linearLayoutSearchHotels;
-    private RelativeLayout relativeLayoutHotelInformation;
-    private ImageView imageViewHotelMapGoBack, imageViewHotel;
-    private TextView textViewSearchHotelsOnMap, textViewHotelName, textViewHotelRating, textViewHotelAddress;
+    private RelativeLayout relativeLayoutDetails;
+    private ImageView imageViewMapGoBack, imageViewHotel;
+    private TextView textViewSearchOnMap, textViewName, textViewRating, textViewAddress;
     private FloatingActionButton floatingActionButtonCenterPositionOnHotels;
 
     @Override
@@ -51,13 +51,13 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
     private void intializeViewComponents(GoogleMap googleMap) {
         this.googleMap = googleMap;
         linearLayoutSearchHotels = findViewById(R.id.linear_layout_search_hotels);
-        relativeLayoutHotelInformation = findViewById(R.id.relative_layout_hotel_information);
-        imageViewHotelMapGoBack = findViewById(R.id.image_view_hotel_map_go_back);
+        relativeLayoutDetails = findViewById(R.id.relative_layout_hotel_information);
+        imageViewMapGoBack = findViewById(R.id.image_view_hotel_map_go_back);
         imageViewHotel = findViewById(R.id.image_view_hotel);
-        textViewSearchHotelsOnMap = findViewById(R.id.text_view_search_hotels_on_map);
-        textViewHotelName = findViewById(R.id.text_view_hotel_name);
-        textViewHotelRating = findViewById(R.id.text_view_hotel_rating);
-        textViewHotelAddress = findViewById(R.id.text_view_hotel_address);
+        textViewSearchOnMap = findViewById(R.id.text_view_search_hotels_on_map);
+        textViewName = findViewById(R.id.text_view_hotel_name);
+        textViewRating = findViewById(R.id.text_view_hotel_rating);
+        textViewAddress = findViewById(R.id.text_view_hotel_address);
         floatingActionButtonCenterPositionOnHotels = findViewById(R.id.floating_action_button_center_position_on_hotels);
     }
 
@@ -93,32 +93,32 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
         return linearLayoutSearchHotels;
     }
 
-    public RelativeLayout getRelativeLayoutHotelInformation() {
-        return relativeLayoutHotelInformation;
+    public RelativeLayout getRelativeLayoutDetails() {
+        return relativeLayoutDetails;
     }
 
-    public ImageView getImageViewHotelMapGoBack() {
-        return imageViewHotelMapGoBack;
+    public ImageView getImageViewMapGoBack() {
+        return imageViewMapGoBack;
     }
 
     public ImageView getImageViewHotel() {
         return imageViewHotel;
     }
 
-    public TextView getTextViewSearchHotelsOnMap() {
-        return textViewSearchHotelsOnMap;
+    public TextView getTextViewSearchOnMap() {
+        return textViewSearchOnMap;
     }
 
-    public TextView getTextViewHotelName() {
-        return textViewHotelName;
+    public TextView getTextViewName() {
+        return textViewName;
     }
 
-    public TextView getTextViewHotelRating() {
-        return textViewHotelRating;
+    public TextView getTextViewRating() {
+        return textViewRating;
     }
 
-    public TextView getTextViewHotelAddress() {
-        return textViewHotelAddress;
+    public TextView getTextViewAddress() {
+        return textViewAddress;
     }
 
     public FloatingActionButton getFloatingActionButtonCenterPositionOnHotels() {

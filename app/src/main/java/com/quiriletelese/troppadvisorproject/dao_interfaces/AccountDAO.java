@@ -15,6 +15,8 @@ public interface AccountDAO {
 
     void createAccount(VolleyCallBack volleyCallBack, Account account, Context context);
 
-    void updatePassword(VolleyCallBack volleyCallBack, ChangeUserPassword changeUserPassword, Context context);
+    void refreshToken(VolleyCallBack volleyCallBack, String refreshToken, Context context);
+
+    void getUserDetails(VolleyCallBack volleyCallBack, String accessToken, Context context);
 
 }

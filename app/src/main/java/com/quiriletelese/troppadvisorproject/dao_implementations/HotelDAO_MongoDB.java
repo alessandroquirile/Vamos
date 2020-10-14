@@ -128,7 +128,7 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
     }
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
-        String URL = BASE_URL + "/hotel/search-by-rsql?";
+        String URL = BASE_URL + "hotel/search-by-rsql?";
         if (pointSearch != null)
             URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
         else
@@ -153,20 +153,20 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
     }
 
     private String createFindByIdUrl(String id) {
-        String URL = BASE_URL + "/hotel/find-by-id/";
+        String URL = BASE_URL + "hotel/find-by-id/";
         URL = URL.concat(id);
         return URL;
     }
 
     private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
-        String URL = BASE_URL + "/hotel/find-by-name-like-ignore-case?";
+        String URL = BASE_URL + "hotel/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }
 
     private String createFindHotelsNameUrl(String name) {
-        String URL = BASE_URL + "/hotel/find-hotels-name/";
+        String URL = BASE_URL + "hotel/find-hotels-name/";
         URL = URL.concat(name);
         return URL;
     }

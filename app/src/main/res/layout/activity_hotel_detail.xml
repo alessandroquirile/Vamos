@@ -81,10 +81,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="4/5 (63 recensioni)"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_stars_primary_color"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_stars_primary_color" />
 
             <TextView
                 android:id="@+id/text_view_hotel_certificate_of_excellence"
@@ -93,7 +91,6 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="@string/certificate_of_excellence"
                 android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 
@@ -103,11 +100,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:text="Via Salvo d'Acquisto, 25 San Giorgio a Cremano, Napoli"
+                android:maxLines="1"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_location_primary_color"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_location_primary_color" />
 
             <TextView
                 android:id="@+id/text_view_hotel_phone_number"
@@ -116,10 +113,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="0817714413"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_phone_primary_color"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_phone_primary_color" />
 
             <TextView
                 android:id="@+id/text_view_hotel_stars"
@@ -128,10 +123,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="4/5"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_star_hotel_detail_activity_green"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_star_hotel_detail_activity_green" />
 
             <TextView
                 android:id="@+id/text_view_hotel_avarage_price"
@@ -140,7 +133,6 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="100"
                 android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green"
                 tools:ignore="HardcodedText" />

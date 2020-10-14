@@ -16,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginActivityController loginActivityController;
     private TextInputLayout textInputLayoutKey, textInputLayoutPassword;
     private Button buttonLogin;
-    private TextView textViewSignIn;
+    private TextView textViewSignIn, textViewCancelLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         textInputLayoutPassword = findViewById(R.id.text_input_layout_password_login);
         buttonLogin = findViewById(R.id.button_login);
         textViewSignIn = findViewById(R.id.text_view_sign_in);
+        textViewCancelLogin = findViewById(R.id.text_view_cancel_login);
     }
 
     private void initializeController() {
@@ -68,11 +69,15 @@ public class LoginActivity extends AppCompatActivity {
         return textViewSignIn;
     }
 
-    public String getTextInputLayoutKeyValue(){
-        return textInputLayoutKey.getEditText().getText().toString();
+    public TextView getTextViewCancelLogin() {
+        return textViewCancelLogin;
     }
-    public String getTextInputLayoutPasswordValue(){
-        return textInputLayoutPassword.getEditText().getText().toString();
+
+    public String getTextInputLayoutKeyValue(){
+        return textInputLayoutKey.getEditText().getText().toString().trim();
+    }
+    public char[] getTextInputLayoutPasswordValue(){
+        return textInputLayoutPassword.getEditText().getText().toString().trim().toCharArray();
     }
 
 }

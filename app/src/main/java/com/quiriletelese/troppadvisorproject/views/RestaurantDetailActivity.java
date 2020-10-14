@@ -30,7 +30,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
+        showLoadingInProgressDialog();
         initializeActivityFields();
+
     }
 
     private void initializeViewComponents() {
@@ -53,6 +55,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void setListenerOnViewComponents(){
         restaurantDetailActivityController.setListenerOnViewComponents();
+    }
+
+    public void showLoadingInProgressDialog() {
+        restaurantDetailActivityController.showLoadingInProgressDialog();;
     }
 
     private void initializeActivityFields() {

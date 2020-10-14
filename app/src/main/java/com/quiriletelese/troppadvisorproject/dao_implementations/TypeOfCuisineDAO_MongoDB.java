@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.json.JSONArray;
@@ -17,7 +18,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO {
+public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO, Constants {
 
     List<String> typeOfCuisine = new ArrayList<>();
 
@@ -40,7 +41,7 @@ public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO {
     }
 
     private String createGetAllUrl(){
-        return "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/type-of-cuisine/get-all";
+        return BASE_URL + "type-of-cuisine/get-all";
     }
 
     private void getArrayFromResponse(JSONArray response) {

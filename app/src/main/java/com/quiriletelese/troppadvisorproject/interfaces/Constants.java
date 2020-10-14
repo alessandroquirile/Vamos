@@ -2,6 +2,9 @@ package com.quiriletelese.troppadvisorproject.interfaces;
 
 public interface Constants {
 
+    /* ========== Permission utils ========== */
+    int ACCESS_FINE_LOCATION = 100;
+
     /* ========== Storage technology utils ========== */
     String HOTEL_STORAGE_TECHNOLOGY = "hotel_storage_technology";
     String RESTAURANT_STORAGE_TECHNOLOGY = "restaurant_storage_technology";
@@ -15,6 +18,7 @@ public interface Constants {
     String ID = "id";
     String ACCOMODATION_TYPE = "accomodation_type";
     String ACCOMODATION_NAME = "accomodation_name";
+    String ACCOMODATION = "accomodation";
     String HOTEL = "hotel";
     String RESTAURANT = "restaurant";
     String ATTRACTION = "attraction";
@@ -27,18 +31,21 @@ public interface Constants {
     /* ========== SharedPreferences utils ========== */
     String SHARED_PREFERENCES = "shared_preferences";
     String USERNAME = "username";
+    String FAMILY_NAME = "family_name";
+    String USER_FIRST_NAME = "user_first_name";
     String EMAIL = "email";
-    String PASSWORD = "password";
     String ACCESS_TOKEN = "access_token";
     String ID_TOKEN = "id_token";
-    String LATITUDE = "latitude";
-    String LONGITUDE = "longitude";
+    String REFRESH_TOKEN = "refresh_token";
+    String IS_APP_OPENED_FOR_FIRST_TIME = "is_app_opened_for_first_time";
 
     /* ========== Volley utils ========== */
-    String BASE_URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com";
+    String BASE_URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/";
+    String BASE_URL_HTTPS = "https://5il6dxqqm3.execute-api.us-east-1.amazonaws.com/Secondo/";
     String USERNAME_ERROR = "Username error";
     String EMAIL_ERROR = "Email error";
-    String INTERNAL_ERROR_SERVER = "500";
     String NO_CONTENT = "204";
+    String UNAUTHORIZED = "401";
+    String INTERNAL_ERROR_SERVER = "500";
 
 }

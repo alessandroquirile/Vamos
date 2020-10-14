@@ -54,7 +54,6 @@
                 android:hint="@string/email_login_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_email_sign_up_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -73,7 +72,6 @@
                 android:hint="@string/name_profile_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_name_sign_up_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -92,7 +90,6 @@
                 android:hint="@string/last_name_profile_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_lastname_sign_up_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -111,7 +108,6 @@
                 android:hint="@string/username">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_nickname_sign_up_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -132,7 +128,6 @@
                 app:endIconTint="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_password_sign_up_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -153,7 +148,6 @@
                 app:endIconTint="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_repeat_password_sign_up_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -164,7 +158,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button_sign_up_sign_up_activity"
+                android:id="@+id/button_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="60dp"

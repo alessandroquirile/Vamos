@@ -1,23 +1,26 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.ActionBarContainer;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.google.android.material.textfield.TextInputLayout;
+import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
@@ -36,14 +39,13 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private WriteReviewActivity writeReviewActivity;
     private DAOFactory daoFactory = DAOFactory.getInstance();
-    private ReviewDAO reviewDAO;
     private String title = "", description = "", user, accomodationId;
     private Float rating;
+    private AlertDialog alertDialogWaitWhileInsertReview;
     private boolean isAnonymoys = false;
 
     public WriteReviewActivityController(WriteReviewActivity writeReviewActivity) {
         this.writeReviewActivity = writeReviewActivity;
-        reviewDAO = getReviewDAO();
     }
 
     @Override
@@ -100,58 +102,120 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     }
 
-    private void insertHotelReviewHelper(VolleyCallBack volleyCallBack, Review review) {
-        reviewDAO.insertHotelReview(volleyCallBack, review, getContext());
+    private void insertHotelReviewHelper(VolleyCallBack volleyCallBack) {
+        getReviewDAO().insertHotelReview(volleyCallBack, createReviewForInsert(), getContext());
     }
 
-    private void insertRestaurantReviewHelper(VolleyCallBack volleyCallBack, Review review) {
-        reviewDAO.insertRestaurantReview(volleyCallBack, review, getContext());
+    private void insertRestaurantReviewHelper(VolleyCallBack volleyCallBack) {
+        getReviewDAO().insertRestaurantReview(volleyCallBack, createReviewForInsert(), getContext());
     }
 
-    private void insertAttractionReviewHelper(VolleyCallBack volleyCallBack, Review review) {
-        reviewDAO.insertAttractionReview(volleyCallBack, review, getContext());
+    private void insertAttractionReviewHelper(VolleyCallBack volleyCallBack) {
+        getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInsert(), getContext());
+    }
+
+    private void refreshTokenHelper(VolleyCallBack volleyCallBack){
+        getAccountDAO().refreshToken(volleyCallBack, getResfreshToken(), getContext());
     }
 
     private void insertHotelReview() {
         insertHotelReviewHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-
+                volleyCallbackOnSuccess();
             }
 
             @Override
             public void onError(String errorCode) {
-
+                volleyCallbackOnError(errorCode);
             }
-        }, createReviewForInsert());
+        });
     }
 
     private void insertRestaurantReview() {
         insertRestaurantReviewHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-
+                volleyCallbackOnSuccess();
             }
 
             @Override
             public void onError(String errorCode) {
-
+                volleyCallbackOnError(errorCode);
             }
-        }, createReviewForInsert());
+        });
     }
 
     private void insertAttractionReview() {
         insertAttractionReviewHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-
+                volleyCallbackOnSuccess();
             }
 
             @Override
             public void onError(String errorCode) {
-
+                volleyCallbackOnError(errorCode);
             }
-        }, createReviewForInsert());
+        });
+    }
+
+    private void refreshToken(){
+        refreshTokenHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                volleyCallbackOnSuccessRefreshToken((InitiateAuthResult) object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                volleyCallbackOnError(errorCode);
+            }
+        });
+    }
+
+    private void volleyCallbackOnSuccessRefreshToken(InitiateAuthResult initiateAuthResult){
+        writeSharedPreferences(initiateAuthResult);
+        insertReviewByAccomodationType();
+    }
+
+    private void volleyCallbackOnSuccess() {
+        dismissWaitWhileInsertReviewDialog();
+        showToastOnUiThred(R.string.review_successfully_submitted);
+        finish();
+    }
+
+    private void volleyCallbackOnError(String errorCode) {
+        dismissWaitWhileInsertReviewDialog();
+        switch (errorCode){
+            case UNAUTHORIZED:
+                handle401VolleyError();
+                break;
+            default:
+                handleOtherVolleyError();
+                break;
+        }
+    }
+
+    private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
+        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
+        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));
+    }
+
+    private void handle401VolleyError() {
+        refreshToken();
+    }
+
+    private void handleOtherVolleyError() {
+        showToastOnUiThred(R.string.unexpected_error_while_entering_the_review);
+    }
+
+    private void showToastOnUiThred(int string) {
+        writeReviewActivity.runOnUiThread(() -> {
+            Toast.makeText(writeReviewActivity, getString(string), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void detectEditText(CharSequence charSequence) {
@@ -177,6 +241,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void insertReviewByAccomodationType() {
+        showWaitWhileInsertReviewDialog();
         switch (getAccomodationType()) {
             case HOTEL:
                 insertHotelReview();
@@ -191,10 +256,10 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void getReviewInformations() {
-        title = writeReviewActivity.getTextInputLayoutReviewTitleValue().trim();
-        description = writeReviewActivity.getTextInputLayoutReviewDescriptionValue().trim();
-        rating = writeReviewActivity.getRatingBarValue();
-        user = getUserInformation();
+        title = getTextInputLayoutReviewTitleValue();
+        description = getTextInputLayoutReviewDescriptionValue();
+        rating = getRatingBarValue();
+        user = getUserName();
         accomodationId = getAccomodationId();
     }
 
@@ -208,6 +273,23 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         review.setAnonymous(isAnonymoys);
         review.setAccomodationId(accomodationId);
         return review;
+    }
+
+    private void showWaitWhileInsertReviewDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View dialogView = layoutInflater.inflate(getAlertDialogLayout(), null);
+        alertDialogBuilder.setView(dialogView);
+        alertDialogWaitWhileInsertReview = alertDialogBuilder.create();
+        alertDialogWaitWhileInsertReview.show();
+    }
+
+    private AlertDialog.Builder createAlertDialogBuilder(){
+        return new AlertDialog.Builder(writeReviewActivity);
+    }
+
+    private void dismissWaitWhileInsertReviewDialog() {
+        alertDialogWaitWhileInsertReview.dismiss();
     }
 
     public void checkLogin() {
@@ -251,7 +333,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         getSupportActionBar().setSubtitle(getAccomodationName());
     }
 
-    private ActionBar getSupportActionBar(){
+    private ActionBar getSupportActionBar() {
         return writeReviewActivity.getSupportActionBar();
     }
 
@@ -259,11 +341,15 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
     }
 
+    private AccountDAO getAccountDAO() {
+        return daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+    }
+
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
-    private Intent getIntent(){
+    private Intent getIntent() {
         return writeReviewActivity.getIntent();
     }
 
@@ -279,8 +365,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return getIntent().getStringExtra(ACCOMODATION_TYPE);
     }
 
-    private String getUserInformation() {
-        return createUserSharedPreferences().getSharedPreferences().getString(USERNAME, "");
+    private String getUserName() {
+        return createUserSharedPreferences().getStringSharedPreferences(USERNAME);
     }
 
     private boolean isEditTextTitleChanged(CharSequence charSequence) {
@@ -292,20 +378,51 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private boolean isLogged() {
-        UserSharedPreferences userSharedPreferences = createUserSharedPreferences();
-        return !getAccessToken(userSharedPreferences).equals("");
+        return !getAccessToken().equals("");
     }
 
     private UserSharedPreferences createUserSharedPreferences() {
         return new UserSharedPreferences(getContext());
     }
 
-    private String getAccessToken(UserSharedPreferences userSharedPreferences) {
-        return userSharedPreferences.getSharedPreferences().getString(ACCESS_TOKEN, "");
+    private String getAccessToken() {
+        return createUserSharedPreferences().getStringSharedPreferences(ACCESS_TOKEN);
+    }
+
+    private String getAccessToken(InitiateAuthResult initiateAuthResult) {
+        return initiateAuthResult.getAuthenticationResult().getAccessToken();
+    }
+
+    private String getIdToken(InitiateAuthResult initiateAuthResult) {
+        return initiateAuthResult.getAuthenticationResult().getIdToken();
+    }
+
+    private String getRefreshToken(InitiateAuthResult initiateAuthResult) {
+        return initiateAuthResult.getAuthenticationResult().getRefreshToken();
+    }
+
+    private String getResfreshToken() {
+        return createUserSharedPreferences().getStringSharedPreferences(REFRESH_TOKEN);
+    }
+
+    private LayoutInflater getLayoutInflater() {
+        return writeReviewActivity.getLayoutInflater();
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_wait_while_insert_review_layout;
     }
 
     private Context getContext() {
         return writeReviewActivity.getApplicationContext();
+    }
+
+    private Resources getResources() {
+        return writeReviewActivity.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
     }
 
     private TextView getTextViewRating() {
@@ -330,6 +447,18 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private EditText getTextInputLayoutReviewDescriptionEditText() {
         return writeReviewActivity.getTextInputLayoutReviewDescriptionEditText();
+    }
+
+    private String getTextInputLayoutReviewTitleValue() {
+        return writeReviewActivity.getTextInputLayoutReviewTitleValue().trim();
+    }
+
+    private String getTextInputLayoutReviewDescriptionValue() {
+        return writeReviewActivity.getTextInputLayoutReviewDescriptionValue().trim();
+    }
+
+    private Float getRatingBarValue() {
+        return writeReviewActivity.getRatingBarValue();
     }
 
     private boolean isTitleEmpty() {

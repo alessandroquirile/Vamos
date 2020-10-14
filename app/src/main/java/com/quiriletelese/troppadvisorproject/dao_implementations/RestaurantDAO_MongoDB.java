@@ -128,7 +128,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     }
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
-        String URL = BASE_URL + "/restaurant/search-by-rsql?";
+        String URL = BASE_URL + "restaurant/search-by-rsql?";
         if (pointSearch != null)
             URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
         else
@@ -152,20 +152,20 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     }
 
     private String createFindByIdUrl(String id) {
-        String URL = BASE_URL + "/restaurant/find-by-id/";
+        String URL = BASE_URL + "restaurant/find-by-id/";
         URL = URL.concat(id);
         return URL;
     }
 
     private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
-        String URL = BASE_URL + "/restaurant/find-by-name-like-ignore-case?";
+        String URL = BASE_URL + "restaurant/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }
 
     private String createFindRestaurantsNameUrl(String name) {
-        String URL = BASE_URL + "/restaurant/find-restaurants-name/";
+        String URL = BASE_URL + "restaurant/find-restaurants-name/";
         URL = URL.concat(name);
         return URL;
     }

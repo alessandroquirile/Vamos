@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.BottomSheetFilterAttractions;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionsListAdapter;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewHotelsListAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
@@ -27,12 +26,10 @@ import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearc
 import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationAttractionFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBackCity;
 
 import java.util.List;
 
@@ -81,9 +78,9 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         attractionDAO.findHotelsName(volleyCallBack, name, getContext());
     }
 
-    public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
+    public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
         CityDAO cityDAO = getCityDAO();
-        cityDAO.findCitiesByName(volleyCallBackCity, name, getContext());
+        cityDAO.findCitiesByName(volleyCallBack, name, getContext());
     }
 
     public void findByRsql(PointSearch pointSearch, String rsqlQuery) {
@@ -136,14 +133,14 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     private void findCitiesName(String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
-            findCitiesNameHelper(new VolleyCallBackCity() {
+            findCitiesNameHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     setAutoCompleteTextViewHotelCityAdapter((List<String>) object);
                 }
 
                 @Override
-                public void onError(String error) {
+                public void onError(String errorCode) {
 
                 }
             }, newText);

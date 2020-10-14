@@ -60,7 +60,7 @@
     <string name="cancel">Cancel</string>
     <string name="all_restaurant">Restaurants</string>
     <string name="all_attraction">Attractions</string>
-    <string name="no_review">No review</string>
+    <string name="no_reviews">No review</string>
     <string name="password_error">Wrong password</string>
     <string name="password_updated_correctly">"Password updated successfully "</string>
     <string name="password_update_error">"Error updating password, please try again "</string>
@@ -90,9 +90,9 @@
     <string name="username_already_exist">Username already in use</string>
     <string name="wait_for_login_result">Please wait, verifying your credentials</string>
     <string name="add_review">Add review</string>
-    <string name="no_content_error_hotel_detail">" Error, no hotel found"</string>
+    <string name="no_content_error_hotel_detail">Error, no hotel found</string>
     <string name="no_content_error_attraction_detail">Error, no attraction found</string>
-    <string name="no_content_error_restaurant_detail">" Error, no restaurant found"</string>
+    <string name="no_content_error_restaurant_detail">Error, no restaurant found</string>
     <string name="no_restaurants_found_by_filter">No restaurants found based on your search criteria</string>
     <string name="no_attractions_found_by_filter">No attractions found based on your search criteria</string>
     <string name="unexpected_error_while_fetch_data">" Unexpected error while retrieving data, please try again"</string>
@@ -100,4 +100,22 @@
     <string name="no_hotels_found_nearby">No hotels found nearby</string>
     <string name="no_hotels_found_home_page">Could not find nearby hotels, access the list of attractions and change the search filters</string>
     <string name="no_restaurants_found_home_page">Could not find nearby restaurants, access the list of attractions and change the search filters</string>
+    <string name="loading_in_progress">Loading in progress</string>
+    <string name="review_successfully_submitted">Review successfully submitted</string>
+    <string name="unexpected_error_while_entering_the_review">Unexpected error while entering your review, please try again</string>
+    <string name="wait_while_insert_review">" Wait, I'm saving your review"</string>
+    <string name="no_login_profile_error">It looks like you haven\'t logged in yet. Connect an account by clicking the button at the top right to access additional features</string>
+    <string name="logout">Logout</string>
+    <string name="add_make_login">"Log in again "</string>
+    <string name="retrieving_user_details">Please wait, I\'m retrieving your account informations</string>
+    <string name="forward">Forward</string>
+    <string name="welcome_tropp_advisor">Welcome to TroppAdvisor, the app that helps you choose</string>
+    <string name="travel_intro">Consult the app and choose from thousands of hotels, restaurants and attractions to visit near you. The app searches for them within a 5km radius of your location</string>
+    <string name="see_on_map_intro">You can also see the structures around you on the map</string>
+    <string name="see_reviews_intro">Through the reviews you can be sure to choose only the best for you</string>
+    <string name="enjoy_intro">Enjoy your travels, click next and give permissions to the app to access your location</string>
+    <string name="access_location_permission_requested">In order to continue, you must provide authorization to access the location</string>
+    <string name="missing_location_permission">The app is unable to search for accomodations near you if permission to access the location is denied. Provide permission to allow the app to function properly</string>
+    <string name="provide_permission">Provide authorization</string>
+    <string name="wait_for_account_creation">Please wait, account creation in progress</string>
 </resources>

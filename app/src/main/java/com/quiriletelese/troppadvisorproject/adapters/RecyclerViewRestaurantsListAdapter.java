@@ -1,6 +1,8 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
+import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder> {
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder>
+        implements Constants {
 
     private Context context;
     private List<Restaurant> restaurants;
@@ -47,67 +54,81 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
         return restaurants.size();
     }
 
-    public void addListItems(List<Restaurant> restaurants){
+    public void addListItems(List<Restaurant> restaurants) {
         this.restaurants.addAll(restaurants);
     }
 
-    public void setListItems(List<Restaurant> restaurants){
-        this.restaurants.clear();
-        this.restaurants.addAll(restaurants);
-    }
-
-    private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position){
+    private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position) {
         setImage(viewHolder, position);
         viewHolder.textViewAccomodationName.setText(restaurants.get(position).getName());
-        viewHolder.textViewAccomodationReview.setText(createReviewString(restaurants.get(position).getAvarageRating()));
-        viewHolder.textViewAccomodationAddress.setText(createAddressString(restaurants.get(position).getAddress()));
+        viewHolder.textViewAccomodationReview.setText(createAvarageRatingString(restaurants.get(position)));
+        viewHolder.textViewAccomodationAddress.setText(createAddressString(restaurants.get(position)));
     }
 
     private void setImage(ViewHolder viewHolder, int position) {
         if (hasImage(position)) {
-            Picasso.with(context).load(restaurants.get(position).getImages().get(0))
+            Picasso.with(context).load(getFirtsImage(position))
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
-                    .error(R.drawable.pizza)
                     .into(viewHolder.imageViewAccomodation);
         }
     }
 
     private boolean hasImage(int position) {
-        return restaurants.get(position).getImages().size() > 0;
+        return restaurants.get(position).isImagesGraterThanZero();
     }
 
-    private String createAddressString(Address address) {
+    private String getFirtsImage(int position) {
+        return restaurants.get(position).getImages().get(0);
+    }
+
+    private String createAddressString(Restaurant restaurant) {
         String restaurantAddress = "";
-        restaurantAddress = restaurantAddress.concat(address.getType() + " ");
-        restaurantAddress = restaurantAddress.concat(address.getStreet() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getHouseNumber() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getCity() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getProvince() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getPostalCode());
+        restaurantAddress = restaurantAddress.concat(restaurant.getTypeOfAddress() + " ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getStreet() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getHouseNumber() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getCity() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getProvince() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getPostalCode());
         return restaurantAddress;
     }
 
-    private String createReviewString(Integer review){
-        if (review.equals(0))
-            return context.getResources().getString(R.string.no_review);
-        else {
-            String rating = "";
-            rating = rating.concat(review + "/5");
-            return rating;
-        }
+    private String createAvarageRatingString(Restaurant restaurant) {
+        return !hasReviews(restaurant) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(restaurant);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private String createAvarageRatingStringHelper(Restaurant restaurant) {
+        return restaurant.getAvarageRating() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    }
+
+    private boolean hasReviews(Restaurant restaurant) {
+        return restaurant.hasReviews();
+    }
+
+    private Resources getResources() {
+        return context.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RelativeLayout relativeLayoutAccomodation;
         private ImageView imageViewAccomodation;
         private TextView textViewAccomodationName, textViewAccomodationReview, textViewAccomodationAddress;
-        private Button buttonWriteAccomodationReview, buttonSeeAccomodationOnMap;
+        private Button buttonWriteReview, buttonSeeAccomodationOnMap;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             initializeComponents();
+            setListenerOnComponents();
+        }
+
+        @Override
+        public void onClick(View view) {
+            onClickHelper(view);
         }
 
         private void initializeComponents() {
@@ -116,8 +137,72 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
             textViewAccomodationAddress = itemView.findViewById(R.id.text_view_accomodation_address);
-            buttonWriteAccomodationReview = itemView.findViewById(R.id.button_write_accomodation_review);
+            buttonWriteReview = itemView.findViewById(R.id.button_write_review);
             buttonSeeAccomodationOnMap = itemView.findViewById(R.id.button_see_accomodation_on_map);
+        }
+
+
+        private void setListenerOnComponents() {
+            buttonWriteReview.setOnClickListener(this);
+            buttonSeeAccomodationOnMap.setOnClickListener(this);
+            relativeLayoutAccomodation.setOnClickListener(this);
+        }
+
+        private void onClickHelper(View view) {
+            switch (view.getId()) {
+                case R.id.button_write_review:
+                    startWriteReviewActivity();
+                    break;
+                case R.id.button_see_accomodation_on_map:
+                    startAccomodationDetailMapsActivity();
+                    break;
+                case R.id.relative_layout_main:
+                    startDetailActivity();
+                    break;
+            }
+        }
+
+        private void startWriteReviewActivity() {
+            context.startActivity(createWriteReviewActivityIntent());
+        }
+
+        private Intent createWriteReviewActivityIntent() {
+            Intent writeReviewActivityIntent = new Intent(context, WriteReviewActivity.class);
+            writeReviewActivityIntent.putExtra(ID, getId());
+            writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
+            writeReviewActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            return writeReviewActivityIntent;
+        }
+
+        private void startAccomodationDetailMapsActivity() {
+            context.startActivity(createAccomodationDetailMapsIntent());
+        }
+
+        private Intent createAccomodationDetailMapsIntent() {
+            Intent accomodationDetailMapsIntent = new Intent(context, AccomodationDetailMapsActivity.class);
+            accomodationDetailMapsIntent.putExtra(ACCOMODATION, getRestaurant());
+            accomodationDetailMapsIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+            accomodationDetailMapsIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            return accomodationDetailMapsIntent;
+        }
+
+        private void startDetailActivity() {
+            context.startActivity(createStartDetailActivityIntent());
+        }
+
+        private Intent createStartDetailActivityIntent() {
+            Intent startDetailActivityIntent = new Intent(context, RestaurantDetailActivity.class);
+            startDetailActivityIntent.putExtra(ID, getId());
+            startDetailActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            return startDetailActivityIntent;
+        }
+
+        private String getId() {
+            return restaurants.get(this.getAdapterPosition()).getId();
+        }
+
+        private Restaurant getRestaurant() {
+            return restaurants.get(this.getAdapterPosition());
         }
 
     }

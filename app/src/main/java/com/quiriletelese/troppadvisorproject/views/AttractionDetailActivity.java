@@ -30,7 +30,9 @@ public class AttractionDetailActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
+        showLoadingInProgressDialog();
         initializeActivityFields();
+
     }
 
     private void initializeViewComponents() {
@@ -52,6 +54,10 @@ public class AttractionDetailActivity extends AppCompatActivity {
 
     private void setListenerOnViewComponents(){
         attractionDetailActivityController.setListenerOnViewComponents();
+    }
+
+    public void showLoadingInProgressDialog() {
+        attractionDetailActivityController.showLoadingInProgressDialog();;
     }
 
     private void initializeActivityFields() {

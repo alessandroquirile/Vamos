@@ -1,8 +1,10 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +21,6 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
@@ -34,6 +35,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     private AttractionDetailActivity attractionDetailActivity;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private Attraction attraction;
+    private AlertDialog alertDialogLoadingInProgress;
 
     public AttractionDetailActivityController(AttractionDetailActivity attractionDetailActivity) {
         this.attractionDetailActivity = attractionDetailActivity;
@@ -62,6 +64,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
                 attraction = (Attraction) object;
                 initializeActivityFields();
                 initializeViewPager();
+                dismissLoadingInProgressDialog();
             }
 
             @Override
@@ -108,7 +111,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private void setAvarageRating(Attraction attraction) {
         if (!hasAvarageRating(attraction.getAvarageRating()))
-            getTextViewAvarageRating().setText(R.string.no_review);
+            getTextViewAvarageRating().setText(R.string.no_reviews);
         else
             getTextViewAvarageRating().setText(createAvarageRatingString(attraction));
     }
@@ -197,6 +200,20 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             startSeeReviewsActivity();
         else
             showToastNoReviewsError();
+    }
+
+    public void showLoadingInProgressDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(attractionDetailActivity);
+        LayoutInflater layoutInflater = attractionDetailActivity.getLayoutInflater();
+        View dialogView = layoutInflater.inflate(R.layout.dialog_loading_in_progress, null);
+        alertDialogBuilder.setView(dialogView);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogLoadingInProgress = alertDialogBuilder.create();
+        alertDialogLoadingInProgress.show();
+    }
+
+    private void dismissLoadingInProgressDialog(){
+        alertDialogLoadingInProgress.dismiss();
     }
 
     private void showToastNoContentError() {
@@ -324,7 +341,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private String getNoReviewsErrorMessage(){
-        return getString(R.string.no_review);
+        return getString(R.string.no_reviews);
     }
 
 }

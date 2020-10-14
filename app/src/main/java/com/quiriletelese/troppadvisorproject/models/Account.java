@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public class Account implements Serializable {
     private String name;
-    private String lastname;
+    private String familyName;
     private String username;
     private String email;
-    private String password;
+    private char[] password;
 
     public String getName() {
         return name;
@@ -21,12 +21,12 @@ public class Account implements Serializable {
         this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 
     public String getUsername() {
@@ -45,11 +45,11 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 }

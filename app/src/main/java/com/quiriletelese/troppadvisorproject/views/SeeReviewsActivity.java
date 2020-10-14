@@ -14,7 +14,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
 
     private SeeReviewsActivityController seeReviewsActivityController;
     private ShimmerRecyclerView shimmerRecyclerViewSeeReviews;
-    private ProgressBar progressBarReviewsLoadMore;
+    private ProgressBar progressBarLoadMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
 
     private void initializeViesComponents() {
         shimmerRecyclerViewSeeReviews = findViewById(R.id.recycler_view_see_reviews);
-        progressBarReviewsLoadMore = findViewById(R.id.progress_bar_reviews_load_more);
+        progressBarLoadMore = findViewById(R.id.progress_bar_reviews_load_more);
     }
 
     private void setToolbarSubtitle(){
@@ -64,7 +64,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
         return shimmerRecyclerViewSeeReviews;
     }
 
-    public ProgressBar getProgressBarReviewsLoadMore() {
-        return progressBarReviewsLoadMore;
+    public ProgressBar getProgressBarLoadMore() {
+        return progressBarLoadMore;
     }
 }

@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.CreateAccountController;
+import com.quiriletelese.troppadvisorproject.controllers.SignUpActivityController;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    CreateAccountController createAccountController;
+    private SignUpActivityController signUpActivityController;
     private FloatingActionButton floatingActionButtonGoBack;
     private TextInputLayout textInputLayoutEmail, textInputLayoutName, textInputLayoutLastName,
     textInputLayoutUsername, textInputLayoutPassword, textInputLayoutRepeatPassword;
@@ -38,15 +38,15 @@ public class SignUpActivity extends AppCompatActivity {
         textInputLayoutUsername = findViewById(R.id.text_input_layout_username_sign_up);
         textInputLayoutPassword = findViewById(R.id.text_input_layout_password_sign_up);
         textInputLayoutRepeatPassword = findViewById(R.id.text_input_layout_repeat_password_sign_up);
-        buttonSignUp = findViewById(R.id.button_sign_up_sign_up_activity);
+        buttonSignUp = findViewById(R.id.button_sign_up);
     }
 
     public void initializeController() {
-        createAccountController = new CreateAccountController(this);
+        signUpActivityController = new SignUpActivityController(this);
     }
 
     private void setListenerOnViewComponents(){
-        createAccountController.setListenerOnViewComponents();
+        signUpActivityController.setListenerOnViewComponents();
     }
 
     public FloatingActionButton getFloatingActionButtonGoBack() {
@@ -106,27 +106,27 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public String getTextInputLayoutEmailValue(){
-        return textInputLayoutEmail.getEditText().getText().toString();
+        return textInputLayoutEmail.getEditText().getText().toString().trim();
     }
 
     public String getTextInputLayoutNameValue(){
-        return textInputLayoutName.getEditText().getText().toString();
+        return textInputLayoutName.getEditText().getText().toString().trim();
     }
 
     public String getTextInputLayoutLastNameValue(){
-        return textInputLayoutLastName.getEditText().getText().toString();
+        return textInputLayoutLastName.getEditText().getText().toString().trim();
     }
 
     public String getTextInputLayoutUsernameValue(){
-        return textInputLayoutUsername.getEditText().getText().toString();
+        return textInputLayoutUsername.getEditText().getText().toString().trim();
     }
 
-    public String getTextInputLayoutPasswordValue(){
-        return textInputLayoutPassword.getEditText().getText().toString();
+    public char[] getTextInputLayoutPasswordValue(){
+        return textInputLayoutPassword.getEditText().getText().toString().trim().toCharArray();
     }
 
-    public String getTextInputLayoutRepeatPasswordValue(){
-        return textInputLayoutRepeatPassword.getEditText().getText().toString();
+    public char[] getTextInputLayoutRepeatPasswordValue(){
+        return textInputLayoutRepeatPassword.getEditText().getText().toString().trim().toCharArray();
     }
 
 }

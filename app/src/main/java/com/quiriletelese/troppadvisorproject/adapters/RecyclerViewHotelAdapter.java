@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder> implements Constants {
+public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder>
+        implements Constants {
 
     private Context context;
     private List<Hotel> hotels;
@@ -50,18 +52,15 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setHotelImage(viewHolder, position);
+        //setImage(viewHolder, position);
         viewHolder.textViewHotelName.setText(hotels.get(position).getName());
-        if (hotels.get(position).getAvarageRating() == 0)
-            viewHolder.textViewHotelRating.setText(R.string.no_review);
-        else
-            viewHolder.textViewHotelRating.setText(hotels.get(position).getAvarageRating() + "/5");
+        viewHolder.textViewHotelRating.setText(createAvarageRatingString(hotels.get(position)));
 
     }
 
-    private void setHotelImage(ViewHolder viewHolder, int position) {
-        if (hotelHasImage(position)) {
-            Picasso.with(context).load(hotels.get(position).getImages().get(0))
+    private void setImage(ViewHolder viewHolder, int position) {
+        if (hasImage(position)) {
+            Picasso.with(context).load(getFirtsImage(position))
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
@@ -70,15 +69,40 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         }
     }
 
-    private boolean hotelHasImage(int position) {
-        return hotels.get(position).getImages().size() > 0;
-    }
-
-    private void startHotelDetailActivity(String id){
+    private void startDetailActivity(String id) {
         Intent intent = new Intent(context, HotelDetailActivity.class);
         intent.putExtra(ID, id);
         context.startActivity(intent);
     }
+
+    private boolean hasImage(int position) {
+        return hotels.get(position).getImages().size() > 0;
+    }
+
+    private String getFirtsImage(int position) {
+        return hotels.get(position).getImages().get(0);
+    }
+
+    private String createAvarageRatingString(Hotel hotel) {
+        return !hasReviews(hotel) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(hotel);
+    }
+
+    private String createAvarageRatingStringHelper(Hotel hotel) {
+        return hotel.getAvarageRating() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    }
+
+    private boolean hasReviews(Hotel hotel) {
+        return hotel.hasReviews();
+    }
+
+    private Resources getResources() {
+        return context.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Context context;
@@ -89,6 +113,12 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             initializeComponents();
+            setListenerOnComponents();
+        }
+
+        @Override
+        public void onClick(View view) {
+            startDetailActivity(getHotelId());
         }
 
         private void initializeComponents() {
@@ -97,12 +127,14 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
             imageViewHotel = itemView.findViewById(R.id.image_view_accomodation);
             textViewHotelName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewHotelRating = itemView.findViewById(R.id.text_view_accomodation_rating);
+        }
+
+        private void setListenerOnComponents(){
             linearLayoutHomePageRecyclerView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            startHotelDetailActivity(hotels.get(this.getAdapterPosition()).getId());
+        private String getHotelId(){
+            return hotels.get(this.getAdapterPosition()).getId();
         }
 
     }

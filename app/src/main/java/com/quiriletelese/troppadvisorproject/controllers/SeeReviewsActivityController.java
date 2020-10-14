@@ -1,10 +1,13 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +20,7 @@ import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
@@ -25,17 +29,14 @@ public class SeeReviewsActivityController implements Constants {
     private SeeReviewsActivity seeReviewsActivity;
     private DAOFactory daoFactory;
     private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
-    private int page = 0, size = 4;
-    private boolean loadData = true;
+    private int page = 0, size = 30;
 
     public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
         this.seeReviewsActivity = seeReviewsActivity;
     }
 
-    private void findAccomodationReviewsHelper(VolleyCallBack volleyCallBack, String id, int page) {
-        daoFactory = DAOFactory.getInstance();
-        ReviewDAO reviewDAO = daoFactory.getReviewDAO(ConfigFileReader.getProperty(HOTEL_STORAGE_TECHNOLOGY, seeReviewsActivity.getApplicationContext()));
-        reviewDAO.findAccomodationReviews(volleyCallBack, id, seeReviewsActivity.getApplicationContext(), page, size);
+    private void findAccomodationReviewsHelper(VolleyCallBack volleyCallBack) {
+        getReviewDAO().findAccomodationReviews(volleyCallBack, getAccomodationId(), getContext(), page, size);
     }
 
     private void findAccomodationReviews() {
@@ -47,39 +48,13 @@ public class SeeReviewsActivityController implements Constants {
 
             @Override
             public void onError(String errorCode) {
-                seeReviewsActivity.runOnUiThread(() -> {
-                    Toast.makeText(seeReviewsActivity, errorCode, Toast.LENGTH_SHORT).show();
-                });
+                volleyCallbackOnError(errorCode);
             }
-        }, getAccomodationId(), page);
-    }
-
-    public void intializeRecyclerView() {
-        findAccomodationReviews();
-    }
-
-    private void initializeRecyclerViewOnSuccess(List<Review> reviews) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(seeReviewsActivity.getApplicationContext(),
-                LinearLayoutManager.VERTICAL, false);
-        recyclerViewSeeReviewsAdapter = new RecyclerViewSeeReviewsAdapter(seeReviewsActivity.getApplicationContext(), reviews);
-        seeReviewsActivity.getShimmerRecyclerViewSeeReviews().setLayoutManager(linearLayoutManager);
-        seeReviewsActivity.getShimmerRecyclerViewSeeReviews().setAdapter(recyclerViewSeeReviewsAdapter);
-    }
-
-    public void initializeRecyclerViewsFakeContent() {
-        seeReviewsActivity.getShimmerRecyclerViewSeeReviews().setLayoutManager(new LinearLayoutManager(seeReviewsActivity.getApplicationContext(),
-                LinearLayoutManager.VERTICAL, false));
-        seeReviewsActivity.getShimmerRecyclerViewSeeReviews().showShimmer();
-    }
-
-    private void loadMoreReviews() {
-        if (loadData) {
-            setProgressBarLoadMoreVisible();
-            loadMoreAccomodationReviews();
-        }
+        });
     }
 
     private void loadMoreAccomodationReviews() {
+        page += 1;
         findAccomodationReviewsHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -88,28 +63,82 @@ public class SeeReviewsActivityController implements Constants {
 
             @Override
             public void onError(String errorCode) {
-                seeReviewsActivity.runOnUiThread(() -> {
-                    loadData = false;
-                    showToastNoMoreReviews();
-                });
+                showToastNoMoreReviews();
             }
-        }, getAccomodationId(), page += 1);
-        System.out.println("PAGE = " + page);
+        });
+    }
+
+    public void intializeRecyclerView() {
+        findAccomodationReviews();
+    }
+
+    private void initializeRecyclerViewOnSuccess(List<Review> reviews) {
+        LinearLayoutManager linearLayoutManager = createLinearLayoutManager();
+        recyclerViewSeeReviewsAdapter = createRecyclerViewAdapter(reviews);
+        getShimmerRecyclerViewSeeReviews().setLayoutManager(linearLayoutManager);
+        getShimmerRecyclerViewSeeReviews().setAdapter(recyclerViewSeeReviewsAdapter);
+    }
+
+    public void initializeRecyclerViewsFakeContent() {
+        getShimmerRecyclerViewSeeReviews().setLayoutManager(createLinearLayoutManager());
+        getShimmerRecyclerViewSeeReviews().showShimmer();
+    }
+
+    private LinearLayoutManager createLinearLayoutManager() {
+        return new LinearLayoutManager(getContext(), setRecyclerViewVerticalOrientation(), false);
+    }
+
+    private int setRecyclerViewVerticalOrientation() {
+        return RecyclerView.VERTICAL;
+    }
+
+    private RecyclerViewSeeReviewsAdapter createRecyclerViewAdapter(List<Review> reviews) {
+        return new RecyclerViewSeeReviewsAdapter(getContext(), reviews);
+    }
+
+    private void volleyCallbackOnError(String errorCode) {
+        switch (errorCode) {
+            case "204":
+                handle204VolleyError();
+                break;
+            default:
+                handleOtherVolleyError();
+                break;
+        }
+    }
+
+    private void handle204VolleyError() {
+        showToastOnUiThread(R.string.no_reviews);
+    }
+
+    private void handleOtherVolleyError() {
+        showToastOnUiThread(R.string.unexpected_error_while_fetch_data);
+    }
+
+    private void showToastOnUiThread(int string) {
+        seeReviewsActivity.runOnUiThread(() -> {
+            Toast.makeText(seeReviewsActivity, getString(string), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void loadMoreReviews() {
+        setProgressBarLoadMoreVisibility(View.VISIBLE);
+        loadMoreAccomodationReviews();
     }
 
     private void addNewReviewsToList(List<Review> reviews) {
         recyclerViewSeeReviewsAdapter.addListItems(reviews);
         recyclerViewSeeReviewsAdapter.notifyDataSetChanged();
-        setProgressBarLoadMoreInvisible();
+        setProgressBarLoadMoreVisibility(View.INVISIBLE);
     }
 
     private void showToastNoMoreReviews() {
-        setProgressBarLoadMoreInvisible();
-        Toast.makeText(seeReviewsActivity, seeReviewsActivity.getResources().getString(R.string.end_of_results), Toast.LENGTH_SHORT).show();
+        setProgressBarLoadMoreVisibility(View.INVISIBLE);
+        showToastOnUiThread(R.string.end_of_results);
     }
 
     public void addRecyclerViewOnScrollListener() {
-        seeReviewsActivity.getShimmerRecyclerViewSeeReviews().addOnScrollListener(new RecyclerView.OnScrollListener() {
+        getShimmerRecyclerViewSeeReviews().addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -133,18 +162,12 @@ public class SeeReviewsActivityController implements Constants {
         return !recyclerView.canScrollVertically(1);
     }
 
-    private void setProgressBarLoadMoreVisible() {
-        ProgressBar progressBar = seeReviewsActivity.getProgressBarReviewsLoadMore();
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void setProgressBarLoadMoreInvisible() {
-        ProgressBar progressBar = seeReviewsActivity.getProgressBarReviewsLoadMore();
-        progressBar.setVisibility(View.GONE);
+    private void setProgressBarLoadMoreVisibility(int visibility){
+        getProgressBarLoadMore().setVisibility(View.VISIBLE);
     }
 
     public void setToolbarSubtitle() {
-        seeReviewsActivity.getSupportActionBar().setSubtitle(getAccomodationName());
+        getSupportActionBar().setSubtitle(getAccomodationName());
     }
 
     private String getAccomodationId() {
@@ -153,6 +176,38 @@ public class SeeReviewsActivityController implements Constants {
 
     private String getAccomodationName() {
         return seeReviewsActivity.getIntent().getStringExtra(ACCOMODATION_NAME);
+    }
+
+    private ReviewDAO getReviewDAO() {
+        return daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    private ActionBar getSupportActionBar(){
+        return seeReviewsActivity.getSupportActionBar();
+    }
+
+    private ProgressBar getProgressBarLoadMore(){
+        return seeReviewsActivity.getProgressBarLoadMore();
+    }
+
+    private ShimmerRecyclerView getShimmerRecyclerViewSeeReviews() {
+        return seeReviewsActivity.getShimmerRecyclerViewSeeReviews();
+    }
+
+    private Context getContext() {
+        return seeReviewsActivity.getApplicationContext();
+    }
+
+    private Resources getResources() {
+        return seeReviewsActivity.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
     }
 
 }

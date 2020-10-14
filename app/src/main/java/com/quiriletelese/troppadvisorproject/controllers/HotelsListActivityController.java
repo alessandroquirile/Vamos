@@ -30,7 +30,6 @@ import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.HotelMapActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
-import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBackCity;
 
 import java.util.List;
 
@@ -79,9 +78,9 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         hotelDAO.findHotelsName(volleyCallBack, name, getContext());
     }
 
-    public void findCitiesNameHelper(VolleyCallBackCity volleyCallBackCity, String name) {
+    public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
         CityDAO cityDAO = getCityDAO();
-        cityDAO.findCitiesByName(volleyCallBackCity, name, getContext());
+        cityDAO.findCitiesByName(volleyCallBack, name, getContext());
     }
 
     public void findByRsql(PointSearch pointSearch, String rsqlQuery) {
@@ -134,14 +133,14 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     private void findCitiesName(String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
-            findCitiesNameHelper(new VolleyCallBackCity() {
+            findCitiesNameHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     setAutoCompleteTextViewCityAdapter((List<String>) object);
                 }
 
                 @Override
-                public void onError(String error) {
+                public void onError(String errorCode) {
 
                 }
             }, newText);

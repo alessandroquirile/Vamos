@@ -2,22 +2,20 @@ package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -50,16 +48,13 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setHotelImage(viewHolder, position);
+        //setRestaurantImage(viewHolder, position);
         viewHolder.textViewRestaurantName.setText(restaurants.get(position).getName());
-        if (restaurants.get(position).getAvarageRating() == 0)
-            viewHolder.textViewRestaurantRating.setText(R.string.no_review);
-        else
-            viewHolder.textViewRestaurantRating.setText(restaurants.get(position).getAvarageRating() + "/5");
+            viewHolder.textViewRestaurantRating.setText(createAvarageRatingString(restaurants.get(position)));
 
     }
 
-    private void setHotelImage(ViewHolder viewHolder, int position) {
+    private void setRestaurantImage(ViewHolder viewHolder, int position) {
         Picasso.with(context).load(restaurants.get(position).getImages().get(0))
                 .fit()
                 .centerCrop()
@@ -71,6 +66,26 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
         Intent intent = new Intent(context, RestaurantDetailActivity.class);
         intent.putExtra(ID, id);
         context.startActivity(intent);
+    }
+
+    private String createAvarageRatingString(Restaurant restaurant) {
+        return !hasReviews(restaurant) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(restaurant);
+    }
+
+    private String createAvarageRatingStringHelper(Restaurant restaurant){
+        return restaurant.getAvarageRating() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    }
+
+    private boolean hasReviews(Restaurant restaurant){
+        return restaurant.hasReviews();
+    }
+
+    private Resources getResources() {
+        return context.getResources();
+    }
+
+    private String getString(int string) {
+        return getResources().getString(string);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
