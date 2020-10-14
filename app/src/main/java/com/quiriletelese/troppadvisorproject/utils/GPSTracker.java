@@ -13,6 +13,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class GPSTracker extends Service implements LocationListener {
 
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters

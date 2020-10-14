@@ -23,7 +23,7 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationAttractionFilter;
+import com.quiriletelese.troppadvisorproject.model_helpers.AttractionFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -33,12 +33,16 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class AttractionsListActivityController implements OnBottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private AttractionsListActivity attractionsListActivity;
     private BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
-    private AccomodationAttractionFilter accomodationAttractionFilter;
+    private AttractionFilter attractionFilter;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private int page = 0, size = 3;
@@ -188,13 +192,13 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     }
 
     private void createAccomodationFilter() {
-        accomodationAttractionFilter = new AccomodationAttractionFilter();
-        accomodationAttractionFilter.setName(getAttractionNameValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setCity(getCityNameValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setDistance(getDistanceValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        attractionFilter = new AttractionFilter();
+        attractionFilter.setName(getAttractionNameValueFromBottomSheetFilter());
+        attractionFilter.setCity(getCityNameValueFromBottomSheetFilter());
+        attractionFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
+        attractionFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
+        attractionFilter.setDistance(getDistanceValueFromBottomSheetFilter());
+        attractionFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
     }
 
     private void disableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -346,10 +350,10 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     private void showToastVolleyError(int string) {
         setIsLoadingData(false);
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
-        runToastOnUiThred(string);
+        showToastOnUiThred(string);
     }
 
-    private void runToastOnUiThred(int string) {
+    private void showToastOnUiThred(int string) {
         attractionsListActivity.runOnUiThread(() -> {
             Toast.makeText(attractionsListActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
@@ -389,7 +393,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
 
     private void putAccomodationHotelFilter(Intent attractionMapsActivityIntent) {
         attractionMapsActivityIntent.putExtra(ACCOMODATION_FILTER, isAccomodationFilterNull() ? null
-                : accomodationAttractionFilter);
+                : attractionFilter);
     }
 
     private String getAttractionNameValueFromBottomSheetFilter() {
@@ -532,27 +536,27 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     }
 
     private String getAccomodationFilterNameValue() {
-        return accomodationAttractionFilter.getName();
+        return attractionFilter.getName();
     }
 
     private String getAccomodationFilterCityValue() {
-        return accomodationAttractionFilter.getCity();
+        return attractionFilter.getCity();
     }
 
     private Integer getAccomodationFilterAvaragePriceValue() {
-        return accomodationAttractionFilter.getAvaragePrice();
+        return attractionFilter.getAvaragePrice();
     }
 
     private Integer getAccomodationFilterAvarageRatingValue() {
-        return accomodationAttractionFilter.getAvarageRating();
+        return attractionFilter.getAvarageRating();
     }
 
     private Double getAccomodationFilterDistanceValue() {
-        return accomodationAttractionFilter.getDistance();
+        return attractionFilter.getDistance();
     }
 
     private boolean getAccomodationFilterHasCertificateOfExcellenceValue() {
-        return accomodationAttractionFilter.isHasCertificateOfExcellence();
+        return attractionFilter.isHasCertificateOfExcellence();
     }
 
     private boolean isSearchingForName() {
@@ -568,7 +572,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     }
 
     private boolean isAccomodationFilterNull() {
-        return accomodationAttractionFilter == null;
+        return attractionFilter == null;
     }
 
     private boolean isAccomodationFilterAvaragePriceEqualsToZero() {

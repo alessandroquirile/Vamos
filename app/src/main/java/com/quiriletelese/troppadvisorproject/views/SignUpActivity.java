@@ -11,6 +11,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.SignUpActivityController;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class SignUpActivity extends AppCompatActivity {
 
     private SignUpActivityController signUpActivityController;
@@ -75,30 +79,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     public TextInputLayout getTextInputLayoutRepeatPassword() {
         return textInputLayoutRepeatPassword;
-    }
-
-    public EditText getTextInputLayoutEmailEditText() {
-        return textInputLayoutEmail.getEditText();
-    }
-
-    public EditText getTextInputLayoutNameEditText() {
-        return textInputLayoutName.getEditText();
-    }
-
-    public EditText getTextInputLayoutLastNameEditText() {
-        return textInputLayoutLastName.getEditText();
-    }
-
-    public EditText getTextInputLayoutUsernameEditText() {
-        return textInputLayoutUsername.getEditText();
-    }
-
-    public EditText getTextInputLayoutPasswordEditText() {
-        return textInputLayoutPassword.getEditText();
-    }
-
-    public EditText getTextInputLayoutRepeatPasswordEditText() {
-        return textInputLayoutRepeatPassword.getEditText();
     }
 
     public Button getButtonSignUp() {

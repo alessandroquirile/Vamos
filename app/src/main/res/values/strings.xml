@@ -127,10 +127,10 @@
     <string name="add_make_login">Effettua un nuovo login</string>
     <string name="retrieving_user_details">Attendi, sto recuperando le informazioni del tuo account</string>
     <string name="forward">Avanti</string>
-    <string name="welcome_tropp_advisor">Benvenuto in TroppAdvisor, l\'app che ti aiuta a scegliere</string>
-    <string name="travel_intro">Consulta l\'app e scegli tra migliaia di hotel, ristoranti e attrazioni da visitare nelle tue vicinanze. L\'app le cerca in un raggio di 5km dalla tua posizione</string>
-    <string name="see_on_map_intro">Puoi vedere le strutture attorno a te anche sulla mappa</string>
-    <string name="see_reviews_intro">Attraverso le recensioni puoi essere sicuro di scegliere solo il meglio per te</string>
+    <string name="welcome_tropp_advisor">Benvenuto in TroppAdvisor, l\'app che ti aiuta a scegliere le migliori soluzioni per i tuoi viaggi</string>
+    <string name="travel_intro">Consulta l\'app e scegli tra migliaia di hotel, ristoranti e attrazioni da visitare nelle tue vicinanze. L\'app le cerca in automatico in un raggio di 5km dalla tua posizione</string>
+    <string name="see_on_map_intro">Puoi vedere le strutture attorno a te anche sulla mappa, per una visione più chiara e dettagliata</string>
+    <string name="see_reviews_intro">Attraverso le recensioni puoi essere sicuro di scegliere solo il meglio per te. Puoi anche rilasciare una tua recensione così da aiutare gli altri utenti nella scelta</string>
     <string name="enjoy_intro">Goditi i tuoi viaggi, clicca avanti e fornisci i permessi all\'app per accedere alla tua posizione</string>
     <string name="access_location_permission_requested">Per poter proseguire è necessario fornire l\'autorizzazione per l\'accesso alla posizione</string>
     <string name="missing_location_permission">L\'app non è in grado di cercare le strutture nelle tue vicinanze se il permesso per accedere alla posizione è negato. Fornisci il permesso per permettere all\'app di funzionare correttamente</string>

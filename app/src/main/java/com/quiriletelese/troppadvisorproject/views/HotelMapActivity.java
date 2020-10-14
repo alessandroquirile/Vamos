@@ -17,6 +17,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HotelMapActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HotelMapActivity extends FragmentActivity implements OnMapReadyCallback, Constants {
 
     private HotelMapActivityController hotelMapsActivityController;

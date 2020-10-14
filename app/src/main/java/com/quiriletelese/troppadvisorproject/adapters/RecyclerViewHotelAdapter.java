@@ -21,6 +21,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder>
         implements Constants {
 

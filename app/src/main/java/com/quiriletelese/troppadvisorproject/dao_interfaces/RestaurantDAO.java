@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public interface RestaurantDAO {
 
     void findByRsql(VolleyCallBack volleyCallBack, List<String> typesOfCuisine, PointSearch pointSearch,

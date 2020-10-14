@@ -17,6 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class ProfileFragment extends Fragment {
 
     private ProfileFragmentController profileFragmentController;

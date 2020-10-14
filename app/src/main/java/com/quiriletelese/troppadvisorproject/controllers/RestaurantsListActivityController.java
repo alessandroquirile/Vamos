@@ -25,7 +25,7 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationRestaurantFilter;
+import com.quiriletelese.troppadvisorproject.model_helpers.RestaurantFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -36,12 +36,16 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RestaurantsListActivityController implements OnBottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private RestaurantsListActivity restaurantsListActivity;
     private BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
-    private AccomodationRestaurantFilter accomodationRestaurantFilter;
+    private RestaurantFilter restaurantFilter;
     private RecyclerViewRestaurantsListAdapter recyclerViewRestaurantsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private List<String> typesOfCuisine = new ArrayList<>();
@@ -237,14 +241,14 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private void createAccomodationFilter() {
-        accomodationRestaurantFilter = new AccomodationRestaurantFilter();
-        accomodationRestaurantFilter.setName(getRestaurantNameValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setCity(getCityNameValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setDistance(getDistanceValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setTypesOfCuisine(getMultiSpinnerSearchSelectedItems());
-        accomodationRestaurantFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        restaurantFilter = new RestaurantFilter();
+        restaurantFilter.setName(getRestaurantNameValueFromBottomSheetFilter());
+        restaurantFilter.setCity(getCityNameValueFromBottomSheetFilter());
+        restaurantFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
+        restaurantFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
+        restaurantFilter.setDistance(getDistanceValueFromBottomSheetFilter());
+        restaurantFilter.setTypesOfCuisine(getMultiSpinnerSearchSelectedItems());
+        restaurantFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
     }
 
     private void disableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -521,7 +525,7 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
 
     private void putAccomodationRestaurantFilter(Intent restaurantMapActivityIntent) {
         restaurantMapActivityIntent.putExtra(ACCOMODATION_FILTER, isAccomodationFilterNull() ? null
-                : accomodationRestaurantFilter);
+                : restaurantFilter);
     }
 
     private ProgressBar getProgressBarLoadMore(){
@@ -593,31 +597,31 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private String getAccomodationFilterNameValue() {
-        return accomodationRestaurantFilter.getName();
+        return restaurantFilter.getName();
     }
 
     private String getAccomodationFilterCityValue() {
-        return accomodationRestaurantFilter.getCity();
+        return restaurantFilter.getCity();
     }
 
     private Integer getAccomodationFilterAvaragePriceValue() {
-        return accomodationRestaurantFilter.getAvaragePrice();
+        return restaurantFilter.getAvaragePrice();
     }
 
     private Integer getAccomodationFilterAvarageRatingValue() {
-        return accomodationRestaurantFilter.getAvarageRating();
+        return restaurantFilter.getAvarageRating();
     }
 
     private Double getAccomodationFilterDistanceValue() {
-        return accomodationRestaurantFilter.getDistance();
+        return restaurantFilter.getDistance();
     }
 
     private List<String> getAccomodationFilterTypesOfCuisine() {
-        return accomodationRestaurantFilter.getTypesOfCuisine();
+        return restaurantFilter.getTypesOfCuisine();
     }
 
     private boolean getAccomodationFilterHasCertificateOfExcellenceValue() {
-        return accomodationRestaurantFilter.isHasCertificateOfExcellence();
+        return restaurantFilter.isHasCertificateOfExcellence();
     }
 
     private boolean isSearchingForName() {
@@ -633,7 +637,7 @@ public class RestaurantsListActivityController implements OnBottomSheetFilterSea
     }
 
     private boolean isAccomodationFilterNull() {
-        return accomodationRestaurantFilter == null;
+        return restaurantFilter == null;
     }
 
     private boolean isAccomodationFilterAvaragePriceEqualsToZero() {

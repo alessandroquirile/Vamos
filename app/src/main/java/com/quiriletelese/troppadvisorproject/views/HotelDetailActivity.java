@@ -12,6 +12,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HotelDetailActivityController;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HotelDetailActivity extends AppCompatActivity {
 
     private HotelDetailActivityController hotelDetailActivityController;

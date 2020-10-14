@@ -18,6 +18,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HomePageActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HomePageActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemReselectedListener,
         Constants {
 
@@ -27,8 +31,6 @@ public class HomePageActivity extends AppCompatActivity implements BottomNavigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_profile)
                 .build();

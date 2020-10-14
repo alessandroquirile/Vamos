@@ -3,7 +3,7 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +17,6 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
-import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -26,6 +25,7 @@ import java.util.Arrays;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class SignUpActivityController implements View.OnClickListener, DialogInterface.OnDismissListener,
         Constants {
 
@@ -120,7 +120,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
                 showEmailAlreadyExistError();
                 break;
             case INTERNAL_ERROR_SERVER:
-                showToastUnexpectedErrorDuringSignUp();
+                showToastOnUiThread(R.string.unexpected_error_during_sign_up);
                 break;
         }
     }
@@ -259,9 +259,9 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         signUpActivity.finish();
     }
 
-    private void showToastUnexpectedErrorDuringSignUp() {
+    private void showToastOnUiThread(int string) {
         signUpActivity.runOnUiThread(() -> {
-            Toast.makeText(signUpActivity, getUnexpectedErrorDuringSignUpErrorMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(signUpActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -393,8 +393,12 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return signUpActivity.getResources().getString(R.string.username_already_exist);
     }
 
-    private String getUnexpectedErrorDuringSignUpErrorMessage() {
-        return signUpActivity.getResources().getString(R.string.unexpected_error_during_sign_up);
+    private Resources getResources(){
+        return signUpActivity.getResources();
+    }
+
+    private String getString(int string){
+        return getResources().getString(string);
     }
 
 }

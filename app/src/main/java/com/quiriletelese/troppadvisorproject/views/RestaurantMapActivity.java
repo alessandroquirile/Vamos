@@ -17,6 +17,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.RestaurantMapActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RestaurantMapActivity extends FragmentActivity implements OnMapReadyCallback, Constants {
 
     private RestaurantMapActivityController restaurantMapActivityController;

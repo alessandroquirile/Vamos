@@ -21,7 +21,6 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
-import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -81,7 +80,6 @@ public class LoginActivityController implements View.OnClickListener, Constants 
 
             @Override
             public void onError(String errorCode) {
-                System.out.println("ERRORE LOGIN");
                 volleyCallbackOnError(errorCode);
             }
         });
@@ -96,7 +94,6 @@ public class LoginActivityController implements View.OnClickListener, Constants 
 
             @Override
             public void onError(String errorCode) {
-                System.out.println("ERRORE DETAILS");
                 volleyCallbackOnError(errorCode);
             }
         });
@@ -125,14 +122,10 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private void handle500VolleyError() {
-        showToast500VolleyError(R.string.login_error);
+        showToastOnUiThread(R.string.login_error);
     }
 
-    private void showToast500VolleyError(int string) {
-        showToastOnUiThred(string);
-    }
-
-    private void showToastOnUiThred(int string) {
+    private void showToastOnUiThread(int string) {
         loginActivity.runOnUiThread(() -> {
             Toast.makeText(loginActivity, getString(string), Toast.LENGTH_LONG).show();
         });
@@ -166,17 +159,6 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         Intent intentSignUpActivity = new Intent(getContext(), SignUpActivity.class);
         intentSignUpActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intentSignUpActivity;
-    }
-
-    public void startHomePageActivity() {
-        Intent intentSignUpActivity = createHomePageActivityIntent();
-        getContext().startActivity(intentSignUpActivity);
-    }
-
-    private Intent createHomePageActivityIntent() {
-        Intent intentHomePageActivity = new Intent(getContext(), HomePageActivity.class);
-        intentHomePageActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intentHomePageActivity;
     }
 
     private void finish() {

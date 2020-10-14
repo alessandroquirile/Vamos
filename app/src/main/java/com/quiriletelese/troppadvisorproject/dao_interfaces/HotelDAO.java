@@ -11,6 +11,7 @@ import java.util.Optional;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public interface HotelDAO {
 
     void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,

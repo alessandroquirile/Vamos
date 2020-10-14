@@ -14,6 +14,10 @@ import com.quiriletelese.troppadvisorproject.adapters.ViewPagerIntroAdapter;
 import com.quiriletelese.troppadvisorproject.controllers.IntroActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class IntroActivity extends AppCompatActivity {
 
     private IntroActivityController introActivityController;

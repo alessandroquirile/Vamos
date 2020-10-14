@@ -57,14 +57,11 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
             volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response));
 
         }, error -> {
-            if (error != null) {
-                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOO");
+            if (error != null)
                 volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
-            }
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
@@ -173,7 +170,6 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
 
     private JSONObject createJsonObjectLogin(@NotNull JSONObject jsonObjectLogin, @NotNull Account account) {
         try {
-            System.out.println("KEYYYYYYY = " + account.getUsername() + "\nPASSWORDDDDDDDDDDD = " + String.valueOf(account.getPassword()));
             jsonObjectLogin.put("key", account.getUsername());
             jsonObjectLogin.put("password", String.valueOf(account.getPassword()));
         } catch (JSONException e) {

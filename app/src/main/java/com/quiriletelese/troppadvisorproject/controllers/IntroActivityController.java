@@ -23,6 +23,10 @@ import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class IntroActivityController implements ViewPager.OnPageChangeListener, View.OnClickListener,
         Constants {
 

@@ -13,6 +13,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HomePageActivityController implements Constants {
 
     private HomePageActivity homePageActivity;

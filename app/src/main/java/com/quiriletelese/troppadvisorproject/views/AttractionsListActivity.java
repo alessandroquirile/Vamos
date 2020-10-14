@@ -14,6 +14,10 @@ import com.quiriletelese.troppadvisorproject.controllers.AttractionsListActivity
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class AttractionsListActivity extends AppCompatActivity implements Constants {
 
     private AttractionsListActivityController attractionsListActivityController;

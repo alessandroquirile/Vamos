@@ -39,7 +39,7 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationAttractionFilter;
+import com.quiriletelese.troppadvisorproject.model_helpers.AttractionFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -50,13 +50,17 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class AttractionMapActivityController implements GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
         View.OnClickListener, OnBottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
         Constants {
 
     private AttractionMapActivity attractionMapActivity;
     private BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
-    private AccomodationAttractionFilter accomodationAttractionFilter;
+    private AttractionFilter attractionFilter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private Attraction attraction = null;
     private List<Attraction> attractions = new ArrayList<>();
@@ -66,7 +70,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     public AttractionMapActivityController(AttractionMapActivity attractionMapActivity) {
         this.attractionMapActivity = attractionMapActivity;
-        accomodationAttractionFilter = getAccomodationFilter();
+        attractionFilter = getAccomodationFilter();
     }
 
     @Override
@@ -259,31 +263,27 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void handle204VolleyError() {
-        showToastVolleyError(R.string.no_attractions_found_by_filter);
+        showToastOnUiThread(R.string.no_attractions_found_by_filter);
     }
 
     private void handleOtherVolleyError() {
-        showToastVolleyError(R.string.unexpected_error_while_fetch_data);
+        showToastOnUiThread(R.string.unexpected_error_while_fetch_data);
     }
 
-    private void showToastVolleyError(int string) {
-        showToastOnUiThred(string);
-    }
-
-    private void showToastOnUiThred(int string) {
+    private void showToastOnUiThread(int string) {
         attractionMapActivity.runOnUiThread(() -> {
             Toast.makeText(attractionMapActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
     }
 
     private void createAccomodationFilter() {
-        accomodationAttractionFilter = new AccomodationAttractionFilter();
-        accomodationAttractionFilter.setName(getAttractionNameValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setCity(getCityNameValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setDistance(getDistanceValueFromBottomSheetFilter());
-        accomodationAttractionFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        attractionFilter = new AttractionFilter();
+        attractionFilter.setName(getAttractionNameValueFromBottomSheetFilter());
+        attractionFilter.setCity(getCityNameValueFromBottomSheetFilter());
+        attractionFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
+        attractionFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
+        attractionFilter.setDistance(getDistanceValueFromBottomSheetFilter());
+        attractionFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
     }
 
     private void detectSearchType() {
@@ -636,8 +636,8 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         return !(getIntent().getStringExtra(NAME) == null) && !getIntent().getStringExtra(NAME).equals("");
     }
 
-    private AccomodationAttractionFilter getAccomodationFilter() {
-        return (AccomodationAttractionFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
+    private AttractionFilter getAccomodationFilter() {
+        return (AttractionFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
     }
 
     private AutoCompleteTextView getAutoCompleteTextViewName() {
@@ -665,31 +665,31 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private boolean isAccomodationFilterNull() {
-        return accomodationAttractionFilter == null;
+        return attractionFilter == null;
     }
 
     private String getAccomodationFilterNameValue() {
-        return accomodationAttractionFilter.getName();
+        return attractionFilter.getName();
     }
 
     private String getAccomodationFilterCityValue() {
-        return accomodationAttractionFilter.getCity();
+        return attractionFilter.getCity();
     }
 
     private Integer getAccomodationFilterAvaragePriceValue() {
-        return accomodationAttractionFilter.getAvaragePrice();
+        return attractionFilter.getAvaragePrice();
     }
 
     private Integer getAccomodationFilterAvarageRatingValue() {
-        return accomodationAttractionFilter.getAvarageRating();
+        return attractionFilter.getAvarageRating();
     }
 
     private Double getAccomodationFilterDistanceValue() {
-        return accomodationAttractionFilter.getDistance();
+        return attractionFilter.getDistance();
     }
 
     private boolean getAccomodationFilterHasCertificateOfExcellenceValue() {
-        return accomodationAttractionFilter.isHasCertificateOfExcellence();
+        return attractionFilter.isHasCertificateOfExcellence();
     }
 
     private TextView getTextViewSearchOnMap() {

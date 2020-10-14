@@ -23,7 +23,7 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationHotelFilter;
+import com.quiriletelese.troppadvisorproject.model_helpers.HotelFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -33,12 +33,16 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HotelsListActivityController implements OnBottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private HotelsListActivity hotelsListActivity;
     private BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
-    private AccomodationHotelFilter accomodationHotelFilter;
+    private HotelFilter hotelFilter;
     private RecyclerViewHotelsListAdapter recyclerViewHotelsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private int page = 0, size = 3;
@@ -180,14 +184,14 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     }
 
     private void createAccomodationFilter() {
-        accomodationHotelFilter = new AccomodationHotelFilter();
-        accomodationHotelFilter.setName(getHotelNameValueFromBottomSheetFilter());
-        accomodationHotelFilter.setCity(getCityNameValueFromBottomSheetFilter());
-        accomodationHotelFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
-        accomodationHotelFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
-        accomodationHotelFilter.setStars(getStarsValueFromBottomSheetFilter());
-        accomodationHotelFilter.setDistance(getDistanceValueFromBottomSheetFilter());
-        accomodationHotelFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        hotelFilter = new HotelFilter();
+        hotelFilter.setName(getHotelNameValueFromBottomSheetFilter());
+        hotelFilter.setCity(getCityNameValueFromBottomSheetFilter());
+        hotelFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
+        hotelFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
+        hotelFilter.setStars(getStarsValueFromBottomSheetFilter());
+        hotelFilter.setDistance(getDistanceValueFromBottomSheetFilter());
+        hotelFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
     }
 
     private void disableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -389,7 +393,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
 
     private void putAccomodationHotelFilter(Intent hotelMapsActivityIntent) {
         hotelMapsActivityIntent.putExtra(ACCOMODATION_FILTER, isAccomodationFilterNull() ? null
-                : accomodationHotelFilter);
+                : hotelFilter);
     }
 
     private String getHotelNameValueFromBottomSheetFilter() {
@@ -547,31 +551,31 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     }
 
     private String getAccomodationFilterNameValue() {
-        return accomodationHotelFilter.getName();
+        return hotelFilter.getName();
     }
 
     private String getAccomodationFilterCityValue() {
-        return accomodationHotelFilter.getCity();
+        return hotelFilter.getCity();
     }
 
     private Integer getAccomodationFilterAvaragePriceValue() {
-        return accomodationHotelFilter.getAvaragePrice();
+        return hotelFilter.getAvaragePrice();
     }
 
     private Integer getAccomodationFilterAvarageRatingValue() {
-        return accomodationHotelFilter.getAvarageRating();
+        return hotelFilter.getAvarageRating();
     }
 
     private Integer getAccomodationFilterStarsValue() {
-        return accomodationHotelFilter.getStars();
+        return hotelFilter.getStars();
     }
 
     private Double getAccomodationFilterDistanceValue() {
-        return accomodationHotelFilter.getDistance();
+        return hotelFilter.getDistance();
     }
 
     private boolean getAccomodationFilterHasCertificateOfExcellenceValue() {
-        return accomodationHotelFilter.isHasCertificateOfExcellence();
+        return hotelFilter.isHasCertificateOfExcellence();
     }
 
     private boolean isSearchingForName() {
@@ -587,7 +591,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     }
 
     private boolean isAccomodationFilterNull() {
-        return accomodationHotelFilter == null;
+        return hotelFilter == null;
     }
 
     private boolean isAccomodationFilterAvaragePriceEqualsToZero() {

@@ -24,6 +24,10 @@ import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class SeeReviewsActivityController implements Constants {
 
     private SeeReviewsActivity seeReviewsActivity;

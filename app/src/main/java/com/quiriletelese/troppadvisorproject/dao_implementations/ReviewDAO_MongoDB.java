@@ -25,9 +25,8 @@ import java.util.List;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
-public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
 
-    private List<Review> reviews = new ArrayList<>();
+public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
 
     @Override
     public void insertHotelReview(VolleyCallBack volleyCallBack, Review review, Context context) {
@@ -52,7 +51,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
     private void insertHotelReviewVolley(VolleyCallBack volleyCallBack, Review review, Context context){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertHotelReviewUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review), response -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
+                jsonObjectInsertAccomodationReview(review), response -> {
             volleyCallBack.onSuccess(getReviewFromResponse(response));
         }, error -> {
 
@@ -64,7 +64,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
     private void insertRestaurantReviewVolley(VolleyCallBack volleyCallBack, Review review, Context context){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertRestaurantReviewUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review), response -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
+                jsonObjectInsertAccomodationReview(review), response -> {
             volleyCallBack.onSuccess(getReviewFromResponse(response));
         }, error -> {
 
@@ -76,7 +77,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
     private void insertAttractionReviewVolley(VolleyCallBack volleyCallBack, Review review, Context context){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertAttractionReviewUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review), response -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
+                jsonObjectInsertAccomodationReview(review), response -> {
             volleyCallBack.onSuccess(getReviewFromResponse(response));
         }, error -> {
 

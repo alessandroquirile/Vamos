@@ -18,6 +18,7 @@ import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class ProfileFragmentController implements Constants {
 
     private ProfileFragment profileFragment;
@@ -42,7 +43,7 @@ public class ProfileFragmentController implements Constants {
     public void startLoginActivityFromLogOut() {
         clearUserSharedPreferences();
         getContext().startActivity(createStartLoginActivityIntent());
-        showToastMakeNewLogin(R.string.add_make_login);
+        showToastOnUiThred(R.string.add_make_login);
     }
 
     private Intent createStartLoginActivityIntent() {
@@ -55,10 +56,6 @@ public class ProfileFragmentController implements Constants {
 
     private void hideViewNoLoginProfileError() {
         setViewNoLoginProfileErrorVisibility(View.GONE);
-    }
-
-    private void showToastMakeNewLogin(int string) {
-        showToastOnUiThred(string);
     }
 
     private void showToastOnUiThred(int string) {

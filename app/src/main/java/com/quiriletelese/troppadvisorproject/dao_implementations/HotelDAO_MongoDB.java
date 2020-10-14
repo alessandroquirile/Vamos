@@ -32,11 +32,9 @@ import java.util.List;
 
 public class HotelDAO_MongoDB implements HotelDAO, Constants {
 
-    private List<Hotel> hotels = new ArrayList<>();
-    private List<String> hotelsName = new ArrayList<>();
-
     @Override
-    public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery, Context context, int page, int size) {
+    public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
+                           Context context, int page, int size) {
         findByRsqlVolley(volleyCallBack, pointSearch, rsqlQuery, context, page, size);
     }
 
@@ -46,7 +44,8 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
     }
 
     @Override
-    public void findByNameLikeIgnoreCase(VolleyCallBack volleyCallBack, String name, Context context, int page, int size) {
+    public void findByNameLikeIgnoreCase(VolleyCallBack volleyCallBack, String name, Context context,
+                                         int page, int size) {
         findByNameLikeIgnoreCaseVolley(volleyCallBack, name, context, page, size);
     }
 
@@ -55,12 +54,13 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
         findHotelsNameVolley(volleyCallBack, name, context);
     }
 
-    private void findByRsqlVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery, final Context context, int page, int size) {
+    private void findByRsqlVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch,
+                                  String rsqlQuery, final Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            getArrayFromResponse(response);
-            volleyCallBack.onSuccess(hotels);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                response -> {
+            volleyCallBack.onSuccess(getArrayFromResponse(response));
         }, error -> {
 
         }) {
@@ -78,7 +78,8 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
     private void findByIdVolley(VolleyCallBack volleyCallBack, String id, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindByIdUrl(id);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                response -> {
             volleyCallBack.onSuccess(getHotelFromResponse(response));
         }, error -> {
 
@@ -94,12 +95,13 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void findByNameLikeIgnoreCaseVolley(final VolleyCallBack volleyCallBack, String name, Context context, int page, int size) {
+    private void findByNameLikeIgnoreCaseVolley(final VolleyCallBack volleyCallBack, String name,
+                                                Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindByNameLikeIgnoreCaseUrl(name, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            getArrayFromResponse(response);
-            volleyCallBack.onSuccess(hotels);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                response -> {
+            volleyCallBack.onSuccess(getArrayFromResponse(response));
         }, error -> {
 
         }) {
@@ -117,9 +119,9 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
     private void findHotelsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindHotelsNameUrl(name);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
-            getArrayFromResponseHotelsName(response);
-            volleyCallBack.onSuccess(hotelsName);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
+                response -> {
+            volleyCallBack.onSuccess(getArrayFromResponseHotelsName(response));
         }, error -> {
 
         });
@@ -171,7 +173,8 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
         return URL;
     }
 
-    private void getArrayFromResponse(JSONObject response) {
+    private List<Hotel> getArrayFromResponse(JSONObject response) {
+        List<Hotel> hotels = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         Gson gson = new Gson();
         try {
@@ -186,9 +189,11 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
                 e.printStackTrace();
             }
         }
+        return hotels;
     }
 
-    private void getArrayFromResponseHotelsName(JSONArray response) {
+    private List<String> getArrayFromResponseHotelsName(JSONArray response) {
+        List<String> hotelsName = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             try {
                 hotelsName.add(response.getString(i));
@@ -196,6 +201,7 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
                 e.printStackTrace();
             }
         }
+        return hotelsName;
     }
 
     private Hotel getHotelFromResponse(JSONObject response){

@@ -109,10 +109,10 @@
     <string name="add_make_login">"Log in again "</string>
     <string name="retrieving_user_details">Please wait, I\'m retrieving your account informations</string>
     <string name="forward">Forward</string>
-    <string name="welcome_tropp_advisor">Welcome to TroppAdvisor, the app that helps you choose</string>
-    <string name="travel_intro">Consult the app and choose from thousands of hotels, restaurants and attractions to visit near you. The app searches for them within a 5km radius of your location</string>
-    <string name="see_on_map_intro">You can also see the structures around you on the map</string>
-    <string name="see_reviews_intro">Through the reviews you can be sure to choose only the best for you</string>
+    <string name="welcome_tropp_advisor">"Welcome to TroppAdvisor, the app that helps you choose the best solutions for your travels "</string>
+    <string name="travel_intro">"Consult the app and choose from thousands of hotels, restaurants and attractions to visit near you. The app automatically searches for them within a radius of 5km from your location "</string>
+    <string name="see_on_map_intro">"You can also see the structures around you on the map, for a clearer and more detailed view "</string>
+    <string name="see_reviews_intro">Through the reviews you can be sure to choose only the best for you. You can also leave your own review to help other users in their choice</string>
     <string name="enjoy_intro">Enjoy your travels, click next and give permissions to the app to access your location</string>
     <string name="access_location_permission_requested">In order to continue, you must provide authorization to access the location</string>
     <string name="missing_location_permission">The app is unable to search for accomodations near you if permission to access the location is denied. Provide permission to allow the app to function properly</string>

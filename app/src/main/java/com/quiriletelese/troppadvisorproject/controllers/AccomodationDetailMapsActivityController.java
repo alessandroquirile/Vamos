@@ -32,6 +32,10 @@ import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class AccomodationDetailMapsActivityController implements View.OnClickListener, Constants {
 
     private AccomodationDetailMapsActivity accomodationDetailMapsActivity;

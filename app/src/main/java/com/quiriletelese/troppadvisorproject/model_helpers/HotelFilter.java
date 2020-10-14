@@ -1,6 +1,10 @@
 package com.quiriletelese.troppadvisorproject.model_helpers;
 
-public class AccomodationHotelFilter extends AccomodationFilter{
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
+public class HotelFilter extends AccomodationFilter{
 
     private Integer stars;
 

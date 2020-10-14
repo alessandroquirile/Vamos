@@ -10,6 +10,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.SeeReviewsActivityController;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class SeeReviewsActivity extends AppCompatActivity {
 
     private SeeReviewsActivityController seeReviewsActivityController;

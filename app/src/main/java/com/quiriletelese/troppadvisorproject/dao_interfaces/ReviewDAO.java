@@ -8,6 +8,7 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public interface ReviewDAO {
 
     void insertHotelReview(VolleyCallBack volleyCallBack, Review review, Context context);

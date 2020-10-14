@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
+import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.json.JSONArray;
@@ -15,9 +16,11 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CityDAO_MongoDB implements CityDAO {
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
 
-    private List<String> citiesName = new ArrayList<>();
+public class CityDAO_MongoDB implements CityDAO, Constants {
 
     @Override
     public void findCitiesByName(VolleyCallBack volleyCallBack, String name, Context context) {
@@ -29,14 +32,15 @@ public class CityDAO_MongoDB implements CityDAO {
         String URL = createFindCitiesUrl(name);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             getArrayFromResponseCitiesName(response);
-            volleyCallBack.onSuccess(citiesName);
+            volleyCallBack.onSuccess(getArrayFromResponseCitiesName(response));
         }, error -> {
             
         });
         requestQueue.add(jsonArrayRequest);
     }
 
-    private void getArrayFromResponseCitiesName(JSONArray response) {
+    private List<String> getArrayFromResponseCitiesName(JSONArray response) {
+        List<String> citiesName = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             try {
                 citiesName.add(response.getString(i));
@@ -44,10 +48,11 @@ public class CityDAO_MongoDB implements CityDAO {
                 e.printStackTrace();
             }
         }
+        return citiesName;
     }
 
     private String createFindCitiesUrl(String name) {
-        String URL = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/city/find-cities-by-name-like/";
+        String URL = BASE_URL + "city/find-cities-by-name-like/";
         URL = URL.concat(name);
         return URL;
     }

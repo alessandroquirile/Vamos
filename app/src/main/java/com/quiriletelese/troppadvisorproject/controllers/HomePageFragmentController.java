@@ -40,6 +40,10 @@ import com.todkars.shimmer.ShimmerRecyclerView;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HomePageFragmentController implements View.OnClickListener, Constants {
 
     private HomePageFragment homePageFragment;

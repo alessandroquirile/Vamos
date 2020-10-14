@@ -41,7 +41,7 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.model_helpers.AccomodationRestaurantFilter;
+import com.quiriletelese.troppadvisorproject.model_helpers.RestaurantFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -52,13 +52,17 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RestaurantMapActivityController implements GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
         View.OnClickListener, OnBottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
         Constants {
 
     private RestaurantMapActivity restaurantMapActivity;
     private BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
-    private AccomodationRestaurantFilter accomodationRestaurantFilter;
+    private RestaurantFilter restaurantFilter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant = null;
     private List<Restaurant> restaurants = new ArrayList<>();
@@ -69,7 +73,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     public RestaurantMapActivityController(RestaurantMapActivity restaurantMapActivity) {
         this.restaurantMapActivity = restaurantMapActivity;
-        accomodationRestaurantFilter = getAccomodationFilter();
+        restaurantFilter = getAccomodationFilter();
     }
 
     @Override
@@ -253,14 +257,14 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void createAccomodationFilter() {
-        accomodationRestaurantFilter = new AccomodationRestaurantFilter();
-        accomodationRestaurantFilter.setName(getRestaurantNameValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setCity(getCityNameValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setDistance(getDistanceValueFromBottomSheetFilter());
-        accomodationRestaurantFilter.setTypesOfCuisine(getMultiSpinnerSearchSelectedItemsFromBottomSheetFilter());
-        accomodationRestaurantFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        restaurantFilter = new RestaurantFilter();
+        restaurantFilter.setName(getRestaurantNameValueFromBottomSheetFilter());
+        restaurantFilter.setCity(getCityNameValueFromBottomSheetFilter());
+        restaurantFilter.setAvaragePrice(getPriceValueFromBottomSheetFilter());
+        restaurantFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
+        restaurantFilter.setDistance(getDistanceValueFromBottomSheetFilter());
+        restaurantFilter.setTypesOfCuisine(getMultiSpinnerSearchSelectedItemsFromBottomSheetFilter());
+        restaurantFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
     }
 
     private void detectSearchType() {
@@ -624,18 +628,14 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void handle204VolleyError() {
-        showToastVolleyError(R.string.no_restaurants_found_by_filter);
+        showToastOnUiThread(R.string.no_restaurants_found_by_filter);
     }
 
     private void handleOtherVolleyError() {
-        showToastVolleyError(R.string.unexpected_error_while_fetch_data);
+        showToastOnUiThread(R.string.unexpected_error_while_fetch_data);
     }
 
-    private void showToastVolleyError(int string) {
-        showToastOnUiThred(string);
-    }
-
-    private void showToastOnUiThred(int string) {
+    private void showToastOnUiThread(int string) {
         restaurantMapActivity.runOnUiThread(() -> {
             Toast.makeText(restaurantMapActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
@@ -712,8 +712,8 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return getIntent().getBooleanExtra(SEARCH_FOR_NAME, false);
     }
 
-    private AccomodationRestaurantFilter getAccomodationFilter() {
-        return (AccomodationRestaurantFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
+    private RestaurantFilter getAccomodationFilter() {
+        return (RestaurantFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
     }
 
     private AutoCompleteTextView getAutoCompleteTextViewName() {
@@ -741,35 +741,35 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private boolean isAccomodationFilterNull() {
-        return accomodationRestaurantFilter == null;
+        return restaurantFilter == null;
     }
 
     private String getAccomodationFilterNameValue() {
-        return accomodationRestaurantFilter.getName();
+        return restaurantFilter.getName();
     }
 
     private String getAccomodationFilterCityValue() {
-        return accomodationRestaurantFilter.getCity();
+        return restaurantFilter.getCity();
     }
 
     private Integer getAccomodationFilterAvaragePriceValue() {
-        return accomodationRestaurantFilter.getAvaragePrice();
+        return restaurantFilter.getAvaragePrice();
     }
 
     private Integer getAccomodationFilterAvarageRatingValue() {
-        return accomodationRestaurantFilter.getAvarageRating();
+        return restaurantFilter.getAvarageRating();
     }
 
     private Double getAccomodationFilterDistanceValue() {
-        return accomodationRestaurantFilter.getDistance();
+        return restaurantFilter.getDistance();
     }
 
     private List<String> getAccomodationFilterTypesOfCuisine() {
-        return accomodationRestaurantFilter.getTypesOfCuisine();
+        return restaurantFilter.getTypesOfCuisine();
     }
 
     private boolean getAccomodationFilterHasCertificateOfExcellenceValue() {
-        return accomodationRestaurantFilter.isHasCertificateOfExcellence();
+        return restaurantFilter.isHasCertificateOfExcellence();
     }
 
     private TextView getTextViewSearchOnMap() {
@@ -841,7 +841,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private boolean isTypesOfCuisineListSelected() {
-        return accomodationRestaurantFilter != null && getAccomodationFilterTypesOfCuisine() != null && getAccomodationFilterTypesOfCuisine().size() != 0;
+        return restaurantFilter != null && getAccomodationFilterTypesOfCuisine() != null && getAccomodationFilterTypesOfCuisine().size() != 0;
     }
 
     private boolean isAccomodationFilterHasCertificateOfExcellence() {

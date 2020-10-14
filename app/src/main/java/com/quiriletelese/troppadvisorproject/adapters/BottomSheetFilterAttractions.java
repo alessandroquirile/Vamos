@@ -21,6 +21,10 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class BottomSheetFilterAttractions extends BottomSheetDialogFragment implements View.OnClickListener,
         TextWatcher, SeekBar.OnSeekBarChangeListener {
 

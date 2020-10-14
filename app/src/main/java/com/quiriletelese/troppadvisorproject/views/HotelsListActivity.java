@@ -14,6 +14,10 @@ import com.quiriletelese.troppadvisorproject.controllers.HotelsListActivityContr
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HotelsListActivity extends AppCompatActivity implements Constants {
 
     private HotelsListActivityController hotelsListActivityController;

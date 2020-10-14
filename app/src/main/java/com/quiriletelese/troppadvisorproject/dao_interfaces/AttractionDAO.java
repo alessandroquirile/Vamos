@@ -8,6 +8,7 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public interface AttractionDAO {
 
     void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,

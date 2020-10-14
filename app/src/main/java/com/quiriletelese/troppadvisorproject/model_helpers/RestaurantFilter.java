@@ -2,7 +2,11 @@ package com.quiriletelese.troppadvisorproject.model_helpers;
 
 import java.util.List;
 
-public class AccomodationRestaurantFilter extends AccomodationFilter{
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
+public class RestaurantFilter extends AccomodationFilter{
 
     private List<String> typesOfCuisine;
 

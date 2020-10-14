@@ -1,6 +1,8 @@
 package com.quiriletelese.troppadvisorproject.volley_interfaces;
 
-import java.util.List;
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
 
 public interface VolleyCallBack {
 

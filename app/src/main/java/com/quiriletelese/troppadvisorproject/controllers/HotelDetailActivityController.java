@@ -30,6 +30,10 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HotelDetailActivityController implements View.OnClickListener, Constants {
 
     private HotelDetailActivity hotelDetailActivity;
@@ -100,7 +104,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     private void detectVolleyError(String errorCode) {
         switch (errorCode) {
             case NO_CONTENT:
-                showToastNoContentError();
+                showToastOnUiThread(R.string.no_content_error_hotel_detail);
                 break;
         }
     }
@@ -200,7 +204,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         if (hasReviews())
             startSeeReviewsActivity();
         else
-            showToastNoReviewsError();
+            showToastOnUiThread(R.string.no_reviews);
     }
 
     public void showLoadingInProgressDialog() {
@@ -217,15 +221,9 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         alertDialogLoadingInProgress.dismiss();
     }
 
-    private void showToastNoContentError() {
+    private void showToastOnUiThread(int string) {
         hotelDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(hotelDetailActivity, getNoContentErrorMessage(), Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void showToastNoReviewsError(){
-        hotelDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(hotelDetailActivity, getNoReviewsErrorMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(hotelDetailActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -335,14 +333,6 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
-    }
-
-    private String getNoContentErrorMessage(){
-        return getString(R.string.no_content_error_restaurant_detail);
-    }
-
-    private String getNoReviewsErrorMessage(){
-        return getString(R.string.no_reviews);
     }
 
 }

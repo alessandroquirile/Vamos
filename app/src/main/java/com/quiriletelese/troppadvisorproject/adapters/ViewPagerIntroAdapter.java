@@ -14,6 +14,10 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.quiriletelese.troppadvisorproject.R;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class ViewPagerIntroAdapter extends PagerAdapter {
 
     private Context context;

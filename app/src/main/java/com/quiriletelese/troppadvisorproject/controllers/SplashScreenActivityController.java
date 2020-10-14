@@ -9,6 +9,10 @@ import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 import com.quiriletelese.troppadvisorproject.views.SplashScreenActivity;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class SplashScreenActivityController implements Constants {
 
     private SplashScreenActivity splashScreenActivity;

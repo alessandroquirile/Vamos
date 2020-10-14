@@ -11,6 +11,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.LoginActivityController;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginActivityController loginActivityController;
@@ -51,14 +55,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public TextInputLayout getTextInputLayoutPassword() {
         return textInputLayoutPassword;
-    }
-
-    public EditText getTextInputLayoutEmailEditText() {
-        return textInputLayoutKey.getEditText();
-    }
-
-    public EditText getTextInputLayoutPasswordEditText() {
-        return textInputLayoutPassword.getEditText();
     }
 
     public Button getButtonLogin() {

@@ -2,6 +2,10 @@ package com.quiriletelese.troppadvisorproject.model_helpers;
 
 import java.io.Serializable;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public abstract class AccomodationFilter implements Serializable {
 
     private String name;

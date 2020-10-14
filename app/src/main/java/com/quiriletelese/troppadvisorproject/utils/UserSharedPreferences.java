@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class UserSharedPreferences implements Constants {
 
     private SharedPreferences sharedPreferences;

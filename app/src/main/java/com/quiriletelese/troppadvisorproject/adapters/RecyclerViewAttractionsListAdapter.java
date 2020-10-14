@@ -26,6 +26,10 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<RecyclerViewAttractionsListAdapter.ViewHolder>
         implements Constants {
 

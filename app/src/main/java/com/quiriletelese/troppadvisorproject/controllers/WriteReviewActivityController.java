@@ -34,6 +34,7 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
+
 public class WriteReviewActivityController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener,
         SwitchCompat.OnCheckedChangeListener, TextWatcher, Constants {
 

@@ -16,6 +16,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.WriteReviewActivityController;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class WriteReviewActivity extends AppCompatActivity {
 
     private WriteReviewActivityController writeReviewActivityController;

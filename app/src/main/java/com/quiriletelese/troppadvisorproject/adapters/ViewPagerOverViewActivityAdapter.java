@@ -16,6 +16,10 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
 
     private List<String> images;

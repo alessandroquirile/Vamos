@@ -21,6 +21,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantAdapter.ViewHolder> implements Constants {
     private Context context;
     private List<Restaurant> restaurants;

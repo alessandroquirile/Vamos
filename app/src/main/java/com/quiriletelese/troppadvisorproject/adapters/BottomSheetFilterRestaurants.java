@@ -27,6 +27,10 @@ import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearc
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment implements View.OnClickListener,
         TextWatcher, SeekBar.OnSeekBarChangeListener {
 

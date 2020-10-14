@@ -25,6 +25,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class HomePageFragment extends Fragment implements Constants {
 
     private HomePageFragmentController homePageFragmentController;

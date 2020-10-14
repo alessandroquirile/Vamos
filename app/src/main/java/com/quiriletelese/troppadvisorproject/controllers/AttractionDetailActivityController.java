@@ -29,6 +29,9 @@ import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import java.util.List;
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
 
 public class AttractionDetailActivityController implements View.OnClickListener, Constants {
 
@@ -100,7 +103,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     private void detectVolleyError(String errorCode) {
         switch (errorCode) {
             case NO_CONTENT:
-                showToastNoContentError();
+                showToastOnUiThread(R.string.no_content_error_attraction_detail);
                 break;
         }
     }
@@ -199,7 +202,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         if (hasReviews())
             startSeeReviewsActivity();
         else
-            showToastNoReviewsError();
+            showToastOnUiThread(R.string.no_reviews);
     }
 
     public void showLoadingInProgressDialog() {
@@ -216,15 +219,9 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         alertDialogLoadingInProgress.dismiss();
     }
 
-    private void showToastNoContentError() {
+    private void showToastOnUiThread(int string) {
         attractionDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionDetailActivity, getNoContentErrorMessage(), Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void showToastNoReviewsError(){
-        attractionDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionDetailActivity, getNoReviewsErrorMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(attractionDetailActivity, getString(string), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -334,14 +331,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
-    }
-
-    private String getNoContentErrorMessage(){
-        return getString(R.string.no_content_error_attraction_detail);
-    }
-
-    private String getNoReviewsErrorMessage(){
-        return getString(R.string.no_reviews);
     }
 
 }

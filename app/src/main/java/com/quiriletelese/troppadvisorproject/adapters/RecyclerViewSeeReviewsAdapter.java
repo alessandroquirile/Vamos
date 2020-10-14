@@ -14,6 +14,10 @@ import com.quiriletelese.troppadvisorproject.models.Review;
 
 import java.util.List;
 
+/**
+ * @author Alessandro Quirile, Mauro Telese
+ */
+
 public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<RecyclerViewSeeReviewsAdapter.ViewHolder> {
 
     private Context context;
