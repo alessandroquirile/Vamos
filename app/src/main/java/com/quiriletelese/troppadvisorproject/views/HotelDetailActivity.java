@@ -60,7 +60,7 @@ public class HotelDetailActivity extends AppCompatActivity {
     }
 
     public void showLoadingInProgressDialog() {
-        hotelDetailActivityController.showLoadingInProgressDialog();;
+        hotelDetailActivityController.showLoadingInProgressDialog();
     }
 
     private void initializeActivityFields() {

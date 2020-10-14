@@ -1,12 +1,12 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.fragment.app.FragmentActivity;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,7 +28,10 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
     private LinearLayout linearLayoutSearchAttractions;
     private RelativeLayout relativeLayoutDetails;
     private ImageView imageViewMapGoBack, imageViewAttraction;
-    private TextView textViewSearchOnMap, textViewName, textViewRating, textViewAddress;
+    private TextView textViewSearchOnMap;
+    private TextView textViewName;
+    private TextView textViewRating;
+    private TextView textViewAddress;
     private FloatingActionButton floatingActionButtonCenterPositionOnAttractions;
 
     @Override

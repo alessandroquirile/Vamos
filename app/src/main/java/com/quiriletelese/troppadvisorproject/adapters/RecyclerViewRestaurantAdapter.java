@@ -55,7 +55,6 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
         //setRestaurantImage(viewHolder, position);
         viewHolder.textViewRestaurantName.setText(restaurants.get(position).getName());
             viewHolder.textViewRestaurantRating.setText(createAvarageRatingString(restaurants.get(position)));
-
     }
 
     private void setRestaurantImage(ViewHolder viewHolder, int position) {
@@ -93,8 +92,6 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private Context context;
-        private LinearLayout linearLayoutHomePageRecyclerView;
         private ImageView imageViewRestaurant;
         private TextView textViewRestaurantName, textViewRestaurantRating;
 
@@ -104,8 +101,8 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initializeComponents() {
-            context = itemView.getContext();
-            linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
+            Context context = itemView.getContext();
+            LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewRestaurant = itemView.findViewById(R.id.image_view_accomodation);
             textViewRestaurantName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewRestaurantRating = itemView.findViewById(R.id.text_view_accomodation_rating);

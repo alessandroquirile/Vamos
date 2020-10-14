@@ -31,6 +31,9 @@ import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -40,7 +43,10 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private WriteReviewActivity writeReviewActivity;
     private DAOFactory daoFactory = DAOFactory.getInstance();
-    private String title = "", description = "", user, accomodationId;
+    private String title = "";
+    private String description = "";
+    private String user;
+    private String accomodationId;
     private Float rating;
     private AlertDialog alertDialogWaitWhileInsertReview;
     private boolean isAnonymoys = false;
@@ -50,7 +56,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(@NotNull View v) {
         switch (v.getId()) {
             case R.id.button_publish_review:
                 insertReviewByAccomodationType();
@@ -186,9 +192,9 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         finish();
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         dismissWaitWhileInsertReviewDialog();
-        switch (errorCode){
+        switch (errorCode) {
             case UNAUTHORIZED:
                 handle401VolleyError();
                 break;
@@ -214,9 +220,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void showToastOnUiThred(int string) {
-        writeReviewActivity.runOnUiThread(() -> {
-            Toast.makeText(writeReviewActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+        writeReviewActivity.runOnUiThread(() ->
+                Toast.makeText(writeReviewActivity, getString(string), Toast.LENGTH_SHORT).show());
     }
 
     private void detectEditText(CharSequence charSequence) {
@@ -225,17 +230,17 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         else editTextDescriptionOnTextChanged(charSequence);
     }
 
-    private void editTextTitleOnTextChanged(CharSequence charSequence) {
+    private void editTextTitleOnTextChanged(@NotNull CharSequence charSequence) {
         title = charSequence.toString();
-        if (reviewFieldsAreCorretclyFilled())
+        if (reviewFieldsAreCorrectlyFilled())
             enableButtonPublishReview();
         else
             disableButtonPublishReview();
     }
 
-    private void editTextDescriptionOnTextChanged(CharSequence charSequence) {
+    private void editTextDescriptionOnTextChanged(@NotNull CharSequence charSequence) {
         description = charSequence.toString();
-        if (reviewFieldsAreCorretclyFilled())
+        if (reviewFieldsAreCorrectlyFilled())
             enableButtonPublishReview();
         else
             disableButtonPublishReview();
@@ -264,6 +269,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         accomodationId = getAccomodationId();
     }
 
+    @NotNull
     private Review createReviewForInsert() {
         getReviewInformations();
         Review review = new Review();
@@ -285,7 +291,9 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         alertDialogWaitWhileInsertReview.show();
     }
 
-    private AlertDialog.Builder createAlertDialogBuilder(){
+    @NotNull
+    @Contract(" -> new")
+    private AlertDialog.Builder createAlertDialogBuilder() {
         return new AlertDialog.Builder(writeReviewActivity);
     }
 
@@ -304,6 +312,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         writeReviewActivity.startActivity(createLoginActivityIntent());
     }
 
+    @NotNull
+    @Contract(" -> new")
     private Intent createLoginActivityIntent() {
         return new Intent(getContext(), LoginActivity.class);
     }
@@ -370,7 +380,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return createUserSharedPreferences().getStringSharedPreferences(USERNAME);
     }
 
-    private boolean isEditTextTitleChanged(CharSequence charSequence) {
+    private boolean isEditTextTitleChanged(@NotNull CharSequence charSequence) {
         return charSequence.hashCode() == getReviewTitleEditText().getText().hashCode();
     }
 
@@ -382,6 +392,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return !getAccessToken().equals("");
     }
 
+    @NotNull
+    @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
         return new UserSharedPreferences(getContext());
     }
@@ -390,15 +402,15 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return createUserSharedPreferences().getStringSharedPreferences(ACCESS_TOKEN);
     }
 
-    private String getAccessToken(InitiateAuthResult initiateAuthResult) {
+    private String getAccessToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getAccessToken();
     }
 
-    private String getIdToken(InitiateAuthResult initiateAuthResult) {
+    private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getIdToken();
     }
 
-    private String getRefreshToken(InitiateAuthResult initiateAuthResult) {
+    private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getRefreshToken();
     }
 
@@ -406,6 +418,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return createUserSharedPreferences().getStringSharedPreferences(REFRESH_TOKEN);
     }
 
+    @NotNull
     private LayoutInflater getLayoutInflater() {
         return writeReviewActivity.getLayoutInflater();
     }
@@ -422,6 +435,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return writeReviewActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }
@@ -450,10 +464,12 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return writeReviewActivity.getTextInputLayoutReviewDescriptionEditText();
     }
 
+    @NotNull
     private String getTextInputLayoutReviewTitleValue() {
         return writeReviewActivity.getTextInputLayoutReviewTitleValue().trim();
     }
 
+    @NotNull
     private String getTextInputLayoutReviewDescriptionValue() {
         return writeReviewActivity.getTextInputLayoutReviewDescriptionValue().trim();
     }
@@ -478,7 +494,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return description.length() > 350;
     }
 
-    private boolean reviewFieldsAreCorretclyFilled() {
+    private boolean reviewFieldsAreCorrectlyFilled() {
         return !isTitleEmpty() && !isDescriptionEmpty() && !isTitleLongerThan50Characters() && !isDescriptionLongerThan350Characters();
     }
 

@@ -14,6 +14,7 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,9 +53,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertHotelReviewUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectInsertAccomodationReview(review), response -> {
-            volleyCallBack.onSuccess(getReviewFromResponse(response));
-        }, error -> {
+                jsonObjectInsertAccomodationReview(review), response ->
+                volleyCallBack.onSuccess(getReviewFromResponse(response)), error -> {
 
         });
         requestQueue.start();
@@ -65,9 +65,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertRestaurantReviewUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectInsertAccomodationReview(review), response -> {
-            volleyCallBack.onSuccess(getReviewFromResponse(response));
-        }, error -> {
+                jsonObjectInsertAccomodationReview(review), response ->
+                volleyCallBack.onSuccess(getReviewFromResponse(response)), error -> {
 
         });
         requestQueue.start();
@@ -78,9 +77,8 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertAttractionReviewUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectInsertAccomodationReview(review), response -> {
-            volleyCallBack.onSuccess(getReviewFromResponse(response));
-        }, error -> {
+                jsonObjectInsertAccomodationReview(review), response ->
+                volleyCallBack.onSuccess(getReviewFromResponse(response)), error -> {
 
         });
         requestQueue.start();
@@ -90,13 +88,12 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
     private void findAccomodationReviewsVolley(VolleyCallBack volleyCallBack, String id, Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindAccomodationReviewsUrl(id, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponse(response));
-        }, error -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response ->
+                volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
 
-        }){
+        }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 if (response.statusCode == 204)
                     volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
@@ -106,18 +103,25 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
         requestQueue.add(jsonObjectRequest);
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createInsertHotelReviewUrl() {
         return BASE_URL_HTTPS + "review/insert-hotel-review";
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createInsertRestaurantReviewUrl() {
         return BASE_URL_HTTPS + "review/insert-restaurant-review";
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createInsertAttractionReviewUrl() {
         return BASE_URL_HTTPS + "review/insert-attraction-review";
     }
 
+    @NotNull
     private String createFindAccomodationReviewsUrl(String id, int page, int size) {
         String URL = BASE_URL_HTTPS + "review/find-accomodation-reviews?";
         URL = URL.concat("id=" + id);
@@ -145,12 +149,13 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
         return jsonObjectInsertAccomodationReview;
     }
 
-    private Review getReviewFromResponse(JSONObject response){
+    private Review getReviewFromResponse(@NotNull JSONObject response) {
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), Review.class);
     }
 
-    private List<Review> getArrayFromResponse(JSONObject response) {
+    @NotNull
+    private List<Review> getArrayFromResponse(@NotNull JSONObject response) {
         List<Review> reviews = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         Gson gson = new Gson();

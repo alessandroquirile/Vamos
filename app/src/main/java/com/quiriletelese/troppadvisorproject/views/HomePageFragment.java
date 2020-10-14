@@ -1,7 +1,6 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,8 +21,6 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -117,7 +114,6 @@ public class HomePageFragment extends Fragment implements Constants {
 
     private void setListenerOnViewComponents() {
         homePageFragmentController.setListenerOnViewComponents();
-        ;
     }
 
     private void initializeRecyclerViewsFakeContent() {

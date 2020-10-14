@@ -37,6 +37,9 @@ import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -178,10 +181,11 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         return createPointSearch(Arrays.asList(latitude, longitude));
     }
 
-    private PointSearch createPointSearch(List<Double> pointSearchInformation) {
+    @NotNull
+    private PointSearch createPointSearch(@NotNull List<Double> pointSearchInformation) {
         PointSearch pointSearch = new PointSearch();
-        pointSearch.setLatitude(pointSearchInformation.get(0)/*40.829904*/);
-        pointSearch.setLongitude(pointSearchInformation.get(1)/*14.248052*/);
+        pointSearch.setLatitude(pointSearchInformation.get(0));
+        pointSearch.setLongitude(pointSearchInformation.get(1));
         pointSearch.setDistance(5.0);
         return pointSearch;
     }
@@ -215,9 +219,11 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     }
 
     private void initializeRecyclerViews() {
-       homePageFragment.initializeRecyclerViews();
+        homePageFragment.initializeRecyclerViews();
     }
 
+    @NotNull
+    @Contract(" -> new")
     private LinearLayoutManager createLinearLayoutManager() {
         return new LinearLayoutManager(getContext(), setRecyclerViewHorizontalOrientation(), false);
     }
@@ -226,29 +232,35 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         return RecyclerView.HORIZONTAL;
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private RecyclerViewHotelAdapter createRecyclerViewHotelAdapter(List<Hotel> hotels) {
         return new RecyclerViewHotelAdapter(getContext(), hotels);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private RecyclerViewRestaurantAdapter createRecyclerViewRestaurantAdapter(List<Restaurant> restaurants) {
         return new RecyclerViewRestaurantAdapter(getContext(), restaurants);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private RecyclerViewAttractionAdapter createRecyclerViewAttractionAdapter(List<Attraction> attractions) {
         return new RecyclerViewAttractionAdapter(getContext(), attractions);
     }
 
-    private void runNoHotelsErrorOnUiThread(String errorCode) {
+    private void runNoHotelsErrorOnUiThread(@NotNull String errorCode) {
         if (errorCode.equals("204"))
             requireActivity().runOnUiThread(this::setViewNoHotelsErrorVisible);
     }
 
-    private void runNoRestaurantsErrorOnUiThread(String errorCode) {
+    private void runNoRestaurantsErrorOnUiThread(@NotNull String errorCode) {
         if (errorCode.equals("204"))
             requireActivity().runOnUiThread(this::setViewNoRestaurantsErrorVisible);
     }
 
-    private void runNoAttractionsErrorOnUiThread(String errorCode) {
+    private void runNoAttractionsErrorOnUiThread(@NotNull String errorCode) {
         if (errorCode.equals("204"))
             requireActivity().runOnUiThread(this::setViewNoAttractionsErrorVisible);
     }
@@ -258,6 +270,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         getContext().startActivity(hotelsListActivityIntent);
     }
 
+    @NotNull
     private Intent createHotelsListActivityIntent() {
         Intent hotelsListActivityIntent = new Intent(getContext(), HotelsListActivity.class);
         hotelsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
@@ -269,6 +282,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         getContext().startActivity(restaurantsListActivityIntent);
     }
 
+    @NotNull
     private Intent createRestaurantsListActivityIntent() {
         Intent restaurantsListActivityIntent = new Intent(getContext(), RestaurantsListActivity.class);
         restaurantsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
@@ -280,6 +294,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         getContext().startActivity(attractionsListActivityIntent);
     }
 
+    @NotNull
     private Intent createAttractionsListActivityIntent() {
         Intent attractionsListActivityIntent = new Intent(getContext(), AttractionsListActivity.class);
         attractionsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
@@ -290,16 +305,14 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         getContext().startActivity(createEnablePositionActivityIntent());
     }
 
+    @NotNull
+    @Contract(" -> new")
     private Intent createEnablePositionActivityIntent() {
         return new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
     }
 
     public boolean checkPermission(String permission) {
-        if (ContextCompat.checkSelfPermission(getContext(), permission)
-                == PackageManager.PERMISSION_DENIED)
-            return false;
-        else
-            return true;
+        return ContextCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_DENIED;
     }
 
     public void requestPermission(String permission, int requestCode) {
@@ -310,10 +323,13 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         return homePageFragment.getContext();
     }
 
+    @NotNull
     private FragmentActivity requireActivity() {
         return homePageFragment.requireActivity();
     }
 
+    @NotNull
+    @Contract(" -> new")
     private GPSTracker createGpsTracker() {
         return new GPSTracker(homePageFragment.getActivity());
     }

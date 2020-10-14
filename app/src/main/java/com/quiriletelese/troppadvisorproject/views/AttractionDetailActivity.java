@@ -1,11 +1,11 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,8 +22,12 @@ public class AttractionDetailActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ViewPager viewPager;
     private FloatingActionButton floatingActionButtonWriteReview;
-    private TextView textViewAvarageRating, textViewCertificateOfExcellence, textViewAddress,
-            textViewPhoneNumber, textViewOpeningTime, textViewAvaragePrice;
+    private TextView textViewAvarageRating;
+    private TextView textViewCertificateOfExcellence;
+    private TextView textViewAddress;
+    private TextView textViewPhoneNumber;
+    private TextView textViewOpeningTime;
+    private TextView textViewAvaragePrice;
     private Button buttonReadReviews;
 
     @Override
@@ -36,7 +40,6 @@ public class AttractionDetailActivity extends AppCompatActivity {
         setListenerOnViewComponents();
         showLoadingInProgressDialog();
         initializeActivityFields();
-
     }
 
     private void initializeViewComponents() {
@@ -61,7 +64,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
     }
 
     public void showLoadingInProgressDialog() {
-        attractionDetailActivityController.showLoadingInProgressDialog();;
+        attractionDetailActivityController.showLoadingInProgressDialog();
     }
 
     private void initializeActivityFields() {

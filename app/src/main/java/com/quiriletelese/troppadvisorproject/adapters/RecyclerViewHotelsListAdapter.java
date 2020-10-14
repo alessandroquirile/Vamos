@@ -91,11 +91,11 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private boolean hasImage(int position) {
-        return hotels.get(position).isImagesGraterThanZero();
+        return hotels.get(position).isImagesSizeGraterThanZero();
     }
 
     private String getFirtsImage(int position) {
-        return hotels.get(position).getImages().get(0);
+        return hotels.get(position).getFirstImage();
     }
 
     private String createAvarageRatingString(Hotel hotel) {

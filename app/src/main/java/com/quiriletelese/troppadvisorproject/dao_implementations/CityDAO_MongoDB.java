@@ -10,6 +10,7 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -34,12 +35,13 @@ public class CityDAO_MongoDB implements CityDAO, Constants {
             getArrayFromResponseCitiesName(response);
             volleyCallBack.onSuccess(getArrayFromResponseCitiesName(response));
         }, error -> {
-            
+
         });
         requestQueue.add(jsonArrayRequest);
     }
 
-    private List<String> getArrayFromResponseCitiesName(JSONArray response) {
+    @NotNull
+    private List<String> getArrayFromResponseCitiesName(@NotNull JSONArray response) {
         List<String> citiesName = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             try {
@@ -51,6 +53,7 @@ public class CityDAO_MongoDB implements CityDAO, Constants {
         return citiesName;
     }
 
+    @NotNull
     private String createFindCitiesUrl(String name) {
         String URL = BASE_URL + "city/find-cities-by-name-like/";
         URL = URL.concat(name);

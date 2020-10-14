@@ -10,6 +10,8 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.SeeReviewsActivityController;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import java.util.Objects;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -28,7 +30,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar_see_reviews);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         initializeViesComponents();

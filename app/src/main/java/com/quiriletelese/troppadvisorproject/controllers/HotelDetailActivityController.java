@@ -28,6 +28,9 @@ import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -46,7 +49,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@NotNull View view) {
         switch (view.getId()) {
             case R.id.floating_action_button_hotel_write_review:
                 startWriteReviewActivity();
@@ -97,11 +100,13 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         getViewPager().setAdapter(createViewPagerOverViewActivityAdapter());
     }
 
-    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter(){
+    @NotNull
+    @Contract(" -> new")
+    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter() {
         return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
     }
 
-    private void detectVolleyError(String errorCode) {
+    private void detectVolleyError(@NotNull String errorCode) {
         switch (errorCode) {
             case NO_CONTENT:
                 showToastOnUiThread(R.string.no_content_error_hotel_detail);
@@ -113,14 +118,15 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(Hotel hotel) {
+    private void setAvarageRating(@NotNull Hotel hotel) {
         if (!hasAvarageRating(hotel.getAvarageRating()))
             getTextViewAvarageRating().setText(R.string.no_reviews);
         else
             getTextViewAvarageRating().setText(createAvarageRatingString(hotel));
     }
 
-    private String createAvarageRatingString(Hotel hotel) {
+    @NotNull
+    private String createAvarageRatingString(@NotNull Hotel hotel) {
         String avarageRating = "";
         avarageRating = avarageRating.concat(hotel.getAvarageRating() + "/5 (");
         avarageRating = avarageRating.concat(hotel.getTotalReviews() + " ");
@@ -137,7 +143,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         getTextViewAddress().setText(createAddressString(address));
     }
 
-    private String createAddressString(Address address) {
+    @NotNull
+    private String createAddressString(@NotNull Address address) {
         String hotelAddress = "";
         hotelAddress = hotelAddress.concat(address.getType() + " ");
         hotelAddress = hotelAddress.concat(address.getStreet() + ", ");
@@ -148,7 +155,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return hotelAddress;
     }
 
-    private void setPhoneNunmber(String phoneNumber) {
+    private void setPhoneNunmber(@NotNull String phoneNumber) {
         if (!phoneNumber.equals(""))
             getTextViewPhoneNumber().setText(phoneNumber);
         else
@@ -159,7 +166,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         getTextViewStars().setText(createHotelStarsString(stars));
     }
 
-    private String createHotelStarsString(Integer stars) {
+    @NotNull
+    private String createHotelStarsString(@NotNull Integer stars) {
         String hotelStars = "";
         hotelStars = hotelStars.concat(getString(R.string.hotel_stars) + " ");
         hotelStars = hotelStars.concat(stars.toString());
@@ -170,6 +178,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         getTextViewAvaragePrice().setText(createAvaragePriceString(price));
     }
 
+    @NotNull
     private String createAvaragePriceString(Integer price) {
         String avaragePrice = "";
         avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
@@ -186,6 +195,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         hotelDetailActivity.startActivity(createSeeReviewsActivityIntent());
     }
 
+    @NotNull
     private Intent createWriteReviewActivityIntent() {
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(ID, getId());
@@ -193,6 +203,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return writeReviewActivityIntent;
     }
 
+    @NotNull
     private Intent createSeeReviewsActivityIntent() {
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
         seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
@@ -255,15 +266,16 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return hotelDetailActivity.getTextViewStars();
     }
 
-    private FloatingActionButton getFloatingActionButtonWriteReview(){
+    private FloatingActionButton getFloatingActionButtonWriteReview() {
         return hotelDetailActivity.getFloatingActionButtonWriteReview();
     }
 
-    private Button getButtonReadReviews(){
+    private Button getButtonReadReviews() {
         return hotelDetailActivity.getButtonReadReviews();
     }
 
-    private boolean hasAvarageRating(Integer avarageRating) {
+    @Contract(pure = true)
+    private boolean hasAvarageRating(@NotNull Integer avarageRating) {
         return !avarageRating.equals(0);
     }
 
@@ -271,7 +283,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return getReviews().size() > 0;
     }
 
-    private ViewPager getViewPager(){
+    private ViewPager getViewPager() {
         return hotelDetailActivity.getViewPager();
     }
 
@@ -323,6 +335,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return hotelDetailActivity.getResources();
     }
 
+    @NotNull
     private String getString(int id){
         return getResources().getString(id);
     }

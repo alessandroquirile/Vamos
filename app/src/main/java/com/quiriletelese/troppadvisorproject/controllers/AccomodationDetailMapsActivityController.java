@@ -32,6 +32,8 @@ import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -49,8 +51,8 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         onClickHelper(view);
     }
 
-    private void onClickHelper(View view){
-        switch (view.getId()){
+    private void onClickHelper(@NotNull View view) {
+        switch (view.getId()) {
             case R.id.relative_layout_accomodation_detail:
                 startDetailActivity();
                 break;
@@ -154,13 +156,14 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     private MarkerOptions createMarkerOptions(Accomodation accomodation) {
         return new MarkerOptions()
-                .position(new LatLng(accomodation.getPoint().getX(), accomodation.getPoint().getY()))
+                .position(new LatLng(accomodation.getLatitude(), accomodation.getLongitude()))
                 .icon(setCustomMarker(getContext(), getAccomodationMarker()))
                 .title(accomodation.getId());
     }
 
     private BitmapDescriptor setCustomMarker(Context context, int id) {
         Drawable background = ContextCompat.getDrawable(context, id);
+        assert background != null;
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(),
                 Bitmap.Config.ARGB_8888);
@@ -179,7 +182,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     }
 
     private LatLng createMarkerLatLng(){
-        return new LatLng(getAccomodation().getPoint().getX(), getAccomodation().getPoint().getY());
+        return new LatLng(getAccomodation().getLatitude(), getAccomodation().getLongitude());
     }
 
     private int getAccomodationMarker() {
@@ -212,7 +215,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     }
 
     private boolean hasImage(Accomodation accomodation) {
-        return accomodation.isImagesGraterThanZero();
+        return accomodation.isImagesSizeGraterThanZero();
     }
 
     private Context getContext() {
@@ -238,7 +241,6 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     private FloatingActionButton getFloatingActionButtonGoBack() {
         return accomodationDetailMapsActivity.getFloatingActionButtonGoBack();
     }
-
 
     private ImageView getImageViewAccomodation() {
         return accomodationDetailMapsActivity.getImageViewAccomodation();

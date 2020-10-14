@@ -39,8 +39,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public RecyclerViewAttractionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_page_recycler_view_element, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -57,7 +56,6 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
         //setImage(viewHolder, position);
         viewHolder.textViewAttractionName.setText(attractions.get(position).getName());
         viewHolder.textViewAttractionRating.setText(createAvarageRatingString(attractions.get(position)));
-
     }
 
     private void setImage(ViewHolder viewHolder, int position) {
@@ -77,7 +75,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private boolean hasImage(int position) {
-        return attractions.get(position).isImagesGraterThanZero();
+        return attractions.get(position).isImagesSizeGraterThanZero();
     }
 
     private String getFirtsImage(int position) {
@@ -106,8 +104,6 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private Context context;
-        private LinearLayout linearLayoutHomePageRecyclerView;
         private ImageView imageViewAttraction;
         private TextView textViewAttractionName, textViewAttractionRating;
 
@@ -117,8 +113,8 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initializeComponents() {
-            context = itemView.getContext();
-            linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
+            Context context = itemView.getContext();
+            LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewAttraction = itemView.findViewById(R.id.image_view_accomodation);
             textViewAttractionName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAttractionRating = itemView.findViewById(R.id.text_view_accomodation_rating);

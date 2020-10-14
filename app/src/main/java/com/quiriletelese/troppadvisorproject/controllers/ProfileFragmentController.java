@@ -15,6 +15,9 @@ import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -46,6 +49,8 @@ public class ProfileFragmentController implements Constants {
         showToastOnUiThred(R.string.add_make_login);
     }
 
+    @NotNull
+    @Contract(" -> new")
     private Intent createStartLoginActivityIntent() {
         return new Intent(getContext(), LoginActivity.class);
     }
@@ -97,6 +102,8 @@ public class ProfileFragmentController implements Constants {
         return createUserSharedPreferences().getStringSharedPreferences(ACCESS_TOKEN);
     }
 
+    @NotNull
+    @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
         return new UserSharedPreferences(getContext());
     }
@@ -109,10 +116,12 @@ public class ProfileFragmentController implements Constants {
         return profileFragment.getActivity();
     }
 
+    @NotNull
     private Resources getResources() {
         return profileFragment.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }
@@ -137,7 +146,7 @@ public class ProfileFragmentController implements Constants {
         return profileFragment.getTextViewUserName();
     }
 
-    private void setTextViewText(TextView textView, String value){
+    private void setTextViewText(@NotNull TextView textView, String value) {
         textView.setText(value);
     }
 

@@ -16,6 +16,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.WriteReviewActivityController;
 
+import java.util.Objects;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -36,7 +38,7 @@ public class WriteReviewActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.tool_bar_write_review);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeViewComponents();
@@ -96,11 +98,11 @@ public class WriteReviewActivity extends AppCompatActivity {
     }
 
     public String getTextInputLayoutReviewTitleValue(){
-        return textInputLayoutReviewTitle.getEditText().getText().toString();
+        return Objects.requireNonNull(textInputLayoutReviewTitle.getEditText()).getText().toString();
     }
 
     public String getTextInputLayoutReviewDescriptionValue(){
-        return textInputLayoutReviewDescription.getEditText().getText().toString();
+        return Objects.requireNonNull(textInputLayoutReviewDescription.getEditText()).getText().toString();
     }
 
     public RatingBar getRatingBar() {

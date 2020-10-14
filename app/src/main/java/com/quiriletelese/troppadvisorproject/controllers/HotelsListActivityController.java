@@ -21,8 +21,8 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
+import com.quiriletelese.troppadvisorproject.interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.model_helpers.HotelFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
@@ -31,13 +31,16 @@ import com.quiriletelese.troppadvisorproject.views.HotelMapActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HotelsListActivityController implements OnBottomSheetFilterSearchButtonClick,
+public class HotelsListActivityController implements BottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private HotelsListActivity hotelsListActivity;
@@ -46,7 +49,8 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     private RecyclerViewHotelsListAdapter recyclerViewHotelsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private int page = 0, size = 3;
-    private boolean isLoadingData = false, isPointSearchNull = false;
+    private boolean isLoadingData = false;
+    private boolean isPointSearchNull = false;
 
     public HotelsListActivityController(HotelsListActivity hotelsListActivity) {
         this.hotelsListActivity = hotelsListActivity;
@@ -116,7 +120,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         }, getHotelFilterNameValue());
     }
 
-    private void findHotelsName(String newText) {
+    private void findHotelsName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewNameChanged();
             findHotelsNameHelper(new VolleyCallBack() {
@@ -134,7 +138,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
             enableFieldsOnAutoCompleteTextViewNameChanged();
     }
 
-    private void findCitiesName(String newText) {
+    private void findCitiesName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
             findCitiesNameHelper(new VolleyCallBack() {
@@ -170,7 +174,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     }
 
     private void loadMoreHotels() {
-        page += 1;
+        page++;
         setIsLoadingData(true);
         setProgressBarVisibilityOnUiThred(View.VISIBLE);
         detectSearchType();
@@ -257,7 +261,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -288,10 +292,14 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         recyclerViewHotelsListAdapter.notifyDataSetChanged();
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private RecyclerViewHotelsListAdapter createRecyclerViewAdapter(List<Hotel> hotels) {
         return new RecyclerViewHotelsListAdapter(getContext(), hotels);
     }
 
+    @NotNull
+    @Contract(" -> new")
     private LinearLayoutManager createLinearLayoutManager() {
         return new LinearLayoutManager(getContext(), setRecyclerViewVerticalOrientation(), false);
     }
@@ -309,10 +317,11 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     public void showBottomSheetFilters() {
         bottomSheetFilterHotels.show(getSupportFragmentManager(), bottomSheetFilterHotels.getTag());
         setBottomSheetFiltersFields();
-        bottomSheetFilterHotels.setOnBottomSheetFilterSearchButtonClick(this);
+        bottomSheetFilterHotels.setBottomSheetFilterSearchButtonClick(this);
         bottomSheetFilterHotels.setAutoCompleteTextViewsAccomodationFilterTextChangeListener(this);
     }
 
+    @NotNull
     private PointSearch createPointSearch() {
         isPointSearchNull = false;
         PointSearch pointSearch = getPointSearch();
@@ -330,6 +339,8 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         bottomSheetFilterHotels.setAutoCompleteTextViewCityAdapter(arrayAdapter);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> content) {
         return new ArrayAdapter<>(getContext(), getAutoCompleteTextViewAdapterLayout(), content);
     }
@@ -350,15 +361,12 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
     }
 
     private void showToastOnUiThred(int string) {
-        hotelsListActivity.runOnUiThread(() -> {
-            Toast.makeText(hotelsListActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+        hotelsListActivity.runOnUiThread(() ->
+                Toast.makeText(hotelsListActivity, getString(string), Toast.LENGTH_SHORT).show());
     }
 
     private void setProgressBarVisibilityOnUiThred(int visibility) {
-        hotelsListActivity.runOnUiThread(() -> {
-            getProgressBarLoadMore().setVisibility(visibility);
-        });
+        hotelsListActivity.runOnUiThread(() -> getProgressBarLoadMore().setVisibility(visibility));
     }
 
     public void startMapsActivity() {
@@ -370,7 +378,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         hotelsListActivity.startActivity(hotelMapsActivityIntent);
     }
 
-    private void putPointSearch(Intent hotelMapsActivityIntent) {
+    private void putPointSearch(@NotNull Intent hotelMapsActivityIntent) {
         hotelMapsActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? null : createPointSearch());
     }
 
@@ -391,7 +399,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         }
     }
 
-    private void putHotelFilter(Intent hotelMapsActivityIntent) {
+    private void putHotelFilter(@NotNull Intent hotelMapsActivityIntent) {
         hotelMapsActivityIntent.putExtra(ACCOMODATION_FILTER, isHotelFilterNull() ? null
                 : hotelFilter);
     }
@@ -404,18 +412,22 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         return extractCityName(bottomSheetFilterHotels.getAutoCompleteTextViewCityValue());
     }
 
+    @NotNull
     private Integer getPriceValueFromBottomSheetFilter() {
         return bottomSheetFilterHotels.getSeekBarPriceValue();
     }
 
+    @NotNull
     private Integer getRatingValueFromBottomSheetFilter() {
         return bottomSheetFilterHotels.getSeekBarRatingValue();
     }
 
+    @NotNull
     private Integer getStarsValueFromBottomSheetFilter() {
         return bottomSheetFilterHotels.getSeekBarStarsValue();
     }
 
+    @NotNull
     private Double getDistanceValueFromBottomSheetFilter() {
         if (bottomSheetFilterHotels.getSeekBarDistanceValue() != 0)
             return (double) bottomSheetFilterHotels.getSeekBarDistanceValue();
@@ -435,7 +447,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         return rsqlString;
     }
 
-    private String extractCityName(String city) {
+    private String extractCityName(@NotNull String city) {
         return city.contains(",") ? city.substring(0, city.lastIndexOf(",")) : city;
     }
 
@@ -474,6 +486,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         return rsqlString;
     }
 
+    @NotNull
     private String createRsqlString() {
         String rsqlString = "";
         rsqlString = checkCityNameValue(rsqlString);
@@ -490,7 +503,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         return dy > 0;
     }
 
-    private boolean isScrolledToLastItem(RecyclerView recyclerView) {
+    private boolean isScrolledToLastItem(@NotNull RecyclerView recyclerView) {
         return !recyclerView.canScrollVertically(1);
     }
 
@@ -522,6 +535,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         return hotelsListActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }
@@ -534,6 +548,7 @@ public class HotelsListActivityController implements OnBottomSheetFilterSearchBu
         return (PointSearch) getIntent().getSerializableExtra(POINT_SEARCH);
     }
 
+    @NotNull
     private FragmentManager getSupportFragmentManager() {
         return hotelsListActivity.getSupportFragmentManager();
     }

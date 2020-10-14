@@ -28,6 +28,9 @@ import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -98,11 +101,13 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         getViewPager().setAdapter(createViewPagerOverViewActivityAdapter());
     }
 
-    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter(){
+    @NotNull
+    @Contract(" -> new")
+    private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter() {
         return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
     }
 
-    private void detectVolleyError(String errorCode) {
+    private void detectVolleyError(@NotNull String errorCode) {
         switch (errorCode) {
             case NO_CONTENT:
                 showToastOnUiThread(R.string.no_content_error_hotel_detail);
@@ -114,14 +119,15 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(Restaurant restaurant) {
+    private void setAvarageRating(@NotNull Restaurant restaurant) {
         if (!hasAvarageRating(restaurant.getAvarageRating()))
             getTextViewAvarageRating().setText(R.string.no_reviews);
         else
             getTextViewAvarageRating().setText(createAvarageRatingString(restaurant));
     }
 
-    private String createAvarageRatingString(Restaurant restaurant) {
+    @NotNull
+    private String createAvarageRatingString(@NotNull Restaurant restaurant) {
         String avarageRating = "";
         avarageRating = avarageRating.concat(restaurant.getAvarageRating() + "/5 (");
         avarageRating = avarageRating.concat(restaurant.getTotalReviews() + " ");
@@ -139,7 +145,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         getTextViewAddress().setText(restaurantAddress);
     }
 
-    private String createAddressString(Address address) {
+    @NotNull
+    private String createAddressString(@NotNull Address address) {
         String restaurantAddress = "";
         restaurantAddress = restaurantAddress.concat(address.getType() + " ");
         restaurantAddress = restaurantAddress.concat(address.getStreet() + ", ");
@@ -150,14 +157,14 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return restaurantAddress;
     }
 
-    private void setOpeningTime(String openingTime) {
+    private void setOpeningTime(@NotNull String openingTime) {
         if (!openingTime.equals(""))
             getTextViewOpeningTime().setText(openingTime);
         else
             getTextViewOpeningTime().setText(getString(R.string.no_information_available));
     }
 
-    private void setPhoneNunmber(String phoneNumber) {
+    private void setPhoneNunmber(@NotNull String phoneNumber) {
         if (!phoneNumber.equals(""))
             getTextViewPhoneNumber().setText(phoneNumber);
         else
@@ -168,6 +175,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         getTextViewAvaragePrice().setText(createAvaragePriceString(price));
     }
 
+    @NotNull
     private String createAvaragePriceString(Integer price) {
         String avaragePrice = "";
         avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
@@ -176,7 +184,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return avaragePrice;
     }
 
-    private void setTypeOfCuisineList(List<String> typeOfCuisine) {
+    private void setTypeOfCuisineList(@NotNull List<String> typeOfCuisine) {
         if (!typeOfCuisine.isEmpty())
             for (String cuisine : typeOfCuisine)
                 setTypeOfCuisineListHelper(cuisine);
@@ -202,6 +210,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         restaurantDetailActivity.startActivity(createSeeReviewsActivityIntent());
     }
 
+    @NotNull
     private Intent createWriteReviewActivityIntent() {
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(ID, getId());
@@ -209,6 +218,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return writeReviewActivityIntent;
     }
 
+    @NotNull
     private Intent createSeeReviewsActivityIntent() {
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
         seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
@@ -238,9 +248,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private void showToastOnUiThread(int string) {
-        restaurantDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(restaurantDetailActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+        restaurantDetailActivity.runOnUiThread(() ->
+                Toast.makeText(restaurantDetailActivity, getString(string), Toast.LENGTH_SHORT).show());
     }
 
     private CollapsingToolbarLayout getCollapsingToolbarLayout(){
@@ -275,19 +284,21 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return restaurantDetailActivity.getTextViewTypeOfCuisineList();
     }
 
+    @NotNull
     private String getTextViewTypeOfCuisineListText(){
         return getTextViewTypeOfCuisineList().getText().toString();
     }
 
-    private FloatingActionButton getFloatingActionButtonWriteReview(){
+    private FloatingActionButton getFloatingActionButtonWriteReview() {
         return restaurantDetailActivity.getFloatingActionButtonWriteReview();
     }
 
-    private Button getButtonReadReviews(){
+    private Button getButtonReadReviews() {
         return restaurantDetailActivity.getButtonReadReviews();
     }
 
-    private boolean hasAvarageRating(Integer avarageRating) {
+    @Contract(pure = true)
+    private boolean hasAvarageRating(@NotNull Integer avarageRating) {
         return !avarageRating.equals(0);
     }
 
@@ -295,7 +306,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return getReviews().size() > 0;
     }
 
-    private ViewPager getViewPager(){
+    private ViewPager getViewPager() {
         return restaurantDetailActivity.getViewPager();
     }
 
@@ -351,6 +362,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return restaurantDetailActivity.getResources();
     }
 
+    @NotNull
     private String getString(int id){
         return getResources().getString(id);
     }

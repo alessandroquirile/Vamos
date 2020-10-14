@@ -2,7 +2,6 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +9,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.SignUpActivityController;
+
+import java.util.Objects;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -86,27 +87,27 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public String getTextInputLayoutEmailValue(){
-        return textInputLayoutEmail.getEditText().getText().toString().trim();
+        return Objects.requireNonNull(textInputLayoutEmail.getEditText()).getText().toString().trim();
     }
 
     public String getTextInputLayoutNameValue(){
-        return textInputLayoutName.getEditText().getText().toString().trim();
+        return Objects.requireNonNull(textInputLayoutName.getEditText()).getText().toString().trim();
     }
 
     public String getTextInputLayoutLastNameValue(){
-        return textInputLayoutLastName.getEditText().getText().toString().trim();
+        return Objects.requireNonNull(textInputLayoutLastName.getEditText()).getText().toString().trim();
     }
 
     public String getTextInputLayoutUsernameValue(){
-        return textInputLayoutUsername.getEditText().getText().toString().trim();
+        return Objects.requireNonNull(textInputLayoutUsername.getEditText()).getText().toString().trim();
     }
 
     public char[] getTextInputLayoutPasswordValue(){
-        return textInputLayoutPassword.getEditText().getText().toString().trim().toCharArray();
+        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim().toCharArray();
     }
 
     public char[] getTextInputLayoutRepeatPasswordValue(){
-        return textInputLayoutRepeatPassword.getEditText().getText().toString().trim().toCharArray();
+        return Objects.requireNonNull(textInputLayoutRepeatPassword.getEditText()).getText().toString().trim().toCharArray();
     }
 
 }

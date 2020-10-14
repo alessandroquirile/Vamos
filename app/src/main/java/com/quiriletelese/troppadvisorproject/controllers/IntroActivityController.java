@@ -23,6 +23,9 @@ import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -80,7 +83,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
             showToastOnUiThread(R.string.access_location_permission_requested);
     }
 
-    private void onClickHekper(View view) {
+    private void onClickHekper(@NotNull View view) {
         switch (view.getId()) {
             case R.id.button_permission:
                 requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION);
@@ -118,6 +121,8 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
         });
     }
 
+    @NotNull
+    @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
         return new UserSharedPreferences(getContext());
     }
@@ -126,6 +131,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
         getContext().startActivity(createIntent(HomePageActivity.class));
     }
 
+    @NotNull
     private Intent createIntent(Class<?> destinationClass) {
         Intent intent = new Intent(getContext(), destinationClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -140,6 +146,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
         return introActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }

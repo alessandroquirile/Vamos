@@ -22,8 +22,6 @@ public class GPSTracker extends Service implements LocationListener {
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     private static final long MINIMUM_TIME_BETWEEW_UPDATES = 1000 * 60; // 1 minute
     private LocationManager locationManager;
-    private boolean isGPSEnabled = false;
-    private boolean isNetworkEnabled = false;
     private boolean canGetLocation = false;
     private Location location;
     private Double latitude;
@@ -66,8 +64,8 @@ public class GPSTracker extends Service implements LocationListener {
         try {
             locationManager = createLocationManager();
             assert locationManager != null;
-            isGPSEnabled = isGPSEnabled();
-            isNetworkEnabled = isNetworkEnabled();
+            boolean isGPSEnabled = isGPSEnabled();
+            boolean isNetworkEnabled = isNetworkEnabled();
             if (isNetworkProviderEnabled()) {
                 setCanGetLocation(true);
                 getLocationFromNetworkProvider();
@@ -140,6 +138,7 @@ public class GPSTracker extends Service implements LocationListener {
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isLocationManagerNull() {
         return locationManager == null;
     }

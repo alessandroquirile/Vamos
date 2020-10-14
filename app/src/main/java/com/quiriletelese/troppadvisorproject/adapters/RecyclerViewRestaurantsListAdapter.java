@@ -80,11 +80,11 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private boolean hasImage(int position) {
-        return restaurants.get(position).isImagesGraterThanZero();
+        return restaurants.get(position).isImagesSizeGraterThanZero();
     }
 
     private String getFirtsImage(int position) {
-        return restaurants.get(position).getImages().get(0);
+        return restaurants.get(position).getFirstImage();
     }
 
     private String createAddressString(Restaurant restaurant) {

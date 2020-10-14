@@ -19,7 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
-import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
+import com.quiriletelese.troppadvisorproject.interfaces.BottomSheetFilterSearchButtonClick;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -34,7 +34,7 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
     private TextView textViewPrice, textViewRating, textViewDistance;
     private SeekBar seekBarPrice, seekBarRating, seekBarDistance;
     private SwitchCompat switchCompatCertificateOfExcellence;
-    private OnBottomSheetFilterSearchButtonClick onBottomSheetFilterSearchButtonClick;
+    private BottomSheetFilterSearchButtonClick bottomSheetFilterSearchButtonClick;
     private AutoCompleteTextViewsAccomodationFilterTextChangeListener autoCompleteTextViewsAccomodationFilterTextChangeListener;
 
     @NonNull
@@ -63,8 +63,8 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
                 dismiss();
                 break;
             case R.id.image_view_search_attraction_map_filter:
-                if (onBottomSheetFilterSearchButtonClick != null)
-                    onBottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                if (bottomSheetFilterSearchButtonClick != null)
+                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
                 break;
         }
     }
@@ -171,8 +171,8 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
             textViewDistance.setText(String.format(getResources().getString(R.string.distance_up_to_something), progress));
     }
 
-    public void setOnBottomSheetFilterSearchButtonClick(OnBottomSheetFilterSearchButtonClick onBottomSheetFilterSearchButtonClick) {
-        this.onBottomSheetFilterSearchButtonClick = onBottomSheetFilterSearchButtonClick;
+    public void setBottomSheetFilterSearchButtonClick(BottomSheetFilterSearchButtonClick bottomSheetFilterSearchButtonClick) {
+        this.bottomSheetFilterSearchButtonClick = bottomSheetFilterSearchButtonClick;
     }
 
     public void setAutoCompleteTextViewsAccomodationFilterTextChangeListener(AutoCompleteTextViewsAccomodationFilterTextChangeListener autoCompleteTextViewsAccomodationFilterTextChangeListener) {

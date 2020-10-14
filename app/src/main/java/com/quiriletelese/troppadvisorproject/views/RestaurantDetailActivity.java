@@ -1,11 +1,11 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -62,7 +62,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     public void showLoadingInProgressDialog() {
-        restaurantDetailActivityController.showLoadingInProgressDialog();;
+        restaurantDetailActivityController.showLoadingInProgressDialog();
     }
 
     private void initializeActivityFields() {

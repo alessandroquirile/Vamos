@@ -39,25 +39,29 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
+import com.quiriletelese.troppadvisorproject.interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.model_helpers.RestaurantFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
+import com.quiriletelese.troppadvisorproject.model_helpers.RestaurantFilter;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
 public class RestaurantMapActivityController implements GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
-        View.OnClickListener, OnBottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
+        View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
         Constants {
 
     private RestaurantMapActivity restaurantMapActivity;
@@ -68,8 +72,9 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     private List<Restaurant> restaurants = new ArrayList<>();
     private List<String> typesOfCuisine = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
-    boolean isRelativeLayoutRestaurantInformationVisible = false, isLinearLayoutSearchRestaurantsVisible = true,
-            isFloatingActionButtonCenterPositionOnRestaurantsVisible = true;
+    private boolean isRelativeLayoutRestaurantInformationVisible = false;
+    private boolean isLinearLayoutSearchRestaurantsVisible = true;
+    private boolean isFloatingActionButtonCenterPositionOnRestaurantsVisible = true;
 
     public RestaurantMapActivityController(RestaurantMapActivity restaurantMapActivity) {
         this.restaurantMapActivity = restaurantMapActivity;
@@ -284,14 +289,17 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return extractCityName(bottomSheetFilterRestaurants.getAutoCompleteTextViewCityValue());
     }
 
+    @NotNull
     private Integer getPriceValueFromBottomSheetFilter() {
         return bottomSheetFilterRestaurants.getSeekBarPriceValue();
     }
 
+    @NotNull
     private Integer getRatingValueFromBottomSheetFilter() {
         return bottomSheetFilterRestaurants.getSeekBarRatingValue();
     }
 
+    @NotNull
     private Double getDistanceValueFromBottomSheetFilter() {
         return isDistanceSeekbarEnabled() && isDistanceDifferentFromZero() ?
                 (double) bottomSheetFilterRestaurants.getSeekBarDistanceValue() : 1d;
@@ -309,7 +317,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return rsqlString;
     }
 
-    private String extractCityName(String city) {
+    private String extractCityName(@NotNull String city) {
         return city.contains(",") ? city.substring(0, city.lastIndexOf(",")) : city;
     }
 
@@ -342,6 +350,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return rsqlString;
     }
 
+    @NotNull
     private List<String> getMultiSpinnerSearchSelectedItemsFromBottomSheetFilter() {
         List<String> typeOfCuisine = new ArrayList<>();
         List<KeyPairBoolData> keyPairBoolDataList = bottomSheetFilterRestaurants.getMultiSpinnerSearchSelectedItems();
@@ -350,6 +359,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return typeOfCuisine;
     }
 
+    @NotNull
     private String createRsqlString() {
         String rsqlString = "";
         rsqlString = checkCityNameValue(rsqlString);
@@ -362,6 +372,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return rsqlString;
     }
 
+    @NotNull
     private PointSearch createPointSearch() {
         PointSearch pointSearch = getPointSearch();
         pointSearch.setDistance(isRestaurantFilterNull() ? 5d : checkDistanceValue());
@@ -376,6 +387,8 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         getAutoCompleteTextViewCity().setAdapter(createAutoCompleteTextViewAdapter(citiesName));
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> values) {
         return new ArrayAdapter<>(getContext(), getArrayAdapterLayout(), values);
     }
@@ -387,7 +400,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             findByRsql(null, getPointSearch(), getRsqlQuery());
     }
 
-    private void addMarkersOnSuccess(List<Restaurant> restaurants) {
+    private void addMarkersOnSuccess(@NotNull List<Restaurant> restaurants) {
         clearAllMarkersOnMap();
         for (Restaurant restaurant : restaurants)
             markers.add(addMarker(restaurant));
@@ -402,6 +415,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         markers = new ArrayList<>();
     }
 
+    @NotNull
     private MarkerOptions createMarkerOptions(Restaurant restaurant) {
         return new MarkerOptions()
                 .position(createCoordinates(restaurant))
@@ -409,21 +423,17 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
                 .title(restaurant.getId());
     }
 
-    private LatLng createCoordinates(Restaurant restaurant) {
-        return new LatLng(getLatitude(restaurant), getLongitude(restaurant));
+    @NotNull
+    @Contract("_ -> new")
+    private LatLng createCoordinates(@NotNull Restaurant restaurant) {
+        return new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
     }
 
-    private Double getLatitude(Restaurant restaurant) {
-        return restaurant.getPoint().getX();
-    }
 
-    private Double getLongitude(Restaurant restaurant) {
-        return restaurant.getPoint().getY();
-    }
-
+    @NotNull
     private BitmapDescriptor setCustomMarker(Context context, int id) {
         Drawable background = ContextCompat.getDrawable(context, id);
-        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Objects.requireNonNull(background).setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -467,7 +477,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             setFloatingActionButtonCenterPositionOnRestaurantsVisible();
     }
 
-    private void onMarkerClickHelper(Marker marker) {
+    private void onMarkerClickHelper(@NotNull Marker marker) {
         marker.showInfoWindow();
         if (!isRelativeLayoutRestaurantInformationVisible)
             setRelativeLayoutHotelInformationVisible();
@@ -490,7 +500,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
                 getRelativeLayoutDetails().getHeight() + 100);
     }
 
-    private void setRelativeLayoutInformationHotelFields(Marker marker) {
+    private void setRelativeLayoutInformationHotelFields(@NotNull Marker marker) {
         restaurant = getRestaurantFromMarkerClick(marker.getTitle());
         //setRestaurantImage(restaurant);
         getTextViewName().setText(restaurant.getName());
@@ -508,11 +518,12 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
             getImageViewRestaurant().setImageDrawable(null);
     }
 
-    private boolean hasImage(Restaurant restaurant) {
-        return restaurant.isImagesGraterThanZero();
+    private boolean hasImage(@NotNull Restaurant restaurant) {
+        return restaurant.isImagesSizeGraterThanZero();
     }
 
-    private String createAddressString(Restaurant restaurant) {
+    @NotNull
+    private String createAddressString(@NotNull Restaurant restaurant) {
         String hotelAddress = "";
         hotelAddress = hotelAddress.concat(restaurant.getTypeOfAddress() + " ");
         hotelAddress = hotelAddress.concat(restaurant.getStreet() + ", ");
@@ -527,11 +538,12 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         return !hasReviews(restaurant) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(restaurant);
     }
 
-    private String createAvarageRatingStringHelper(Restaurant restaurant){
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Restaurant restaurant) {
         return restaurant.getAvarageRating() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
-    private boolean hasReviews(Restaurant restaurant){
+    private boolean hasReviews(@NotNull Restaurant restaurant) {
         return !restaurant.getAvarageRating().equals(0);
     }
 
@@ -578,7 +590,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         bottomSheetFilterRestaurants.show(getSupportFragmentManager(), getTag());
         setBottomSheetFiltersFields();
         setTypesOfCuisine();
-        bottomSheetFilterRestaurants.setOnBottomSheetFilterSearchButtonClick(this);
+        bottomSheetFilterRestaurants.setBottomSheetFilterSearchButtonClick(this);
         bottomSheetFilterRestaurants.setAutoCompleteTextViewsAccomodationFilterTextChangeListener(this);
     }
 
@@ -616,7 +628,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         bottomSheetFilterRestaurants.getSwitchCompatCertificateOfExcellence().setChecked(getRestaurantFilterHasCertificateOfExcellenceValue());
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -636,9 +648,8 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void showToastOnUiThread(int string) {
-        restaurantMapActivity.runOnUiThread(() -> {
-            Toast.makeText(restaurantMapActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+        restaurantMapActivity.runOnUiThread(() ->
+                Toast.makeText(restaurantMapActivity, getString(string), Toast.LENGTH_SHORT).show());
     }
 
     public void setComponentProperties() {

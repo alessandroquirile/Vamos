@@ -11,7 +11,7 @@ public class Account implements Serializable {
     private String familyName;
     private String username;
     private String email;
-    private char[] password;
+    private char[] password; // password protection
 
     public String getName() {
         return name;

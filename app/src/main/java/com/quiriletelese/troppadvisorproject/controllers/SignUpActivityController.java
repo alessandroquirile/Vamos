@@ -20,6 +20,9 @@ import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 /**
@@ -40,7 +43,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(@NotNull View v) {
         switch (v.getId()) {
             case R.id.button_sign_up:
                 createAccount();
@@ -95,6 +98,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         repeatPassword = getTextInputLayoutRepeatPasswordValue();
     }
 
+    @NotNull
     private Account createAccountForSignUp() {
         Account account = new Account();
         account.setEmail(email);
@@ -110,7 +114,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         showConfirmAccountDialog();
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         dismissWaitForSignUpResultDialog();
         switch (errorCode) {
             case USERNAME_ERROR:
@@ -145,6 +149,8 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         alertDialogWaitForSignUpResult.show();
     }
 
+    @NotNull
+    @Contract(" -> new")
     private AlertDialog.Builder createAlertDialogBuilder() {
         return new AlertDialog.Builder(signUpActivity);
     }
@@ -222,7 +228,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         }
     }
 
-    private void showFieldErrorMessage(TextInputLayout textInputLayout, String error) {
+    private void showFieldErrorMessage(@NotNull TextInputLayout textInputLayout, String error) {
         textInputLayout.setError(error);
     }
 
@@ -281,6 +287,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
+    @NotNull
     private LayoutInflater getLayoutInflater() {
         return signUpActivity.getLayoutInflater();
     }
@@ -373,22 +380,27 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return repeatPassword.length == 0;
     }
 
+    @NotNull
     private String getFieldCannotBeEmptyErrorMessage() {
         return signUpActivity.getResources().getString(R.string.field_cannot_be_empty);
     }
 
+    @NotNull
     private String getPasswordsNotMatchErrorMessage() {
         return signUpActivity.getResources().getString(R.string.passwords_not_match);
     }
 
+    @NotNull
     private String getEmailPatternErrorMessage() {
         return signUpActivity.getResources().getString(R.string.email_pattern_error);
     }
 
+    @NotNull
     private String getEmailAlreadyExistErrorMessage() {
         return signUpActivity.getResources().getString(R.string.email_already_exist);
     }
 
+    @NotNull
     private String getUsernameAlreadyExistErrorMessage() {
         return signUpActivity.getResources().getString(R.string.username_already_exist);
     }
@@ -397,6 +409,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return signUpActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string){
         return getResources().getString(string);
     }

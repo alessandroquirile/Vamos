@@ -28,6 +28,8 @@ import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -261,7 +263,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return attractionDetailActivity.getButtonReadReviews();
     }
 
-    private boolean hasAvarageRating(Integer avarageRating) {
+    private boolean hasAvarageRating(@NotNull Integer avarageRating) {
         return !avarageRating.equals(0);
     }
 
@@ -321,6 +323,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return attractionDetailActivity.getResources();
     }
 
+    @NotNull
     private String getString(int id){
         return getResources().getString(id);
     }

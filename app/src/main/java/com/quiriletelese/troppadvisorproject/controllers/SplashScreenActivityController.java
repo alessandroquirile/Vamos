@@ -9,6 +9,8 @@ import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 import com.quiriletelese.troppadvisorproject.views.SplashScreenActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -49,6 +51,7 @@ public class SplashScreenActivityController implements Constants {
         getContext().startActivity(createIntent(IntroActivity.class));
     }
 
+    @NotNull
     private Intent createIntent(Class<?> destinationClass) {
         Intent intent = new Intent(getContext(), destinationClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

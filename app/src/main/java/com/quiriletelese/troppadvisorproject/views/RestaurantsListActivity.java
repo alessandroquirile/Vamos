@@ -1,18 +1,20 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.RestaurantsListActivityController;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -64,8 +66,8 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
         restaurantsListActivityController.addRecyclerViewOnScrollListener();
     }
 
-    private boolean onOptionItemSelectedHelper(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    private boolean onOptionItemSelectedHelper(@NotNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.button_see_restaurants_on_map:
                 startRestaurantMapActivity();
                 break;

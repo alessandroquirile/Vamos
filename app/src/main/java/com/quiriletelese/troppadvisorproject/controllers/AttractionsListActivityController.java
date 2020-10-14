@@ -21,8 +21,8 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
+import com.quiriletelese.troppadvisorproject.interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.model_helpers.AttractionFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
@@ -31,13 +31,16 @@ import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AttractionsListActivityController implements OnBottomSheetFilterSearchButtonClick,
+public class AttractionsListActivityController implements BottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
     private AttractionsListActivity attractionsListActivity;
@@ -46,7 +49,8 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private int page = 0, size = 3;
-    private boolean isLoadingData = false, isPointSearchNull = false;
+    private boolean isLoadingData = false;
+    private boolean isPointSearchNull = false;
 
     public AttractionsListActivityController(AttractionsListActivity attractionsListActivity) {
         this.attractionsListActivity = attractionsListActivity;
@@ -116,7 +120,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         }, getAttractionFilterNameValue());
     }
 
-    private void findHotelsName(String newText) {
+    private void findHotelsName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewNameChanged();
             findAttractionsNameHelper(new VolleyCallBack() {
@@ -134,7 +138,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
             enableFieldsOnAutoCompleteTextViewNameChanged();
     }
 
-    private void findCitiesName(String newText) {
+    private void findCitiesName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
             findCitiesNameHelper(new VolleyCallBack() {
@@ -173,12 +177,12 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return dy > 0;
     }
 
-    private boolean isScrolledToLastItem(RecyclerView recyclerView) {
+    private boolean isScrolledToLastItem(@NotNull RecyclerView recyclerView) {
         return !recyclerView.canScrollVertically(1);
     }
 
     private void loadMoreAttractions() {
-        page += 1;
+        page++;
         isLoadingData = true;
         setProgressBarVisibilityOnUiThred(View.VISIBLE);
         detectSearchType();
@@ -261,7 +265,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -292,10 +296,14 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         recyclerViewAttractionsListAdapter.notifyDataSetChanged();
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private RecyclerViewAttractionsListAdapter createRecyclerViewAdapter(List<Attraction> attractions) {
         return new RecyclerViewAttractionsListAdapter(getContext(), attractions);
     }
 
+    @NotNull
+    @Contract(" -> new")
     private LinearLayoutManager createLinearLayoutManager() {
         return new LinearLayoutManager(getContext(), setRecyclerViewVerticalOrientation(), false);
     }
@@ -313,10 +321,11 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
     public void showBottomSheetFilters() {
         bottomSheetFilterAttractions.show(getSupportFragmentManager(), getBottomSheetFilterTag());
         setBottomSheetFiltersFields();
-        bottomSheetFilterAttractions.setOnBottomSheetFilterSearchButtonClick(this);
+        bottomSheetFilterAttractions.setBottomSheetFilterSearchButtonClick(this);
         bottomSheetFilterAttractions.setAutoCompleteTextViewsAccomodationFilterTextChangeListener(this);
     }
 
+    @NotNull
     private PointSearch createPointSearch() {
         isPointSearchNull = false;
         PointSearch pointSearch = getPointSearch();
@@ -334,6 +343,8 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         bottomSheetFilterAttractions.getAutoCompleteTextViewCity().setAdapter(arrayAdapter);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private ArrayAdapter<String> createAutoCompleteTextViewAdapter(List<String> content) {
         return new ArrayAdapter<>(getContext(), getAutoCompleteTextViewAdapterLayout(), content);
     }
@@ -374,7 +385,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         attractionsListActivity.startActivity(attractionsMapActivityIntent);
     }
 
-    private void putPointSearch(Intent attractionMapsActivityIntent) {
+    private void putPointSearch(@NotNull Intent attractionMapsActivityIntent) {
         attractionMapsActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? null : createPointSearch());
     }
 
@@ -391,7 +402,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
                 attractionMapsActivityIntent.putExtra(NAME, getAttractionFilterNameValue());
     }
 
-    private void putAttractionFilter(Intent attractionMapsActivityIntent) {
+    private void putAttractionFilter(@NotNull Intent attractionMapsActivityIntent) {
         attractionMapsActivityIntent.putExtra(ACCOMODATION_FILTER, isAttractionFilterNull() ? null
                 : attractionFilter);
     }
@@ -404,14 +415,17 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return extractCityName(bottomSheetFilterAttractions.getAutoCompleteTextViewCityValue());
     }
 
+    @NotNull
     private Integer getPriceValueFromBottomSheetFilter() {
         return bottomSheetFilterAttractions.getSeekBarPriceValue();
     }
 
+    @NotNull
     private Integer getRatingValueFromBottomSheetFilter() {
         return bottomSheetFilterAttractions.getSeekBarRatingValue();
     }
 
+    @NotNull
     private Double getDistanceValueFromBottomSheetFilter() {
         if (bottomSheetFilterAttractions.getSeekBarDistanceValue() != 0)
             return (double) bottomSheetFilterAttractions.getSeekBarDistanceValue();
@@ -431,7 +445,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return rsqlString;
     }
 
-    private String extractCityName(String city) {
+    private String extractCityName(@NotNull String city) {
         return city.contains(",") ? city.substring(0, city.lastIndexOf(",")) : city;
     }
 
@@ -464,6 +478,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return rsqlString;
     }
 
+    @NotNull
     private String createRsqlString() {
         String rsqlString = "";
         rsqlString = checkCityNameValue(rsqlString);
@@ -515,6 +530,7 @@ public class AttractionsListActivityController implements OnBottomSheetFilterSea
         return attractionsListActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }

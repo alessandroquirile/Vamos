@@ -15,7 +15,6 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.CustomJsonObjectRequest;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -61,13 +60,11 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size);
         JSONArray jsonObjectTypesOfCuisine = typesOfCuisine == null ? jsonObjectTypesOfCuisine(new ArrayList<>())
                 : jsonObjectTypesOfCuisine(typesOfCuisine);
-        CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.POST, URL, jsonObjectTypesOfCuisine, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponse(response));
-        }, error -> {
+        CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.POST, URL, jsonObjectTypesOfCuisine, response -> volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
 
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 if (!isStatusCodeOk(response.statusCode))
                     volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
@@ -80,13 +77,12 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     private void findByIdVolley(VolleyCallBack volleyCallBack, String id, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindByIdUrl(id);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getRestaurantFromResponse(response));
-        }, error -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response ->
+                volleyCallBack.onSuccess(getRestaurantFromResponse(response)), error -> {
 
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 if (!isStatusCodeOk(response.statusCode))
                     volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
@@ -99,9 +95,8 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     private void findRestaurantsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindRestaurantsNameUrl(name);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponseRestaurantsName(response));
-        }, error -> {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response ->
+                volleyCallBack.onSuccess(getArrayFromResponseRestaurantsName(response)), error -> {
 
         });
         requestQueue.start();
@@ -111,13 +106,12 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     private void findByNameLikeIgnoreCaseVolley(final VolleyCallBack volleyCallBack, String name, Context context, int page, int size) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindByNameLikeIgnoreCaseUrl(name, page, size);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
-            volleyCallBack.onSuccess(getArrayFromResponse(response));
-        }, error -> {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response ->
+                volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
 
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 if (!isStatusCodeOk(response.statusCode))
                     volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
@@ -136,13 +130,16 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return URL;
     }
 
-    private String createStringSearchByRsqlUrlNoPointSearch(String URL, String rsqlQuery, int page, int size){
+    @NotNull
+    private String createStringSearchByRsqlUrlNoPointSearch(String URL, String rsqlQuery, int page, int size) {
         URL = URL.concat("query=" + rsqlQuery);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }
-    private String createStringSearchByRsqlUrlWithPointSearch(String URL, PointSearch pointSearch,
-                                                              String rsqlQuery, int page, int size){
+
+    @NotNull
+    private String createStringSearchByRsqlUrlWithPointSearch(String URL, @NotNull PointSearch pointSearch,
+                                                              String rsqlQuery, int page, int size) {
         URL = URL.concat("latitude=" + pointSearch.getLatitude());
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
@@ -151,12 +148,14 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return URL;
     }
 
+    @NotNull
     private String createFindByIdUrl(String id) {
         String URL = BASE_URL + "restaurant/find-by-id/";
         URL = URL.concat(id);
         return URL;
     }
 
+    @NotNull
     private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
         String URL = BASE_URL + "restaurant/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
@@ -164,6 +163,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return URL;
     }
 
+    @NotNull
     private String createFindRestaurantsNameUrl(String name) {
         String URL = BASE_URL + "restaurant/find-restaurants-name/";
         URL = URL.concat(name);
@@ -182,6 +182,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return jsonObjectTypesOfCuisine;
     }
 
+    @NotNull
     private List<Restaurant> getArrayFromResponse(@NotNull JSONObject response) {
         List<Restaurant> restaurants = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
@@ -201,7 +202,8 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return restaurants;
     }
 
-    private List<String> getArrayFromResponseRestaurantsName(JSONArray response) {
+    @NotNull
+    private List<String> getArrayFromResponseRestaurantsName(@NotNull JSONArray response) {
         List<String> restaurantsName = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             try {
@@ -213,10 +215,11 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         return restaurantsName;
     }
 
-    private Restaurant getRestaurantFromResponse(JSONObject response) {
+    private Restaurant getRestaurantFromResponse(@NotNull JSONObject response) {
         return new Gson().fromJson(response.toString(), Restaurant.class);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isStatusCodeOk(int statusCode){
         return statusCode == 200;
     }

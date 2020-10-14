@@ -4,14 +4,14 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -35,19 +35,20 @@ public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO, Constants {
         requestQueue.start();
         String URL = createGetAllUrl();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
-                response -> {
-                    volleyCallBack.onSuccess(getArrayFromResponse(response));
-                }, error -> {
+                response -> volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
 
         });
         requestQueue.add(jsonArrayRequest);
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createGetAllUrl() {
         return BASE_URL + "type-of-cuisine/get-all";
     }
 
-    private List<String> getArrayFromResponse(JSONArray response) {
+    @NotNull
+    private List<String> getArrayFromResponse(@NotNull JSONArray response) {
         List<String> typesOfCuisine = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             try {

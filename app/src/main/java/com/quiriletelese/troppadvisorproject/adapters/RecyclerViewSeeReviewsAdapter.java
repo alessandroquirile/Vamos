@@ -65,9 +65,8 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private Context context;
         private TextView textViewTitle, textViewRating, textViewReviewBody;
 
         public ViewHolder(@NonNull View itemView) {
@@ -76,7 +75,7 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initializeComponents() {
-            context = itemView.getContext();
+            Context context = itemView.getContext();
             textViewTitle = itemView.findViewById(R.id.text_view_title);
             textViewRating = itemView.findViewById(R.id.text_view_rating);
             textViewReviewBody = itemView.findViewById(R.id.text_view_review_body);

@@ -24,16 +24,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class DAOFactory {
 
-    private static DAOFactory daoFactorySingletonInstance = null;
+    private static DAOFactory instance = null;
 
     private DAOFactory() {
 
     }
 
     public static synchronized DAOFactory getInstance() {
-        if (daoFactorySingletonInstance == null)
-            daoFactorySingletonInstance = new DAOFactory();
-        return daoFactorySingletonInstance;
+        if (instance == null)
+            instance = new DAOFactory();
+        return instance;
     }
 
     public ReviewDAO getReviewDAO(@NotNull String reviewStorageTechnology) {

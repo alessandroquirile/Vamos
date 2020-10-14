@@ -22,6 +22,9 @@ import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -33,13 +36,14 @@ public class SeeReviewsActivityController implements Constants {
     private SeeReviewsActivity seeReviewsActivity;
     private DAOFactory daoFactory;
     private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
-    private int page = 0, size = 30;
+    private int page = 0;
 
     public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
         this.seeReviewsActivity = seeReviewsActivity;
     }
 
     private void findAccomodationReviewsHelper(VolleyCallBack volleyCallBack) {
+        int size = 30;
         getReviewDAO().findAccomodationReviews(volleyCallBack, getAccomodationId(), getContext(), page, size);
     }
 
@@ -58,7 +62,7 @@ public class SeeReviewsActivityController implements Constants {
     }
 
     private void loadMoreAccomodationReviews() {
-        page += 1;
+        page++;
         findAccomodationReviewsHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -88,6 +92,8 @@ public class SeeReviewsActivityController implements Constants {
         getShimmerRecyclerViewSeeReviews().showShimmer();
     }
 
+    @NotNull
+    @Contract(" -> new")
     private LinearLayoutManager createLinearLayoutManager() {
         return new LinearLayoutManager(getContext(), setRecyclerViewVerticalOrientation(), false);
     }
@@ -96,11 +102,13 @@ public class SeeReviewsActivityController implements Constants {
         return RecyclerView.VERTICAL;
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private RecyclerViewSeeReviewsAdapter createRecyclerViewAdapter(List<Review> reviews) {
         return new RecyclerViewSeeReviewsAdapter(getContext(), reviews);
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -162,7 +170,7 @@ public class SeeReviewsActivityController implements Constants {
         return dy > 0;
     }
 
-    private boolean isScrolledToLastItem(RecyclerView recyclerView) {
+    private boolean isScrolledToLastItem(@NotNull RecyclerView recyclerView) {
         return !recyclerView.canScrollVertically(1);
     }
 
@@ -210,6 +218,7 @@ public class SeeReviewsActivityController implements Constants {
         return seeReviewsActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }

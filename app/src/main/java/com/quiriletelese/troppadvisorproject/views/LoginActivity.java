@@ -2,7 +2,6 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.LoginActivityController;
+
+import java.util.Objects;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -30,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
-
     }
 
     private void initializeViewComponents() {
@@ -70,10 +70,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public String getTextInputLayoutKeyValue(){
-        return textInputLayoutKey.getEditText().getText().toString().trim();
+        return Objects.requireNonNull(textInputLayoutKey.getEditText()).getText().toString().trim();
     }
     public char[] getTextInputLayoutPasswordValue(){
-        return textInputLayoutPassword.getEditText().getText().toString().trim().toCharArray();
+        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim().toCharArray();
     }
 
 }

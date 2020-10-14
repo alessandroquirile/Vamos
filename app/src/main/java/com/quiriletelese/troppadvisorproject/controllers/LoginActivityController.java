@@ -25,6 +25,7 @@ import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -111,7 +112,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         finish();
     }
 
-    private void volleyCallbackOnError(String errorCode) {
+    private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
             case INTERNAL_ERROR_SERVER:
                 clearSharedPreferences();
@@ -155,6 +156,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         getContext().startActivity(intentSignUpActivity);
     }
 
+    @NotNull
     private Intent createSignUpActivityIntent() {
         Intent intentSignUpActivity = new Intent(getContext(), SignUpActivity.class);
         intentSignUpActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -165,6 +167,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         loginActivity.finish();
     }
 
+    @NotNull
     private Account createAccountForLogin() {
         Account account = new Account();
         account.setUsername(key);
@@ -196,7 +199,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         }
     }
 
-    private void showFieldErrorMessage(TextInputLayout textInputLayout, String error) {
+    private void showFieldErrorMessage(@NotNull TextInputLayout textInputLayout, String error) {
         textInputLayout.setError(error);
     }
 
@@ -232,6 +235,8 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         alertDialogWaitForLoginResult.show();
     }
 
+    @NotNull
+    @Contract(" -> new")
     private AlertDialog.Builder createAlertDialogBuilder() {
         return new AlertDialog.Builder(loginActivity);
     }
@@ -284,6 +289,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         return loginActivity.getTextInputLayoutPasswordValue();
     }
 
+    @NotNull
     private LayoutInflater getLayoutInflater() {
         return loginActivity.getLayoutInflater();
     }
@@ -292,7 +298,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         return R.layout.dialog_wait_login_layout;
     }
 
-    private String getAccessToken(InitiateAuthResult initiateAuthResult) {
+    private String getAccessToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getAccessToken();
     }
 
@@ -300,30 +306,31 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         return userSharedPreferences.getStringSharedPreferences(ACCESS_TOKEN);
     }
 
-    private String getIdToken(InitiateAuthResult initiateAuthResult) {
+    private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getIdToken();
     }
 
-    private String getRefreshToken(InitiateAuthResult initiateAuthResult) {
+    private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getRefreshToken();
     }
 
-    private String getUserName(GetUserResult getUserResult) {
+    private String getUserName(@NotNull GetUserResult getUserResult) {
         return getUserResult.getUsername();
     }
 
-    private String getName(List<AttributeType> userAttributes) {
+    private String getName(@NotNull List<AttributeType> userAttributes) {
         return userAttributes.get(2).getValue();
     }
 
-    private String getFamilyName(List<AttributeType> userAttributes) {
+    private String getFamilyName(@NotNull List<AttributeType> userAttributes) {
         return userAttributes.get(3).getValue();
     }
 
-    private String getEmail(List<AttributeType> userAttributes) {
+    private String getEmail(@NotNull List<AttributeType> userAttributes) {
         return userAttributes.get(4).getValue();
     }
 
+    @NotNull
     private String getFieldCannotBeEmptyErrorMessage() {
         return loginActivity.getResources().getString(R.string.field_cannot_be_empty);
     }
@@ -336,6 +343,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         return loginActivity.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }

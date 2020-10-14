@@ -1,11 +1,11 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.fragment.app.FragmentActivity;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,7 +26,9 @@ public class AccomodationDetailMapsActivity extends FragmentActivity implements 
     private RelativeLayout relativeLayoutDetails;
     private ImageView imageViewAccomodation;
     private FloatingActionButton floatingActionButtonGoBack;
-    private TextView textViewName, textViewRating, textViewAddress;
+    private TextView textViewName;
+    private TextView textViewRating;
+    private TextView textViewAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

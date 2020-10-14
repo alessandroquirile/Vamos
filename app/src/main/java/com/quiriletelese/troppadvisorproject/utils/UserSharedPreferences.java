@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -13,7 +15,7 @@ public class UserSharedPreferences implements Constants {
 
     private SharedPreferences sharedPreferences;
 
-    public UserSharedPreferences(Context context) {
+    public UserSharedPreferences(@NotNull Context context) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 

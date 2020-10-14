@@ -30,7 +30,6 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
     private Context context;
     private List<Hotel> hotels;
-    private int position;
 
     public RecyclerViewHotelAdapter(Context context, List<Hotel> hotels) {
         this.context = context;
@@ -46,7 +45,6 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHotelAdapter.ViewHolder holder, int position) {
-        this.position = position;
         setFieldsOnBindViewHolder(holder, position);
     }
 
@@ -59,7 +57,6 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         //setImage(viewHolder, position);
         viewHolder.textViewHotelName.setText(hotels.get(position).getName());
         viewHolder.textViewHotelRating.setText(createAvarageRatingString(hotels.get(position)));
-
     }
 
     private void setImage(ViewHolder viewHolder, int position) {
@@ -84,7 +81,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private String getFirtsImage(int position) {
-        return hotels.get(position).getImages().get(0);
+        return hotels.get(position).getFirstImage();
     }
 
     private String createAvarageRatingString(Hotel hotel) {
@@ -109,7 +106,6 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private Context context;
         private LinearLayout linearLayoutHomePageRecyclerView;
         private ImageView imageViewHotel;
         private TextView textViewHotelName, textViewHotelRating;
@@ -126,7 +122,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         }
 
         private void initializeComponents() {
-            context = itemView.getContext();
+            Context context = itemView.getContext();
             linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewHotel = itemView.findViewById(R.id.image_view_accomodation);
             textViewHotelName = itemView.findViewById(R.id.text_view_accomodation_name);

@@ -1,13 +1,13 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HotelsListActivityController;
@@ -33,7 +33,6 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
         initializeController();
         findByRsql();
         addRecyclerViewOnScrollListener();
-
     }
 
     @Override
@@ -46,7 +45,7 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.button_see_hotels_on_map:
-                startMapsActivity();;
+                startMapsActivity();
                 break;
             case R.id.search_button_menu_hotels_list:
                 showBottomSheetFilters();

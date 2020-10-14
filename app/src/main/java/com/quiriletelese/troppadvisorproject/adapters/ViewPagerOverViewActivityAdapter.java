@@ -1,19 +1,16 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +21,6 @@ public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
 
     private List<String> images;
     private Context context;
-    private ImageView imageViewOverviewActivity;
 
     public ViewPagerOverViewActivityAdapter(List<String> images, Context context) {
         this.images = images;
@@ -44,7 +40,7 @@ public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        imageViewOverviewActivity = new ImageView(context);
+        ImageView imageViewOverviewActivity = new ImageView(context);
         setViewPagerImages(imageViewOverviewActivity, position);
 
         container.addView(imageViewOverviewActivity);

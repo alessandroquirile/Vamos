@@ -17,6 +17,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
 
+import java.util.Objects;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -113,7 +115,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void invalidateOptionsMenu() {
-        getActivity().invalidateOptionsMenu();
+        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
 
     private boolean isLogged() {

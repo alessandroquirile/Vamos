@@ -55,7 +55,7 @@ public class ViewPagerIntroAdapter extends PagerAdapter {
     }
 
     private LayoutInflater createLayoutInflater(){
-        return (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     private View createView(LayoutInflater layoutInflater, ViewGroup container){
@@ -63,25 +63,23 @@ public class ViewPagerIntroAdapter extends PagerAdapter {
     }
 
     private int[] getIntroImages(){
-        int[] introImages = {
+        return new int[]{
                 R.drawable.troppadvisor_logo_no_text,
                 R.drawable.travel_intro,
                 R.drawable.see_on_map_intro,
                 R.drawable.see_reviews_intro,
                 R.drawable.permission_intro
         };
-        return introImages;
     }
 
     private String[] getIntroStrings(){
-        String[] introImages = {
+        return new String[]{
                 getString(R.string.welcome_tropp_advisor),
                 getString(R.string.travel_intro),
                 getString(R.string.see_on_map_intro),
                 getString(R.string.see_reviews_intro),
                 getString(R.string.enjoy_intro)
         };
-        return introImages;
     }
 
     private Resources getResources(){

@@ -91,11 +91,11 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private boolean hasImage(int position) {
-        return attractions.get(position).isImagesGraterThanZero();
+        return attractions.get(position).isImagesSizeGraterThanZero();
     }
 
     private String getFirtsImage(int position) {
-        return attractions.get(position).getImages().get(0);
+        return attractions.get(position).getFirstImage();
     }
 
     private String createAvarageRatingString(Attraction attraction) {

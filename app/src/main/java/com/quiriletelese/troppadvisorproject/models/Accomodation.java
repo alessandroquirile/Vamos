@@ -79,6 +79,14 @@ public abstract class Accomodation implements Serializable {
         return point;
     }
 
+    public Double getLatitude() {
+        return this.point.getX();
+    }
+
+    public Double getLongitude() {
+        return this.point.getY();
+    }
+
     public void setPoint(Point point) {
         this.point = point;
     }
@@ -163,12 +171,15 @@ public abstract class Accomodation implements Serializable {
         return this.address.getType();
     }
 
-    public boolean isImagesGraterThanZero(){
+    public boolean isImagesSizeGraterThanZero() {
         return this.images.size() > 0;
     }
 
-    public boolean hasReviews(){
+    public boolean hasReviews() {
         return this.totalReviews > 0;
     }
 
+    public String getFirstImage() {
+        return this.images.get(0);
+    }
 }

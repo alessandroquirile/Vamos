@@ -16,11 +16,10 @@ import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -53,15 +52,13 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         requestQueue.start();
         String URL = createLoginUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectLogin(account), response -> {
-            volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response));
-
-        }, error -> {
+                jsonObjectLogin(account), response ->
+                volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response)), error -> {
             if (error != null)
                 volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
@@ -74,9 +71,8 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         requestQueue.start();
         String URL = createNewUserURL();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectNewUser(account), response -> {
-            volleyCallBack.onSuccess(getUserResultFromVolley(response));
-        }, error -> {
+                jsonObjectNewUser(account), response ->
+                volleyCallBack.onSuccess(getUserResultFromVolley(response)), error -> {
             if (error != null)
                 checkCreateAccountVolleyError(error.networkResponse, volleyCallBack);
         }) {
@@ -94,14 +90,13 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         requestQueue.start();
         String URL = createRefreshTokenURL();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectRefreshToken(refreshToken), response -> {
-            volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response));
-        }, error -> {
+                jsonObjectRefreshToken(refreshToken), response ->
+                volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response)), error -> {
             if (error != null)
                 volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
@@ -114,14 +109,12 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         requestQueue.start();
         String URL = createGetUserDetailsURL();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectGetUserDetails(accessToken),
-                response -> {
-                    volleyCallBack.onSuccess(getUserResultFromVolley(response));
-                }, error -> {
+                response -> volleyCallBack.onSuccess(getUserResultFromVolley(response)), error -> {
             if (error != null)
                 volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
                 volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
@@ -129,18 +122,26 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         requestQueue.add(jsonObjectRequest);
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createLoginUrl() {
         return BASE_URL + "cognito/login";
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createNewUserURL() {
         return BASE_URL + "cognito/insert-user";
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createRefreshTokenURL() {
         return BASE_URL + "cognito/refresh-token";
     }
 
+    @NotNull
+    @Contract(pure = true)
     private String createGetUserDetailsURL() {
         return BASE_URL + "cognito/get-user-details";
     }
@@ -216,7 +217,7 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         return gson.fromJson(response.toString(), GetUserResult.class);
     }
 
-    private void checkCreateAccountVolleyError(NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
+    private void checkCreateAccountVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
         if (networkResponse.headers.containsKey(USERNAME_ERROR))
             volleyCallBack.onError(USERNAME_ERROR);
         else if (networkResponse.headers.containsKey(EMAIL_ERROR))

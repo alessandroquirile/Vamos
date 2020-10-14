@@ -22,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
-import com.quiriletelese.troppadvisorproject.interfaces.OnBottomSheetFilterSearchButtonClick;
+import com.quiriletelese.troppadvisorproject.interfaces.BottomSheetFilterSearchButtonClick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
     private SeekBar seekBarPrice, seekBarRating, seekBarDistance;
     private MultiSpinnerSearch multiSpinnerSearchTypesOfCuisine;
     private SwitchCompat switchCompatCertificateOfExcellence;
-    private OnBottomSheetFilterSearchButtonClick onBottomSheetFilterSearchButtonClick;
+    private BottomSheetFilterSearchButtonClick bottomSheetFilterSearchButtonClick;
     private AutoCompleteTextViewsAccomodationFilterTextChangeListener autoCompleteTextViewsAccomodationFilterTextChangeListener;
     private List<KeyPairBoolData> keyPairBoolDataList = new ArrayList<>();
 
@@ -71,8 +71,8 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
                 dismiss();
                 break;
             case R.id.image_view_search_restaurant_map_filter:
-                if (onBottomSheetFilterSearchButtonClick != null)
-                    onBottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                if (bottomSheetFilterSearchButtonClick != null)
+                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
                 break;
         }
     }
@@ -215,8 +215,8 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
             textViewDistance.setText(String.format(getResources().getString(R.string.distance_up_to_something), progress));
     }
 
-    public void setOnBottomSheetFilterSearchButtonClick(OnBottomSheetFilterSearchButtonClick onBottomSheetFilterSearchButtonClick) {
-        this.onBottomSheetFilterSearchButtonClick = onBottomSheetFilterSearchButtonClick;
+    public void setBottomSheetFilterSearchButtonClick(BottomSheetFilterSearchButtonClick bottomSheetFilterSearchButtonClick) {
+        this.bottomSheetFilterSearchButtonClick = bottomSheetFilterSearchButtonClick;
     }
 
     public void setAutoCompleteTextViewsAccomodationFilterTextChangeListener(AutoCompleteTextViewsAccomodationFilterTextChangeListener autoCompleteTextViewsAccomodationFilterTextChangeListener) {
