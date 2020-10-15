@@ -51,19 +51,23 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        onOptionsItemSelectedHepler(item);
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void onOptionsItemSelectedHepler(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
         }
-        return super.onOptionsItemSelected(item);
     }
 
-    private void setToolbarSubtitle(){
+    private void setToolbarSubtitle() {
         writeReviewActivityController.setToolbarSubtitle();
     }
 
-    private void checkLogin(){
+    private void checkLogin() {
         writeReviewActivityController.checkLogin();
     }
 
@@ -76,7 +80,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         buttonPublishReview = findViewById(R.id.button_publish_review);
     }
 
-    private void setRatingBarDefaultValue(){
+    private void setRatingBarDefaultValue() {
         ratingBar.setRating(3);
         textViewRating.setText(getResources().getString(R.string.nella_media));
     }
@@ -85,7 +89,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         writeReviewActivityController = new WriteReviewActivityController(this);
     }
 
-    private void setListenerOnViewComponents(){
+    private void setListenerOnViewComponents() {
         writeReviewActivityController.setListenersOnViewComponents();
     }
 
@@ -97,11 +101,11 @@ public class WriteReviewActivity extends AppCompatActivity {
         return textInputLayoutReviewDescription.getEditText();
     }
 
-    public String getTextInputLayoutReviewTitleValue(){
+    public String getTextInputLayoutReviewTitleValue() {
         return Objects.requireNonNull(textInputLayoutReviewTitle.getEditText()).getText().toString();
     }
 
-    public String getTextInputLayoutReviewDescriptionValue(){
+    public String getTextInputLayoutReviewDescriptionValue() {
         return Objects.requireNonNull(textInputLayoutReviewDescription.getEditText()).getText().toString();
     }
 

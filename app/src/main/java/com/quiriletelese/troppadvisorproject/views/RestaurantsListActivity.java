@@ -31,6 +31,9 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_list);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initializeViewComponents();
         initializeController();
         findByRsql();
@@ -49,6 +52,21 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
         return onOptionItemSelectedHelper(item);
     }
 
+    private boolean onOptionItemSelectedHelper(@NotNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.button_see_restaurants_on_map:
+                startRestaurantMapActivity();
+                break;
+            case R.id.button_filter_restaurants_list:
+                showBottomSheetFilters();
+                break;
+        }
+        return true;
+    }
+
     private void initializeViewComponents() {
         recyclerViewRestaurantsList = findViewById(R.id.recycler_view_restaurants_list);
         progressBarRestaurantLoadMore = findViewById(R.id.progress_bar_restaurant_load_more);
@@ -64,18 +82,6 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
 
     private void addRecyclerViewOnScrollListener(){
         restaurantsListActivityController.addRecyclerViewOnScrollListener();
-    }
-
-    private boolean onOptionItemSelectedHelper(@NotNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.button_see_restaurants_on_map:
-                startRestaurantMapActivity();
-                break;
-            case R.id.button_filter_restaurants_list:
-                showBottomSheetFilters();
-                break;
-        }
-        return true;
     }
 
     private void startRestaurantMapActivity() {

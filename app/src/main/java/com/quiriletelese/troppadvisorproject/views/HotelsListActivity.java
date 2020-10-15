@@ -46,6 +46,11 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        onOptionsItemSelectedHelper(item);
+        return true;
+    }
+
+    private void onOptionsItemSelectedHelper(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
@@ -57,7 +62,6 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
                 showBottomSheetFilters();
                 break;
         }
-        return true;
     }
 
     private void initializeViewComponents() {

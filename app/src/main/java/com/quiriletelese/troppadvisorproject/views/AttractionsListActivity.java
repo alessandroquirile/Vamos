@@ -29,6 +29,9 @@ public class AttractionsListActivity extends AppCompatActivity implements Consta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attractions_list);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initializeViewComponents();
         initializeController();
         findByRsql();
@@ -44,7 +47,15 @@ public class AttractionsListActivity extends AppCompatActivity implements Consta
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        onOptionsItemSelectedHelper(item);
+        return true;
+    }
+
+    private void onOptionsItemSelectedHelper(MenuItem item){
         switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
             case R.id.button_see_attractions_on_map:
                 startMapsActivity();
                 break;
@@ -52,7 +63,6 @@ public class AttractionsListActivity extends AppCompatActivity implements Consta
                 showBottomSheetFilters();
                 break;
         }
-        return true;
     }
 
     private void initializeViewComponents() {
