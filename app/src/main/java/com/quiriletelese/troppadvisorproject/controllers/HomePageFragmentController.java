@@ -65,23 +65,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.text_view_hotel_recycler_view:
-                startHotelsListActivity();
-                break;
-            case R.id.text_view_restaurant_recycler_view:
-                startRestaurantsListActivity();
-                break;
-            case R.id.text_view_attraction_recycler_view:
-                startAttractionsListActivity();
-                break;
-            case R.id.button_enable_position:
-                startEnablePositionActivity();
-                break;
-            case R.id.button_provide_permission:
-                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION);
-                break;
-        }
+       onClickHelper(view);
     }
 
     public void findHotelsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
@@ -197,6 +181,26 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         setShimmerRecyclerViewAttractionOnStart();
     }
 
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.text_view_hotel_recycler_view:
+                startHotelsListActivity();
+                break;
+            case R.id.text_view_restaurant_recycler_view:
+                startRestaurantsListActivity();
+                break;
+            case R.id.text_view_attraction_recycler_view:
+                startAttractionsListActivity();
+                break;
+            case R.id.button_enable_position:
+                startEnablePositionActivity();
+                break;
+            case R.id.button_provide_permission:
+                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION);
+                break;
+        }
+    }
+
     public void setListenerOnViewComponents() {
         getTextViewHotelRecyclerView().setOnClickListener(this);
         getTextViewRestaurantRecyclerView().setOnClickListener(this);
@@ -272,9 +276,10 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     @NotNull
     private Intent createHotelsListActivityIntent() {
-        Intent hotelsListActivityIntent = new Intent(getContext(), HotelsListActivity.class);
-        hotelsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
-        return hotelsListActivityIntent;
+        Intent intentHotelsListActivity = new Intent(getContext(), HotelsListActivity.class);
+        intentHotelsListActivity.putExtra(POINT_SEARCH, pointSearch);
+        intentHotelsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentHotelsListActivity;
     }
 
     private void startRestaurantsListActivity() {
@@ -284,9 +289,10 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     @NotNull
     private Intent createRestaurantsListActivityIntent() {
-        Intent restaurantsListActivityIntent = new Intent(getContext(), RestaurantsListActivity.class);
-        restaurantsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
-        return restaurantsListActivityIntent;
+        Intent intentRestaurantsListActivity = new Intent(getContext(), RestaurantsListActivity.class);
+        intentRestaurantsListActivity.putExtra(POINT_SEARCH, pointSearch);
+        intentRestaurantsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentRestaurantsListActivity;
     }
 
     private void startAttractionsListActivity() {
@@ -296,9 +302,10 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     @NotNull
     private Intent createAttractionsListActivityIntent() {
-        Intent attractionsListActivityIntent = new Intent(getContext(), AttractionsListActivity.class);
-        attractionsListActivityIntent.putExtra(POINT_SEARCH, pointSearch);
-        return attractionsListActivityIntent;
+        Intent intentAttractionsListActivity = new Intent(getContext(), AttractionsListActivity.class);
+        intentAttractionsListActivity.putExtra(POINT_SEARCH, pointSearch);
+        intentAttractionsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentAttractionsListActivity;
     }
 
     private void startEnablePositionActivity() {

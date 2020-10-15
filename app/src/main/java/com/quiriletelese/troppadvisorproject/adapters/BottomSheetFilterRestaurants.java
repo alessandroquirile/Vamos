@@ -66,15 +66,7 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image_view_go_back_restaurant_map_filter:
-                dismiss();
-                break;
-            case R.id.image_view_search_restaurant_map_filter:
-                if (bottomSheetFilterSearchButtonClick != null)
-                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
-                break;
-        }
+        onClickHelper(view);
     }
 
     @Override
@@ -105,6 +97,18 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    private void onClickHelper(View view) {
+        switch (view.getId()) {
+            case R.id.image_view_go_back_restaurant_map_filter:
+                dismiss();
+                break;
+            case R.id.image_view_search_restaurant_map_filter:
+                if (bottomSheetFilterSearchButtonClick != null)
+                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                break;
+        }
     }
 
     private void initializeBottomSheetComponents(View bottomSheetView) {
@@ -231,11 +235,11 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
         return autoCompleteTextViewCity;
     }
 
-    public void setAutoCompleteTextViewNameAdapter(ArrayAdapter<String> arrayAdapter ) {
+    public void setAutoCompleteTextViewNameAdapter(ArrayAdapter<String> arrayAdapter) {
         autoCompleteTextViewName.setAdapter(arrayAdapter);
     }
 
-    public void setAutoCompleteTextViewCityAdapter(ArrayAdapter<String> arrayAdapter ) {
+    public void setAutoCompleteTextViewCityAdapter(ArrayAdapter<String> arrayAdapter) {
         autoCompleteTextViewCity.setAdapter(arrayAdapter);
     }
 

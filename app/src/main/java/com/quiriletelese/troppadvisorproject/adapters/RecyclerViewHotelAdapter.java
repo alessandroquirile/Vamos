@@ -54,7 +54,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setImage(viewHolder, position);
+        setImage(viewHolder, position);
         viewHolder.textViewHotelName.setText(hotels.get(position).getName());
         viewHolder.textViewHotelRating.setText(createAvarageRatingString(hotels.get(position)));
     }
@@ -65,15 +65,16 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
-                    .error(R.drawable.pizza)
+                    .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewHotel);
         }
     }
 
     private void startDetailActivity(String id) {
-        Intent intent = new Intent(context, HotelDetailActivity.class);
-        intent.putExtra(ID, id);
-        context.startActivity(intent);
+        Intent intentDetailActivity = new Intent(context, HotelDetailActivity.class);
+        intentDetailActivity.putExtra(ID, id);
+        intentDetailActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intentDetailActivity);
     }
 
     private boolean hasImage(int position) {
@@ -89,7 +90,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private String createAvarageRatingStringHelper(Hotel hotel) {
-        return hotel.getAvarageRating() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(Hotel hotel) {

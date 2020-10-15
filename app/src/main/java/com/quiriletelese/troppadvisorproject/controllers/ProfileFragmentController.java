@@ -52,7 +52,9 @@ public class ProfileFragmentController implements Constants {
     @NotNull
     @Contract(" -> new")
     private Intent createStartLoginActivityIntent() {
-        return new Intent(getContext(), LoginActivity.class);
+        Intent intentLoginActivity = new Intent(getContext(), LoginActivity.class);
+        intentLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentLoginActivity;
     }
 
     private void showViewNoLoginProfileError() {

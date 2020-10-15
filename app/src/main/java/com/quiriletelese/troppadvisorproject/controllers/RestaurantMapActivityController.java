@@ -94,17 +94,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.text_view_search_restaurants_on_map:
-                showBottomSheetMapFilters();
-                break;
-            case R.id.image_view_restaurant_map_go_back:
-                onBackPressed();
-                break;
-            case R.id.floating_action_button_center_position_on_restaurants:
-                zoomOnMap();
-                break;
-        }
+        onClickHelper(view);
     }
 
     @Override
@@ -502,36 +492,37 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     private void setRelativeLayoutInformationHotelFields(@NotNull Marker marker) {
         restaurant = getRestaurantFromMarkerClick(marker.getTitle());
-        //setRestaurantImage(restaurant);
+        setImage(restaurant);
         getTextViewName().setText(restaurant.getName());
         getTextViewRating().setText(createAvarageRatingString(restaurant));
         getTextViewAddress().setText(createAddressString(restaurant));
     }
 
-    private void setRestaurantImage(Restaurant restaurant) {
+    private void setImage(Restaurant restaurant) {
         if (hasImage(restaurant))
             Picasso.with(getContext())
                     .load(restaurant.getImages().get(0))
                     .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(getImageViewRestaurant());
         else
-            getImageViewRestaurant().setImageDrawable(null);
+            getImageViewRestaurant().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
     }
 
     private boolean hasImage(@NotNull Restaurant restaurant) {
-        return restaurant.isImagesSizeGraterThanZero();
+        return restaurant.hasImage();
     }
 
     @NotNull
     private String createAddressString(@NotNull Restaurant restaurant) {
-        String hotelAddress = "";
-        hotelAddress = hotelAddress.concat(restaurant.getTypeOfAddress() + " ");
-        hotelAddress = hotelAddress.concat(restaurant.getStreet() + ", ");
-        hotelAddress = hotelAddress.concat(restaurant.getHouseNumber() + ", ");
-        hotelAddress = hotelAddress.concat(restaurant.getCity() + ", ");
-        hotelAddress = hotelAddress.concat(restaurant.getProvince() + ", ");
-        hotelAddress = hotelAddress.concat(restaurant.getPostalCode());
-        return hotelAddress;
+        String restaurantAddress = "";
+        restaurantAddress = restaurantAddress.concat(restaurant.getTypeOfAddress() + " ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getStreet() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getHouseNumber() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getCity() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getProvince() + ", ");
+        restaurantAddress = restaurantAddress.concat(restaurant.getPostalCode());
+        return restaurantAddress;
     }
 
     private String createAvarageRatingString(Restaurant restaurant) {
@@ -544,7 +535,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private boolean hasReviews(@NotNull Restaurant restaurant) {
-        return !restaurant.getAvarageRating().equals(0);
+        return restaurant.hasReviews();
     }
 
     private Restaurant getRestaurantFromMarkerClick(String restaurantId) {
@@ -654,6 +645,20 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     public void setComponentProperties() {
         getRelativeLayoutDetails().animate().translationY(getRelativeLayoutDetails().getHeight() + 100);
+    }
+
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.text_view_search_restaurants_on_map:
+                showBottomSheetMapFilters();
+                break;
+            case R.id.image_view_restaurant_map_go_back:
+                onBackPressed();
+                break;
+            case R.id.floating_action_button_center_position_on_restaurants:
+                zoomOnMap();
+                break;
+        }
     }
 
     public void setListenerOnViewComponents() {

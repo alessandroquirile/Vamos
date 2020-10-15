@@ -59,9 +59,9 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
         imageViewMapGoBack = findViewById(R.id.image_view_hotel_map_go_back);
         imageViewHotel = findViewById(R.id.image_view_hotel);
         textViewSearchOnMap = findViewById(R.id.text_view_search_hotels_on_map);
-        textViewName = findViewById(R.id.text_view_hotel_name);
-        textViewRating = findViewById(R.id.text_view_hotel_rating);
-        textViewAddress = findViewById(R.id.text_view_hotel_address);
+        textViewName = findViewById(R.id.text_view_hotel_map_name);
+        textViewRating = findViewById(R.id.text_view_hotel_map_rating);
+        textViewAddress = findViewById(R.id.text_view_hotel_map_address);
         floatingActionButtonCenterPositionOnHotels = findViewById(R.id.floating_action_button_center_position_on_hotels);
     }
 

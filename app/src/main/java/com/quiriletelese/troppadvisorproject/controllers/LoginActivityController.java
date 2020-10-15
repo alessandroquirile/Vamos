@@ -50,18 +50,8 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     @Override
-    public void onClick(@NotNull View v) {
-        switch (v.getId()) {
-            case R.id.button_login:
-                checkUserInformations();
-                break;
-            case R.id.text_view_sign_in:
-                startSignUpActivity();
-                break;
-            case R.id.text_view_cancel_login:
-                finish();
-                break;
-        }
+    public void onClick(@NotNull View view) {
+       onClickHelper(view);
     }
 
     private void loginHelper(VolleyCallBack volleyCallBack) {
@@ -130,6 +120,20 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         loginActivity.runOnUiThread(() -> {
             Toast.makeText(loginActivity, getString(string), Toast.LENGTH_LONG).show();
         });
+    }
+
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.button_login:
+                checkUserInformations();
+                break;
+            case R.id.text_view_sign_in:
+                startSignUpActivity();
+                break;
+            case R.id.text_view_cancel_login:
+                finish();
+                break;
+        }
     }
 
     public void setListenerOnViewComponents() {

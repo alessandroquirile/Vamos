@@ -59,15 +59,7 @@ public class BottomSheetFilterHotels extends BottomSheetDialogFragment implement
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image_view_go_back_hotel_map_filter:
-                dismiss();
-                break;
-            case R.id.image_view_search_hotel_map_filter:
-                if (bottomSheetFilterSearchButtonClick != null)
-                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
-                break;
-        }
+        onCLickHelper(view);
     }
 
     @Override
@@ -98,6 +90,18 @@ public class BottomSheetFilterHotels extends BottomSheetDialogFragment implement
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    private void onCLickHelper(View view){
+        switch (view.getId()) {
+            case R.id.image_view_go_back_hotel_map_filter:
+                dismiss();
+                break;
+            case R.id.image_view_search_hotel_map_filter:
+                if (bottomSheetFilterSearchButtonClick != null)
+                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                break;
+        }
     }
 
     private void initializeBottomSheetComponents(View bottomSheetView) {

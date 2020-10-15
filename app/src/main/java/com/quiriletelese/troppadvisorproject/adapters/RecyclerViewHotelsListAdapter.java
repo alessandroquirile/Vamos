@@ -63,7 +63,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position) {
-        //setImage(viewHolder, position);
+        setImage(viewHolder, position);
         viewHolder.textViewAccomodationName.setText(hotels.get(position).getName());
         viewHolder.textViewAccomodationReview.setText(createAvarageRatingString(hotels.get(position)));
         viewHolder.textViewAccomodationAddress.setText(createAddressString(hotels.get(position)));
@@ -75,6 +75,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
         }
     }
@@ -91,7 +92,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private boolean hasImage(int position) {
-        return hotels.get(position).isImagesSizeGraterThanZero();
+        return hotels.get(position).hasImage();
     }
 
     private String getFirtsImage(int position) {
@@ -103,7 +104,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private String createAvarageRatingStringHelper(Hotel hotel) {
-        return hotel.getAvarageRating() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(Hotel hotel) {
@@ -140,7 +141,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
             imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation);
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
-            textViewAccomodationAddress = itemView.findViewById(R.id.text_view_accomodation_address);
+            textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);
             buttonWriteReview = itemView.findViewById(R.id.button_write_review);
             buttonSeeAccomodationOnMap = itemView.findViewById(R.id.button_see_accomodation_on_map);
         }
@@ -169,6 +170,14 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
             context.startActivity(createWriteReviewActivityIntent());
         }
 
+        private void startAccomodationDetailMapsActivity() {
+            context.startActivity(createAccomodationDetailMapsIntent());
+        }
+
+        private void startDetailActivity() {
+            context.startActivity(createStartDetailActivityIntent());
+        }
+
         private Intent createWriteReviewActivityIntent() {
             Intent writeReviewActivityIntent = new Intent(context, WriteReviewActivity.class);
             writeReviewActivityIntent.putExtra(ID, getId());
@@ -177,20 +186,12 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
             return writeReviewActivityIntent;
         }
 
-        private void startAccomodationDetailMapsActivity() {
-            context.startActivity(createAccomodationDetailMapsIntent());
-        }
-
         private Intent createAccomodationDetailMapsIntent() {
             Intent accomodationDetailMapsIntent = new Intent(context, AccomodationDetailMapsActivity.class);
             accomodationDetailMapsIntent.putExtra(ACCOMODATION, getHotel());
             accomodationDetailMapsIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
             accomodationDetailMapsIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return accomodationDetailMapsIntent;
-        }
-
-        private void startDetailActivity() {
-            context.startActivity(createStartDetailActivityIntent());
         }
 
         private Intent createStartDetailActivityIntent() {

@@ -14,14 +14,14 @@ public abstract class Accomodation implements Serializable {
 
     protected String id;
     protected String name;
-    protected Integer avarageRating;
-    protected Integer avaragePrice;
+    protected Double avarageRating;
+    protected Double avaragePrice;
     protected String phoneNumber;
     protected Address address;
     protected Point point;
     protected List<Review> reviews;
     private Long totalReviews;
-    private Long totalRating;
+    private Double totalRating;
     protected List<String> images;
     protected boolean hasCertificateOfExcellence;
     protected String addedDate;
@@ -43,19 +43,19 @@ public abstract class Accomodation implements Serializable {
         this.name = name;
     }
 
-    public Integer getAvarageRating() {
+    public Double getAvarageRating() {
         return avarageRating;
     }
 
-    public void setAvarageRating(Integer avarageRating) {
+    public void setAvarageRating(Double avarageRating) {
         this.avarageRating = avarageRating;
     }
 
-    public Integer getAvaragePrice() {
+    public Double getAvaragePrice() {
         return avaragePrice;
     }
 
-    public void setAvaragePrice(Integer avaragePrice) {
+    public void setAvaragePrice(Double avaragePrice) {
         this.avaragePrice = avaragePrice;
     }
 
@@ -107,11 +107,11 @@ public abstract class Accomodation implements Serializable {
         this.totalReviews = totalReviews;
     }
 
-    public Long getTotalRating() {
+    public Double getTotalRating() {
         return totalRating;
     }
 
-    public void setTotalRating(Long totalRating) {
+    public void setTotalRating(Double totalRating) {
         this.totalRating = totalRating;
     }
 
@@ -171,8 +171,12 @@ public abstract class Accomodation implements Serializable {
         return this.address.getType();
     }
 
-    public boolean isImagesSizeGraterThanZero() {
+    public boolean hasImage() {
         return this.images.size() > 0;
+    }
+
+    public boolean hasAvarageRating(){
+        return !this.avarageRating.equals(0d);
     }
 
     public boolean hasReviews() {
@@ -182,4 +186,5 @@ public abstract class Accomodation implements Serializable {
     public String getFirstImage() {
         return this.images.get(0);
     }
+
 }

@@ -34,16 +34,15 @@ import java.util.List;
 public class SeeReviewsActivityController implements Constants {
 
     private SeeReviewsActivity seeReviewsActivity;
-    private DAOFactory daoFactory;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
     private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
-    private int page = 0;
+    private int page = 0, size = 30;
 
     public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
         this.seeReviewsActivity = seeReviewsActivity;
     }
 
     private void findAccomodationReviewsHelper(VolleyCallBack volleyCallBack) {
-        int size = 30;
         getReviewDAO().findAccomodationReviews(volleyCallBack, getAccomodationId(), getContext(), page, size);
     }
 
@@ -175,7 +174,7 @@ public class SeeReviewsActivityController implements Constants {
     }
 
     private void setProgressBarLoadMoreVisibility(int visibility){
-        getProgressBarLoadMore().setVisibility(View.VISIBLE);
+        getProgressBarLoadMore().setVisibility(visibility);
     }
 
     public void setToolbarSubtitle() {

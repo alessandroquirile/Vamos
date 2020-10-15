@@ -52,7 +52,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     private RecyclerViewRestaurantsListAdapter recyclerViewRestaurantsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private List<String> typesOfCuisine = new ArrayList<>();
-    private int page = 0, size = 3;
+    private int page = 0, size = 30;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
 

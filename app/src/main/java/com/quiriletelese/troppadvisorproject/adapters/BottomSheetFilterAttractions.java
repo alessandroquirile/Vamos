@@ -58,15 +58,7 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image_view_go_back_attraction_map_filter:
-                dismiss();
-                break;
-            case R.id.image_view_search_attraction_map_filter:
-                if (bottomSheetFilterSearchButtonClick != null)
-                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
-                break;
-        }
+        onClickHelper(view);
     }
 
     @Override
@@ -97,6 +89,18 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.image_view_go_back_attraction_map_filter:
+                dismiss();
+                break;
+            case R.id.image_view_search_attraction_map_filter:
+                if (bottomSheetFilterSearchButtonClick != null)
+                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                break;
+        }
     }
 
     private void initializeBottomSheetComponents(View bottomSheetView) {

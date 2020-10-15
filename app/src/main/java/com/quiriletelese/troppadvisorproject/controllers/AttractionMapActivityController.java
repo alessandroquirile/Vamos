@@ -502,7 +502,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private void setRelativeLayoutDetailsFields(@NotNull Marker marker) {
         attraction = getAttractionFromMarkerClick(marker.getTitle());
-        //setAttractionImage(attraction);
+        setImage(attraction);
         getTextViewName().setText(attraction.getName());
         getTextViewRating().setText(createAvarageRatingString(attraction));
         getTextViewAddress().setText(createAddressString(attraction));
@@ -513,13 +513,14 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
             Picasso.with(getContext())
                     .load(attraction.getImages().get(0))
                     .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(getImageViewAttraction());
         else
-            getImageViewAttraction().setImageDrawable(null);
+            getImageViewAttraction().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
     }
 
     private boolean hasImage(@NotNull Attraction attraction) {
-        return attraction.isImagesSizeGraterThanZero();
+        return attraction.hasImage();
     }
 
     @NotNull

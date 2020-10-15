@@ -20,11 +20,6 @@
             app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/troppadvisor_logo" />
-
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager_hotel_detail"
                 android:layout_width="match_parent"
@@ -95,14 +90,12 @@
                 app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 
             <TextView
-                android:id="@+id/text_view_accomodation_address"
+                android:id="@+id/text_view_hotel_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
-                android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:maxLines="1"
                 android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_location_primary_color" />
 

@@ -48,7 +48,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private AttractionFilter attractionFilter;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
-    private int page = 0, size = 3;
+    private int page = 0, size = 30;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
 
@@ -377,12 +377,13 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     public void startMapsActivity() {
-        Intent attractionsMapActivityIntent = new Intent(getContext(), AttractionMapActivity.class);
-        putPointSearch(attractionsMapActivityIntent);
-        putRsqlQuery(attractionsMapActivityIntent);
-        putAttractionName(attractionsMapActivityIntent);
-        putAttractionFilter(attractionsMapActivityIntent);
-        attractionsListActivity.startActivity(attractionsMapActivityIntent);
+        Intent intentAttractionsMapActivity = new Intent(getContext(), AttractionMapActivity.class);
+        putPointSearch(intentAttractionsMapActivity);
+        putRsqlQuery(intentAttractionsMapActivity);
+        putAttractionName(intentAttractionsMapActivity);
+        putAttractionFilter(intentAttractionsMapActivity);
+        intentAttractionsMapActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        attractionsListActivity.startActivity(intentAttractionsMapActivity);
     }
 
     private void putPointSearch(@NotNull Intent attractionMapsActivityIntent) {

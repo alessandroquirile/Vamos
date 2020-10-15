@@ -43,15 +43,8 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     @Override
-    public void onClick(@NotNull View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_up:
-                createAccount();
-                break;
-            case R.id.floating_action_button_go_back_sign_up_activity:
-                onBackPressed();
-                break;
-        }
+    public void onClick(@NotNull View view) {
+        onClickHelper(view);
     }
 
     @Override
@@ -76,6 +69,17 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
                 volleyCallbackOnError(errorCode);
             }
         });
+    }
+
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.button_sign_up:
+                createAccount();
+                break;
+            case R.id.floating_action_button_go_back_sign_up_activity:
+                onBackPressed();
+                break;
+        }
     }
 
     public void setListenerOnViewComponents() {

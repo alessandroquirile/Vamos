@@ -29,6 +29,9 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hotels_list);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initializeViewComponents();
         initializeController();
         findByRsql();
@@ -44,6 +47,9 @@ public class HotelsListActivity extends AppCompatActivity implements Constants {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
             case R.id.button_see_hotels_on_map:
                 startMapsActivity();
                 break;

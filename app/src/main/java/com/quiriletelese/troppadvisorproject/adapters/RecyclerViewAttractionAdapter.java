@@ -53,7 +53,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setImage(viewHolder, position);
+        setImage(viewHolder, position);
         viewHolder.textViewAttractionName.setText(attractions.get(position).getName());
         viewHolder.textViewAttractionRating.setText(createAvarageRatingString(attractions.get(position)));
     }
@@ -63,19 +63,21 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
             Picasso.with(context).load(getFirtsImage(position))
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.pizza)
+                    .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAttraction);
         }
     }
 
-    private void startAttractionDetailActivity(String id) {
-        Intent intent = new Intent(context, AttractionDetailActivity.class);
-        intent.putExtra(ID, id);
-        context.startActivity(intent);
+    private void startDetailActivity(String id) {
+        Intent intentDetailActivity = new Intent(context, AttractionDetailActivity.class);
+        intentDetailActivity.putExtra(ID, id);
+        intentDetailActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intentDetailActivity);
     }
 
     private boolean hasImage(int position) {
-        return attractions.get(position).isImagesSizeGraterThanZero();
+        return attractions.get(position).hasImage();
     }
 
     private String getFirtsImage(int position) {
@@ -87,7 +89,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private String createAvarageRatingStringHelper(Attraction attraction) {
-        return attraction.getAvarageRating() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private Resources getResources() {
@@ -99,7 +101,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private boolean hasReviews(Attraction attraction) {
-        return !attraction.getAvarageRating().equals(0);
+        return attraction.hasReviews();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -113,7 +115,6 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initializeComponents() {
-            Context context = itemView.getContext();
             LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewAttraction = itemView.findViewById(R.id.image_view_accomodation);
             textViewAttractionName = itemView.findViewById(R.id.text_view_accomodation_name);
@@ -123,7 +124,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
         @Override
         public void onClick(View view) {
-            startAttractionDetailActivity(attractions.get(this.getAdapterPosition()).getId());
+            startDetailActivity(attractions.get(this.getAdapterPosition()).getId());
         }
 
     }

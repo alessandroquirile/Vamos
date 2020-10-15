@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,9 +20,7 @@ import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityA
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
@@ -32,6 +31,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -50,14 +50,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.floating_action_button_restaurant_write_review:
-                startWriteReviewActivity();
-                break;
-            case R.id.button_restaurant_read_reviews:
-                seeReviews();
-                break;
-        }
+        onClickHelper(view);
     }
 
     private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
@@ -81,16 +74,35 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         }, getId());
     }
 
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.text_view_restaurant_phone_number:
+                startCallActivity();
+                break;
+            case R.id.text_view_restaurant_address:
+                startMapsActivity();
+                break;
+            case R.id.floating_action_button_restaurant_write_review:
+                startWriteReviewActivity();
+                break;
+            case R.id.button_restaurant_read_reviews:
+                seeReviews();
+                break;
+        }
+    }
+
     public void setListenerOnViewComponents() {
+        getTextViewPhoneNumber().setOnClickListener(this);
+        getTextViewAddress().setOnClickListener(this);
         getFloatingActionButtonWriteReview().setOnClickListener(this);
         getButtonReadReviews().setOnClickListener(this);
     }
 
     private void initializeActivityFields() {
         setCollapsingToolbarLayoutTitle(getName());
-        setAvarageRating(restaurant);
+        setAvarageRating();
         setCertificateOfExcellence(isHasCertificateOfExcellence());
-        setAddress(getAddress());
+        setAddress();
         setOpeningTime(getOpeningTime());
         setPhoneNunmber(getPhoneNumber());
         setAvaragePrice(getAvaragePrice());
@@ -119,8 +131,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(@NotNull Restaurant restaurant) {
-        if (!hasAvarageRating(restaurant.getAvarageRating()))
+    private void setAvarageRating() {
+        if (!hasAvarageRating())
             getTextViewAvarageRating().setText(R.string.no_reviews);
         else
             getTextViewAvarageRating().setText(createAvarageRatingString(restaurant));
@@ -140,20 +152,20 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
             getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
-    private void setAddress(Address address) {
-        String restaurantAddress = createAddressString(address);
+    private void setAddress(){
+        String restaurantAddress = createAddressString();
         getTextViewAddress().setText(restaurantAddress);
     }
 
     @NotNull
-    private String createAddressString(@NotNull Address address) {
+    private String createAddressString() {
         String restaurantAddress = "";
-        restaurantAddress = restaurantAddress.concat(address.getType() + " ");
-        restaurantAddress = restaurantAddress.concat(address.getStreet() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getHouseNumber() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getCity() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getProvince() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getPostalCode());
+        restaurantAddress = restaurantAddress.concat(getTypeOfAddress() + " ");
+        restaurantAddress = restaurantAddress.concat(getStreet() + ", ");
+        restaurantAddress = restaurantAddress.concat(getHouseNumber() + ", ");
+        restaurantAddress = restaurantAddress.concat(getCity() + ", ");
+        restaurantAddress = restaurantAddress.concat(getProvince() + ", ");
+        restaurantAddress = restaurantAddress.concat(getPostalCode());
         return restaurantAddress;
     }
 
@@ -171,12 +183,12 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
             getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
-    private void setAvaragePrice(Integer price) {
+    private void setAvaragePrice(Double price) {
         getTextViewAvaragePrice().setText(createAvaragePriceString(price));
     }
 
     @NotNull
-    private String createAvaragePriceString(Integer price) {
+    private String createAvaragePriceString(Double price) {
         String avaragePrice = "";
         avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
         avaragePrice = avaragePrice.concat(price + " ");
@@ -202,12 +214,36 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         getTextViewTypeOfCuisineList().setText(getString(R.string.no_information_available));
     }
 
+    private void startCallActivity(){
+        getContext().startActivity(createCallActivityIntent());
+    }
+
+    private void startMapsActivity(){
+        getContext().startActivity(createMapsActivityIntent());
+    }
+
     private void startWriteReviewActivity() {
-        restaurantDetailActivity.startActivity(createWriteReviewActivityIntent());
+        getContext().startActivity(createWriteReviewActivityIntent());
     }
 
     private void startSeeReviewsActivity() {
-        restaurantDetailActivity.startActivity(createSeeReviewsActivityIntent());
+        getContext().startActivity(createSeeReviewsActivityIntent());
+    }
+
+    @NotNull
+    private Intent createCallActivityIntent() {
+        Intent callActivityIntent = new Intent(Intent.ACTION_DIAL);
+        callActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        callActivityIntent.setData(Uri.parse("tel:" + getTextViewPhoneNumber().getText().toString()));
+        return callActivityIntent;
+    }
+
+    @NotNull
+    private Intent createMapsActivityIntent() {
+        String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + createAddressString());
+        Intent mapsActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        mapsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return mapsActivityIntent;
     }
 
     @NotNull
@@ -215,6 +251,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(ID, getId());
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+        writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
 
@@ -223,6 +260,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
         seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
         seeReviewsActivityIntent.putExtra(ID, getId());
+        seeReviewsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return seeReviewsActivityIntent;
     }
 
@@ -297,13 +335,36 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return restaurantDetailActivity.getButtonReadReviews();
     }
 
-    @Contract(pure = true)
-    private boolean hasAvarageRating(@NotNull Integer avarageRating) {
-        return !avarageRating.equals(0);
+    private boolean hasAvarageRating() {
+        return restaurant.hasAvarageRating();
     }
 
     private boolean hasReviews() {
-        return getReviews().size() > 0;
+        return restaurant.hasReviews();
+    }
+
+    private String getTypeOfAddress(){
+        return restaurant.getTypeOfAddress();
+    }
+
+    private String getStreet(){
+        return restaurant.getStreet();
+    }
+
+    private String getHouseNumber(){
+        return restaurant.getHouseNumber();
+    }
+
+    private String getCity(){
+        return restaurant.getCity();
+    }
+
+    private String getProvince(){
+        return restaurant.getProvince();
+    }
+
+    private String getPostalCode(){
+        return restaurant.getPostalCode();
     }
 
     private ViewPager getViewPager() {
@@ -312,10 +373,6 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
 
     private List<String> getImages(){
         return restaurant.getImages();
-    }
-
-    private List<Review> getReviews(){
-        return restaurant.getReviews();
     }
 
     private Intent getIntent(){
@@ -330,16 +387,12 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         return restaurant.getName();
     }
 
-    private Integer getAvaragePrice(){
+    private Double getAvaragePrice(){
         return restaurant.getAvaragePrice();
     }
 
     private boolean isHasCertificateOfExcellence(){
         return restaurant.isHasCertificateOfExcellence();
-    }
-
-    private Address getAddress(){
-        return restaurant.getAddress();
     }
 
     private String getOpeningTime() {

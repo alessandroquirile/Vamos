@@ -48,7 +48,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     private HotelFilter hotelFilter;
     private RecyclerViewHotelsListAdapter recyclerViewHotelsListAdapter;
     private DAOFactory daoFactory = DAOFactory.getInstance();
-    private int page = 0, size = 3;
+    private int page = 0, size = 30;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
 
@@ -370,12 +370,13 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     public void startMapsActivity() {
-        Intent hotelMapsActivityIntent = new Intent(getContext(), HotelMapActivity.class);
-        putPointSearch(hotelMapsActivityIntent);
-        putRsqlQuery(hotelMapsActivityIntent);
-        putHotelName(hotelMapsActivityIntent);
-        putHotelFilter(hotelMapsActivityIntent);
-        hotelsListActivity.startActivity(hotelMapsActivityIntent);
+        Intent intentHotelMapsActivity = new Intent(getContext(), HotelMapActivity.class);
+        putPointSearch(intentHotelMapsActivity);
+        putRsqlQuery(intentHotelMapsActivity);
+        putHotelName(intentHotelMapsActivity);
+        putHotelFilter(intentHotelMapsActivity);
+        intentHotelMapsActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        hotelsListActivity.startActivity(intentHotelMapsActivity);
     }
 
     private void putPointSearch(@NotNull Intent hotelMapsActivityIntent) {

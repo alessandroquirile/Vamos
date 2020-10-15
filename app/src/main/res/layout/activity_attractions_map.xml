@@ -95,7 +95,7 @@
                 tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:id="@+id/text_view_attraction_name"
+                    android:id="@+id/text_view_attraction_map_name"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,18 +106,18 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/text_view_attraction_rating"
+                    android:id="@+id/text_view_attraction_map_rating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:drawableStart="@drawable/icon_star_yellow"
                     android:drawablePadding="5dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:drawableStartCompat="@drawable/icon_star_yellow" />
 
                 <TextView
-                    android:id="@+id/text_view_attraction_address"
+                    android:id="@+id/text_view_attraction_map_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end" />

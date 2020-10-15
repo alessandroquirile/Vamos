@@ -63,7 +63,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position) {
-        //setImage(viewHolder, position);
+        setImage(viewHolder, position);
         viewHolder.textViewAccomodationName.setText(attractions.get(position).getName());
         viewHolder.textViewAccomodationReview.setText(createAvarageRatingString(attractions.get(position)));
         viewHolder.textViewAccomodationAddress.setText(createAddressString(attractions.get(position)));
@@ -75,6 +75,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
         }
     }
@@ -91,7 +92,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private boolean hasImage(int position) {
-        return attractions.get(position).isImagesSizeGraterThanZero();
+        return attractions.get(position).hasImage();
     }
 
     private String getFirtsImage(int position) {
@@ -103,7 +104,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private String createAvarageRatingStringHelper(Attraction attraction) {
-        return attraction.getAvarageRating() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private Resources getResources() {
@@ -115,7 +116,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private boolean hasReviews(Attraction attraction) {
-        return !attraction.getAvarageRating().equals(0);
+        return attraction.hasReviews();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -140,7 +141,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
             imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation);
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
-            textViewAccomodationAddress = itemView.findViewById(R.id.text_view_accomodation_address);
+            textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);
             buttonWriteReview = itemView.findViewById(R.id.button_write_review);
             buttonSeeAccomodationOnMap = itemView.findViewById(R.id.button_see_accomodation_on_map);
         }

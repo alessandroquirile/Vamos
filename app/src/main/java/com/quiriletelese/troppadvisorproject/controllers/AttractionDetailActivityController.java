@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,8 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -48,15 +51,10 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.floating_action_button_attraction_write_review:
-                startWriteReviewActivity();
-                break;
-            case R.id.button_attraction_read_reviews:
-                seeReviews();
-                break;
-        }
+        onClickHelper(view);
     }
+
+
 
     private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
         getAttractionDAO().findById(volleyCallBack, id, getContext());
@@ -79,7 +77,26 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         }, getId());
     }
 
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.text_view_attraction_phone_number:
+                startCallActivity();
+                break;
+            case R.id.text_view_attraction_address:
+                startMapsActivity();
+                break;
+            case R.id.floating_action_button_attraction_write_review:
+                startWriteReviewActivity();
+                break;
+            case R.id.button_attraction_read_reviews:
+                seeReviews();
+                break;
+        }
+    }
+
     public void setListenerOnViewComponents() {
+        getTextViewPhoneNumber().setOnClickListener(this);
+        getTextViewAddress().setOnClickListener(this);
         getFloatingActionButtonWriteReview().setOnClickListener(this);
         getButtonReadReviews().setOnClickListener(this);
     }
@@ -87,9 +104,9 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     public void initializeActivityFields() {
         setCollapsingToolbarLayoutTitle(getName());
         setAvaragePrice(getAvaragePrice());
-        setAvarageRating(attraction);
+        setAvarageRating();
         setCertificateOfExcellence(isHasCertificateOfExcellence());
-        setAddress(getAddress());
+        setAddress();
         setOpeningTime(getOpeningTime());
         setPhoneNunmber(getPhoneNumber());
     }
@@ -114,14 +131,14 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(Attraction attraction) {
-        if (!hasAvarageRating(attraction.getAvarageRating()))
+    private void setAvarageRating() {
+        if (!hasAvarageRating())
             getTextViewAvarageRating().setText(R.string.no_reviews);
         else
-            getTextViewAvarageRating().setText(createAvarageRatingString(attraction));
+            getTextViewAvarageRating().setText(createAvarageRatingString());
     }
 
-    private String createAvarageRatingString(Attraction attraction) {
+    private String createAvarageRatingString() {
         String avarageRating = "";
         avarageRating = avarageRating.concat(attraction.getAvarageRating() + "/5 (");
         avarageRating = avarageRating.concat(attraction.getTotalReviews() + " ");
@@ -134,18 +151,18 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
-    private void setAddress(Address address) {
-        getTextViewAddress().setText(createAddressString(address));
+    private void setAddress() {
+        getTextViewAddress().setText(createAddressString());
     }
 
-    private String createAddressString(Address address) {
+    private String createAddressString() {
         String restaurantAddress = "";
-        restaurantAddress = restaurantAddress.concat(address.getType() + " ");
-        restaurantAddress = restaurantAddress.concat(address.getStreet() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getHouseNumber() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getCity() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getProvince() + ", ");
-        restaurantAddress = restaurantAddress.concat(address.getPostalCode());
+        restaurantAddress = restaurantAddress.concat(getTypeOfAddress() + " ");
+        restaurantAddress = restaurantAddress.concat(getStreet() + ", ");
+        restaurantAddress = restaurantAddress.concat(getHouseNumber() + ", ");
+        restaurantAddress = restaurantAddress.concat(getCity() + ", ");
+        restaurantAddress = restaurantAddress.concat(getProvince() + ", ");
+        restaurantAddress = restaurantAddress.concat(getPostalCode());
         return restaurantAddress;
     }
 
@@ -163,14 +180,14 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
-    private void setAvaragePrice(Integer price) {
-        if (!price.equals(0))
+    private void setAvaragePrice(Double price) {
+        if (!price.equals(0d))
             getTextViewAvaragePrice().setText(createAvaragePriceString(price));
         else
             getTextViewAvaragePrice().setText(getString(R.string.gratis));
     }
 
-    private String createAvaragePriceString(Integer price) {
+    private String createAvaragePriceString(Double price) {
         String avaragePrice = "";
         avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
         avaragePrice = avaragePrice.concat(price + " ");
@@ -178,18 +195,43 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return avaragePrice;
     }
 
+    private void startCallActivity(){
+        getContext().startActivity(createCallActivityIntent());
+    }
+
+    private void startMapsActivity(){
+        getContext().startActivity(createMapsActivityIntent());
+    }
+
     private void startWriteReviewActivity() {
-        attractionDetailActivity.startActivity(createWriteReviewActivityIntent());
+        getContext().startActivity(createWriteReviewActivityIntent());
     }
 
     private void startSeeReviewsActivity() {
-        attractionDetailActivity.startActivity(createSeeReviewsActivityIntent());
+        getContext().startActivity(createSeeReviewsActivityIntent());
+    }
+
+    @NotNull
+    private Intent createCallActivityIntent() {
+        Intent callActivityIntent = new Intent(Intent.ACTION_DIAL);
+        callActivityIntent.setData(Uri.parse("tel:" + getTextViewPhoneNumber().getText().toString()));
+        callActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return callActivityIntent;
+    }
+
+    @NotNull
+    private Intent createMapsActivityIntent() {
+        String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + createAddressString());
+        Intent mapsActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        mapsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return mapsActivityIntent;
     }
 
     private Intent createWriteReviewActivityIntent() {
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(ID, getId());
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
+        writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
 
@@ -197,6 +239,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
         seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
         seeReviewsActivityIntent.putExtra(ID, getId());
+        seeReviewsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return seeReviewsActivityIntent;
     }
 
@@ -263,12 +306,12 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return attractionDetailActivity.getButtonReadReviews();
     }
 
-    private boolean hasAvarageRating(@NotNull Integer avarageRating) {
-        return !avarageRating.equals(0);
+    private boolean hasAvarageRating() {
+        return attraction.hasAvarageRating();
     }
 
     private boolean hasReviews() {
-        return getReviews().size() > 0;
+        return attraction.hasReviews();
     }
 
     private ViewPager getViewPager(){
@@ -277,10 +320,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private List<String> getImages(){
         return attraction.getImages();
-    }
-
-    private List<Review> getReviews(){
-        return attraction.getReviews();
     }
 
     private Intent getIntent(){
@@ -295,7 +334,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return attraction.getName();
     }
 
-    private Integer getAvaragePrice(){
+    private Double getAvaragePrice(){
         return attraction.getAvaragePrice();
     }
 
@@ -303,8 +342,28 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return attraction.isHasCertificateOfExcellence();
     }
 
-    private Address getAddress(){
-        return attraction.getAddress();
+    private String getTypeOfAddress(){
+        return attraction.getTypeOfAddress();
+    }
+
+    private String getStreet(){
+        return attraction.getStreet();
+    }
+
+    private String getHouseNumber(){
+        return attraction.getHouseNumber();
+    }
+
+    private String getCity(){
+        return attraction.getCity();
+    }
+
+    private String getProvince(){
+        return attraction.getProvince();
+    }
+
+    private String getPostalCode(){
+        return attraction.getPostalCode();
     }
 
     private String getOpeningTime() {

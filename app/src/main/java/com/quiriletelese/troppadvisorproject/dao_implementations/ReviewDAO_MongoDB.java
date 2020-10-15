@@ -123,7 +123,7 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
 
     @NotNull
     private String createFindAccomodationReviewsUrl(String id, int page, int size) {
-        String URL = BASE_URL_HTTPS + "review/find-accomodation-reviews?";
+        String URL = BASE_URL + "review/find-accomodation-reviews?";
         URL = URL.concat("id=" + id);
         URL = URL.concat("&page=" + page);
         URL = URL.concat("&size=" + size);

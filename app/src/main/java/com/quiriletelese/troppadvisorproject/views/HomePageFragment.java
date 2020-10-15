@@ -88,7 +88,7 @@ public class HomePageFragment extends Fragment implements Constants {
         }
     }
 
-    private void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults){
+    private void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults) {
         homePageFragmentController.onRequestPermissionsResultHelper(requestCode, grantResults);
     }
 
@@ -212,10 +212,6 @@ public class HomePageFragment extends Fragment implements Constants {
 
     public Button getButtonProvidePermission() {
         return buttonProvidePermission;
-    }
-
-    private boolean isPermissionGranted(@NonNull int[] grantResults) {
-        return homePageFragmentController.isPermissionGranted(grantResults);
     }
 
 }

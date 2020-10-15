@@ -20,11 +20,6 @@
             app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/troppadvisor_logo" />
-
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager_restaurant_detail"
                 android:layout_width="match_parent"
@@ -81,10 +76,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="4/5 (63 recensioni)"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_stars_primary_color"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_stars_primary_color" />
 
             <TextView
                 android:id="@+id/text_view_restaurant_certificate_of_excellence"
@@ -93,7 +86,6 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="@string/certificate_of_excellence"
                 android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 
@@ -104,10 +96,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="Via Salvo d'Acquisto, 25 San Giorgio a Cremano, Napoli"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_location_primary_color"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_location_primary_color" />
 
             <TextView
                 android:id="@+id/text_view_restaurant_opening_time"
@@ -116,10 +106,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="12:00 - 23:00"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_opening_time_green"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_opening_time_green" />
 
             <TextView
                 android:id="@+id/text_view_restaurant_phone_number"
@@ -128,10 +116,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="0817714413"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_phone_primary_color"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_phone_primary_color" />
 
             <TextView
                 android:id="@+id/text_view_restaurant_avarage_price"
@@ -140,10 +126,8 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="100"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green"
-                tools:ignore="HardcodedText" />
+                app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green" />
 
             <TextView
                 android:id="@+id/text_view_restaurant_type_of_cuisine"

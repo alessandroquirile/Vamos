@@ -66,8 +66,8 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         startDetailActivityHelper();
     }
 
-    private void startDetailActivityHelper(){
-        switch (getAccomodationType()){
+    private void startDetailActivityHelper() {
+        switch (getAccomodationType()) {
             case HOTEL:
                 startAccomodationDetailActivity(HotelDetailActivity.class);
                 break;
@@ -87,30 +87,13 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         getContext().startActivity(detailActivityIntent);
     }
 
-    private void startHotelDetailActivity() {
-        Intent restaurantDetailActivityIntent = new Intent(getContext(), RestaurantDetailActivity.class);
-        restaurantDetailActivityIntent.putExtra(ID, getAccomodationId());
-        getContext().startActivity(restaurantDetailActivityIntent);
-    }
-
-    private void startRestaurantDetailActivity() {
-        Intent restaurantDetailActivityIntent = new Intent(getContext(), RestaurantDetailActivity.class);
-        restaurantDetailActivityIntent.putExtra(ID, getAccomodationId());
-        getContext().startActivity(restaurantDetailActivityIntent);
-    }
-
-    private void startAttractionDetailActivity() {
-        Intent attractionDetailActivityIntent = new Intent(getContext(), AttractionDetailActivity.class);
-        attractionDetailActivityIntent.putExtra(ID, getAccomodationId());
-        getContext().startActivity(attractionDetailActivityIntent);
-    }
-
-    private void onBackPressed(){
+    private void onBackPressed() {
         accomodationDetailMapsActivity.onBackPressed();
     }
 
     public void setRelativeLayoutDetailsFields() {
         Accomodation accomodation = getAccomodation();
+        setImage(accomodation);
         getTextViewName().setText(accomodation.getName());
         getTextViewRating().setText(createAvarageRatingString(accomodation));
         getTextViewAddress().setText(createAddressString(accomodation));
@@ -128,15 +111,15 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     }
 
     private String createAvarageRatingString(Accomodation accomodation) {
-        return !hasReviews(accomodation) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(accomodation);
+        return !hasAvarageRating(accomodation) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(accomodation);
     }
 
-    private String createAvarageRatingStringHelper(Accomodation accomodation){
+    private String createAvarageRatingStringHelper(Accomodation accomodation) {
         return accomodation.getAvarageRating() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
-    private boolean hasReviews(Accomodation accomodation){
-        return accomodation.hasReviews();
+    private boolean hasAvarageRating(Accomodation accomodation) {
+        return accomodation.hasAvarageRating();
     }
 
     private void setImage(Accomodation accomodation) {
@@ -144,9 +127,10 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
             Picasso.with(getContext())
                     .load(accomodation.getImages().get(0))
                     .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(getImageViewAccomodation());
         else
-            getImageViewAccomodation().setImageDrawable(null);
+            getImageViewAccomodation().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
     }
 
     public void addMarker() {
@@ -181,7 +165,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         getGoogleMap().animateCamera(cameraUpdate);
     }
 
-    private LatLng createMarkerLatLng(){
+    private LatLng createMarkerLatLng() {
         return new LatLng(getAccomodation().getLatitude(), getAccomodation().getLongitude());
     }
 
@@ -215,7 +199,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     }
 
     private boolean hasImage(Accomodation accomodation) {
-        return accomodation.isImagesSizeGraterThanZero();
+        return accomodation.hasImage();
     }
 
     private Context getContext() {

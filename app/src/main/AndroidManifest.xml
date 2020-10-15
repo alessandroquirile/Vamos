@@ -13,9 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".views.IntroActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -29,25 +26,6 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".views.AccomodationDetailMapsActivity"
-            android:label="@string/title_activity_accomodation_detail_maps" />
-        <activity
-            android:name=".views.AttractionMapActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".views.RestaurantMapActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".views.AttractionsListActivity"
-            android:label="@string/attractions" />
-        <activity
-            android:name=".views.RestaurantsListActivity"
-            android:label="@string/restaurant" />
-        <activity
-            android:name=".views.HotelsListActivity"
-            android:label="@string/hotel" />
-        <activity android:name=".views.AttractionDetailActivity" />
-        <activity
             android:name=".views.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -57,31 +35,72 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".views.IntroActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".views.AccomodationDetailMapsActivity"
+            android:label="@string/title_activity_accomodation_detail_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.AttractionMapActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.RestaurantMapActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.AttractionsListActivity"
+            android:label="@string/attractions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.RestaurantsListActivity"
+            android:label="@string/restaurant"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.HotelsListActivity"
+            android:label="@string/hotel"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.AttractionDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".views.RestaurantDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.SeeReviewsActivity"
             android:label="@string/user_reviews"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.HotelDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.WriteReviewActivity"
             android:label="@string/add_review"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.HotelMapActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.SignUpActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeLogin" />
         <activity
             android:name=".views.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeLogin" />
         <activity
             android:name=".views.HomePageActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
     </application>

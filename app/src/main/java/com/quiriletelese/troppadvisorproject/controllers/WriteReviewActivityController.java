@@ -47,7 +47,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     private String description = "";
     private String user;
     private String accomodationId;
-    private Float rating;
+    private Double rating;
     private AlertDialog alertDialogWaitWhileInsertReview;
     private boolean isAnonymoys = false;
 
@@ -56,12 +56,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     @Override
-    public void onClick(@NotNull View v) {
-        switch (v.getId()) {
-            case R.id.button_publish_review:
-                insertReviewByAccomodationType();
-                break;
-        }
+    public void onClick(@NotNull View view) {
+        onClickHelper(view);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInsert(), getContext());
     }
 
-    private void refreshTokenHelper(VolleyCallBack volleyCallBack){
+    private void refreshTokenHelper(VolleyCallBack volleyCallBack) {
         getAccountDAO().refreshToken(volleyCallBack, getResfreshToken(), getContext());
     }
 
@@ -167,7 +163,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         });
     }
 
-    private void refreshToken(){
+    private void refreshToken() {
         refreshTokenHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -181,7 +177,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         });
     }
 
-    private void volleyCallbackOnSuccessRefreshToken(InitiateAuthResult initiateAuthResult){
+    private void volleyCallbackOnSuccessRefreshToken(InitiateAuthResult initiateAuthResult) {
         writeSharedPreferences(initiateAuthResult);
         insertReviewByAccomodationType();
     }
@@ -315,11 +311,21 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     @NotNull
     @Contract(" -> new")
     private Intent createLoginActivityIntent() {
+        Intent intentLoginActivity = new Intent(getContext(), LoginActivity.class);
+        intentLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return new Intent(getContext(), LoginActivity.class);
     }
 
     private void finish() {
         writeReviewActivity.finish();
+    }
+
+    private void onClickHelper(View view) {
+        switch (view.getId()) {
+            case R.id.button_publish_review:
+                insertReviewByAccomodationType();
+                break;
+        }
     }
 
     public void setListenersOnViewComponents() {
@@ -474,7 +480,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return writeReviewActivity.getTextInputLayoutReviewDescriptionValue().trim();
     }
 
-    private Float getRatingBarValue() {
+    private Double getRatingBarValue() {
         return writeReviewActivity.getRatingBarValue();
     }
 

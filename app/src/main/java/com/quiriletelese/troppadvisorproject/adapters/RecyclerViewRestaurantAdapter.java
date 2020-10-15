@@ -52,23 +52,25 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
-        //setRestaurantImage(viewHolder, position);
+        setImage(viewHolder, position);
         viewHolder.textViewRestaurantName.setText(restaurants.get(position).getName());
             viewHolder.textViewRestaurantRating.setText(createAvarageRatingString(restaurants.get(position)));
     }
 
-    private void setRestaurantImage(ViewHolder viewHolder, int position) {
+    private void setImage(ViewHolder viewHolder, int position) {
         Picasso.with(context).load(restaurants.get(position).getImages().get(0))
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.pizza)
+                .placeholder(R.drawable.troppadvisor_logo)
+                .error(R.drawable.picasso_error)
                 .into(viewHolder.imageViewRestaurant);
     }
 
-    private void startRestaurantDetailActivity(String id){
-        Intent intent = new Intent(context, RestaurantDetailActivity.class);
-        intent.putExtra(ID, id);
-        context.startActivity(intent);
+    private void startDetailActivity(String id){
+        Intent intentDetailActivity = new Intent(context, RestaurantDetailActivity.class);
+        intentDetailActivity.putExtra(ID, id);
+        intentDetailActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intentDetailActivity);
     }
 
     private String createAvarageRatingString(Restaurant restaurant) {
@@ -76,7 +78,7 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private String createAvarageRatingStringHelper(Restaurant restaurant){
-        return restaurant.getAvarageRating() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(Restaurant restaurant){
@@ -101,7 +103,6 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initializeComponents() {
-            Context context = itemView.getContext();
             LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewRestaurant = itemView.findViewById(R.id.image_view_accomodation);
             textViewRestaurantName = itemView.findViewById(R.id.text_view_accomodation_name);
@@ -111,7 +112,7 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
 
         @Override
         public void onClick(View view) {
-            startRestaurantDetailActivity(restaurants.get(this.getAdapterPosition()).getId());
+            startDetailActivity(restaurants.get(this.getAdapterPosition()).getId());
         }
 
     }

@@ -45,24 +45,26 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
         return reviews.size();
     }
 
-    public void addListItems(List<Review> reviews){
+    public void addListItems(List<Review> reviews) {
         this.reviews.addAll(reviews);
     }
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.textViewTitle.setText(reviews.get(position).getTitle());
-        if (!reviews.get(position).getAnonymous())
-            viewHolder.textViewRating.setText(createRatingString(reviews.get(position).getRating(), reviews.get(position).getUser()));
-        else
-            viewHolder.textViewRating.setText(createRatingString(reviews.get(position).getRating(), context.getResources().getString(R.string.anonymous)));
+        viewHolder.textViewRating.setText(createRatingString(reviews.get(position).getRating(),
+                isAnonymous(reviews.get(position)) ? context.getResources().getString(R.string.anonymous)
+                        : reviews.get(position).getUser()));
         viewHolder.textViewReviewBody.setText(reviews.get(position).getDescription());
     }
 
-    private String createRatingString(Float rating, String user) {
+    private String createRatingString(Double rating, String user) {
         String reviewRating = "";
         reviewRating = reviewRating.concat(rating + " - " + user);
         return reviewRating;
+    }
 
+    private boolean isAnonymous(Review review) {
+        return review.getAnonymous();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,7 +77,6 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initializeComponents() {
-            Context context = itemView.getContext();
             textViewTitle = itemView.findViewById(R.id.text_view_title);
             textViewRating = itemView.findViewById(R.id.text_view_rating);
             textViewReviewBody = itemView.findViewById(R.id.text_view_review_body);

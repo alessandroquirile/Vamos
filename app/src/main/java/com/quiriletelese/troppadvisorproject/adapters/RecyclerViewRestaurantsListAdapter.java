@@ -75,12 +75,13 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
         }
     }
 
     private boolean hasImage(int position) {
-        return restaurants.get(position).isImagesSizeGraterThanZero();
+        return restaurants.get(position).hasImage();
     }
 
     private String getFirtsImage(int position) {
@@ -103,7 +104,7 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
     }
 
     private String createAvarageRatingStringHelper(Restaurant restaurant) {
-        return restaurant.getAvarageRating() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(Restaurant restaurant) {
@@ -140,7 +141,7 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
             imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation);
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
-            textViewAccomodationAddress = itemView.findViewById(R.id.text_view_accomodation_address);
+            textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);
             buttonWriteReview = itemView.findViewById(R.id.button_write_review);
             buttonSeeAccomodationOnMap = itemView.findViewById(R.id.button_see_accomodation_on_map);
         }
@@ -170,6 +171,14 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
             context.startActivity(createWriteReviewActivityIntent());
         }
 
+        private void startAccomodationDetailMapsActivity() {
+            context.startActivity(createAccomodationDetailMapsIntent());
+        }
+
+        private void startDetailActivity() {
+            context.startActivity(createStartDetailActivityIntent());
+        }
+
         private Intent createWriteReviewActivityIntent() {
             Intent writeReviewActivityIntent = new Intent(context, WriteReviewActivity.class);
             writeReviewActivityIntent.putExtra(ID, getId());
@@ -178,20 +187,12 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
             return writeReviewActivityIntent;
         }
 
-        private void startAccomodationDetailMapsActivity() {
-            context.startActivity(createAccomodationDetailMapsIntent());
-        }
-
         private Intent createAccomodationDetailMapsIntent() {
             Intent accomodationDetailMapsIntent = new Intent(context, AccomodationDetailMapsActivity.class);
             accomodationDetailMapsIntent.putExtra(ACCOMODATION, getRestaurant());
             accomodationDetailMapsIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
             accomodationDetailMapsIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return accomodationDetailMapsIntent;
-        }
-
-        private void startDetailActivity() {
-            context.startActivity(createStartDetailActivityIntent());
         }
 
         private Intent createStartDetailActivityIntent() {

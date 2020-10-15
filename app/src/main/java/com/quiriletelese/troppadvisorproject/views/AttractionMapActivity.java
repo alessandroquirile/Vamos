@@ -62,9 +62,9 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
         imageViewMapGoBack = findViewById(R.id.image_view_attraction_map_go_back);
         imageViewAttraction = findViewById(R.id.image_view_attraction);
         textViewSearchOnMap = findViewById(R.id.text_view_search_attractions_on_map);
-        textViewName = findViewById(R.id.text_view_attraction_name);
-        textViewRating = findViewById(R.id.text_view_attraction_rating);
-        textViewAddress = findViewById(R.id.text_view_attraction_address);
+        textViewName = findViewById(R.id.text_view_attraction_map_name);
+        textViewRating = findViewById(R.id.text_view_attraction_map_rating);
+        textViewAddress = findViewById(R.id.text_view_attraction_map_address);
         floatingActionButtonCenterPositionOnAttractions = findViewById(R.id.floating_action_button_center_position_on_attractions);
     }
 

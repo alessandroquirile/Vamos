@@ -109,8 +109,8 @@ public class WriteReviewActivity extends AppCompatActivity {
         return ratingBar;
     }
 
-    public Float getRatingBarValue() {
-        return ratingBar.getRating();
+    public Double getRatingBarValue() {
+        return (double) ratingBar.getRating();
     }
 
     public TextView getTextViewRating() {

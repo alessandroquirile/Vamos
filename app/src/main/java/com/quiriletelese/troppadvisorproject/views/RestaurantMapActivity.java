@@ -59,9 +59,9 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
         imageViewMapGoBack = findViewById(R.id.image_view_restaurant_map_go_back);
         imageViewRestaurant = findViewById(R.id.image_view_restaurant);
         textViewSearchOnMap = findViewById(R.id.text_view_search_restaurants_on_map);
-        textViewName = findViewById(R.id.text_view_restaurant_name);
-        textViewRating = findViewById(R.id.text_view_restaurant_rating);
-        textViewAddress = findViewById(R.id.text_view_restaurant_address);
+        textViewName = findViewById(R.id.text_view_restaurant_map_name);
+        textViewRating = findViewById(R.id.text_view_restaurant_map_rating);
+        textViewAddress = findViewById(R.id.text_view_restaurant_map_address);
         floatingActionButtonCenterPositionOnRestaurants = findViewById(R.id.floating_action_button_center_position_on_restaurants);
     }
 

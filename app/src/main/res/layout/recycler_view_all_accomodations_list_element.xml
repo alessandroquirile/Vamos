@@ -63,7 +63,7 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/text_view_accomodation_address"
+                android:id="@+id/text_view_hotel_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"

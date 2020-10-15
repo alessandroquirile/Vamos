@@ -41,8 +41,7 @@ public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageViewOverviewActivity = new ImageView(context);
-        setViewPagerImages(imageViewOverviewActivity, position);
-
+        setImages(imageViewOverviewActivity, position);
         container.addView(imageViewOverviewActivity);
         return imageViewOverviewActivity;
     }
@@ -52,12 +51,13 @@ public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    private void setViewPagerImages(ImageView imageViewOverviewActivity, int position) {
+    private void setImages(ImageView imageViewOverviewActivity, int position) {
         Picasso.with(context)
                 .load(images.get(position))
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.troppadvisor_logo)
+                .error(R.drawable.picasso_error)
                 .into(imageViewOverviewActivity);
     }
 

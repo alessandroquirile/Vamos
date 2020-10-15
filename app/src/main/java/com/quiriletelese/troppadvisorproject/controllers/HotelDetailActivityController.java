@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,6 @@ import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityA
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -50,14 +51,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     @Override
     public void onClick(@NotNull View view) {
-        switch (view.getId()) {
-            case R.id.floating_action_button_hotel_write_review:
-                startWriteReviewActivity();
-                break;
-            case R.id.button_hotel_read_reviews:
-                seeReviews();
-                break;
-        }
+        onClickHelper(view);
     }
 
     private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
@@ -81,7 +75,26 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         }, getId());
     }
 
+    private void onClickHelper(View view){
+        switch (view.getId()) {
+            case R.id.text_view_hotel_phone_number:
+                startCallActivity();
+                break;
+            case R.id.text_view_hotel_address:
+                startMapsActivity();
+                break;
+            case R.id.floating_action_button_hotel_write_review:
+                startWriteReviewActivity();
+                break;
+            case R.id.button_hotel_read_reviews:
+                seeReviews();
+                break;
+        }
+    }
+
     public void setListenerOnViewComponents() {
+        getTextViewPhoneNumber().setOnClickListener(this);
+        getTextViewAddress().setOnClickListener(this);
         getFloatingActionButtonWriteReview().setOnClickListener(this);
         getButtonReadReviews().setOnClickListener(this);
     }
@@ -89,9 +102,9 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     private void initializeActivityFields() {
         setCollapsingToolbarLayoutTitle(getName());
         setAvaragePrice(getAvaragePrice());
-        setAvarageRating(hotel);
+        setAvarageRating();
         setCertificateOfExcellence(isHasCertificateOfExcellence());
-        setAddress(getAddress());
+        setAddress();
         setPhoneNunmber(getPhoneNumber());
         setHotelStars(getStars());
     }
@@ -118,8 +131,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         getCollapsingToolbarLayout().setTitle(title);
     }
 
-    private void setAvarageRating(@NotNull Hotel hotel) {
-        if (!hasAvarageRating(hotel.getAvarageRating()))
+    private void setAvarageRating() {
+        if (!hasAvarageRating())
             getTextViewAvarageRating().setText(R.string.no_reviews);
         else
             getTextViewAvarageRating().setText(createAvarageRatingString(hotel));
@@ -139,19 +152,19 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
             getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
-    private void setAddress(Address address) {
-        getTextViewAddress().setText(createAddressString(address));
+    private void setAddress() {
+        getTextViewAddress().setText(createAddressString());
     }
 
     @NotNull
-    private String createAddressString(@NotNull Address address) {
+    private String createAddressString() {
         String hotelAddress = "";
-        hotelAddress = hotelAddress.concat(address.getType() + " ");
-        hotelAddress = hotelAddress.concat(address.getStreet() + ", ");
-        hotelAddress = hotelAddress.concat(address.getHouseNumber() + ", ");
-        hotelAddress = hotelAddress.concat(address.getCity() + ", ");
-        hotelAddress = hotelAddress.concat(address.getProvince() + ", ");
-        hotelAddress = hotelAddress.concat(address.getPostalCode());
+        hotelAddress = hotelAddress.concat(getTypeOfAddress() + " ");
+        hotelAddress = hotelAddress.concat(getStreet() + ", ");
+        hotelAddress = hotelAddress.concat(getHouseNumber() + ", ");
+        hotelAddress = hotelAddress.concat(getCity() + ", ");
+        hotelAddress = hotelAddress.concat(getProvince() + ", ");
+        hotelAddress = hotelAddress.concat(getPostalCode());
         return hotelAddress;
     }
 
@@ -174,12 +187,12 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return hotelStars;
     }
 
-    private void setAvaragePrice(Integer price) {
+    private void setAvaragePrice(Double price) {
         getTextViewAvaragePrice().setText(createAvaragePriceString(price));
     }
 
     @NotNull
-    private String createAvaragePriceString(Integer price) {
+    private String createAvaragePriceString(Double price) {
         String avaragePrice = "";
         avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
         avaragePrice = avaragePrice.concat(price + " ");
@@ -187,12 +200,36 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return avaragePrice;
     }
 
+    private void startCallActivity(){
+        getContext().startActivity(createCallActivityIntent());
+    }
+
+    private void startMapsActivity(){
+        getContext().startActivity(createMapsActivityIntent());
+    }
+
     private void startWriteReviewActivity() {
-        hotelDetailActivity.startActivity(createWriteReviewActivityIntent());
+        getContext().startActivity(createWriteReviewActivityIntent());
     }
 
     private void startSeeReviewsActivity() {
-        hotelDetailActivity.startActivity(createSeeReviewsActivityIntent());
+        getContext().startActivity(createSeeReviewsActivityIntent());
+    }
+
+    @NotNull
+    private Intent createCallActivityIntent() {
+        Intent callActivityIntent = new Intent(Intent.ACTION_DIAL);
+        callActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        callActivityIntent.setData(Uri.parse("tel:" + getTextViewPhoneNumber().getText().toString()));
+        return callActivityIntent;
+    }
+
+    @NotNull
+    private Intent createMapsActivityIntent() {
+        String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + createAddressString());
+        Intent mapsActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        mapsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return mapsActivityIntent;
     }
 
     @NotNull
@@ -274,13 +311,12 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return hotelDetailActivity.getButtonReadReviews();
     }
 
-    @Contract(pure = true)
-    private boolean hasAvarageRating(@NotNull Integer avarageRating) {
-        return !avarageRating.equals(0);
+    private boolean hasAvarageRating() {
+        return hotel.hasAvarageRating();
     }
 
     private boolean hasReviews() {
-        return getReviews().size() > 0;
+        return hotel.hasReviews();
     }
 
     private ViewPager getViewPager() {
@@ -289,10 +325,6 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     private List<String> getImages(){
         return hotel.getImages();
-    }
-
-    private List<Review> getReviews(){
-        return hotel.getReviews();
     }
 
     private Intent getIntent(){
@@ -307,16 +339,12 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         return hotel.getName();
     }
 
-    private Integer getAvaragePrice(){
+    private Double getAvaragePrice(){
         return hotel.getAvaragePrice();
     }
 
     private boolean isHasCertificateOfExcellence(){
         return hotel.isHasCertificateOfExcellence();
-    }
-
-    private Address getAddress(){
-        return hotel.getAddress();
     }
 
     private String getPhoneNumber(){
@@ -325,6 +353,30 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     private Integer getStars(){
         return hotel.getStars();
+    }
+
+    private String getTypeOfAddress(){
+        return hotel.getTypeOfAddress();
+    }
+
+    private String getStreet(){
+        return hotel.getStreet();
+    }
+
+    private String getHouseNumber(){
+        return hotel.getHouseNumber();
+    }
+
+    private String getCity(){
+        return hotel.getCity();
+    }
+
+    private String getProvince(){
+        return hotel.getProvince();
+    }
+
+    private String getPostalCode(){
+        return hotel.getPostalCode();
     }
 
     private Context getContext() {
