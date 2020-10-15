@@ -91,20 +91,20 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
         return hotelAddress;
     }
 
-    private boolean hasImage(int position) {
-        return hotels.get(position).hasImage();
-    }
-
-    private String getFirtsImage(int position) {
-        return hotels.get(position).getFirstImage();
-    }
-
     private String createAvarageRatingString(Hotel hotel) {
         return !hasReviews(hotel) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(hotel);
     }
 
     private String createAvarageRatingStringHelper(Hotel hotel) {
         return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    }
+
+    private boolean hasImage(int position) {
+        return hotels.get(position).hasImage();
+    }
+
+    private String getFirtsImage(int position) {
+        return hotels.get(position).getFirstImage();
     }
 
     private boolean hasReviews(Hotel hotel) {

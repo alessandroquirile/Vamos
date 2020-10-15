@@ -54,19 +54,21 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
         setImage(viewHolder, position);
         viewHolder.textViewRestaurantName.setText(restaurants.get(position).getName());
-            viewHolder.textViewRestaurantRating.setText(createAvarageRatingString(restaurants.get(position)));
+        viewHolder.textViewRestaurantRating.setText(createAvarageRatingString(restaurants.get(position)));
     }
 
     private void setImage(ViewHolder viewHolder, int position) {
-        Picasso.with(context).load(restaurants.get(position).getImages().get(0))
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.troppadvisor_logo)
-                .error(R.drawable.picasso_error)
-                .into(viewHolder.imageViewRestaurant);
+        if (hasImage(position)) {
+            Picasso.with(context).load(getFirtsImage(position))
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.troppadvisor_logo)
+                    .error(R.drawable.picasso_error)
+                    .into(viewHolder.imageViewRestaurant);
+        }
     }
 
-    private void startDetailActivity(String id){
+    private void startDetailActivity(String id) {
         Intent intentDetailActivity = new Intent(context, RestaurantDetailActivity.class);
         intentDetailActivity.putExtra(ID, id);
         intentDetailActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,11 +79,19 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
         return !hasReviews(restaurant) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(restaurant);
     }
 
-    private String createAvarageRatingStringHelper(Restaurant restaurant){
+    private String createAvarageRatingStringHelper(Restaurant restaurant) {
         return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
-    private boolean hasReviews(Restaurant restaurant){
+    private boolean hasImage(int position) {
+        return restaurants.get(position).hasImage();
+    }
+
+    private String getFirtsImage(int position) {
+        return restaurants.get(position).getFirstImage();
+    }
+
+    private boolean hasReviews(Restaurant restaurant) {
         return restaurant.hasReviews();
     }
 
