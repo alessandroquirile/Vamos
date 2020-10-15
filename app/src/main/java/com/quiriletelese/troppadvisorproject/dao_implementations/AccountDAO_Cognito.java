@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -151,6 +153,21 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         return createJsonObjectNewUser(jsonObjectNewUSer, account);
     }
 
+    private JSONObject jsonObjectLogin(Account account) {
+        JSONObject jsonObjectLogin = new JSONObject();
+        return createJsonObjectLogin(jsonObjectLogin, account);
+    }
+
+    private JSONObject jsonObjectRefreshToken(String refreshToken) {
+        JSONObject jsonObjectRefreshToken = new JSONObject();
+        return createJsonObjectRefreshToken(jsonObjectRefreshToken, refreshToken);
+    }
+
+    private JSONObject jsonObjectGetUserDetails(String accessToken) {
+        JSONObject jsonObjectGetUserDetails = new JSONObject();
+        return createJsonObjectGetUserDetails(jsonObjectGetUserDetails, accessToken);
+    }
+
     private JSONObject createJsonObjectNewUser(@NotNull JSONObject jsonObjectNewUser, @NotNull Account account) {
         try {
             jsonObjectNewUser.put("name", account.getName());
@@ -164,24 +181,15 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
         return jsonObjectNewUser;
     }
 
-    private JSONObject jsonObjectLogin(Account account) {
-        JSONObject jsonObjectLogin = new JSONObject();
-        return createJsonObjectLogin(jsonObjectLogin, account);
-    }
-
     private JSONObject createJsonObjectLogin(@NotNull JSONObject jsonObjectLogin, @NotNull Account account) {
         try {
+
             jsonObjectLogin.put("key", account.getUsername());
-            jsonObjectLogin.put("password", String.valueOf(account.getPassword()));
+            jsonObjectLogin.put("password", account.getPassword());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObjectLogin;
-    }
-
-    private JSONObject jsonObjectRefreshToken(String refreshToken) {
-        JSONObject jsonObjectRefreshToken = new JSONObject();
-        return createJsonObjectRefreshToken(jsonObjectRefreshToken, refreshToken);
     }
 
     private JSONObject createJsonObjectRefreshToken(@NotNull JSONObject jsonObjectRefreshToken, @NotNull String refreshToken) {
@@ -191,11 +199,6 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
             e.printStackTrace();
         }
         return jsonObjectRefreshToken;
-    }
-
-    private JSONObject jsonObjectGetUserDetails(String accessToken) {
-        JSONObject jsonObjectGetUserDetails = new JSONObject();
-        return createJsonObjectGetUserDetails(jsonObjectGetUserDetails, accessToken);
     }
 
     private JSONObject createJsonObjectGetUserDetails(@NotNull JSONObject jsonObjectGetUserDetails, @NotNull String accessToken) {

@@ -38,8 +38,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
 
     private LoginActivity loginActivity;
     private DAOFactory daoFactory = DAOFactory.getInstance();
-    private String key;
-    private char[] password;
+    private String key, password;
     private UserSharedPreferences userSharedPreferences;
     private AlertDialog alertDialogWaitForLoginResult;
     private View dialogView;
@@ -254,7 +253,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private boolean isPasswordEmpty() {
-        return password.length == 0;
+        return password.isEmpty();
     }
 
     private AccountDAO getAccountDAO() {
@@ -289,7 +288,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         return loginActivity.getTextInputLayoutKeyValue();
     }
 
-    private char[] getTextInputLayoutPasswordValue() {
+    private String getTextInputLayoutPasswordValue() {
         return loginActivity.getTextInputLayoutPasswordValue();
     }
 

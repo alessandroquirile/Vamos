@@ -102,12 +102,12 @@ public class SignUpActivity extends AppCompatActivity {
         return Objects.requireNonNull(textInputLayoutUsername.getEditText()).getText().toString().trim();
     }
 
-    public char[] getTextInputLayoutPasswordValue(){
-        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim().toCharArray();
+    public String getTextInputLayoutPasswordValue(){
+        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim();
     }
 
-    public char[] getTextInputLayoutRepeatPasswordValue(){
-        return Objects.requireNonNull(textInputLayoutRepeatPassword.getEditText()).getText().toString().trim().toCharArray();
+    public String getTextInputLayoutRepeatPasswordValue(){
+        return Objects.requireNonNull(textInputLayoutRepeatPassword.getEditText()).getText().toString().trim();
     }
 
 }

@@ -72,8 +72,8 @@ public class LoginActivity extends AppCompatActivity {
     public String getTextInputLayoutKeyValue(){
         return Objects.requireNonNull(textInputLayoutKey.getEditText()).getText().toString().trim();
     }
-    public char[] getTextInputLayoutPasswordValue(){
-        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim().toCharArray();
+    public String getTextInputLayoutPasswordValue(){
+        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim();
     }
 
 }

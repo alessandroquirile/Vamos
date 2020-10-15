@@ -34,8 +34,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
 
     private SignUpActivity signUpActivity;
     private DAOFactory daoFactory = DAOFactory.getInstance();
-    private String email, name, lastName, username;
-    private char[] password, repeatPassword;
+    private String email, name, lastName, username, password, repeatPassword;
     private AlertDialog alertDialogWaitForSignUpResult;
 
     public SignUpActivityController(SignUpActivity signUpActivity) {
@@ -246,7 +245,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     private boolean isPasswordsEqualsHelper() {
-        return Arrays.equals(password, repeatPassword);
+        return password.equals(repeatPassword);
     }
 
     private boolean isEmailCorrectlyFilled() {
@@ -348,11 +347,11 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return signUpActivity.getTextInputLayoutUsernameValue();
     }
 
-    private char[] getTextInputLayoutPasswordValue() {
+    private String getTextInputLayoutPasswordValue() {
         return signUpActivity.getTextInputLayoutPasswordValue();
     }
 
-    private char[] getTextInputLayoutRepeatPasswordValue() {
+    private String getTextInputLayoutRepeatPasswordValue() {
         return signUpActivity.getTextInputLayoutRepeatPasswordValue();
     }
 
@@ -377,11 +376,11 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     private boolean isPasswordEmpty() {
-        return password.length == 0;
+        return password.isEmpty();
     }
 
     private boolean isRepeatPasswordEmpty() {
-        return repeatPassword.length == 0;
+        return repeatPassword.isEmpty();
     }
 
     @NotNull

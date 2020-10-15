@@ -11,8 +11,7 @@ public class Account implements Serializable {
     private String familyName;
     private String username;
     private String email;
-    private char[] password; // password protection
-
+    private String password;
     public String getName() {
         return name;
     }
@@ -45,11 +44,11 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    public char[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(char[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }
