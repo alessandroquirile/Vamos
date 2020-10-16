@@ -14,6 +14,8 @@ import com.quiriletelese.troppadvisorproject.controllers.AttractionsListActivity
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 
+import java.util.Objects;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -29,7 +31,7 @@ public class AttractionsListActivity extends AppCompatActivity implements Consta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attractions_list);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeViewComponents();
