@@ -14,6 +14,8 @@ import com.quiriletelese.troppadvisorproject.controllers.AttractionsListActivity
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -53,8 +55,8 @@ public class AttractionsListActivity extends AppCompatActivity implements Consta
         return true;
     }
 
-    private void onOptionsItemSelectedHelper(MenuItem item){
-        switch (item.getItemId()){
+    private void onOptionsItemSelectedHelper(@NotNull MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
