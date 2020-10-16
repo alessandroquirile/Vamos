@@ -1,8 +1,6 @@
 package com.quiriletelese.troppadvisorproject.models;
 
 
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
-
 import java.io.Serializable;
 import java.util.List;
 

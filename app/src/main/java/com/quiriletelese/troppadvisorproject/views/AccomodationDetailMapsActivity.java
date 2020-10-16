@@ -15,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.AccomodationDetailMapsActivityController;
 
+import java.util.Objects;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -36,7 +38,7 @@ public class AccomodationDetailMapsActivity extends FragmentActivity implements 
         setContentView(R.layout.activity_accomodation_detail_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.accomodation_detail_map);
-        mapFragment.getMapAsync(this);
+        Objects.requireNonNull(mapFragment).getMapAsync(this);
     }
 
     @Override

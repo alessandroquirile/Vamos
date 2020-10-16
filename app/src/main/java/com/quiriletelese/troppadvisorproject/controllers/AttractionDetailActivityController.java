@@ -20,9 +20,7 @@ import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityA
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
-import com.quiriletelese.troppadvisorproject.model_helpers.Address;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
