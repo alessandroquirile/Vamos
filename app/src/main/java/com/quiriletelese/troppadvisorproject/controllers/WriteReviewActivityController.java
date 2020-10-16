@@ -106,15 +106,15 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void insertHotelReviewHelper(VolleyCallBack volleyCallBack) {
-        getReviewDAO().insertHotelReview(volleyCallBack, createReviewForInsert(), getContext());
+        getReviewDAO().insertHotelReview(volleyCallBack, createReviewForInsert(), getIdToken(), getContext());
     }
 
     private void insertRestaurantReviewHelper(VolleyCallBack volleyCallBack) {
-        getReviewDAO().insertRestaurantReview(volleyCallBack, createReviewForInsert(), getContext());
+        getReviewDAO().insertRestaurantReview(volleyCallBack, createReviewForInsert(), getIdToken(), getContext());
     }
 
     private void insertAttractionReviewHelper(VolleyCallBack volleyCallBack) {
-        getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInsert(), getContext());
+        getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInsert(), getIdToken(), getContext());
     }
 
     private void refreshTokenHelper(VolleyCallBack volleyCallBack) {
@@ -414,6 +414,10 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getIdToken();
+    }
+
+    private String getIdToken(){
+        return createUserSharedPreferences().getStringSharedPreferences(ID_TOKEN);
     }
 
     private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {

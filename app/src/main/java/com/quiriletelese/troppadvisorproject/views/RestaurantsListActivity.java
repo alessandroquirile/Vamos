@@ -40,7 +40,7 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
         addRecyclerViewOnScrollListener();
 
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_restaurants_list_activity, menu);

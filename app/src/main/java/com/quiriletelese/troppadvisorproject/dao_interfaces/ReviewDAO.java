@@ -11,11 +11,11 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 public interface ReviewDAO {
 
-    void insertHotelReview(VolleyCallBack volleyCallBack, Review review, Context context);
+    void insertHotelReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context);
 
-    void insertRestaurantReview(VolleyCallBack volleyCallBack, Review review, Context context);
+    void insertRestaurantReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context);
 
-    void insertAttractionReview(VolleyCallBack volleyCallBack, Review review, Context context);
+    void insertAttractionReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context);
 
     void findAccomodationReviews(VolleyCallBack volleyCallBack, String id, Context context, int page, int size);
 

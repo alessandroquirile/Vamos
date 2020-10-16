@@ -19,6 +19,6 @@ public interface AttractionDAO {
     void findByNameLikeIgnoreCase(VolleyCallBack volleyCallBack, String name, Context context,
                                   int page, int size);
 
-    void findHotelsName(VolleyCallBack volleyCallBack, String name, Context context);
+    void findAttractionsName(VolleyCallBack volleyCallBack, String name, Context context);
 
 }

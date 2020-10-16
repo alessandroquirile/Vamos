@@ -48,8 +48,8 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
     }
 
     @Override
-    public void findHotelsName(VolleyCallBack volleyCallBack, String name, Context context) {
-        findHotelsNameVolley(volleyCallBack, name, context);
+    public void findAttractionsName(VolleyCallBack volleyCallBack, String name, Context context) {
+        findAttractionsNameVolley(volleyCallBack, name, context);
     }
 
     private void findByRsqlVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
@@ -108,7 +108,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void findHotelsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
+    private void findAttractionsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindHotelsNameUrl(name);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response ->

@@ -63,7 +63,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     @Override
     public void onAutoCompleteTextViewAccomodationNameTextChanged(String newText) {
-        findHotelsName(newText);
+        findAttractionsName(newText);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     public void findAttractionsNameHelper(VolleyCallBack volleyCallBack, String name) {
         AttractionDAO attractionDAO = getAttractionDAO();
-        attractionDAO.findHotelsName(volleyCallBack, name, getContext());
+        attractionDAO.findAttractionsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
@@ -120,7 +120,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         }, getAttractionFilterNameValue());
     }
 
-    private void findHotelsName(@NotNull String newText) {
+    private void findAttractionsName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewNameChanged();
             findAttractionsNameHelper(new VolleyCallBack() {

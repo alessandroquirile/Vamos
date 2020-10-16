@@ -173,7 +173,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         private Intent createWriteReviewActivityIntent() {
             Intent writeReviewActivityIntent = new Intent(context, WriteReviewActivity.class);
             writeReviewActivityIntent.putExtra(ID, getId());
-            writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
+            writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
             writeReviewActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return writeReviewActivityIntent;
         }

@@ -118,7 +118,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void findAttractionsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        getAttractionDAO().findHotelsName(volleyCallBack, name, getContext());
+        getAttractionDAO().findAttractionsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {

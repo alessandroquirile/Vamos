@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +22,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -30,18 +33,18 @@ import java.util.List;
 public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
 
     @Override
-    public void insertHotelReview(VolleyCallBack volleyCallBack, Review review, Context context) {
-        insertHotelReviewVolley(volleyCallBack, review, context);
+    public void insertHotelReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
+        insertHotelReviewVolley(volleyCallBack, review, idToken, context);
     }
 
     @Override
-    public void insertRestaurantReview(VolleyCallBack volleyCallBack, Review review, Context context) {
-        insertRestaurantReviewVolley(volleyCallBack, review, context);
+    public void insertRestaurantReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
+        insertRestaurantReviewVolley(volleyCallBack, review, idToken, context);
     }
 
     @Override
-    public void insertAttractionReview(VolleyCallBack volleyCallBack, Review review, Context context) {
-        insertAttractionReviewVolley(volleyCallBack, review, context);
+    public void insertAttractionReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
+        insertAttractionReviewVolley(volleyCallBack, review, idToken, context);
     }
 
     @Override
@@ -49,38 +52,68 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
         findAccomodationReviewsVolley(volleyCallBack, id, context, page, size);
     }
 
-    private void insertHotelReviewVolley(VolleyCallBack volleyCallBack, Review review, Context context){
+    private void insertHotelReviewVolley(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertHotelReviewUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectInsertAccomodationReview(review), response ->
-                volleyCallBack.onSuccess(getReviewFromResponse(response)), error -> {
-
-        });
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review),
+                response -> {
+                    volleyCallBack.onSuccess(getReviewFromResponse(response));
+                },
+                error -> {
+                    if (error != null)
+                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + idToken);
+                return headers;
+            }
+        };
         requestQueue.start();
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void insertRestaurantReviewVolley(VolleyCallBack volleyCallBack, Review review, Context context){
+    private void insertRestaurantReviewVolley(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertRestaurantReviewUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectInsertAccomodationReview(review), response ->
-                volleyCallBack.onSuccess(getReviewFromResponse(response)), error -> {
-
-        });
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review),
+                response -> {
+                    volleyCallBack.onSuccess(getReviewFromResponse(response));
+                },
+                error -> {
+                    if (error != null)
+                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + idToken);
+                return headers;
+            }
+        };
         requestQueue.start();
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void insertAttractionReviewVolley(VolleyCallBack volleyCallBack, Review review, Context context){
+    private void insertAttractionReviewVolley(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createInsertAttractionReviewUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectInsertAccomodationReview(review), response ->
-                volleyCallBack.onSuccess(getReviewFromResponse(response)), error -> {
-
-        });
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectInsertAccomodationReview(review),
+                response -> {
+                    volleyCallBack.onSuccess(getReviewFromResponse(response));
+                },
+                error -> {
+                    if (error != null)
+                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + idToken);
+                return headers;
+            }
+        };
         requestQueue.start();
         requestQueue.add(jsonObjectRequest);
     }
