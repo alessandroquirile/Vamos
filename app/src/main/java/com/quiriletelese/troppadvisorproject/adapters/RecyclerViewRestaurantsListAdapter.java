@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
+import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
@@ -35,8 +34,8 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder>
         implements Constants {
 
-    private Context context;
-    private List<Restaurant> restaurants;
+    private final Context context;
+    private final List<Restaurant> restaurants;
 
     public RecyclerViewRestaurantsListAdapter(Context context, List<Restaurant> restaurants) {
         this.context = context;

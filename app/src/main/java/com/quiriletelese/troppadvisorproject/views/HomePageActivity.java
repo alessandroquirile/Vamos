@@ -12,7 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 /**
  * @author Alessandro Quirile, Mauro Telese

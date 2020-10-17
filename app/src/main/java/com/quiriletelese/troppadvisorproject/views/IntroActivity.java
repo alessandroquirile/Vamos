@@ -1,18 +1,16 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerIntroAdapter;
 import com.quiriletelese.troppadvisorproject.controllers.IntroActivityController;
-import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 
 /**
  * @author Alessandro Quirile, Mauro Telese

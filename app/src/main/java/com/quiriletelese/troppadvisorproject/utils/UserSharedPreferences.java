@@ -3,7 +3,7 @@ package com.quiriletelese.troppadvisorproject.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.quiriletelese.troppadvisorproject.interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 import org.jetbrains.annotations.NotNull;
 

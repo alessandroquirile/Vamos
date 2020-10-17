@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.interfaces;
+package com.quiriletelese.troppadvisorproject.util_interfaces;
 
 /**
  * @author Alessandro Quirile, Mauro Telese

@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
+import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
@@ -34,8 +34,8 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<RecyclerViewHotelsListAdapter.ViewHolder>
         implements Constants {
 
-    private Context context;
-    private List<Hotel> hotels;
+    private final Context context;
+    private final List<Hotel> hotels;
 
     public RecyclerViewHotelsListAdapter(Context context, List<Hotel> hotels) {
         this.context = context;

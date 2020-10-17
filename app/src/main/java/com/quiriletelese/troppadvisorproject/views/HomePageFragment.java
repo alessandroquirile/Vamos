@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HomePageFragmentController;
-import com.quiriletelese.troppadvisorproject.interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
