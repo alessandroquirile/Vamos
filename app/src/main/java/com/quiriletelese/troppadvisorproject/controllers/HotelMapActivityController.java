@@ -478,7 +478,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     private void onMarkerClickHelper(@NotNull Marker marker) {
-        marker.showInfoWindow();
+        setMarkerClicked(marker.getId());
         if (!isRelativeLayoutHotelInformationVisible)
             setRelativeLayoutHotelInformationVisible();
         if (!isLinearLayoutSearchHotelsVisible)
@@ -486,6 +486,15 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         if (!isFloatingActionButtonCenterPositionOnHotelsVisible)
             setFloatingActionButtonCenterPositionOnHotelsVisible();
         setRelativeLayoutHotelDetailsFields(marker);
+    }
+
+    private void setMarkerClicked(String id) {
+        for (Marker marker : markers) {
+            if (marker.getId().equals(id))
+                marker.setIcon(setCustomMarker(getContext(), getHotelMarkerClicked()));
+            else
+                marker.setIcon(setCustomMarker(getContext(), getHotelMarker()));
+        }
     }
 
     private void setRelativeLayoutHotelInformationVisible() {
@@ -507,6 +516,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         getTextViewAddress().setText(createAddressString(hotel));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(Hotel hotel) {
         if (hasImage(hotel))
             Picasso.with(getContext())
@@ -515,7 +525,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
                     .error(R.drawable.picasso_error)
                     .into(getImageViewHotel());
         else
-            getImageViewHotel().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
+            getImageViewHotel().setImageDrawable(getResources().getDrawable(R.drawable.picasso_error));
     }
 
     private boolean hasImage(@NotNull Hotel hotel) {
@@ -540,7 +550,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Hotel hotel) {
-        return hotel.getAvarageRating() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(@NotNull Hotel hotel) {
@@ -689,6 +699,10 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private int getHotelMarker() {
         return R.drawable.hotel_marker;
+    }
+
+    private int getHotelMarkerClicked() {
+        return R.drawable.hotel_marker_clicked;
     }
 
     private String getHotelName() {

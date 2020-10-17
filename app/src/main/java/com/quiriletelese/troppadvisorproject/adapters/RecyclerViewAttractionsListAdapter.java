@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,6 +71,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         viewHolder.textViewAccomodationAddress.setText(createAddressString(attractions.get(position)));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(ViewHolder viewHolder, int position) {
         if (hasImage(position)) {
             Picasso.with(context).load(getFirtsImage(position))
@@ -77,7 +80,8 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
                     .placeholder(R.drawable.troppadvisor_logo)
                     .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
-        }
+        } else
+            viewHolder.imageViewAccomodation.setImageDrawable(context.getResources().getDrawable(R.drawable.picasso_error));
     }
 
     private String createAddressString(Attraction attraction) {
@@ -138,7 +142,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
         private void initializeComponents() {
             relativeLayoutAccomodation = itemView.findViewById(R.id.relative_layout_main);
-            imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation);
+            imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation_list);
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
             textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);

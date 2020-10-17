@@ -115,13 +115,14 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     }
 
     private String createAvarageRatingStringHelper(Accomodation accomodation) {
-        return accomodation.getAvarageRating() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasAvarageRating(Accomodation accomodation) {
         return accomodation.hasAvarageRating();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(Accomodation accomodation) {
         if (hasImage(accomodation))
             Picasso.with(getContext())
@@ -130,7 +131,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
                     .error(R.drawable.picasso_error)
                     .into(getImageViewAccomodation());
         else
-            getImageViewAccomodation().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
+            getImageViewAccomodation().setImageDrawable(getResources().getDrawable(R.drawable.picasso_error));
     }
 
     public void addMarker() {

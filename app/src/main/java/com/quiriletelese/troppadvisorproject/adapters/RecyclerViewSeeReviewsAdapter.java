@@ -59,7 +59,7 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
 
     private String createRatingString(Double rating, String user) {
         String reviewRating = "";
-        reviewRating = reviewRating.concat(rating + " - " + user);
+        reviewRating = reviewRating.concat(rating.intValue() + " - " + user);
         return reviewRating;
     }
 

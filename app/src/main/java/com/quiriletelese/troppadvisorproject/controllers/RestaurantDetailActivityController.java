@@ -141,7 +141,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     @NotNull
     private String createAvarageRatingString(@NotNull Restaurant restaurant) {
         String avarageRating = "";
-        avarageRating = avarageRating.concat(restaurant.getAvarageRating() + "/5 (");
+        avarageRating = avarageRating.concat(restaurant.getAvarageRating().intValue() + "/5 (");
         avarageRating = avarageRating.concat(restaurant.getTotalReviews() + " ");
         avarageRating = avarageRating.concat(getString(R.string.reviews) + ")");
         return avarageRating;

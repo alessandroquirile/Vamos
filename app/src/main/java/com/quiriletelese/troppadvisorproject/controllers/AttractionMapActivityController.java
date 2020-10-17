@@ -480,6 +480,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void onMarkerClickHelper(Marker marker) {
+        setMarkerClicked(marker.getId());
         if (!isRelativeLayoutAttractionInformationVisible)
             setRelativeLayoutDetailsVisible();
         if (!isLinearLayoutSearchAttractionVisible)
@@ -487,6 +488,15 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         if (!isFloatingActionButtonCenterPositionOnAttractionsVisible)
             setFloatingActionButtonCenterPositionOnAttractionsVisible();
         setRelativeLayoutDetailsFields(marker);
+    }
+
+    private void setMarkerClicked(String id) {
+        for (Marker marker : markers) {
+            if (marker.getId().equals(id))
+                marker.setIcon(setCustomMarker(getContext(), getAttractionMarkerClicked()));
+            else
+                marker.setIcon(setCustomMarker(getContext(), getAttractionMarker()));
+        }
     }
 
     private void setRelativeLayoutDetailsVisible() {
@@ -508,6 +518,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         getTextViewAddress().setText(createAddressString(attraction));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(Attraction attraction) {
         if (hasImage(attraction))
             Picasso.with(getContext())
@@ -516,7 +527,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
                     .error(R.drawable.picasso_error)
                     .into(getImageViewAttraction());
         else
-            getImageViewAttraction().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
+            getImageViewAttraction().setImageDrawable(getResources().getDrawable(R.drawable.picasso_error));
     }
 
     private boolean hasImage(@NotNull Attraction attraction) {
@@ -541,7 +552,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Attraction attraction) {
-        return attraction.getAvarageRating() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(@NotNull Attraction attraction) {
@@ -677,6 +688,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private int getAttractionMarker() {
         return R.drawable.attraction_marker;
+    }
+
+    private int getAttractionMarkerClicked() {
+        return R.drawable.attraction_marker_clicked;
     }
 
     private String getAttractionName() {

@@ -2,6 +2,8 @@ package com.quiriletelese.troppadvisorproject.models;
 
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -50,7 +52,7 @@ public abstract class Accomodation implements Serializable {
     }
 
     public Double getAvaragePrice() {
-        return avaragePrice;
+        return Math.round(avaragePrice * 100.0) / 100.0;
     }
 
     public void setAvaragePrice(Double avaragePrice) {

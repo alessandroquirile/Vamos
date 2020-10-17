@@ -138,7 +138,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private String createAvarageRatingString() {
         String avarageRating = "";
-        avarageRating = avarageRating.concat(attraction.getAvarageRating() + "/5 (");
+        avarageRating = avarageRating.concat(attraction.getAvarageRating().intValue() + "/5 (");
         avarageRating = avarageRating.concat(attraction.getTotalReviews() + " ");
         avarageRating = avarageRating.concat(getString(R.string.reviews) + ")");
         return avarageRating;

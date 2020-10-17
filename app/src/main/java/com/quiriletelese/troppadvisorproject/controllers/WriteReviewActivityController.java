@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -190,11 +191,12 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
         dismissWaitWhileInsertReviewDialog();
+        Log.d("REVIEW ERROR CODE", errorCode);
         switch (errorCode) {
             case UNAUTHORIZED:
                 handle401VolleyError();
                 break;
-            default:
+            case INTERNAL_ERROR_SERVER:
                 handleOtherVolleyError();
                 break;
         }
@@ -416,7 +418,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return initiateAuthResult.getAuthenticationResult().getIdToken();
     }
 
-    private String getIdToken(){
+    private String getIdToken() {
         return createUserSharedPreferences().getStringSharedPreferences(ID_TOKEN);
     }
 

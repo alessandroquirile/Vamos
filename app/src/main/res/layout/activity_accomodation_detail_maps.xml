@@ -77,7 +77,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    app:drawableStartCompat="@drawable/icon_star_yellow" />
+                    android:drawableStart="@drawable/icon_star_yellow" />
 
                 <TextView
                     android:id="@+id/text_view_accomodation_map_address"

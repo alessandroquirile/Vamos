@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -58,6 +59,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
         viewHolder.textViewAttractionRating.setText(createAvarageRatingString(attractions.get(position)));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(ViewHolder viewHolder, int position) {
         if (hasImage(position)) {
             Picasso.with(context).load(getFirtsImage(position))
@@ -65,8 +67,9 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
                     .centerCrop()
                     .placeholder(R.drawable.troppadvisor_logo)
                     .error(R.drawable.picasso_error)
-                    .into(viewHolder.imageViewAttraction);
-        }
+                    .into(viewHolder.imageViewAccomodation);
+        } else
+            viewHolder.imageViewAccomodation.setImageDrawable(context.getResources().getDrawable(R.drawable.picasso_error));
     }
 
     private void startDetailActivity(String id) {
@@ -106,7 +109,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView imageViewAttraction;
+        private ImageView imageViewAccomodation;
         private TextView textViewAttractionName, textViewAttractionRating;
 
         public ViewHolder(@NonNull View itemView) {
@@ -116,7 +119,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
         private void initializeComponents() {
             LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
-            imageViewAttraction = itemView.findViewById(R.id.image_view_accomodation);
+            imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation_home);
             textViewAttractionName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAttractionRating = itemView.findViewById(R.id.text_view_accomodation_rating);
             linearLayoutHomePageRecyclerView.setOnClickListener(this);

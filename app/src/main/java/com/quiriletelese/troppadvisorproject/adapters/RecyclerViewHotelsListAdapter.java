@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -69,6 +70,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
         viewHolder.textViewAccomodationAddress.setText(createAddressString(hotels.get(position)));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(RecyclerViewHotelsListAdapter.ViewHolder viewHolder, int position) {
         if (hasImage(position)) {
             Picasso.with(context).load(getFirtsImage(position))
@@ -77,7 +79,8 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
                     .placeholder(R.drawable.troppadvisor_logo)
                     .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
-        }
+        } else
+            viewHolder.imageViewAccomodation.setImageDrawable(context.getResources().getDrawable(R.drawable.picasso_error));
     }
 
     private String createAddressString(Hotel hotel) {
@@ -138,7 +141,7 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
 
         private void initializeComponents() {
             relativeLayoutAccomodation = itemView.findViewById(R.id.relative_layout_main);
-            imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation);
+            imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation_list);
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
             textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);
@@ -146,14 +149,14 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
             buttonSeeAccomodationOnMap = itemView.findViewById(R.id.button_see_accomodation_on_map);
         }
 
-        private void setListenerOnComponents(){
+        private void setListenerOnComponents() {
             buttonWriteReview.setOnClickListener(this);
             buttonSeeAccomodationOnMap.setOnClickListener(this);
             relativeLayoutAccomodation.setOnClickListener(this);
         }
 
-        private void onClickHelper(View view){
-            switch (view.getId()){
+        private void onClickHelper(View view) {
+            switch (view.getId()) {
                 case R.id.button_write_review:
                     startWriteReviewActivity();
                     break;
@@ -201,11 +204,11 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
             return startDetailActivityIntent;
         }
 
-        private String getId(){
+        private String getId() {
             return hotels.get(this.getAdapterPosition()).getId();
         }
 
-        private Hotel getHotel(){
+        private Hotel getHotel() {
             return hotels.get(this.getAdapterPosition());
         }
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     @Override
     public void onClick(View view) {
-       onClickHelper(view);
+        onClickHelper(view);
     }
 
     public void findHotelsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
@@ -181,7 +182,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         setShimmerRecyclerViewAttractionOnStart();
     }
 
-    private void onClickHelper(View view){
+    private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.text_view_hotel_recycler_view:
                 startHotelsListActivity();
@@ -209,17 +210,20 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
         getButtonProvidePermission().setOnClickListener(this);
     }
 
-    public void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults){
+    public void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults) {
         switch (requestCode) {
             case ACCESS_FINE_LOCATION:
-            checkPermissionResult(grantResults);
-            break;
+                checkPermissionResult(grantResults);
+                break;
         }
     }
 
     private void checkPermissionResult(@NonNull int[] grantResults) {
-        if (isPermissionGranted(grantResults))
+        if (isPermissionGranted(grantResults)) {
+            Log.d("PERMISSION", "LOCATION PERMISSION GRANTED");
             initializeRecyclerViews();
+            homePageFragment.getViewMissingLocationPermissionError().setVisibility(View.GONE);
+        }
     }
 
     private void initializeRecyclerViews() {
@@ -323,7 +327,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     }
 
     public void requestPermission(String permission, int requestCode) {
-        ActivityCompat.requestPermissions(homePageFragment.requireActivity(), new String[]{permission}, requestCode);
+        homePageFragment.requestPermissions(new String[]{permission}, requestCode);
     }
 
     private Context getContext() {

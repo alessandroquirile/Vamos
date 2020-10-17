@@ -55,7 +55,7 @@ public class AccomodationDetailMapsActivity extends FragmentActivity implements 
     private void intializeViewComponents(GoogleMap googleMap) {
         this.googleMap = googleMap;
         relativeLayoutDetails = findViewById(R.id.relative_layout_accomodation_detail);
-        imageViewAccomodation = findViewById(R.id.image_view_accomodation);
+        imageViewAccomodation = findViewById(R.id.image_view_accomodation_map_detail);
         textViewName = findViewById(R.id.text_view_accomodation_map_name);
         textViewRating = findViewById(R.id.text_view_accomodation_map_rating);
         textViewAddress = findViewById(R.id.text_view_accomodation_map_address);

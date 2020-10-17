@@ -141,7 +141,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     @NotNull
     private String createAvarageRatingString(@NotNull Hotel hotel) {
         String avarageRating = "";
-        avarageRating = avarageRating.concat(hotel.getAvarageRating() + "/5 (");
+        avarageRating = avarageRating.concat(hotel.getAvarageRating().intValue() + "/5 (");
         avarageRating = avarageRating.concat(hotel.getTotalReviews() + " ");
         avarageRating = avarageRating.concat(getString(R.string.reviews) + ")");
         return avarageRating;

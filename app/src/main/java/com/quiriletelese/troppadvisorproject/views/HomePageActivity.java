@@ -24,6 +24,15 @@ public class HomePageActivity extends AppCompatActivity implements BottomNavigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        initializeView();
+    }
+
+    @Override
+    public void onNavigationItemReselected(@NonNull MenuItem item) {
+
+    }
+
+    private void initializeView(){
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_profile)
@@ -32,11 +41,6 @@ public class HomePageActivity extends AppCompatActivity implements BottomNavigat
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         navView.setOnNavigationItemReselectedListener(this);
-    }
-
-    @Override
-    public void onNavigationItemReselected(@NonNull MenuItem item) {
-
     }
 
 }

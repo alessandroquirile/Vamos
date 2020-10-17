@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,14 +67,9 @@ public class HomePageFragment extends Fragment implements Constants {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d("ON REQUEST PERMISSION", "ON REQUEST PERMISSION RESULT");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         onRequestPermissionsResultHelper(requestCode, grantResults);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        initializeRecyclerViews();
     }
 
     private void inflateMenu(Menu menu, MenuInflater inflater) {
@@ -214,4 +210,7 @@ public class HomePageFragment extends Fragment implements Constants {
         return buttonProvidePermission;
     }
 
+    public View getViewMissingLocationPermissionError() {
+        return viewMissingLocationPermissionError;
+    }
 }

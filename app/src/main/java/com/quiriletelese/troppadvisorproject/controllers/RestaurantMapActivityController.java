@@ -468,7 +468,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void onMarkerClickHelper(@NotNull Marker marker) {
-        marker.showInfoWindow();
+        setMarkerClicked(marker.getId());
         if (!isRelativeLayoutRestaurantInformationVisible)
             setRelativeLayoutHotelInformationVisible();
         if (!isLinearLayoutSearchRestaurantsVisible)
@@ -476,6 +476,15 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         if (!isFloatingActionButtonCenterPositionOnRestaurantsVisible)
             setFloatingActionButtonCenterPositionOnRestaurantsVisible();
         setRelativeLayoutInformationHotelFields(marker);
+    }
+
+    private void setMarkerClicked(String id) {
+        for (Marker marker : markers) {
+            if (marker.getId().equals(id))
+                marker.setIcon(setCustomMarker(getContext(), getRestaurantMarkerClicked()));
+            else
+                marker.setIcon(setCustomMarker(getContext(), getRestaurantMarker()));
+        }
     }
 
     private void setRelativeLayoutHotelInformationVisible() {
@@ -498,6 +507,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         getTextViewAddress().setText(createAddressString(restaurant));
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void setImage(Restaurant restaurant) {
         if (hasImage(restaurant))
             Picasso.with(getContext())
@@ -506,7 +516,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
                     .error(R.drawable.picasso_error)
                     .into(getImageViewRestaurant());
         else
-            getImageViewRestaurant().setImageDrawable(getResources().getDrawable(R.drawable.troppadvisor_logo));
+            getImageViewRestaurant().setImageDrawable(getResources().getDrawable(R.drawable.picasso_error));
     }
 
     private boolean hasImage(@NotNull Restaurant restaurant) {
@@ -531,7 +541,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Restaurant restaurant) {
-        return restaurant.getAvarageRating() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return restaurant.getAvarageRating().intValue()+ "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(@NotNull Restaurant restaurant) {
@@ -647,7 +657,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         getRelativeLayoutDetails().animate().translationY(getRelativeLayoutDetails().getHeight() + 100);
     }
 
-    private void onClickHelper(View view){
+    private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.text_view_search_restaurants_on_map:
                 showBottomSheetMapFilters();
@@ -750,6 +760,10 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     private int getRestaurantMarker() {
         return R.drawable.restaurant_marker;
+    }
+
+    private int getRestaurantMarkerClicked() {
+        return R.drawable.restaurant_marker_clicked;
     }
 
     private String getRestaurantName() {
