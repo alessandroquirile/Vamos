@@ -114,17 +114,17 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
             initializeComponents();
         }
 
+        @Override
+        public void onClick(View view) {
+            startDetailActivity(attractions.get(this.getAdapterPosition()).getId());
+        }
+
         private void initializeComponents() {
             LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewAttraction = itemView.findViewById(R.id.image_view_accomodation);
             textViewAttractionName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAttractionRating = itemView.findViewById(R.id.text_view_accomodation_rating);
             linearLayoutHomePageRecyclerView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            startDetailActivity(attractions.get(this.getAdapterPosition()).getId());
         }
 
     }
