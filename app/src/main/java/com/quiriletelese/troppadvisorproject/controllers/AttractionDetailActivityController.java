@@ -30,7 +30,6 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -51,8 +50,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     public void onClick(View view) {
         onClickHelper(view);
     }
-
-
 
     private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
         getAttractionDAO().findById(volleyCallBack, id, getContext());
@@ -219,7 +216,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     @NotNull
     private Intent createMapsActivityIntent() {
-        String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + createAddressString());
+        String uri = "geo:0,0?q=" + createAddressString();
         Intent mapsActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         mapsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return mapsActivityIntent;
@@ -263,9 +260,8 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private void showToastOnUiThread(int string) {
-        attractionDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionDetailActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+        attractionDetailActivity.runOnUiThread(() ->
+                Toast.makeText(attractionDetailActivity, getString(string), Toast.LENGTH_SHORT).show());
     }
 
     private CollapsingToolbarLayout getCollapsingToolbarLayout(){
