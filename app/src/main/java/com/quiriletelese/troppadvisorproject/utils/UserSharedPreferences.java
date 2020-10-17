@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class UserSharedPreferences implements Constants {
 
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     public UserSharedPreferences(@NotNull Context context) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);

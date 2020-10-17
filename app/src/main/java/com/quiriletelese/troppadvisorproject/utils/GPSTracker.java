@@ -26,7 +26,7 @@ public class GPSTracker extends Service implements LocationListener {
     private Location location;
     private Double latitude;
     private Double longitude;
-    private Context context;
+    private final Context context;
 
     public GPSTracker(Context context) {
         this.context = context;
@@ -69,7 +69,7 @@ public class GPSTracker extends Service implements LocationListener {
             if (isNetworkProviderEnabled()) {
                 setCanGetLocation(true);
                 getLocationFromNetworkProvider();
-                getLocationFromGPS();
+                setLocationFromGPS();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,12 +102,12 @@ public class GPSTracker extends Service implements LocationListener {
             if (!isLocationManagerNull()) {
                 location = getLastKnownLocation();
                 if (!locationIsNull())
-                    getCoordinatesFromLocation();
+                    setCoordinatesFromLocation();
             }
         }
     }
 
-    private void getLocationFromGPS() {
+    private void setLocationFromGPS() {
         if (isGPSEnabled()) {
             if (locationIsNull()) {
                 requestLocationUpdates();
@@ -115,13 +115,13 @@ public class GPSTracker extends Service implements LocationListener {
                 if (!isLocationManagerNull()) {
                     location = getLastKnownLocation();
                     if (location != null)
-                        getCoordinatesFromLocation();
+                        setCoordinatesFromLocation();
                 }
             }
         }
     }
 
-    private void getCoordinatesFromLocation() {
+    private void setCoordinatesFromLocation() {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
     }
