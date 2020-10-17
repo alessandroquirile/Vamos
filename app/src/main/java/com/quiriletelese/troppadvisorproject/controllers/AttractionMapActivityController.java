@@ -95,7 +95,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     @Override
-    public void OnBottomSheetFilterSearchButtonClick() {
+    public void onBottomSheetFilterSearchButtonClick() {
         onBottomSheetFilterSearchButtonClickHelper();
     }
 

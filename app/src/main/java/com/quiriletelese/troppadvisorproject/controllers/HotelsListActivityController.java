@@ -58,7 +58,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     @Override
-    public void OnBottomSheetFilterSearchButtonClick() {
+    public void onBottomSheetFilterSearchButtonClick() {
         onBottomSheetFilterSearchButtonClickHelper();
     }
 

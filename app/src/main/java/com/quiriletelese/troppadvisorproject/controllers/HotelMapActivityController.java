@@ -94,7 +94,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     @Override
-    public void OnBottomSheetFilterSearchButtonClick() {
+    public void onBottomSheetFilterSearchButtonClick() {
         onBottomSheetFilterSearchButtonClickHelper();
     }
 

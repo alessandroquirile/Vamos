@@ -58,7 +58,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     @Override
-    public void OnBottomSheetFilterSearchButtonClick() {
+    public void onBottomSheetFilterSearchButtonClick() {
         onBottomSheetFilterSearchButtonClickHelper();
     }
 

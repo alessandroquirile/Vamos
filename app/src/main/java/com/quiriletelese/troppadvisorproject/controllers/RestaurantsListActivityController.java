@@ -62,7 +62,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     @Override
-    public void OnBottomSheetFilterSearchButtonClick() {
+    public void onBottomSheetFilterSearchButtonClick() {
         onBottomSheetFilterSearchButtonClickHelper();
     }
 

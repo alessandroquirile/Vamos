@@ -99,7 +99,7 @@ public class BottomSheetFilterHotels extends BottomSheetDialogFragment implement
                 break;
             case R.id.image_view_search_hotel_map_filter:
                 if (bottomSheetFilterSearchButtonClick != null)
-                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                    bottomSheetFilterSearchButtonClick.onBottomSheetFilterSearchButtonClick();
                 break;
         }
     }
