@@ -115,13 +115,12 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         showToastOnUiThread(R.string.login_error);
     }
 
-    private void showToastOnUiThread(int string) {
-        loginActivity.runOnUiThread(() -> {
-            Toast.makeText(loginActivity, getString(string), Toast.LENGTH_LONG).show();
-        });
+    private void showToastOnUiThread(int stringId) {
+        loginActivity.runOnUiThread(() ->
+                Toast.makeText(loginActivity, getString(stringId), Toast.LENGTH_LONG).show());
     }
 
-    private void onClickHelper(View view){
+    private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.button_login:
                 checkUserInformations();
@@ -141,14 +140,14 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         getTextViewCancelLogin().setOnClickListener(this);
     }
 
-    private void getUserInformations() {
+    private void setUserInformations() {
         key = getTextInputLayoutKeyValue();
         password = getTextInputLayoutPasswordValue();
     }
 
     private void checkUserInformations() {
-        getUserInformations();
-        if (isFieldsCorrectlyInserted()) {
+        setUserInformations();
+        if (areFieldsCorrectlyInserted()) {
             showWaitForLoginResultDialog();
             login();
         }
@@ -178,7 +177,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         return account;
     }
 
-    private boolean isFieldsCorrectlyInserted() {
+    private boolean areFieldsCorrectlyInserted() {
         return isKeyCorrectlyInserted() && isPasswordCorrectlyInserted();
     }
 

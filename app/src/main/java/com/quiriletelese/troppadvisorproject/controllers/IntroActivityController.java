@@ -115,9 +115,9 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
         userSharedPreferences.putBooleanSharedPreferences(IS_APP_OPENED_FOR_FIRST_TIME, false);
     }
 
-    private void showToastOnUiThread(int string) {
+    private void showToastOnUiThread(int stringId) {
         introActivity.runOnUiThread(() -> {
-            Toast.makeText(introActivity, getString(string), Toast.LENGTH_LONG).show();
+            Toast.makeText(introActivity, getString(stringId), Toast.LENGTH_LONG).show();
         });
     }
 

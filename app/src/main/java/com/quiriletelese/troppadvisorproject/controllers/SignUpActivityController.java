@@ -68,7 +68,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         });
     }
 
-    private void onClickHelper(View view){
+    private void onClickHelper(@NotNull View view) {
         switch (view.getId()) {
             case R.id.button_sign_up:
                 createAccount();
@@ -85,12 +85,12 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     private void createAccount() {
-        getAccountInformation();
-        if (isAllFieldsCorret())
+        setAccountInformation();
+        if (areAllFieldsCorrect())
             createAccountHelper();
     }
 
-    private void getAccountInformation() {
+    private void setAccountInformation() {
         email = getTextInputLayoutEmailValue();
         name = getTextInputLayoutNameValue();
         lastName = getTextInputLayoutLastNameValue();
@@ -160,11 +160,11 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         alertDialogWaitForSignUpResult.dismiss();
     }
 
-    private boolean isAllFieldsCorret() {
-        return isFieldsCorrectlyInserted() && isEmailCorrectlyFilled() && isPasswordsEquals();
+    private boolean areAllFieldsCorrect() {
+        return areFieldsCorrectlyInserted() && isEmailCorrectlyFilled() && arePasswordsEqual();
     }
 
-    private boolean isFieldsCorrectlyInserted() {
+    private boolean areFieldsCorrectlyInserted() {
         return isEmailCorrectlyInserted() && isNameCorrectlyInserted() && isLastNameCorrectlyInserted()
                 && isUsernameCorrectlyInserted() && isPasswordCorrectlyInserted() && isRepeatPasswordCorrectlyInserted();
     }
@@ -233,8 +233,8 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         textInputLayout.setError(error);
     }
 
-    private boolean isPasswordsEquals() {
-        if (!isPasswordsEqualsHelper()) {
+    private boolean arePasswordsEqual() {
+        if (!arePasswordsEqualHelper()) {
             getTextInputLayoutPassword().setError(getPasswordsNotMatchErrorMessage());
             getTextInputLayoutRepeatPassword().setError(getPasswordsNotMatchErrorMessage());
             return false;
@@ -242,7 +242,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
             return true;
     }
 
-    private boolean isPasswordsEqualsHelper() {
+    private boolean arePasswordsEqualHelper() {
         return password.equals(repeatPassword);
     }
 
@@ -266,9 +266,9 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         signUpActivity.finish();
     }
 
-    private void showToastOnUiThread(int string) {
+    private void showToastOnUiThread(int stringId) {
         signUpActivity.runOnUiThread(() -> {
-            Toast.makeText(signUpActivity, getString(string), Toast.LENGTH_SHORT).show();
+            Toast.makeText(signUpActivity, getString(stringId), Toast.LENGTH_SHORT).show();
         });
     }
 

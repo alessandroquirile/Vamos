@@ -261,10 +261,9 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         showToastOnUiThred(R.string.unexpected_error_while_fetch_data);
     }
 
-    private void showToastOnUiThred(int string) {
-        hotelMapActivity.runOnUiThread(() -> {
-            Toast.makeText(hotelMapActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+    private void showToastOnUiThred(int stringId) {
+        hotelMapActivity.runOnUiThread(() ->
+                Toast.makeText(hotelMapActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private void createHotelFilter() {

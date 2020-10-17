@@ -9,6 +9,7 @@ import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 import com.quiriletelese.troppadvisorproject.views.SplashScreenActivity;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,10 +24,12 @@ public class SplashScreenActivityController implements Constants {
         this.splashScreenActivity = splashScreenActivity;
     }
 
-    public boolean isAppOpenedForFirstTime() {
+    public boolean hasAppBeenOpenedForFirstTime() {
         return createUserSharedPreferences().getBooleanSharedPreferences(IS_APP_OPENED_FOR_FIRST_TIME);
     }
 
+    @NotNull
+    @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
         return new UserSharedPreferences(getContext());
     }
@@ -36,7 +39,7 @@ public class SplashScreenActivityController implements Constants {
     }
 
     public void startNextActivity() {
-        if (isAppOpenedForFirstTime())
+        if (hasAppBeenOpenedForFirstTime())
             startIntroActivity();
         else
             startHomePageActivity();

@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private boolean isLogged() {
-        return profileFragmentController.isLogged();
+        return profileFragmentController.hasLogged();
     }
 
     private void startLoginActivity() {

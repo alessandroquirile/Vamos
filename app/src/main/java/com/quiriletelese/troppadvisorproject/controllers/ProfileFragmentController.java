@@ -33,7 +33,7 @@ public class ProfileFragmentController implements Constants {
     }
 
     public void checkLogin() {
-        if (!isLogged())
+        if (!hasLogged())
             showViewNoLoginProfileError();
         else
             hideViewNoLoginProfileError();
@@ -65,10 +65,9 @@ public class ProfileFragmentController implements Constants {
         setViewNoLoginProfileErrorVisibility(View.GONE);
     }
 
-    private void showToastOnUiThred(int string) {
-        getActivity().runOnUiThread(() -> {
-            Toast.makeText(getContext(), getString(string), Toast.LENGTH_SHORT).show();
-        });
+    private void showToastOnUiThred(int stringId) {
+        getActivity().runOnUiThread(() ->
+                Toast.makeText(getContext(), getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private void clearUserSharedPreferences() {
@@ -88,7 +87,7 @@ public class ProfileFragmentController implements Constants {
         setTextViewText(getTextViewUserName(), getStringSharedPreferences(USERNAME));
     }
 
-    public boolean isLogged() {
+    public boolean hasLogged() {
         return !getAccessToken().equals("");
     }
 

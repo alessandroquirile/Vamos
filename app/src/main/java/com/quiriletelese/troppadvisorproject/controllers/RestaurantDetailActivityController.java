@@ -31,7 +31,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -240,7 +239,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
 
     @NotNull
     private Intent createMapsActivityIntent() {
-        String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + createAddressString());
+        String uri = "geo:0,0?q=" + createAddressString();
         Intent mapsActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         mapsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return mapsActivityIntent;

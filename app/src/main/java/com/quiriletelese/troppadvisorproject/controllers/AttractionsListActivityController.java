@@ -168,7 +168,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isScrollingDown(dy))
-                    if (isScrolledToLastItem(recyclerView))
+                    if (hasScrolledToLastItem(recyclerView))
                         loadMoreAttractions();
             }
         });
@@ -178,7 +178,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         return dy > 0;
     }
 
-    private boolean isScrolledToLastItem(@NotNull RecyclerView recyclerView) {
+    private boolean hasScrolledToLastItem(@NotNull RecyclerView recyclerView) {
         return !recyclerView.canScrollVertically(1);
     }
 
@@ -359,22 +359,19 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
             bottomSheetFilterAttractions.dismiss();
     }
 
-    private void showToastVolleyError(int string) {
+    private void showToastVolleyError(int stringId) {
         setIsLoadingData(false);
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
-        showToastOnUiThred(string);
+        showToastOnUiThread(stringId);
     }
 
-    private void showToastOnUiThred(int string) {
-        attractionsListActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionsListActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+    private void showToastOnUiThread(int stringId) {
+        attractionsListActivity.runOnUiThread(() ->
+                Toast.makeText(attractionsListActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private void setProgressBarVisibilityOnUiThred(int visibility) {
-        attractionsListActivity.runOnUiThread(() -> {
-            getProgressBarLoadMore().setVisibility(visibility);
-        });
+        attractionsListActivity.runOnUiThread(() -> getProgressBarLoadMore().setVisibility(visibility));
     }
 
     public void startMapsActivity() {

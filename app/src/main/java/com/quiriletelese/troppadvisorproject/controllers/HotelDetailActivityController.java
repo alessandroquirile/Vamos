@@ -31,7 +31,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -225,7 +224,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     @NotNull
     private Intent createMapsActivityIntent() {
-        String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + createAddressString());
+        String uri = "geo:0,0?q=" + createAddressString();
         Intent mapsActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         mapsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return mapsActivityIntent;
@@ -264,21 +263,20 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         alertDialogLoadingInProgress.show();
     }
 
-    private void dismissLoadingInProgressDialog(){
+    private void dismissLoadingInProgressDialog() {
         alertDialogLoadingInProgress.dismiss();
     }
 
-    private void showToastOnUiThread(int string) {
-        hotelDetailActivity.runOnUiThread(() -> {
-            Toast.makeText(hotelDetailActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+    private void showToastOnUiThread(int stringId) {
+        hotelDetailActivity.runOnUiThread(() ->
+                Toast.makeText(hotelDetailActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
-    private CollapsingToolbarLayout getCollapsingToolbarLayout(){
+    private CollapsingToolbarLayout getCollapsingToolbarLayout() {
         return hotelDetailActivity.getCollapsingToolbarLayout();
     }
 
-    private TextView getTextViewPhoneNumber(){
+    private TextView getTextViewPhoneNumber() {
         return hotelDetailActivity.getTextViewPhoneNumber();
     }
 

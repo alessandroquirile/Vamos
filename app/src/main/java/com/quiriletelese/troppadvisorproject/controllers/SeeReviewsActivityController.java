@@ -36,7 +36,6 @@ public class SeeReviewsActivityController implements Constants {
     private final SeeReviewsActivity seeReviewsActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
-    private final int size = 30;
     private int page = 0;
 
     public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
@@ -44,6 +43,7 @@ public class SeeReviewsActivityController implements Constants {
     }
 
     private void findAccomodationReviewsHelper(VolleyCallBack volleyCallBack) {
+        int size = 30;
         getReviewDAO().findAccomodationReviews(volleyCallBack, getAccomodationId(), getContext(), page, size);
     }
 
@@ -127,10 +127,9 @@ public class SeeReviewsActivityController implements Constants {
         showToastOnUiThread(R.string.unexpected_error_while_fetch_data);
     }
 
-    private void showToastOnUiThread(int string) {
-        seeReviewsActivity.runOnUiThread(() -> {
-            Toast.makeText(seeReviewsActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+    private void showToastOnUiThread(int stringId) {
+        seeReviewsActivity.runOnUiThread(() ->
+                Toast.makeText(seeReviewsActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private void loadMoreReviews() {
@@ -160,7 +159,7 @@ public class SeeReviewsActivityController implements Constants {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (isScrollingDown(dy))
-                    if (isScrolledToLastItem(recyclerView))
+                    if (hasScrolledToLastItem(recyclerView))
                         loadMoreReviews();
             }
         });
@@ -170,7 +169,7 @@ public class SeeReviewsActivityController implements Constants {
         return dy > 0;
     }
 
-    private boolean isScrolledToLastItem(@NotNull RecyclerView recyclerView) {
+    private boolean hasScrolledToLastItem(@NotNull RecyclerView recyclerView) {
         return !recyclerView.canScrollVertically(1);
     }
 
