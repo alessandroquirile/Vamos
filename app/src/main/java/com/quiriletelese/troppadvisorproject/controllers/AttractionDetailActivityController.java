@@ -259,9 +259,9 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         alertDialogLoadingInProgress.dismiss();
     }
 
-    private void showToastOnUiThread(int string) {
+    private void showToastOnUiThread(int stringId) {
         attractionDetailActivity.runOnUiThread(() ->
-                Toast.makeText(attractionDetailActivity, getString(string), Toast.LENGTH_SHORT).show());
+                Toast.makeText(attractionDetailActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private CollapsingToolbarLayout getCollapsingToolbarLayout(){
