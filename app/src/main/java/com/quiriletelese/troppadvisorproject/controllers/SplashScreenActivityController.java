@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SplashScreenActivityController implements Constants {
 
-    private SplashScreenActivity splashScreenActivity;
+    private final SplashScreenActivity splashScreenActivity;
 
     public SplashScreenActivityController(SplashScreenActivity splashScreenActivity) {
         this.splashScreenActivity = splashScreenActivity;

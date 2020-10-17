@@ -23,8 +23,6 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -32,8 +30,8 @@ import java.util.Arrays;
 public class SignUpActivityController implements View.OnClickListener, DialogInterface.OnDismissListener,
         Constants {
 
-    private SignUpActivity signUpActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final SignUpActivity signUpActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private String email, name, lastName, username, password, repeatPassword;
     private AlertDialog alertDialogWaitForSignUpResult;
 

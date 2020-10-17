@@ -61,10 +61,10 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
         Constants {
 
-    private HotelMapActivity hotelMapActivity;
-    private BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
+    private final HotelMapActivity hotelMapActivity;
+    private final BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
     private HotelFilter hotelFilter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Hotel hotel = null;
     private List<Hotel> hotels = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();

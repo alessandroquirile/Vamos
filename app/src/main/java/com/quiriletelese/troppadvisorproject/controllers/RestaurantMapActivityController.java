@@ -64,10 +64,10 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
         View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
         Constants {
 
-    private RestaurantMapActivity restaurantMapActivity;
-    private BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
+    private final RestaurantMapActivity restaurantMapActivity;
+    private final BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
     private RestaurantFilter restaurantFilter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant = null;
     private List<Restaurant> restaurants = new ArrayList<>();
     private List<String> typesOfCuisine = new ArrayList<>();

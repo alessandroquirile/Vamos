@@ -38,8 +38,8 @@ import java.util.Locale;
 
 public class AttractionDetailActivityController implements View.OnClickListener, Constants {
 
-    private AttractionDetailActivity attractionDetailActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final AttractionDetailActivity attractionDetailActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Attraction attraction;
     private AlertDialog alertDialogLoadingInProgress;
 

@@ -43,12 +43,13 @@ import java.util.List;
 public class HotelsListActivityController implements BottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
-    private HotelsListActivity hotelsListActivity;
-    private BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
+    private final HotelsListActivity hotelsListActivity;
+    private final BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
     private HotelFilter hotelFilter;
     private RecyclerViewHotelsListAdapter recyclerViewHotelsListAdapter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
-    private int page = 0, size = 30;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
+    private final int size = 30;
+    private int page = 0;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
 

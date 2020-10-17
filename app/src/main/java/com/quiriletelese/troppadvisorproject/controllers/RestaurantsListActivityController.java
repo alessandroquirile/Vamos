@@ -46,13 +46,14 @@ import java.util.List;
 public class RestaurantsListActivityController implements BottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
-    private RestaurantsListActivity restaurantsListActivity;
-    private BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
+    private final RestaurantsListActivity restaurantsListActivity;
+    private final BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
     private RestaurantFilter restaurantFilter;
     private RecyclerViewRestaurantsListAdapter recyclerViewRestaurantsListAdapter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private List<String> typesOfCuisine = new ArrayList<>();
-    private int page = 0, size = 30;
+    private final int size = 30;
+    private int page = 0;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
 

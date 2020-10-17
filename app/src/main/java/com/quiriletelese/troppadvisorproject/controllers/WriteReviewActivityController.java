@@ -41,8 +41,8 @@ import org.jetbrains.annotations.NotNull;
 public class WriteReviewActivityController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener,
         SwitchCompat.OnCheckedChangeListener, TextWatcher, Constants {
 
-    private WriteReviewActivity writeReviewActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final WriteReviewActivity writeReviewActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private String title = "";
     private String description = "";
     private String user;

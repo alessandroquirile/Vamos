@@ -62,10 +62,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
         Constants {
 
-    private AttractionMapActivity attractionMapActivity;
-    private BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
+    private final AttractionMapActivity attractionMapActivity;
+    private final BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
     private AttractionFilter attractionFilter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Attraction attraction = null;
     private List<Attraction> attractions = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
