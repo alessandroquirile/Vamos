@@ -42,6 +42,9 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant;
     private AlertDialog alertDialogLoadingInProgress;
+    private RestaurantDAO restaurantDAO;
+    private ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter;
+    private ConfigFileReader configFileReader;
 
     public RestaurantDetailActivityController(RestaurantDetailActivity restaurantDetailActivity) {
         this.restaurantDetailActivity = restaurantDetailActivity;
@@ -115,7 +118,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     @NotNull
     @Contract(" -> new")
     private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter() {
-        return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
+        viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(getImages(), getContext());
+        return viewPagerOverViewActivityAdapter;
     }
 
     private void detectVolleyError(@NotNull String errorCode) {
@@ -420,7 +424,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private RestaurantDAO getResaurantDAO() {
-        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        return restaurantDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {

@@ -51,6 +51,10 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     private Double rating;
     private AlertDialog alertDialogWaitWhileInsertingReview;
     private boolean isAnonymoys = false;
+    private UserSharedPreferences userSharedPreferences;
+    private ReviewDAO reviewDAO;
+    private AccountDAO accountDAO;
+    private Review review;
 
     public WriteReviewActivityController(WriteReviewActivity writeReviewActivity) {
         this.writeReviewActivity = writeReviewActivity;
@@ -203,7 +207,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
-        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
+        userSharedPreferences = new UserSharedPreferences(getContext());
         userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));
@@ -270,7 +274,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     @NotNull
     private Review createReviewForInserting() {
         setReviewInformation();
-        Review review = new Review();
+        review = new Review();
         review.setTitle(title);
         review.setDescription(description);
         review.setRating(rating);
@@ -357,11 +361,13 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private ReviewDAO getReviewDAO() {
-        return daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+        reviewDAO = daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+        return reviewDAO;
     }
 
     private AccountDAO getAccountDAO() {
-        return daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        return accountDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {

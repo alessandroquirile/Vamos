@@ -20,7 +20,7 @@ import com.quiriletelese.troppadvisorproject.R;
 
 public class ViewPagerIntroAdapter extends PagerAdapter {
 
-    private Context context;
+    private final Context context;
 
     public ViewPagerIntroAdapter(Context context) {
         this.context = context;

@@ -42,6 +42,8 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     private final UserSharedPreferences userSharedPreferences;
     private AlertDialog alertDialogWaitForLoginResult;
     private View dialogView;
+    private AccountDAO accountDAO;
+    private Account account;
 
     public LoginActivityController(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
@@ -50,7 +52,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
 
     @Override
     public void onClick(@NotNull View view) {
-       onClickHelper(view);
+        onClickHelper(view);
     }
 
     private void loginHelper(VolleyCallBack volleyCallBack) {
@@ -171,7 +173,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
 
     @NotNull
     private Account createAccountForLogin() {
-        Account account = new Account();
+        account = new Account();
         account.setUsername(key);
         account.setPassword(password);
         return account;
@@ -256,7 +258,8 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private AccountDAO getAccountDAO() {
-        return daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        return accountDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {

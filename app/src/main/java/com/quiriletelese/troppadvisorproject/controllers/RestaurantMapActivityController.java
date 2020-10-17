@@ -75,6 +75,9 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     private boolean isRelativeLayoutRestaurantInformationVisible = false;
     private boolean isLinearLayoutSearchRestaurantsVisible = true;
     private boolean isFloatingActionButtonCenterPositionOnRestaurantsVisible = true;
+    private TypeOfCuisineDAO typeOfCuisineDAO;
+    private RestaurantDAO restaurantDAO;
+    private CityDAO cityDAO;
 
     public RestaurantMapActivityController(RestaurantMapActivity restaurantMapActivity) {
         this.restaurantMapActivity = restaurantMapActivity;
@@ -678,15 +681,18 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private RestaurantDAO getResaurantDAO() {
-        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        return restaurantDAO;
     }
 
     private CityDAO getCityDAO() {
-        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        cityDAO = daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        return cityDAO;
     }
 
     private TypeOfCuisineDAO getTypeOfCuisineDAO() {
-        return daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+        typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+        return typeOfCuisineDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {

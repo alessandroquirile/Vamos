@@ -16,6 +16,8 @@ import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -31,7 +33,7 @@ public class RestaurantsListActivity extends AppCompatActivity implements Consta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_list);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeViewComponents();

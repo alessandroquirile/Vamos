@@ -37,6 +37,7 @@ public class SeeReviewsActivityController implements Constants {
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
     private int page = 0;
+    private ReviewDAO reviewDAO;
 
     public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
         this.seeReviewsActivity = seeReviewsActivity;
@@ -190,7 +191,8 @@ public class SeeReviewsActivityController implements Constants {
     }
 
     private ReviewDAO getReviewDAO() {
-        return daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+        reviewDAO = daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+        return reviewDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {

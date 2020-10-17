@@ -56,6 +56,10 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     private int page = 0;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
+    private TypeOfCuisineDAO typeOfCuisineDAO;
+    private RestaurantDAO restaurantDAO;
+    private CityDAO cityDAO;
+    private PointSearch pointSearch;
 
     public RestaurantsListActivityController(RestaurantsListActivity restaurantsListActivity) {
         this.restaurantsListActivity = restaurantsListActivity;
@@ -482,7 +486,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     @NotNull
     private PointSearch createPointSearch() {
         isPointSearchNull = false;
-        PointSearch pointSearch = getPointSearch();
+        pointSearch = getPointSearch();
         pointSearch.setDistance(isRestaurantFilterNull() ? 5d : checkDistanceValue());
         return pointSearch;
     }
@@ -588,16 +592,19 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
         return !recyclerView.canScrollVertically(1);
     }
 
-    private RestaurantDAO getRestaurantDAO(){
-        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+    private RestaurantDAO getRestaurantDAO() {
+        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        return restaurantDAO;
     }
 
     private CityDAO getCityDAO() {
-        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        cityDAO = daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        return cityDAO;
     }
 
-    private TypeOfCuisineDAO getTypeOfCuisineDAO(){
-        return  daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+    private TypeOfCuisineDAO getTypeOfCuisineDAO() {
+        typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+        return typeOfCuisineDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {

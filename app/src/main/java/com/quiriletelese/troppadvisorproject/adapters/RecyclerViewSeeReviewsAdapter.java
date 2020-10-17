@@ -20,8 +20,8 @@ import java.util.List;
 
 public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<RecyclerViewSeeReviewsAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Review> reviews;
+    private final Context context;
+    private final List<Review> reviews;
 
     public RecyclerViewSeeReviewsAdapter(Context context, List<Review> reviews) {
         this.context = context;

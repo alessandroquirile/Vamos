@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class SplashScreenActivityController implements Constants {
 
     private final SplashScreenActivity splashScreenActivity;
+    private UserSharedPreferences userSharedPreferences;
 
     public SplashScreenActivityController(SplashScreenActivity splashScreenActivity) {
         this.splashScreenActivity = splashScreenActivity;
@@ -31,7 +32,9 @@ public class SplashScreenActivityController implements Constants {
     @NotNull
     @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
-        return new UserSharedPreferences(getContext());
+        //return new UserSharedPreferences(getContext());
+        userSharedPreferences = new UserSharedPreferences(getContext());
+        return userSharedPreferences;
     }
 
     private Context getContext() {

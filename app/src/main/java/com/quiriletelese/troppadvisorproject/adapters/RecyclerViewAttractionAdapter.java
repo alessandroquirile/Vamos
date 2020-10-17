@@ -20,6 +20,8 @@ import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -91,7 +93,8 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
         return !hasReviews(attraction) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(attraction);
     }
 
-    private String createAvarageRatingStringHelper(Attraction attraction) {
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Attraction attraction) {
         return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
@@ -99,11 +102,12 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
         return context.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }
 
-    private boolean hasReviews(Attraction attraction) {
+    private boolean hasReviews(@NotNull Attraction attraction) {
         return attraction.hasReviews();
     }
 

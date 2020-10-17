@@ -34,6 +34,8 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private String email, name, lastName, username, password, repeatPassword;
     private AlertDialog alertDialogWaitForSignUpResult;
+    private AccountDAO accountDAO;
+    private Account account;
 
     public SignUpActivityController(SignUpActivity signUpActivity) {
         this.signUpActivity = signUpActivity;
@@ -101,7 +103,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
 
     @NotNull
     private Account createAccountForSignUp() {
-        Account account = new Account();
+        account = new Account();
         account.setEmail(email);
         account.setName(name);
         account.setFamilyName(lastName);
@@ -281,7 +283,8 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     private AccountDAO getAccountDAO() {
-        return daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        return accountDAO;
     }
 
     private String getStorageTechnology(String storageTechnology) {
