@@ -50,9 +50,9 @@ import java.util.List;
 
 public class HomePageFragmentController implements View.OnClickListener, Constants {
 
-    private HomePageFragment homePageFragment;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
-    private GPSTracker gpsTracker;
+    private final HomePageFragment homePageFragment;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
+    private final GPSTracker gpsTracker;
     private RecyclerViewHotelAdapter recyclerViewHotelAdapter;
     private RecyclerViewRestaurantAdapter recyclerViewRestaurantAdapter;
     private RecyclerViewAttractionAdapter recyclerViewAttractionAdapter;

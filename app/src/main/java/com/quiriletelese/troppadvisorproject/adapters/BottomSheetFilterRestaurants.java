@@ -106,7 +106,7 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
                 break;
             case R.id.image_view_search_restaurant_map_filter:
                 if (bottomSheetFilterSearchButtonClick != null)
-                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                    bottomSheetFilterSearchButtonClick.onBottomSheetFilterSearchButtonClick();
                 break;
         }
     }

@@ -36,10 +36,10 @@ import java.util.List;
 
 public class LoginActivityController implements View.OnClickListener, Constants {
 
-    private LoginActivity loginActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final LoginActivity loginActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private String key, password;
-    private UserSharedPreferences userSharedPreferences;
+    private final UserSharedPreferences userSharedPreferences;
     private AlertDialog alertDialogWaitForLoginResult;
     private View dialogView;
 

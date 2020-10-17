@@ -43,12 +43,13 @@ import java.util.List;
 public class AttractionsListActivityController implements BottomSheetFilterSearchButtonClick,
         AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
 
-    private AttractionsListActivity attractionsListActivity;
-    private BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
+    private final AttractionsListActivity attractionsListActivity;
+    private final BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
     private AttractionFilter attractionFilter;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
-    private int page = 0, size = 30;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
+    private final int size = 30;
+    private int page = 0;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
 
@@ -57,7 +58,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     @Override
-    public void OnBottomSheetFilterSearchButtonClick() {
+    public void onBottomSheetFilterSearchButtonClick() {
         onBottomSheetFilterSearchButtonClickHelper();
     }
 

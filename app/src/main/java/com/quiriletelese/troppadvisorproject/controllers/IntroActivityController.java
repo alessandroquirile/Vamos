@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 public class IntroActivityController implements ViewPager.OnPageChangeListener, View.OnClickListener,
         Constants {
 
-    private IntroActivity introActivity;
+    private final IntroActivity introActivity;
 
     public IntroActivityController(IntroActivity introActivity) {
         this.introActivity = introActivity;

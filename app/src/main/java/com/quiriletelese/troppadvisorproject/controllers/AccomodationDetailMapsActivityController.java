@@ -40,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AccomodationDetailMapsActivityController implements View.OnClickListener, Constants {
 
-    private AccomodationDetailMapsActivity accomodationDetailMapsActivity;
+    private final AccomodationDetailMapsActivity accomodationDetailMapsActivity;
 
     public AccomodationDetailMapsActivityController(AccomodationDetailMapsActivity accomodationDetailMapsActivity) {
         this.accomodationDetailMapsActivity = accomodationDetailMapsActivity;

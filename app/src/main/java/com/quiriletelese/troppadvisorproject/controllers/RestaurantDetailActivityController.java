@@ -39,8 +39,8 @@ import java.util.Locale;
 
 public class RestaurantDetailActivityController implements View.OnClickListener, Constants {
 
-    private RestaurantDetailActivity restaurantDetailActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final RestaurantDetailActivity restaurantDetailActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant;
     private AlertDialog alertDialogLoadingInProgress;
 

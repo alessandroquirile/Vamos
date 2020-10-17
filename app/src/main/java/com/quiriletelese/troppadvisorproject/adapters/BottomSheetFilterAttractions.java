@@ -98,7 +98,7 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
                 break;
             case R.id.image_view_search_attraction_map_filter:
                 if (bottomSheetFilterSearchButtonClick != null)
-                    bottomSheetFilterSearchButtonClick.OnBottomSheetFilterSearchButtonClick();
+                    bottomSheetFilterSearchButtonClick.onBottomSheetFilterSearchButtonClick();
                 break;
         }
     }

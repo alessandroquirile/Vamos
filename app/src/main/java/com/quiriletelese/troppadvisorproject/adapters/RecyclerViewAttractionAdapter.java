@@ -28,8 +28,8 @@ import java.util.List;
 
 public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<RecyclerViewAttractionAdapter.ViewHolder> implements Constants {
 
-    private Context context;
-    private List<Attraction> attractions;
+    private final Context context;
+    private final List<Attraction> attractions;
 
     public RecyclerViewAttractionAdapter(Context context, List<Attraction> attractions) {
         this.context = context;
@@ -84,7 +84,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private String getFirtsImage(int position) {
-        return attractions.get(position).getImages().get(0);
+        return attractions.get(position).getFirstImage();
     }
 
     private String createAvarageRatingString(Attraction attraction) {
@@ -117,17 +117,17 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
             initializeComponents();
         }
 
+        @Override
+        public void onClick(View view) {
+            startDetailActivity(attractions.get(this.getAdapterPosition()).getId());
+        }
+
         private void initializeComponents() {
             LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation_home);
             textViewAttractionName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAttractionRating = itemView.findViewById(R.id.text_view_accomodation_rating);
             linearLayoutHomePageRecyclerView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            startDetailActivity(attractions.get(this.getAdapterPosition()).getId());
         }
 
     }

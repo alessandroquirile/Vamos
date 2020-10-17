@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ProfileFragmentController implements Constants {
 
-    private ProfileFragment profileFragment;
-    private UserSharedPreferences userSharedPreferences;
+    private final ProfileFragment profileFragment;
+    private final UserSharedPreferences userSharedPreferences;
 
     public ProfileFragmentController(ProfileFragment profileFragment) {
         this.profileFragment = profileFragment;

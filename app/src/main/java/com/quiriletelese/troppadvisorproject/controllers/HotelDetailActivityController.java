@@ -21,7 +21,6 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
-import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
@@ -40,8 +39,8 @@ import java.util.Locale;
 
 public class HotelDetailActivityController implements View.OnClickListener, Constants {
 
-    private HotelDetailActivity hotelDetailActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final HotelDetailActivity hotelDetailActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Hotel hotel;
     private AlertDialog alertDialogLoadingInProgress;
 

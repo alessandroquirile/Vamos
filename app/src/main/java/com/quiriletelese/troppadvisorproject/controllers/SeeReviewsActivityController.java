@@ -33,10 +33,11 @@ import java.util.List;
 
 public class SeeReviewsActivityController implements Constants {
 
-    private SeeReviewsActivity seeReviewsActivity;
-    private DAOFactory daoFactory = DAOFactory.getInstance();
+    private final SeeReviewsActivity seeReviewsActivity;
+    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
-    private int page = 0, size = 30;
+    private final int size = 30;
+    private int page = 0;
 
     public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
         this.seeReviewsActivity = seeReviewsActivity;

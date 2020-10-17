@@ -95,8 +95,8 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     private void getLocationFromNetworkProvider() {
-        Log.d("LOCATION FROM NETWORK", "LOCATION FROM NETWORK");
         if (isNetworkEnabled()) {
+            //check the network permission
             requestLocationUpdates();
             Log.d("Network", "Network");
             if (!isLocationManagerNull()) {
@@ -108,7 +108,6 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     private void getLocationFromGPS() {
-        Log.d("LOCATION FROM GPS", "LOCATION FROM GPS");
         if (isGPSEnabled()) {
             if (locationIsNull()) {
                 requestLocationUpdates();

@@ -19,8 +19,8 @@ import java.util.List;
 
 public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
 
-    private List<String> images;
-    private Context context;
+    private final List<String> images;
+    private final Context context;
 
     public ViewPagerOverViewActivityAdapter(List<String> images, Context context) {
         this.images = images;

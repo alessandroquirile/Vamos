@@ -6,6 +6,6 @@ package com.quiriletelese.troppadvisorproject.interfaces;
 
 public interface BottomSheetFilterSearchButtonClick {
 
-    void OnBottomSheetFilterSearchButtonClick();
+    void onBottomSheetFilterSearchButtonClick();
 
 }
