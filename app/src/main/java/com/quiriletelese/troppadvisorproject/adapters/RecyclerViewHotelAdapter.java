@@ -28,8 +28,8 @@ import java.util.List;
 public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder>
         implements Constants {
 
-    private Context context;
-    private List<Hotel> hotels;
+    private final Context context;
+    private final List<Hotel> hotels;
 
     public RecyclerViewHotelAdapter(Context context, List<Hotel> hotels) {
         this.context = context;
@@ -78,7 +78,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
     }
 
     private boolean hasImage(int position) {
-        return hotels.get(position).getImages().size() > 0;
+        return hotels.get(position).hasImage();
     }
 
     private String getFirtsImage(int position) {

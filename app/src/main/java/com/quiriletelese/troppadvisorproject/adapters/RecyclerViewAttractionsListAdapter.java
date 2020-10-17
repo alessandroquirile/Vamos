@@ -33,8 +33,8 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<RecyclerViewAttractionsListAdapter.ViewHolder>
         implements Constants {
 
-    private Context context;
-    private List<Attraction> attractions;
+    private final Context context;
+    private final List<Attraction> attractions;
 
     public RecyclerViewAttractionsListAdapter(Context context, List<Attraction> attractions) {
         this.context = context;
@@ -50,7 +50,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAttractionsListAdapter.ViewHolder holder, int position) {
-        setFieldsOnBIndViewHolder(holder, position);
+        setFieldsOnBindViewHolder(holder, position);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         this.attractions.addAll(attractions);
     }
 
-    private void setFieldsOnBIndViewHolder(ViewHolder viewHolder, int position) {
+    private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
         setImage(viewHolder, position);
         viewHolder.textViewAccomodationName.setText(attractions.get(position).getName());
         viewHolder.textViewAccomodationReview.setText(createAvarageRatingString(attractions.get(position)));
