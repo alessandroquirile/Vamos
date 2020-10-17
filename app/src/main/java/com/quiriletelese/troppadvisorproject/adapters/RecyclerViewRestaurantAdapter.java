@@ -26,8 +26,8 @@ import java.util.List;
  */
 
 public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantAdapter.ViewHolder> implements Constants {
-    private Context context;
-    private List<Restaurant> restaurants;
+    private final Context context;
+    private final List<Restaurant> restaurants;
 
     public RecyclerViewRestaurantAdapter(Context context, List<Restaurant> restaurants) {
         this.context = context;
@@ -112,17 +112,17 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
             initializeComponents();
         }
 
+        @Override
+        public void onClick(View view) {
+            startDetailActivity(restaurants.get(this.getAdapterPosition()).getId());
+        }
+
         private void initializeComponents() {
             LinearLayout linearLayoutHomePageRecyclerView = itemView.findViewById(R.id.linear_layout_home_page_recycler_view);
             imageViewRestaurant = itemView.findViewById(R.id.image_view_accomodation);
             textViewRestaurantName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewRestaurantRating = itemView.findViewById(R.id.text_view_accomodation_rating);
             linearLayoutHomePageRecyclerView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            startDetailActivity(restaurants.get(this.getAdapterPosition()).getId());
         }
 
     }
