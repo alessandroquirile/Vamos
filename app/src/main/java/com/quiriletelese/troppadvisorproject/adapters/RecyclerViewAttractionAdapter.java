@@ -27,8 +27,8 @@ import java.util.List;
 
 public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<RecyclerViewAttractionAdapter.ViewHolder> implements Constants {
 
-    private Context context;
-    private List<Attraction> attractions;
+    private final Context context;
+    private final List<Attraction> attractions;
 
     public RecyclerViewAttractionAdapter(Context context, List<Attraction> attractions) {
         this.context = context;
@@ -81,7 +81,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private String getFirtsImage(int position) {
-        return attractions.get(position).getImages().get(0);
+        return attractions.get(position).getFirstImage();
     }
 
     private String createAvarageRatingString(Attraction attraction) {
