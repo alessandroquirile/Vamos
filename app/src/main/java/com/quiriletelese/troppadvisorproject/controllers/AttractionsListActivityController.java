@@ -68,7 +68,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     @Override
-    public void onAutoCompleteTextViewAccomodtionCityTextChanged(String newText) {
+    public void onAutoCompleteTextViewAccomodationCityTextChanged(String newText) {
         findCitiesName(newText);
     }
 

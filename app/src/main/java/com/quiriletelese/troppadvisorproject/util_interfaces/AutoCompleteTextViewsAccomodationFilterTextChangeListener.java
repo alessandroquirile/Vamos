@@ -8,6 +8,6 @@ public interface AutoCompleteTextViewsAccomodationFilterTextChangeListener {
 
     void onAutoCompleteTextViewAccomodationNameTextChanged(String newText);
 
-    void onAutoCompleteTextViewAccomodtionCityTextChanged(String newText);
+    void onAutoCompleteTextViewAccomodationCityTextChanged(String newText);
 
 }

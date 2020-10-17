@@ -105,7 +105,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     @Override
-    public void onAutoCompleteTextViewAccomodtionCityTextChanged(final String newText) {
+    public void onAutoCompleteTextViewAccomodationCityTextChanged(final String newText) {
         findCitiesName(newText);
     }
 
@@ -117,11 +117,11 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         getAttractionDAO().findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), 0, 10000);
     }
 
-    public void findAttractionsNameHelper(VolleyCallBack volleyCallBack, String name) {
+    public void findAttractionsNamesHelper(VolleyCallBack volleyCallBack, String name) {
         getAttractionDAO().findAttractionsName(volleyCallBack, name, getContext());
     }
 
-    public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
+    public void findCitiesNamesHelper(VolleyCallBack volleyCallBack, String name) {
         getCityDAO().findCitiesByName(volleyCallBack, name, getContext());
     }
 
@@ -157,7 +157,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     private void findAttractionsName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewNameChanged();
-            findAttractionsNameHelper(new VolleyCallBack() {
+            findAttractionsNamesHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     setAutoCompleteTextViewNameAdapter((List<String>) object);
@@ -175,7 +175,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     private void findCitiesName(@NotNull String newText) {
         if (!newText.equals("")) {
             disableFieldsOnAutoCompleteTextViewCityChanged();
-            findCitiesNameHelper(new VolleyCallBack() {
+            findCitiesNamesHelper(new VolleyCallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     setAutoCompleteTextViewCityAdapter((List<String>) object);
@@ -275,10 +275,9 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         showToastOnUiThread(R.string.unexpected_error_while_fetch_data);
     }
 
-    private void showToastOnUiThread(int string) {
-        attractionMapActivity.runOnUiThread(() -> {
-            Toast.makeText(attractionMapActivity, getString(string), Toast.LENGTH_SHORT).show();
-        });
+    private void showToastOnUiThread(int stringId) {
+        attractionMapActivity.runOnUiThread(() ->
+                Toast.makeText(attractionMapActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private void createAttractionFilter() {

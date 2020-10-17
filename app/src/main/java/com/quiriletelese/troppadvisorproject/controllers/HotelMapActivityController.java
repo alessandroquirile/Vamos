@@ -104,7 +104,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     @Override
-    public void onAutoCompleteTextViewAccomodtionCityTextChanged(final String newText) {
+    public void onAutoCompleteTextViewAccomodationCityTextChanged(final String newText) {
         findCitiesName(newText);
     }
 

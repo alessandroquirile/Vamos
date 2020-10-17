@@ -177,7 +177,7 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
                 autoCompleteTextViewsAccomodationFilterTextChangeListener.onAutoCompleteTextViewAccomodationNameTextChanged(
                         autoCompleteTextViewName.getText().toString());
             if (editable.equals(autoCompleteTextViewCity.getEditableText()))
-                autoCompleteTextViewsAccomodationFilterTextChangeListener.onAutoCompleteTextViewAccomodtionCityTextChanged(
+                autoCompleteTextViewsAccomodationFilterTextChangeListener.onAutoCompleteTextViewAccomodationCityTextChanged(
                         autoCompleteTextViewCity.getText().toString());
         }
     }

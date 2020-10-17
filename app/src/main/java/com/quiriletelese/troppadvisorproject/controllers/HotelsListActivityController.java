@@ -68,7 +68,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     @Override
-    public void onAutoCompleteTextViewAccomodtionCityTextChanged(String newText) {
+    public void onAutoCompleteTextViewAccomodationCityTextChanged(String newText) {
         findCitiesName(newText);
     }
 

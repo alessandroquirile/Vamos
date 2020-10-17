@@ -108,7 +108,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     @Override
-    public void onAutoCompleteTextViewAccomodtionCityTextChanged(final String newText) {
+    public void onAutoCompleteTextViewAccomodationCityTextChanged(final String newText) {
         findCitiesName(newText);
     }
 
