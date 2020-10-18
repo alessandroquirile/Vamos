@@ -39,6 +39,12 @@ public class HotelDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializeActivityFields();
+    }
+
     private void initializeViewComponents() {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_hotel_detail_activity);
         viewPager = findViewById(R.id.view_pager_hotel_detail);

@@ -195,7 +195,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
         dismissWaitWhileInsertingReviewDialog();
-        Log.d("REVIEW ERROR CODE", errorCode);
+        Log.e("REVIEW ERROR CODE", errorCode);
         switch (errorCode) {
             case UNAUTHORIZED:
                 handle401VolleyError();
@@ -207,7 +207,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
-        userSharedPreferences = new UserSharedPreferences(getContext());
+        userSharedPreferences = createUserSharedPreferences();
         userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));

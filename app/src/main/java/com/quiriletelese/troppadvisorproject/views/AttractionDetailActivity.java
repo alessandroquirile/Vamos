@@ -42,6 +42,12 @@ public class AttractionDetailActivity extends AppCompatActivity {
         initializeActivityFields();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializeActivityFields();
+    }
+
     private void initializeViewComponents() {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_attraction_detail_activity);
         viewPager = findViewById(R.id.view_pager_attraction_detail);

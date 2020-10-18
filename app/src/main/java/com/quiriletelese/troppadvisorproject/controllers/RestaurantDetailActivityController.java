@@ -55,8 +55,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         onClickHelper(view);
     }
 
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
-        getResaurantDAO().findById(volleyCallBack, id, getContext());
+    private void findHotelByIdHelper(VolleyCallBack volleyCallBack) {
+        getResaurantDAO().findById(volleyCallBack, getId(), getContext());
     }
 
     public void findById() {
@@ -73,7 +73,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
             public void onError(String errorCode) {
                 detectVolleyError(errorCode);
             }
-        }, getId());
+        });
     }
 
     private void onClickHelper(View view){
@@ -200,6 +200,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private void setTypeOfCuisineList(@NotNull List<String> typeOfCuisine) {
+        getTextViewTypeOfCuisineList().setText("");
         if (!typeOfCuisine.isEmpty())
             for (String cuisine : typeOfCuisine)
                 setTypeOfCuisineListHelper(cuisine);

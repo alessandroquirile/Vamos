@@ -39,6 +39,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializeActivityFields();
+    }
+
     private void initializeViewComponents() {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout_restaurant_detail_activity);
         viewPager = findViewById(R.id.view_pager_restaurant_detail);

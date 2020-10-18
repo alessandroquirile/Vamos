@@ -115,7 +115,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void invalidateOptionsMenu() {
-        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     private boolean isLogged() {

@@ -106,7 +106,6 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
             case INTERNAL_ERROR_SERVER:
-                clearSharedPreferences();
                 handle500VolleyError();
                 dismissWaitForLoginResultDialog();
                 break;
@@ -211,6 +210,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));
+        System.out.println("REFRESH TOKEN LOGINNNNNNNNNNN = " + userSharedPreferences.getStringSharedPreferences(REFRESH_TOKEN));
     }
 
     private void writeUserDetailsSharedPreferences(GetUserResult getUserResult) {
@@ -218,16 +218,6 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         userSharedPreferences.putStringSharedPreferences(USER_FIRST_NAME, getName(getUserResult.getUserAttributes()));
         userSharedPreferences.putStringSharedPreferences(FAMILY_NAME, getFamilyName(getUserResult.getUserAttributes()));
         userSharedPreferences.putStringSharedPreferences(EMAIL, getEmail(getUserResult.getUserAttributes()));
-    }
-
-    private void clearSharedPreferences() {
-        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, "");
-        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, "");
-        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, "");
-        userSharedPreferences.putStringSharedPreferences(USERNAME, "");
-        userSharedPreferences.putStringSharedPreferences(USER_FIRST_NAME, "");
-        userSharedPreferences.putStringSharedPreferences(FAMILY_NAME, "");
-        userSharedPreferences.putStringSharedPreferences(EMAIL, "");
     }
 
     private void showWaitForLoginResultDialog() {
