@@ -67,7 +67,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         loginHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                volleyCallbackLoginOnSuccess(object);
+                    volleyCallbackLoginOnSuccess(object);
             }
 
             @Override
@@ -124,7 +124,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.button_login:
-                checkUserInformations();
+                checkUserInformation();
                 break;
             case R.id.text_view_sign_in:
                 startSignUpActivity();
@@ -146,7 +146,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
         password = getTextInputLayoutPasswordValue();
     }
 
-    private void checkUserInformations() {
+    private void checkUserInformation() {
         setUserInformations();
         if (areFieldsCorrectlyInserted()) {
             showWaitForLoginResultDialog();
