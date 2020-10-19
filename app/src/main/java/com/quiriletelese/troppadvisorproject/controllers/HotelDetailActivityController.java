@@ -235,6 +235,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(ID, getId());
         writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
+        writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
 
@@ -243,6 +244,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
         seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
         seeReviewsActivityIntent.putExtra(ID, getId());
+        seeReviewsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return seeReviewsActivityIntent;
     }
 
