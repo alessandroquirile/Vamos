@@ -51,6 +51,17 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         finish();
     }
 
+    private void onClickHelper(@NotNull View view) {
+        switch (view.getId()) {
+            case R.id.button_sign_up:
+                createAccount();
+                break;
+            case R.id.floating_action_button_go_back_sign_up_activity:
+                onBackPressed();
+                break;
+        }
+    }
+
     private void createAccount(VolleyCallBack volleyCallBack) {
         getAccountDAO().createAccount(volleyCallBack, createAccountForSignUp(), getContext());
     }
@@ -68,17 +79,6 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
                 volleyCallbackOnError(errorCode);
             }
         });
-    }
-
-    private void onClickHelper(@NotNull View view) {
-        switch (view.getId()) {
-            case R.id.button_sign_up:
-                createAccount();
-                break;
-            case R.id.floating_action_button_go_back_sign_up_activity:
-                onBackPressed();
-                break;
-        }
     }
 
     public void setListenerOnViewComponents() {
