@@ -100,7 +100,8 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
         restaurantAddress = restaurantAddress.concat(restaurant.getStreet() + ", ");
         restaurantAddress = restaurantAddress.concat(restaurant.getHouseNumber() + ", ");
         restaurantAddress = restaurantAddress.concat(restaurant.getCity() + ", ");
-        restaurantAddress = restaurantAddress.concat(restaurant.getProvince() + ", ");
+        if (!restaurant.getProvince().equals(restaurant.getCity()))
+            restaurantAddress = restaurantAddress.concat(restaurant.getProvince() + ", ");
         restaurantAddress = restaurantAddress.concat(restaurant.getPostalCode());
         return restaurantAddress;
     }

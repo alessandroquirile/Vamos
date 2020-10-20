@@ -161,7 +161,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         hotelAddress = hotelAddress.concat(getStreet() + ", ");
         hotelAddress = hotelAddress.concat(getHouseNumber() + ", ");
         hotelAddress = hotelAddress.concat(getCity() + ", ");
-        hotelAddress = hotelAddress.concat(getProvince() + ", ");
+        if (!getProvince().equals(getCity()))
+            hotelAddress = hotelAddress.concat(getProvince() + ", ");
         hotelAddress = hotelAddress.concat(getPostalCode());
         return hotelAddress;
     }

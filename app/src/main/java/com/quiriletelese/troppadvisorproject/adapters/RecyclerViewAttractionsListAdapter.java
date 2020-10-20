@@ -89,9 +89,11 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         String attractionAddress = "";
         attractionAddress = attractionAddress.concat(attraction.getTypeOfAddress() + " ");
         attractionAddress = attractionAddress.concat(attraction.getStreet() + ", ");
-        attractionAddress = attractionAddress.concat(attraction.getHouseNumber() + ", ");
+        if (!attraction.getHouseNumber().isEmpty())
+            attractionAddress = attractionAddress.concat(attraction.getHouseNumber() + ", ");
         attractionAddress = attractionAddress.concat(attraction.getCity() + ", ");
-        attractionAddress = attractionAddress.concat(attraction.getProvince() + ", ");
+        if (!attraction.getProvince().equals(attraction.getCity()))
+            attractionAddress = attractionAddress.concat(attraction.getProvince() + ", ");
         attractionAddress = attractionAddress.concat(attraction.getPostalCode());
         return attractionAddress;
     }

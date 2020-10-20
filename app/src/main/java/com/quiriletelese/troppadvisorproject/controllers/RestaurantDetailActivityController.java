@@ -163,7 +163,8 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         restaurantAddress = restaurantAddress.concat(getStreet() + ", ");
         restaurantAddress = restaurantAddress.concat(getHouseNumber() + ", ");
         restaurantAddress = restaurantAddress.concat(getCity() + ", ");
-        restaurantAddress = restaurantAddress.concat(getProvince() + ", ");
+        if (!getProvince().equals(getCity()))
+            restaurantAddress = restaurantAddress.concat(getProvince() + ", ");
         restaurantAddress = restaurantAddress.concat(getPostalCode());
         return restaurantAddress;
     }

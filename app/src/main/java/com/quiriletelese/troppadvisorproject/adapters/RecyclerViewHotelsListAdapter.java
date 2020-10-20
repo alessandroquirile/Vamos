@@ -91,7 +91,8 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
         hotelAddress = hotelAddress.concat(hotel.getStreet() + ", ");
         hotelAddress = hotelAddress.concat(hotel.getHouseNumber() + ", ");
         hotelAddress = hotelAddress.concat(hotel.getCity() + ", ");
-        hotelAddress = hotelAddress.concat(hotel.getProvince() + ", ");
+        if (!hotel.getProvince().equals(hotel.getCity()))
+            hotelAddress = hotelAddress.concat(hotel.getProvince() + ", ");
         hotelAddress = hotelAddress.concat(hotel.getPostalCode());
         return hotelAddress;
     }

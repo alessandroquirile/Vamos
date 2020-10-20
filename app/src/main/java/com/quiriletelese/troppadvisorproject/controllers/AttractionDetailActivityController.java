@@ -154,9 +154,11 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         String restaurantAddress = "";
         restaurantAddress = restaurantAddress.concat(getTypeOfAddress() + " ");
         restaurantAddress = restaurantAddress.concat(getStreet() + ", ");
-        restaurantAddress = restaurantAddress.concat(getHouseNumber() + ", ");
+        if (!getHouseNumber().isEmpty())
+            restaurantAddress = restaurantAddress.concat(getHouseNumber() + ", ");
         restaurantAddress = restaurantAddress.concat(getCity() + ", ");
-        restaurantAddress = restaurantAddress.concat(getProvince() + ", ");
+        if (!getProvince().equals(getCity()))
+            restaurantAddress = restaurantAddress.concat(getProvince() + ", ");
         restaurantAddress = restaurantAddress.concat(getPostalCode());
         return restaurantAddress;
     }
