@@ -118,4 +118,5 @@
     <string name="missing_location_permission">The app is unable to search for accomodations near you if permission to access the location is denied. Provide permission to allow the app to function properly</string>
     <string name="provide_permission">Provide authorization</string>
     <string name="wait_for_account_creation">Please wait, account creation in progress</string>
+    <string name="review">review</string>
 </resources>

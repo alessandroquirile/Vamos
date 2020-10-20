@@ -98,6 +98,7 @@
     <string name="no_hotels_found_by_filter">Nessun hotel trovato in base ai criteri di ricerca</string>
     <string name="no_restaurants_found_by_filter">Nessun ristorante trovato in base ai criteri di ricerca</string>
     <string name="no_attractions_found_by_filter">Nessun\'attrazione trovata in base ai criteri di ricerca</string>
+    <string name="review">recensione</string>
     <string name="reviews">recensioni</string>
     <string name="user_reviews">Recensioni degli utenti</string>
     <string name="field_cannot_be_empty">Questo campo non può essere vuoto</string>

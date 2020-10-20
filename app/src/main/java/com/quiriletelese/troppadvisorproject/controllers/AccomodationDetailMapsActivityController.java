@@ -32,6 +32,7 @@ import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -99,7 +100,8 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         getTextViewAddress().setText(createAddressString(accomodation));
     }
 
-    private String createAddressString(Accomodation accomodation) {
+    @NotNull
+    private String createAddressString(@NotNull Accomodation accomodation) {
         String attractionAddress = "";
         attractionAddress = attractionAddress.concat(accomodation.getTypeOfAddress() + " ");
         attractionAddress = attractionAddress.concat(accomodation.getStreet() + ", ");
@@ -114,11 +116,12 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         return !hasAvarageRating(accomodation) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(accomodation);
     }
 
-    private String createAvarageRatingStringHelper(Accomodation accomodation) {
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Accomodation accomodation) {
         return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
-    private boolean hasAvarageRating(Accomodation accomodation) {
+    private boolean hasAvarageRating(@NotNull Accomodation accomodation) {
         return accomodation.hasAvarageRating();
     }
 
@@ -166,6 +169,8 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         getGoogleMap().animateCamera(cameraUpdate);
     }
 
+    @NotNull
+    @Contract(" -> new")
     private LatLng createMarkerLatLng() {
         return new LatLng(getAccomodation().getLatitude(), getAccomodation().getLongitude());
     }
