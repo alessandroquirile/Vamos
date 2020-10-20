@@ -20,6 +20,8 @@ import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -92,11 +94,15 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         return !hasReviews(hotel) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(hotel);
     }
 
-    private String createAvarageRatingStringHelper(Hotel hotel) {
-        return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Hotel hotel) {
+        if (hotel.getTotalReviews().intValue() == 1)
+            return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
-    private boolean hasReviews(Hotel hotel) {
+    private boolean hasReviews(@NotNull Hotel hotel) {
         return hotel.hasReviews();
     }
 
@@ -104,6 +110,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         return context.getResources();
     }
 
+    @NotNull
     private String getString(int string) {
         return getResources().getString(string);
     }

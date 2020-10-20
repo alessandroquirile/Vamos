@@ -95,7 +95,10 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Attraction attraction) {
-        return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        if (attraction.getTotalReviews().intValue() == 1)
+            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private Resources getResources() {

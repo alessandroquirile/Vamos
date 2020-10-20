@@ -23,6 +23,8 @@ import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -98,8 +100,12 @@ public class RecyclerViewHotelsListAdapter extends RecyclerView.Adapter<Recycler
         return !hasReviews(hotel) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(hotel);
     }
 
-    private String createAvarageRatingStringHelper(Hotel hotel) {
-        return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Hotel hotel) {
+        if (hotel.getTotalReviews().intValue() == 1)
+            return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return hotel.getAvarageRating().intValue() + "/5 (" + hotel.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasImage(int position) {

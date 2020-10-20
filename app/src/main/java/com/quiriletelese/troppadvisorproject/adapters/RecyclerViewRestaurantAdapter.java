@@ -20,6 +20,8 @@ import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -82,8 +84,12 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
         return !hasReviews(restaurant) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(restaurant);
     }
 
-    private String createAvarageRatingStringHelper(Restaurant restaurant) {
-        return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Restaurant restaurant) {
+        if (restaurant.getTotalReviews().intValue() == 1)
+            return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasImage(int position) {

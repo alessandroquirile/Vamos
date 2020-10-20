@@ -23,6 +23,8 @@ import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -91,7 +93,8 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
         return restaurants.get(position).getFirstImage();
     }
 
-    private String createAddressString(Restaurant restaurant) {
+    @NotNull
+    private String createAddressString(@NotNull Restaurant restaurant) {
         String restaurantAddress = "";
         restaurantAddress = restaurantAddress.concat(restaurant.getTypeOfAddress() + " ");
         restaurantAddress = restaurantAddress.concat(restaurant.getStreet() + ", ");
@@ -106,8 +109,12 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
         return !hasReviews(restaurant) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(restaurant);
     }
 
-    private String createAvarageRatingStringHelper(Restaurant restaurant) {
-        return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Restaurant restaurant) {
+        if (restaurant.getTotalReviews().intValue() == 1)
+            return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(Restaurant restaurant) {

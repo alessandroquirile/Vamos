@@ -118,7 +118,10 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Accomodation accomodation) {
-        return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        if (accomodation.getAvarageRating().intValue() == 1)
+            return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasAvarageRating(@NotNull Accomodation accomodation) {

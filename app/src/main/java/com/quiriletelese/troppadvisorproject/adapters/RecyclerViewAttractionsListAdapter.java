@@ -23,6 +23,8 @@ import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -106,19 +108,24 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         return !hasReviews(attraction) ? getString(R.string.no_reviews) : createAvarageRatingStringHelper(attraction);
     }
 
-    private String createAvarageRatingStringHelper(Attraction attraction) {
-        return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+    @NotNull
+    private String createAvarageRatingStringHelper(@NotNull Attraction attraction) {
+        if (attraction.getTotalReviews().intValue() == 1)
+            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private Resources getResources() {
         return context.getResources();
     }
 
+    @NotNull
     private String getString(int stringId) {
         return getResources().getString(stringId);
     }
 
-    private boolean hasReviews(Attraction attraction) {
+    private boolean hasReviews(@NotNull Attraction attraction) {
         return attraction.hasReviews();
     }
 
