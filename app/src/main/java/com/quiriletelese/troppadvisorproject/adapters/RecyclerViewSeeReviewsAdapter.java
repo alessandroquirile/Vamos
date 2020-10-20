@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.models.Review;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -49,7 +51,7 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
         this.reviews.addAll(reviews);
     }
 
-    private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
+    private void setFieldsOnBindViewHolder(@NotNull ViewHolder viewHolder, int position) {
         viewHolder.textViewTitle.setText(reviews.get(position).getTitle());
         viewHolder.textViewRating.setText(createRatingString(reviews.get(position).getRating(),
                 isAnonymous(reviews.get(position)) ? context.getResources().getString(R.string.anonymous)
@@ -57,13 +59,15 @@ public class RecyclerViewSeeReviewsAdapter extends RecyclerView.Adapter<Recycler
         viewHolder.textViewReviewBody.setText(reviews.get(position).getDescription());
     }
 
-    private String createRatingString(Double rating, String user) {
+    @NotNull
+    private String createRatingString(@NotNull Double rating, String user) {
+        int maxRatingValue = 5;
         String reviewRating = "";
-        reviewRating = reviewRating.concat(rating.intValue() + " - " + user);
+        reviewRating = reviewRating.concat(rating.intValue() + "/" + maxRatingValue + " - " + user);
         return reviewRating;
     }
 
-    private boolean isAnonymous(Review review) {
+    private boolean isAnonymous(@NotNull Review review) {
         return review.getAnonymous();
     }
 

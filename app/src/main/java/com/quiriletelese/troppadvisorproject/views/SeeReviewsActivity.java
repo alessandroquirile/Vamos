@@ -33,7 +33,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        initializeViesComponents();
+        initializeViewsComponents();
         initializeController();
         setToolbarSubtitle();
         initializeRecyclerViewsFakeContent();
@@ -41,7 +41,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
         addRecyclerViewOnScrollListener();
     }
 
-    private void initializeViesComponents() {
+    private void initializeViewsComponents() {
         shimmerRecyclerViewSeeReviews = findViewById(R.id.recycler_view_see_reviews);
         progressBarLoadMore = findViewById(R.id.progress_bar_reviews_load_more);
     }

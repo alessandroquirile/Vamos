@@ -114,8 +114,8 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         return context.getResources();
     }
 
-    private String getString(int string) {
-        return getResources().getString(string);
+    private String getString(int stringId) {
+        return getResources().getString(stringId);
     }
 
     private boolean hasReviews(Attraction attraction) {
