@@ -73,23 +73,19 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery) {
-        HotelDAO hotelDAO = getHotelDAO();
-        hotelDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size);
+        getHotelDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size);
     }
 
     private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
-        HotelDAO hotelDAO = getHotelDAO();
-        hotelDAO.findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), page, size);
+        getHotelDAO().findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), page, size);
     }
 
     public void findHotelsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        HotelDAO hotelDAO = getHotelDAO();
-        hotelDAO.findHotelsName(volleyCallBack, name, getContext());
+        getHotelDAO().findHotelsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
-        CityDAO cityDAO = getCityDAO();
-        cityDAO.findCitiesByName(volleyCallBack, name, getContext());
+        getCityDAO().findCitiesByName(volleyCallBack, name, getContext());
     }
 
     public void findByRsql(PointSearch pointSearch, String rsqlQuery) {
@@ -197,6 +193,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
         hotelFilter.setStars(getStarsValueFromBottomSheetFilter());
         hotelFilter.setDistance(getDistanceValueFromBottomSheetFilter());
         hotelFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        System.out.println("CITY = " + hotelFilter.getCity());
     }
 
     private void disableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -226,7 +223,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     private void setBottomSheetFiltersFields() {
-        if (!isBottomSheetFilterHotelsNull() && !isHotelFilterNull())
+        if (!isHotelFilterNull())
             new Handler().postDelayed(this::setFields, 100);
     }
 
@@ -389,6 +386,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
             hotelMapsActivityIntent.putExtra(RSQL_QUERY, isRsqlEmpty() ? "0" : createRsqlString());
         else
             hotelMapsActivityIntent.putExtra(RSQL_QUERY, "0");
+        System.out.println("QUERY = " + createRsqlString());
     }
 
     private void putHotelName(Intent hotelMapsActivityIntent) {
@@ -601,10 +599,6 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
 
     private boolean isSearchingForCity() {
         return !getHotelFilterCityValue().equals("");
-    }
-
-    private boolean isBottomSheetFilterHotelsNull() {
-        return bottomSheetFilterHotels == null;
     }
 
     private boolean isHotelFilterNull() {

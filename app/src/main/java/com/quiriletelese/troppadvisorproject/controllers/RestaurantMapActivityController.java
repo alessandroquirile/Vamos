@@ -387,10 +387,12 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void addMarkersOnMap() {
-        if (isIntentSearchingForName())
+        if (isSearchingForName())
             findByNameLikeIgnoreCase(getRestaurantName());
+        else if (isSearchingForCity())
+            findByRsql(restaurantFilter.getTypesOfCuisine(), null, getRsqlQuery());
         else
-            findByRsql(null, getPointSearch(), getRsqlQuery());
+            findByRsql(restaurantFilter.getTypesOfCuisine(), getPointSearch(), getRsqlQuery());
     }
 
     private void addMarkersOnSuccess(@NotNull List<Restaurant> restaurants) {
@@ -544,7 +546,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Restaurant restaurant) {
-        return restaurant.getAvarageRating().intValue()+ "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        return restaurant.getAvarageRating().intValue() + "/5 (" + restaurant.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(@NotNull Restaurant restaurant) {
@@ -738,10 +740,6 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     private String getRsqlQuery() {
         return getIntent().getStringExtra(RSQL_QUERY);
-    }
-
-    private boolean isIntentSearchingForName() {
-        return getIntent().getBooleanExtra(SEARCH_FOR_NAME, false);
     }
 
     private RestaurantFilter getRestaurantFilter() {

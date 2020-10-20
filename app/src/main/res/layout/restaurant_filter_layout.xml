@@ -131,7 +131,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:max="150"
-                android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <TextView
@@ -150,7 +149,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:max="5"
-                android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <TextView
@@ -171,7 +169,6 @@
                 android:layout_marginBottom="10dp"
                 android:max="50"
                 android:progress="5"
-                android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
 
             <androidx.appcompat.widget.SwitchCompat

@@ -52,12 +52,12 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
         onClickHelper(view);
     }
 
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
+    private void findByIdHelper(VolleyCallBack volleyCallBack, String id) {
         getHotelDAO().findById(volleyCallBack, id, getContext());
     }
 
     public void findById() {
-        findHotelByIdHelper(new VolleyCallBack() {
+        findByIdHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
                 hotel = (Hotel) object;

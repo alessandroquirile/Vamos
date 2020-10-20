@@ -304,7 +304,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     private void setBottomSheetFiltersFields() {
-        if (!isBottomSheetFilterRestaurantsNull() && !isRestaurantFilterNull()) {
+        if (!isRestaurantFilterNull()) {
             new Handler().postDelayed(this::setFields, 100);
         }
     }
@@ -653,10 +653,6 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
 
     private boolean isSearchingForCity() {
         return !getRestaurantFilterCityValue().equals("");
-    }
-
-    private boolean isBottomSheetFilterRestaurantsNull() {
-        return bottomSheetFilterRestaurants == null;
     }
 
     private boolean isRestaurantFilterNull() {

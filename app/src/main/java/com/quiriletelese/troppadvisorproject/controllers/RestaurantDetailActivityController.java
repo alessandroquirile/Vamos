@@ -42,9 +42,6 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private Restaurant restaurant;
     private AlertDialog alertDialogLoadingInProgress;
-    private RestaurantDAO restaurantDAO;
-    private ViewPagerOverViewActivityAdapter viewPagerOverViewActivityAdapter;
-    private ConfigFileReader configFileReader;
 
     public RestaurantDetailActivityController(RestaurantDetailActivity restaurantDetailActivity) {
         this.restaurantDetailActivity = restaurantDetailActivity;
@@ -55,12 +52,12 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
         onClickHelper(view);
     }
 
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack) {
+    private void findByIdHelper(VolleyCallBack volleyCallBack) {
         getResaurantDAO().findById(volleyCallBack, getId(), getContext());
     }
 
     public void findById() {
-        findHotelByIdHelper(new VolleyCallBack() {
+        findByIdHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
                 restaurant = (Restaurant) object;
@@ -118,8 +115,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     @NotNull
     @Contract(" -> new")
     private ViewPagerOverViewActivityAdapter createViewPagerOverViewActivityAdapter() {
-        viewPagerOverViewActivityAdapter = new ViewPagerOverViewActivityAdapter(getImages(), getContext());
-        return viewPagerOverViewActivityAdapter;
+        return new ViewPagerOverViewActivityAdapter(getImages(), getContext());
     }
 
     private void detectVolleyError(@NotNull String errorCode) {
@@ -425,8 +421,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener,
     }
 
     private RestaurantDAO getResaurantDAO() {
-        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
-        return restaurantDAO;
+        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
     }
 
     private String getStorageTechnology(String storageTechnology) {

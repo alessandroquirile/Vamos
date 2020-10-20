@@ -241,7 +241,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void setBottomSheetFiltersFields() {
-        if (!isBottomSheetFilterHotelsNull() && !isAttractionFilterNull())
+        if (!isAttractionFilterNull())
             new Handler().postDelayed(this::setFields, 100);
     }
 
@@ -402,8 +402,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void addMarkersOnMap() {
-        if (isIntentSearchingForName())
+        if (isSearchingForName())
             findByNameLikeIgnoreCase(getAttractionName());
+        else if (isSearchingForCity())
+            findByRsql(null, getRsqlQuery());
         else
             findByRsql(getPointSearch(), getRsqlQuery());
     }
@@ -661,10 +663,6 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         return getIntent().getStringExtra(RSQL_QUERY);
     }
 
-    private boolean isIntentSearchingForName() {
-        return !(getIntent().getStringExtra(NAME) == null) && !Objects.equals(getIntent().getStringExtra(NAME), "");
-    }
-
     private AttractionFilter getAttractionFilter() {
         return (AttractionFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
     }
@@ -775,10 +773,6 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private boolean isSearchingForCity() {
         return !getAttractionFilterCityValue().equals("");
-    }
-
-    private boolean isBottomSheetFilterHotelsNull() {
-        return bottomSheetFilterAttractions == null;
     }
 
     private boolean isAttractionFilterAvaragePriceEqualsToZero() {

@@ -41,7 +41,7 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheet = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View bottomSheetView = View.inflate(getContext(), R.layout.attraction_filter_map, null);
+        View bottomSheetView = View.inflate(getContext(), R.layout.attraction_filter_layout, null);
         initializeBottomSheetComponents(bottomSheetView);
         setListenerOnComponents();
         bottomSheet.setContentView(bottomSheetView);

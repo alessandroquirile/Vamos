@@ -51,12 +51,12 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         onClickHelper(view);
     }
 
-    private void findHotelByIdHelper(VolleyCallBack volleyCallBack, String id) {
+    private void findByIdHelper(VolleyCallBack volleyCallBack, String id) {
         getAttractionDAO().findById(volleyCallBack, id, getContext());
     }
 
     public void findById() {
-        findHotelByIdHelper(new VolleyCallBack() {
+        findByIdHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
                 attraction = (Attraction) object;

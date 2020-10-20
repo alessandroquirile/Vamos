@@ -226,7 +226,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     private void setBottomSheetFiltersFields() {
-        if (!isBottomSheetFilterHotelsNull() && !isHotelFilterNull())
+        if (!isHotelFilterNull())
             new Handler().postDelayed(this::setFields, 100);
     }
 
@@ -400,8 +400,10 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     public void addMarkersOnMap() {
-        if (isIntentSearchingForName())
+        if (isSearchingForName())
             findByNameLikeIgnoreCase(getHotelName());
+        else if (isSearchingForCity())
+            findByRsql(null, getRsqlQuery());
         else
             findByRsql(getPointSearch(), getRsqlQuery());
     }
@@ -597,7 +599,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         getRelativeLayoutDetails().animate().translationY(getRelativeLayoutDetails().getHeight() + 100);
     }
 
-    private void onClickHelper(View view){
+    private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.text_view_search_hotels_on_map:
                 showBottomSheetMapFilters();
@@ -670,10 +672,6 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private String getRsqlQuery() {
         return getIntent().getStringExtra(RSQL_QUERY);
-    }
-
-    private boolean isIntentSearchingForName() {
-        return getIntent().getBooleanExtra(SEARCH_FOR_NAME, false);
     }
 
     private HotelFilter getHotelFilter() {
@@ -790,10 +788,6 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private boolean isSearchingForCity() {
         return !getHotelFilterCityValue().equals("");
-    }
-
-    private boolean isBottomSheetFilterHotelsNull() {
-        return bottomSheetFilterHotels == null;
     }
 
     private boolean isHotelFilterAvaragePriceEqualsToZero() {
