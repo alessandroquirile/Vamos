@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantAdapter.ViewHolder> implements Constants {
+public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantAdapter.ViewHolder> {
     private final Context context;
     private final List<Restaurant> restaurants;
 
@@ -75,7 +75,7 @@ public class RecyclerViewRestaurantAdapter extends RecyclerView.Adapter<Recycler
 
     private void startDetailActivity(String id) {
         Intent intentDetailActivity = new Intent(context, RestaurantDetailActivity.class);
-        intentDetailActivity.putExtra(ID, id);
+        intentDetailActivity.putExtra(Constants.getId(), id);
         intentDetailActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intentDetailActivity);
     }

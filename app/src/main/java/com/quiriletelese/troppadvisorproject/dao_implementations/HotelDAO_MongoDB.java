@@ -11,9 +11,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HotelDAO_MongoDB implements HotelDAO, Constants {
+public class HotelDAO_MongoDB implements HotelDAO {
 
     @Override
     public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
@@ -120,7 +120,7 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
     }
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
-        String URL = BASE_URL + "hotel/search-by-rsql?";
+        String URL = Constants.getBaseUrl() + "hotel/search-by-rsql?";
         if (pointSearch != null)
             URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
         else
@@ -149,14 +149,14 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
 
     @NotNull
     private String createFindByIdUrl(String id) {
-        String URL = BASE_URL + "hotel/find-by-id/";
+        String URL = Constants.getBaseUrl() + "hotel/find-by-id/";
         URL = URL.concat(id);
         return URL;
     }
 
     @NotNull
     private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
-        String URL = BASE_URL + "hotel/find-by-name-like-ignore-case?";
+        String URL = Constants.getBaseUrl() + "hotel/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
@@ -164,7 +164,7 @@ public class HotelDAO_MongoDB implements HotelDAO, Constants {
 
     @NotNull
     private String createFindHotelsNameUrl(String name) {
-        String URL = BASE_URL + "hotel/find-hotels-name/";
+        String URL = Constants.getBaseUrl() + "hotel/find-hotels-name/";
         URL = URL.concat(name);
         return URL;
     }

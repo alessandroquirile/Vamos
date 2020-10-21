@@ -24,8 +24,8 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
@@ -40,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
  */
 
 public class WriteReviewActivityController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener,
-        SwitchCompat.OnCheckedChangeListener, TextWatcher, Constants {
+        SwitchCompat.OnCheckedChangeListener, TextWatcher {
 
     private final WriteReviewActivity writeReviewActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -197,10 +197,10 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         dismissWaitWhileInsertingReviewDialog();
         Log.e("REVIEW ERROR CODE", errorCode);
         switch (errorCode) {
-            case UNAUTHORIZED:
+            case "401":
                 handle401VolleyError();
                 break;
-            case INTERNAL_ERROR_SERVER:
+            case "500":
                 handleOtherVolleyError();
                 break;
         }
@@ -208,9 +208,9 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
         userSharedPreferences = createUserSharedPreferences();
-        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
-        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
-        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
     }
 
     private void handle401VolleyError() {
@@ -251,13 +251,13 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     private void insertReviewBasedOnAccomodationType() {
         showWaitWhileInsertingReviewDialog();
         switch (getAccomodationType()) {
-            case HOTEL:
+            case "hotel":
                 insertHotelReview();
                 break;
-            case RESTAURANT:
+            case "restaurant":
                 insertRestaurantReview();
                 break;
-            case ATTRACTION:
+            case "attraction":
                 insertAttractionReview();
                 break;
         }
@@ -361,12 +361,12 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private ReviewDAO getReviewDAO() {
-        reviewDAO = daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+        reviewDAO = daoFactory.getReviewDAO(getStorageTechnology(Constants.getRestaurantStorageTechnology()));
         return reviewDAO;
     }
 
     private AccountDAO getAccountDAO() {
-        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
         return accountDAO;
     }
 
@@ -379,19 +379,19 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getAccomodationId() {
-        return getIntent().getStringExtra(ID);
+        return getIntent().getStringExtra(Constants.getId());
     }
 
     private String getAccomodationName() {
-        return getIntent().getStringExtra(ACCOMODATION_NAME);
+        return getIntent().getStringExtra(Constants.getAccomodationName());
     }
 
     private String getAccomodationType() {
-        return getIntent().getStringExtra(ACCOMODATION_TYPE);
+        return getIntent().getStringExtra(Constants.getAccomodationType());
     }
 
     private String getUserName() {
-        return createUserSharedPreferences().getStringSharedPreferences(USERNAME);
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getUsername());
     }
 
     private boolean isEditTextTitleChanged(@NotNull CharSequence charSequence) {
@@ -413,7 +413,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getAccessToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(ACCESS_TOKEN);
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getAccessToken());
     }
 
     private String getAccessToken(@NotNull InitiateAuthResult initiateAuthResult) {
@@ -425,7 +425,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getIdToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(ID_TOKEN);
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getIdToken());
     }
 
     private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {
@@ -433,7 +433,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getResfreshToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(REFRESH_TOKEN);
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getRefreshToken());
     }
 
     @NotNull

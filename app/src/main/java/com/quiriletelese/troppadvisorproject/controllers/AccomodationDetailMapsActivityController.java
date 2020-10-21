@@ -24,8 +24,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Accomodation;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AccomodationDetailMapsActivityController implements View.OnClickListener, Constants {
+public class AccomodationDetailMapsActivityController implements View.OnClickListener {
 
     private final AccomodationDetailMapsActivity accomodationDetailMapsActivity;
 
@@ -69,13 +69,13 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     private void startDetailActivityHelper() {
         switch (getAccomodationType()) {
-            case HOTEL:
+            case "hotel":
                 startAccomodationDetailActivity(HotelDetailActivity.class);
                 break;
-            case RESTAURANT:
+            case "restaurant":
                 startAccomodationDetailActivity(RestaurantDetailActivity.class);
                 break;
-            case ATTRACTION:
+            case "attraction":
                 startAccomodationDetailActivity(AttractionDetailActivity.class);
                 break;
         }
@@ -83,7 +83,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     private void startAccomodationDetailActivity(Class<?> intentClass) {
         Intent detailActivityIntent = new Intent(getContext(), intentClass);
-        detailActivityIntent.putExtra(ID, getAccomodationId());
+        detailActivityIntent.putExtra(Constants.getId(), getAccomodationId());
         detailActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(detailActivityIntent);
     }
@@ -184,11 +184,11 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     private int getAccomodationMarkerHelper() {
         switch (getAccomodationType()) {
-            case HOTEL:
+            case "hotel":
                 return R.drawable.hotel_marker;
-            case RESTAURANT:
+            case "restaurant":
                 return R.drawable.restaurant_marker;
-            case ATTRACTION:
+            case "attraction":
                 return R.drawable.attraction_marker;
             default:
                 return 0;
@@ -256,11 +256,11 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
     }
 
     private String getAccomodationType() {
-        return getIntent().getStringExtra(ACCOMODATION_TYPE);
+        return getIntent().getStringExtra(Constants.getAccomodationType());
     }
 
     private Accomodation getAccomodation() {
-        return (Accomodation) getIntent().getSerializableExtra(ACCOMODATION);
+        return (Accomodation) getIntent().getSerializableExtra(Constants.getAccomodation());
     }
 
     private String getAccomodationId() {

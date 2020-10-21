@@ -38,12 +38,12 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.model_helpers.RestaurantFilter;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -61,8 +61,7 @@ import java.util.Objects;
  */
 
 public class RestaurantMapActivityController implements GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
-        View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
-        Constants {
+        View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener {
 
     private final RestaurantMapActivity restaurantMapActivity;
     private final BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
@@ -684,17 +683,17 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private RestaurantDAO getResaurantDAO() {
-        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(Constants.getRestaurantStorageTechnology()));
         return restaurantDAO;
     }
 
     private CityDAO getCityDAO() {
-        cityDAO = daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        cityDAO = daoFactory.getCityDAO(getStorageTechnology(Constants.getCityStorageTechnology()));
         return cityDAO;
     }
 
     private TypeOfCuisineDAO getTypeOfCuisineDAO() {
-        typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+        typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(Constants.getTypesOfCuisineStorageTechnology()));
         return typeOfCuisineDAO;
     }
 
@@ -736,15 +735,15 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private PointSearch getPointSearch() {
-        return (PointSearch) getIntent().getSerializableExtra(POINT_SEARCH);
+        return (PointSearch) getIntent().getSerializableExtra(Constants.getPointSearch());
     }
 
     private String getRsqlQuery() {
-        return getIntent().getStringExtra(RSQL_QUERY);
+        return getIntent().getStringExtra(Constants.getRsqlQuery());
     }
 
     private RestaurantFilter getRestaurantFilter() {
-        return (RestaurantFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
+        return (RestaurantFilter) getIntent().getSerializableExtra(Constants.getAccomodationFilter());
     }
 
     private AutoCompleteTextView getAutoCompleteTextViewName() {
@@ -772,7 +771,7 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private String getRestaurantName() {
-        return restaurantMapActivity.getIntent().getStringExtra(NAME);
+        return restaurantMapActivity.getIntent().getStringExtra(Constants.getName());
     }
 
     private boolean isRestaurantFilterNull() {

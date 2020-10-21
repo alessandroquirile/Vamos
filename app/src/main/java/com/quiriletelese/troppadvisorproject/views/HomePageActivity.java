@@ -12,14 +12,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HomePageActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemReselectedListener,
-        Constants {
+public class HomePageActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemReselectedListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

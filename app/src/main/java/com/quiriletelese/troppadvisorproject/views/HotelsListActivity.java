@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HotelsListActivityController;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 import java.util.Objects;
 
@@ -20,7 +19,7 @@ import java.util.Objects;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HotelsListActivity extends AppCompatActivity implements Constants {
+public class HotelsListActivity extends AppCompatActivity {
 
     private HotelsListActivityController hotelsListActivityController;
     private RecyclerView recyclerViewHotelsList;

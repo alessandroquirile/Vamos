@@ -22,12 +22,12 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.model_helpers.RestaurantFilter;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
@@ -44,7 +44,7 @@ import java.util.List;
  */
 
 public class RestaurantsListActivityController implements BottomSheetFilterSearchButtonClick,
-        AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
+        AutoCompleteTextViewsAccomodationFilterTextChangeListener {
 
     private final RestaurantsListActivity restaurantsListActivity;
     private final BottomSheetFilterRestaurants bottomSheetFilterRestaurants = new BottomSheetFilterRestaurants();
@@ -521,28 +521,28 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     private void putPointSearch(@NotNull Intent restaurantMapActivityIntent) {
-        restaurantMapActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? null : createPointSearch());
+        restaurantMapActivityIntent.putExtra(Constants.getPointSearch(), isPointSearchNull ? null : createPointSearch());
     }
 
     private void putRsqlQuery(Intent restaurantMapActivityIntent) {
         if (!isRestaurantFilterNull())
-            restaurantMapActivityIntent.putExtra(RSQL_QUERY, isRsqlEmpty() ? "0" : createRsqlString());
+            restaurantMapActivityIntent.putExtra(Constants.getRsqlQuery(), isRsqlEmpty() ? "0" : createRsqlString());
         else
-            restaurantMapActivityIntent.putExtra(RSQL_QUERY, "0");
+            restaurantMapActivityIntent.putExtra(Constants.getRsqlQuery(), "0");
     }
 
     private void putResturantName(Intent restaurantMapActivityIntent) {
         if (!isRestaurantFilterNull()) {
             if (isSearchingForName()) {
-                restaurantMapActivityIntent.putExtra(SEARCH_FOR_NAME, true);
-                restaurantMapActivityIntent.putExtra(NAME, getRestaurantFilterNameValue());
+                restaurantMapActivityIntent.putExtra(Constants.getSearchForName(), true);
+                restaurantMapActivityIntent.putExtra(Constants.getName(), getRestaurantFilterNameValue());
             } else
-                restaurantMapActivityIntent.putExtra(SEARCH_FOR_NAME, false);
+                restaurantMapActivityIntent.putExtra(Constants.getSearchForName(), false);
         }
     }
 
     private void putRestaurantFilter(@NotNull Intent restaurantMapActivityIntent) {
-        restaurantMapActivityIntent.putExtra(ACCOMODATION_FILTER, isRestaurantFilterNull() ? null
+        restaurantMapActivityIntent.putExtra(Constants.getAccomodationFilter(), isRestaurantFilterNull() ? null
                 : restaurantFilter);
     }
 
@@ -560,7 +560,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     public PointSearch getPointSearch() {
-        return (PointSearch) restaurantsListActivity.getIntent().getSerializableExtra(POINT_SEARCH);
+        return (PointSearch) restaurantsListActivity.getIntent().getSerializableExtra(Constants.getPointSearch());
     }
 
     @NotNull
@@ -593,17 +593,17 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     private RestaurantDAO getRestaurantDAO() {
-        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        restaurantDAO = daoFactory.getRestaurantDAO(getStorageTechnology(Constants.getRestaurantStorageTechnology()));
         return restaurantDAO;
     }
 
     private CityDAO getCityDAO() {
-        cityDAO = daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        cityDAO = daoFactory.getCityDAO(getStorageTechnology(Constants.getCityStorageTechnology()));
         return cityDAO;
     }
 
     private TypeOfCuisineDAO getTypeOfCuisineDAO() {
-        typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(TYPES_OF_CUISINE_STORAGE_TECHNOLOGY));
+        typeOfCuisineDAO = daoFactory.getTypeOfCuisineDAO(getStorageTechnology(Constants.getTypesOfCuisineStorageTechnology()));
         return typeOfCuisineDAO;
     }
 

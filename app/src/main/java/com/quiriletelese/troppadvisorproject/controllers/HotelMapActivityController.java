@@ -35,12 +35,12 @@ import com.quiriletelese.troppadvisorproject.adapters.BottomSheetFilterHotels;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.HotelFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.HotelMapActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -58,8 +58,7 @@ import java.util.Objects;
  */
 
 public class HotelMapActivityController implements GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
-        View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener,
-        Constants {
+        View.OnClickListener, BottomSheetFilterSearchButtonClick, AutoCompleteTextViewsAccomodationFilterTextChangeListener {
 
     private final HotelMapActivity hotelMapActivity;
     private final BottomSheetFilterHotels bottomSheetFilterHotels = new BottomSheetFilterHotels();
@@ -621,11 +620,11 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     private HotelDAO getHotelDAO() {
-        return daoFactory.getHotelDAO(getStorageTechnology(HOTEL_STORAGE_TECHNOLOGY));
+        return daoFactory.getHotelDAO(getStorageTechnology(Constants.getHotelStorageTechnology()));
     }
 
     private CityDAO getCityDAO() {
-        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        return daoFactory.getCityDAO(getStorageTechnology(Constants.getCityStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {
@@ -668,15 +667,15 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     public PointSearch getPointSearch() {
-        return (PointSearch) getIntent().getSerializableExtra(POINT_SEARCH);
+        return (PointSearch) getIntent().getSerializableExtra(Constants.getPointSearch());
     }
 
     private String getRsqlQuery() {
-        return getIntent().getStringExtra(RSQL_QUERY);
+        return getIntent().getStringExtra(Constants.getRsqlQuery());
     }
 
     private HotelFilter getHotelFilter() {
-        return (HotelFilter) getIntent().getSerializableExtra(ACCOMODATION_FILTER);
+        return (HotelFilter) getIntent().getSerializableExtra(Constants.getAccomodationFilter());
     }
 
     private AutoCompleteTextView getAutoCompleteTextViewName() {
@@ -704,7 +703,7 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     private String getHotelName() {
-        return getIntent().getStringExtra(NAME);
+        return getIntent().getStringExtra(Constants.getName());
     }
 
     private boolean isHotelFilterNull() {

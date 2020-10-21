@@ -15,8 +15,8 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewSeeReviewsAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -31,7 +31,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class SeeReviewsActivityController implements Constants {
+public class SeeReviewsActivityController {
 
     private final SeeReviewsActivity seeReviewsActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -183,15 +183,15 @@ public class SeeReviewsActivityController implements Constants {
     }
 
     private String getAccomodationId() {
-        return seeReviewsActivity.getIntent().getStringExtra(ID);
+        return seeReviewsActivity.getIntent().getStringExtra(Constants.getId());
     }
 
     private String getAccomodationName() {
-        return seeReviewsActivity.getIntent().getStringExtra(ACCOMODATION_NAME);
+        return seeReviewsActivity.getIntent().getStringExtra(Constants.getAccomodationName());
     }
 
     private ReviewDAO getReviewDAO() {
-        reviewDAO = daoFactory.getReviewDAO(getStorageTechnology(REVIEW_STORAGE_TECHNOLOGY));
+        reviewDAO = daoFactory.getReviewDAO(getStorageTechnology(Constants.getReviewStorageTechnology()));
         return reviewDAO;
     }
 

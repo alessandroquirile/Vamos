@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.AttractionsListActivityController;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +21,7 @@ import java.util.Objects;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AttractionsListActivity extends AppCompatActivity implements Constants {
+public class AttractionsListActivity extends AppCompatActivity {
 
     private AttractionsListActivityController attractionsListActivityController;
     private RecyclerView recyclerViewAttractionsList;

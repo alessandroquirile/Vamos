@@ -19,8 +19,8 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
@@ -36,7 +36,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HotelDetailActivityController implements View.OnClickListener, Constants {
+public class HotelDetailActivityController implements View.OnClickListener {
 
     private final HotelDetailActivity hotelDetailActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -119,7 +119,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
 
     private void detectVolleyError(@NotNull String errorCode) {
         switch (errorCode) {
-            case NO_CONTENT:
+            case "204":
                 showToastOnUiThread(R.string.no_content_error_hotel_detail);
                 break;
         }
@@ -234,8 +234,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     @NotNull
     private Intent createWriteReviewActivityIntent() {
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
-        writeReviewActivityIntent.putExtra(ID, getId());
-        writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, HOTEL);
+        writeReviewActivityIntent.putExtra(Constants.getId(), getId());
+        writeReviewActivityIntent.putExtra(Constants.getAccomodationType(), Constants.getHotel());
         writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
@@ -243,8 +243,8 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     @NotNull
     private Intent createSeeReviewsActivityIntent() {
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
-        seeReviewsActivityIntent.putExtra(ID, getId());
+        seeReviewsActivityIntent.putExtra(Constants.getAccomodationName(), getName());
+        seeReviewsActivityIntent.putExtra(Constants.getId(), getId());
         seeReviewsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return seeReviewsActivityIntent;
     }
@@ -332,7 +332,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     }
 
     private String getId() {
-        return getIntent().getStringExtra(ID);
+        return getIntent().getStringExtra(Constants.getId());
     }
 
     private String getName(){
@@ -393,7 +393,7 @@ public class HotelDetailActivityController implements View.OnClickListener, Cons
     }
 
     private HotelDAO getHotelDAO() {
-        return daoFactory.getHotelDAO(getStorageTechnology(HOTEL_STORAGE_TECHNOLOGY));
+        return daoFactory.getHotelDAO(getStorageTechnology(Constants.getHotelStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {

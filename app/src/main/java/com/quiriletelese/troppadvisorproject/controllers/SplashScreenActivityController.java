@@ -3,7 +3,7 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.content.Context;
 import android.content.Intent;
 
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class SplashScreenActivityController implements Constants {
+public class SplashScreenActivityController {
 
     private final SplashScreenActivity splashScreenActivity;
     private UserSharedPreferences userSharedPreferences;
@@ -26,7 +26,7 @@ public class SplashScreenActivityController implements Constants {
     }
 
     public boolean hasAppBeenOpenedForFirstTime() {
-        return createUserSharedPreferences().getBooleanSharedPreferences(IS_APP_OPENED_FOR_FIRST_TIME);
+        return createUserSharedPreferences().getBooleanSharedPreferences(Constants.getIsAppOpenedForFirstTime());
     }
 
     @NotNull

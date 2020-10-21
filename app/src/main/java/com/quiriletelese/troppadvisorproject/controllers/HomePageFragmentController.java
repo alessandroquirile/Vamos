@@ -23,11 +23,11 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
@@ -47,7 +47,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HomePageFragmentController implements View.OnClickListener, Constants {
+public class HomePageFragmentController implements View.OnClickListener {
 
     private final HomePageFragment homePageFragment;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -196,7 +196,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
                 startEnablePositionActivity();
                 break;
             case R.id.button_provide_permission:
-                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION);
+                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, Constants.getAccessFineLocationCode());
                 break;
         }
     }
@@ -211,7 +211,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
 
     public void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case ACCESS_FINE_LOCATION:
+            case 100:
                 checkPermissionResult(grantResults);
                 break;
         }
@@ -280,7 +280,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     @NotNull
     private Intent createHotelsListActivityIntent() {
         Intent intentHotelsListActivity = new Intent(getContext(), HotelsListActivity.class);
-        intentHotelsListActivity.putExtra(POINT_SEARCH, pointSearch);
+        intentHotelsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
         intentHotelsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intentHotelsListActivity;
     }
@@ -293,7 +293,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     @NotNull
     private Intent createRestaurantsListActivityIntent() {
         Intent intentRestaurantsListActivity = new Intent(getContext(), RestaurantsListActivity.class);
-        intentRestaurantsListActivity.putExtra(POINT_SEARCH, pointSearch);
+        intentRestaurantsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
         intentRestaurantsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intentRestaurantsListActivity;
     }
@@ -306,7 +306,7 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     @NotNull
     private Intent createAttractionsListActivityIntent() {
         Intent intentAttractionsListActivity = new Intent(getContext(), AttractionsListActivity.class);
-        intentAttractionsListActivity.putExtra(POINT_SEARCH, pointSearch);
+        intentAttractionsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
         intentAttractionsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intentAttractionsListActivity;
     }
@@ -353,15 +353,15 @@ public class HomePageFragmentController implements View.OnClickListener, Constan
     }
 
     private HotelDAO getHotelDAO() {
-        return daoFactory.getHotelDAO(getStorageTechnology(HOTEL_STORAGE_TECHNOLOGY));
+        return daoFactory.getHotelDAO(getStorageTechnology(Constants.getHotelStorageTechnology()));
     }
 
     private RestaurantDAO getRestaurantDAO() {
-        return daoFactory.getRestaurantDAO(getStorageTechnology(RESTAURANT_STORAGE_TECHNOLOGY));
+        return daoFactory.getRestaurantDAO(getStorageTechnology(Constants.getRestaurantStorageTechnology()));
     }
 
     private AttractionDAO getAttractionDAO() {
-        return daoFactory.getAttractionDAO(getStorageTechnology(ATTRACTION_STORAGE_TECHNOLOGY));
+        return daoFactory.getAttractionDAO(getStorageTechnology(Constants.getAttractionStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {

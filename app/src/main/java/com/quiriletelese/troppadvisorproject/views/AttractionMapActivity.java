@@ -15,13 +15,12 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.AttractionMapActivityController;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AttractionMapActivity extends FragmentActivity implements OnMapReadyCallback, Constants {
+public class AttractionMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private AttractionMapActivityController attractionMapActivityController;
     private GoogleMap googleMap;

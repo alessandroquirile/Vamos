@@ -11,8 +11,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.Contract;
@@ -30,7 +30,7 @@ import java.util.Map;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
+public class ReviewDAO_MongoDB implements ReviewDAO {
 
     @Override
     public void insertHotelReview(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
@@ -139,24 +139,24 @@ public class ReviewDAO_MongoDB implements ReviewDAO, Constants {
     @NotNull
     @Contract(pure = true)
     private String createInsertHotelReviewUrl() {
-        return BASE_URL_HTTPS + "review/insert-hotel-review";
+        return Constants.getBaseUrlHttps() + "review/insert-hotel-review";
     }
 
     @NotNull
     @Contract(pure = true)
     private String createInsertRestaurantReviewUrl() {
-        return BASE_URL_HTTPS + "review/insert-restaurant-review";
+        return Constants.getBaseUrlHttps() + "review/insert-restaurant-review";
     }
 
     @NotNull
     @Contract(pure = true)
     private String createInsertAttractionReviewUrl() {
-        return BASE_URL_HTTPS + "review/insert-attraction-review";
+        return Constants.getBaseUrlHttps() + "review/insert-attraction-review";
     }
 
     @NotNull
     private String createFindAccomodationReviewsUrl(String id, int page, int size) {
-        String URL = BASE_URL + "review/find-accomodation-reviews?";
+        String URL = Constants.getBaseUrl() + "review/find-accomodation-reviews?";
         URL = URL.concat("id=" + id);
         URL = URL.concat("&page=" + page);
         URL = URL.concat("&size=" + size);

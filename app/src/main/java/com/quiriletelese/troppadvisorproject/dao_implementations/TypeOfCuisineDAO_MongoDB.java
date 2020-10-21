@@ -7,7 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.Contract;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 
-public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO, Constants {
+public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO {
 
     @Override
     public void getAll(VolleyCallBack volleyCallBack, Context context) {
@@ -44,7 +44,7 @@ public class TypeOfCuisineDAO_MongoDB implements TypeOfCuisineDAO, Constants {
     @NotNull
     @Contract(pure = true)
     private String createGetAllUrl() {
-        return BASE_URL + "type-of-cuisine/get-all";
+        return Constants.getBaseUrl() + "type-of-cuisine/get-all";
     }
 
     @NotNull

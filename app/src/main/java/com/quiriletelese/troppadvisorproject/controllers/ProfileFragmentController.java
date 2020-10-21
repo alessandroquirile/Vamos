@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.ProfileFragment;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class ProfileFragmentController implements Constants {
+public class ProfileFragmentController {
 
     private final ProfileFragment profileFragment;
     private final UserSharedPreferences userSharedPreferences;
@@ -71,20 +71,20 @@ public class ProfileFragmentController implements Constants {
     }
 
     private void clearUserSharedPreferences() {
-        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, "");
-        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, "");
-        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, "");
-        userSharedPreferences.putStringSharedPreferences(USERNAME, "");
-        userSharedPreferences.putStringSharedPreferences(USER_FIRST_NAME, "");
-        userSharedPreferences.putStringSharedPreferences(FAMILY_NAME, "");
-        userSharedPreferences.putStringSharedPreferences(EMAIL, "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getUsername(), "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getUserFirstName(), "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getFamilyName(), "");
+        userSharedPreferences.putStringSharedPreferences(Constants.getEmail(), "");
     }
 
     public void setProfileFields(){
-        setTextViewText(getTextViewName(), getStringSharedPreferences(USER_FIRST_NAME));
-        setTextViewText(getTextViewFamilyName(), getStringSharedPreferences(FAMILY_NAME));
-        setTextViewText(getTextViewEmail(), getStringSharedPreferences(EMAIL));
-        setTextViewText(getTextViewUserName(), getStringSharedPreferences(USERNAME));
+        setTextViewText(getTextViewName(), getStringSharedPreferences(Constants.getUserFirstName()));
+        setTextViewText(getTextViewFamilyName(), getStringSharedPreferences(Constants.getFamilyName()));
+        setTextViewText(getTextViewEmail(), getStringSharedPreferences(Constants.getEmail()));
+        setTextViewText(getTextViewUserName(), getStringSharedPreferences(Constants.getUsername()));
     }
 
     public boolean hasLogged() {
@@ -100,7 +100,7 @@ public class ProfileFragmentController implements Constants {
     }
 
     private String getAccessToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(ACCESS_TOKEN);
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getAccessToken());
     }
 
     @NotNull

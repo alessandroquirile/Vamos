@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
@@ -33,8 +33,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<RecyclerViewAttractionsListAdapter.ViewHolder>
-        implements Constants {
+public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<RecyclerViewAttractionsListAdapter.ViewHolder> {
 
     private final Context context;
     private final List<Attraction> attractions;
@@ -184,8 +183,8 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
         private Intent createWriteReviewActivityIntent() {
             Intent writeReviewActivityIntent = new Intent(context, WriteReviewActivity.class);
-            writeReviewActivityIntent.putExtra(ID, getId());
-            writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
+            writeReviewActivityIntent.putExtra(Constants.getId(), getId());
+            writeReviewActivityIntent.putExtra(Constants.getAccomodationType(), Constants.getAttraction());
             writeReviewActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return writeReviewActivityIntent;
         }
@@ -196,8 +195,8 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
         private Intent createAccomodationDetailMapsIntent() {
             Intent accomodationDetailMapsIntent = new Intent(context, AccomodationDetailMapsActivity.class);
-            accomodationDetailMapsIntent.putExtra(ACCOMODATION, getAttraction());
-            accomodationDetailMapsIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
+            accomodationDetailMapsIntent.putExtra(Constants.getAccomodation(), getAttraction());
+            accomodationDetailMapsIntent.putExtra(Constants.getAccomodationType(), Constants.getAttraction());
             accomodationDetailMapsIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return accomodationDetailMapsIntent;
         }
@@ -208,7 +207,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
         private Intent createStartDetailActivityIntent() {
             Intent startDetailActivityIntent = new Intent(context, AttractionDetailActivity.class);
-            startDetailActivityIntent.putExtra(ID, getId());
+            startDetailActivityIntent.putExtra(Constants.getId(), getId());
             startDetailActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return startDetailActivityIntent;
         }

@@ -12,8 +12,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.Contract;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AccountDAO_Cognito implements AccountDAO, Constants {
+public class AccountDAO_Cognito implements AccountDAO {
 
     @Override
     public void login(VolleyCallBack volleyCallBack, Account account, Context context) {
@@ -125,25 +125,25 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
     @NotNull
     @Contract(pure = true)
     private String createLoginUrl() {
-        return BASE_URL + "cognito/login";
+        return Constants.getBaseUrl() + "cognito/login";
     }
 
     @NotNull
     @Contract(pure = true)
     private String createNewUserURL() {
-        return BASE_URL + "cognito/insert-user";
+        return Constants.getBaseUrl() + "cognito/insert-user";
     }
 
     @NotNull
     @Contract(pure = true)
     private String createRefreshTokenURL() {
-        return BASE_URL + "cognito/refresh-token";
+        return Constants.getBaseUrl() + "cognito/refresh-token";
     }
 
     @NotNull
     @Contract(pure = true)
     private String createGetUserDetailsURL() {
-        return BASE_URL + "cognito/get-user-details";
+        return Constants.getBaseUrl() + "cognito/get-user-details";
     }
 
     private JSONObject jsonObjectNewUser(Account account) {
@@ -219,10 +219,10 @@ public class AccountDAO_Cognito implements AccountDAO, Constants {
     }
 
     private void checkCreateAccountVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
-        if (networkResponse.headers.containsKey(USERNAME_ERROR))
-            volleyCallBack.onError(USERNAME_ERROR);
-        else if (networkResponse.headers.containsKey(EMAIL_ERROR))
-            volleyCallBack.onError(EMAIL_ERROR);
+        if (networkResponse.headers.containsKey(Constants.getUsernameError()))
+            volleyCallBack.onError(Constants.getUsernameError());
+        else if (networkResponse.headers.containsKey(Constants.getEmailError()))
+            volleyCallBack.onError(Constants.getEmailError());
         else
             volleyCallBack.onError(String.valueOf(networkResponse.statusCode));
     }

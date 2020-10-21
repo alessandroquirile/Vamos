@@ -21,11 +21,11 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.AttractionFilter;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
@@ -41,7 +41,7 @@ import java.util.List;
  */
 
 public class AttractionsListActivityController implements BottomSheetFilterSearchButtonClick,
-        AutoCompleteTextViewsAccomodationFilterTextChangeListener, Constants {
+        AutoCompleteTextViewsAccomodationFilterTextChangeListener {
 
     private final AttractionsListActivity attractionsListActivity;
     private final BottomSheetFilterAttractions bottomSheetFilterAttractions = new BottomSheetFilterAttractions();
@@ -385,24 +385,24 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void putPointSearch(@NotNull Intent attractionMapsActivityIntent) {
-        attractionMapsActivityIntent.putExtra(POINT_SEARCH, isPointSearchNull ? null : createPointSearch());
+        attractionMapsActivityIntent.putExtra(Constants.getPointSearch(), isPointSearchNull ? null : createPointSearch());
     }
 
     private void putRsqlQuery(Intent attractionMapsActivityIntent) {
         if (!isAttractionFilterNull())
-            attractionMapsActivityIntent.putExtra(RSQL_QUERY, isRsqlEmpty() ? "0" : createRsqlString());
+            attractionMapsActivityIntent.putExtra(Constants.getRsqlQuery(), isRsqlEmpty() ? "0" : createRsqlString());
         else
-            attractionMapsActivityIntent.putExtra(RSQL_QUERY, "0");
+            attractionMapsActivityIntent.putExtra(Constants.getRsqlQuery(), "0");
     }
 
     private void putAttractionName(Intent attractionMapsActivityIntent) {
         if (!isAttractionFilterNull())
             if (isSearchingForName())
-                attractionMapsActivityIntent.putExtra(NAME, getAttractionFilterNameValue());
+                attractionMapsActivityIntent.putExtra(Constants.getName(), getAttractionFilterNameValue());
     }
 
     private void putAttractionFilter(@NotNull Intent attractionMapsActivityIntent) {
-        attractionMapsActivityIntent.putExtra(ACCOMODATION_FILTER, isAttractionFilterNull() ? null
+        attractionMapsActivityIntent.putExtra(Constants.getAccomodationFilter(), isAttractionFilterNull() ? null
                 : attractionFilter);
     }
 
@@ -510,11 +510,11 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private AttractionDAO getAttractionDAO(){
-        return daoFactory.getAttractionDAO(getStorageTechnology(ATTRACTION_STORAGE_TECHNOLOGY));
+        return daoFactory.getAttractionDAO(getStorageTechnology(Constants.getAttractionStorageTechnology()));
     }
 
     private CityDAO getCityDAO() {
-        return daoFactory.getCityDAO(getStorageTechnology(CITY_STORAGE_TECHNOLOGY));
+        return daoFactory.getCityDAO(getStorageTechnology(Constants.getCityStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {
@@ -539,7 +539,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     public PointSearch getPointSearch() {
-        return (PointSearch) getIntent().getSerializableExtra(POINT_SEARCH);
+        return (PointSearch) getIntent().getSerializableExtra(Constants.getPointSearch());
     }
 
     private boolean isBottomSheetFilterHotelsVisible() {

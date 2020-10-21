@@ -19,8 +19,8 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
@@ -35,7 +35,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AttractionDetailActivityController implements View.OnClickListener, Constants {
+public class AttractionDetailActivityController implements View.OnClickListener {
 
     private final AttractionDetailActivity attractionDetailActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -116,7 +116,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private void detectVolleyError(String errorCode) {
         switch (errorCode) {
-            case NO_CONTENT:
+            case "204":
                 showToastOnUiThread(R.string.no_content_error_attraction_detail);
                 break;
         }
@@ -226,16 +226,16 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private Intent createWriteReviewActivityIntent() {
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
-        writeReviewActivityIntent.putExtra(ID, getId());
-        writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, ATTRACTION);
+        writeReviewActivityIntent.putExtra(Constants.getId(), getId());
+        writeReviewActivityIntent.putExtra(Constants.getAccomodationType(), Constants.getAttraction());
         writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
 
     private Intent createSeeReviewsActivityIntent() {
         Intent seeReviewsActivityIntent = new Intent(getContext(), SeeReviewsActivity.class);
-        seeReviewsActivityIntent.putExtra(ACCOMODATION_NAME, getName());
-        seeReviewsActivityIntent.putExtra(ID, getId());
+        seeReviewsActivityIntent.putExtra(Constants.getAccomodationName(), getName());
+        seeReviewsActivityIntent.putExtra(Constants.getId(), getId());
         seeReviewsActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return seeReviewsActivityIntent;
     }
@@ -323,7 +323,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private String getId() {
-        return getIntent().getStringExtra(ID);
+        return getIntent().getStringExtra(Constants.getId());
     }
 
     private String getName(){
@@ -384,7 +384,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private AttractionDAO getAttractionDAO() {
-        return daoFactory.getAttractionDAO(getStorageTechnology(ATTRACTION_STORAGE_TECHNOLOGY));
+        return daoFactory.getAttractionDAO(getStorageTechnology(Constants.getAttractionStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {

@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Hotel;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -28,8 +28,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder>
-        implements Constants {
+public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewHotelAdapter.ViewHolder> {
 
     private final Context context;
     private final List<Hotel> hotels;
@@ -77,7 +76,7 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
 
     private void startDetailActivity(String id) {
         Intent intentDetailActivity = new Intent(context, HotelDetailActivity.class);
-        intentDetailActivity.putExtra(ID, id);
+        intentDetailActivity.putExtra(Constants.getId(), id);
         intentDetailActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intentDetailActivity);
     }

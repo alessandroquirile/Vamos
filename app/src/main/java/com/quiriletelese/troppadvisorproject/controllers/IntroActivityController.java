@@ -18,7 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerIntroAdapter;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
@@ -30,8 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class IntroActivityController implements ViewPager.OnPageChangeListener, View.OnClickListener,
-        Constants {
+public class IntroActivityController implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
     private final IntroActivity introActivity;
 
@@ -69,7 +68,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
 
     public void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case ACCESS_FINE_LOCATION:
+            case 100:
                 checkPermissionResult(grantResults);
                 break;
         }
@@ -86,7 +85,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
     private void onClickHekper(@NotNull View view) {
         switch (view.getId()) {
             case R.id.button_permission:
-                requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION);
+                requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Constants.getAccessFineLocationCode());
                 break;
         }
     }
@@ -112,7 +111,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
 
     private void writeSharedPreferences() {
         UserSharedPreferences userSharedPreferences = createUserSharedPreferences();
-        userSharedPreferences.putBooleanSharedPreferences(IS_APP_OPENED_FOR_FIRST_TIME, false);
+        userSharedPreferences.putBooleanSharedPreferences(Constants.getIsAppOpenedForFirstTime(), false);
     }
 
     private void showToastOnUiThread(int stringId) {

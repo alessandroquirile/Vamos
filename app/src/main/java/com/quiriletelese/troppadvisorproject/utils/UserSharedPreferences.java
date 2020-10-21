@@ -3,7 +3,7 @@ package com.quiriletelese.troppadvisorproject.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class UserSharedPreferences implements Constants {
+public class UserSharedPreferences {
 
     private final SharedPreferences sharedPreferences;
 
     public UserSharedPreferences(@NotNull Context context) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(Constants.getSharedPreferences(), Context.MODE_PRIVATE);
     }
 
     public void putStringSharedPreferences(String name, String value) {

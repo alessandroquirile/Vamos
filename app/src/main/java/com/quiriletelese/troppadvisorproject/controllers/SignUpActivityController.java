@@ -14,8 +14,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -27,8 +27,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class SignUpActivityController implements View.OnClickListener, DialogInterface.OnDismissListener,
-        Constants {
+public class SignUpActivityController implements View.OnClickListener, DialogInterface.OnDismissListener {
 
     private final SignUpActivity signUpActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -120,13 +119,13 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     private void volleyCallbackOnError(@NotNull String errorCode) {
         dismissWaitForSignUpResultDialog();
         switch (errorCode) {
-            case USERNAME_ERROR:
+            case "Username error":
                 showUsernameAlreadyExistError();
                 break;
-            case EMAIL_ERROR:
+            case "Email error":
                 showEmailAlreadyExistError();
                 break;
-            case INTERNAL_ERROR_SERVER:
+            case "500":
                 showToastOnUiThread(R.string.unexpected_error_during_sign_up);
                 break;
         }
@@ -283,7 +282,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     private AccountDAO getAccountDAO() {
-        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
         return accountDAO;
     }
 

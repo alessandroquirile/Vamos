@@ -17,8 +17,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
@@ -34,7 +34,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class LoginActivityController implements View.OnClickListener, Constants {
+public class LoginActivityController implements View.OnClickListener {
 
     private final LoginActivity loginActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -105,7 +105,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
         switch (errorCode) {
-            case INTERNAL_ERROR_SERVER:
+            case "500":
                 handle500VolleyError();
                 dismissWaitForLoginResultDialog();
                 break;
@@ -207,17 +207,16 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private void writeLoginSharedPreferences(InitiateAuthResult initiateAuthResult) {
-        userSharedPreferences.putStringSharedPreferences(ACCESS_TOKEN, getAccessToken(initiateAuthResult));
-        userSharedPreferences.putStringSharedPreferences(ID_TOKEN, getIdToken(initiateAuthResult));
-        userSharedPreferences.putStringSharedPreferences(REFRESH_TOKEN, getRefreshToken(initiateAuthResult));
-        System.out.println("REFRESH TOKEN LOGINNNNNNNNNNN = " + userSharedPreferences.getStringSharedPreferences(REFRESH_TOKEN));
+        userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
+        userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
     }
 
     private void writeUserDetailsSharedPreferences(GetUserResult getUserResult) {
-        userSharedPreferences.putStringSharedPreferences(USERNAME, getUserName(getUserResult));
-        userSharedPreferences.putStringSharedPreferences(USER_FIRST_NAME, getName(getUserResult.getUserAttributes()));
-        userSharedPreferences.putStringSharedPreferences(FAMILY_NAME, getFamilyName(getUserResult.getUserAttributes()));
-        userSharedPreferences.putStringSharedPreferences(EMAIL, getEmail(getUserResult.getUserAttributes()));
+        userSharedPreferences.putStringSharedPreferences(Constants.getUsername(), getUserName(getUserResult));
+        userSharedPreferences.putStringSharedPreferences(Constants.getUserFirstName(), getName(getUserResult.getUserAttributes()));
+        userSharedPreferences.putStringSharedPreferences(Constants.getFamilyName(), getFamilyName(getUserResult.getUserAttributes()));
+        userSharedPreferences.putStringSharedPreferences(Constants.getEmail(), getEmail(getUserResult.getUserAttributes()));
     }
 
     private void showWaitForLoginResultDialog() {
@@ -248,7 +247,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private AccountDAO getAccountDAO() {
-        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(ACCOUNT_STORAGE_TECHNOLOGY));
+        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
         return accountDAO;
     }
 
@@ -298,7 +297,7 @@ public class LoginActivityController implements View.OnClickListener, Constants 
     }
 
     private String getAccessToken() {
-        return userSharedPreferences.getStringSharedPreferences(ACCESS_TOKEN);
+        return userSharedPreferences.getStringSharedPreferences(Constants.getAccessToken());
     }
 
     private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {

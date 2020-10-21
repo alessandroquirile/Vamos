@@ -11,10 +11,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.CustomJsonObjectRequest;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
+public class RestaurantDAO_MongoDB implements RestaurantDAO {
 
     @Override
     public void findByRsql(VolleyCallBack volleyCallBack, List<String> typesOfCuisine, PointSearch pointSearch,
@@ -60,7 +60,8 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
         String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size);
         JSONArray jsonObjectTypesOfCuisine = typesOfCuisine == null ? jsonObjectTypesOfCuisine(new ArrayList<>())
                 : jsonObjectTypesOfCuisine(typesOfCuisine);
-        CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.POST, URL, jsonObjectTypesOfCuisine, response -> volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
+        CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.POST, URL, jsonObjectTypesOfCuisine,
+                response -> volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
 
         }) {
             @Override
@@ -122,7 +123,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     }
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
-        String URL = BASE_URL + "restaurant/search-by-rsql?";
+        String URL = Constants.getBaseUrl() + "restaurant/search-by-rsql?";
         if (pointSearch != null)
             URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
         else
@@ -150,14 +151,14 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     @NotNull
     private String createFindByIdUrl(String id) {
-        String URL = BASE_URL + "restaurant/find-by-id/";
+        String URL = Constants.getBaseUrl() + "restaurant/find-by-id/";
         URL = URL.concat(id);
         return URL;
     }
 
     @NotNull
     private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
-        String URL = BASE_URL + "restaurant/find-by-name-like-ignore-case?";
+        String URL = Constants.getBaseUrl() + "restaurant/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
@@ -165,20 +166,21 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
 
     @NotNull
     private String createFindRestaurantsNameUrl(String name) {
-        String URL = BASE_URL + "restaurant/find-restaurants-name/";
+        String URL = Constants.getBaseUrl() + "restaurant/find-restaurants-name/";
         URL = URL.concat(name);
         return URL;
     }
 
     private JSONArray jsonObjectTypesOfCuisine(List<String> typesOfCuisine) {
-        JSONArray jsonObjectInsertAccomodationReview = new JSONArray();
-        return createJsonObjectTypesOfCuisine(jsonObjectInsertAccomodationReview, typesOfCuisine);
+        JSONArray jsonObjectTypesOfCuisine = new JSONArray();
+        return createJsonObjectTypesOfCuisine(jsonObjectTypesOfCuisine, typesOfCuisine);
     }
 
     private JSONArray createJsonObjectTypesOfCuisine(@NotNull JSONArray jsonObjectTypesOfCuisine,
-                                                     @NotNull List<String> typesOfCuisine) {
-        for (String typeOfCuisine : typesOfCuisine)
-            jsonObjectTypesOfCuisine.put(typeOfCuisine);
+                                                     List<String> typesOfCuisine) {
+        if (typesOfCuisine != null)
+            for (String typeOfCuisine : typesOfCuisine)
+                jsonObjectTypesOfCuisine.put(typeOfCuisine);
         return jsonObjectTypesOfCuisine;
     }
 
@@ -220,7 +222,7 @@ public class RestaurantDAO_MongoDB implements RestaurantDAO, Constants {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean isStatusCodeOk(int statusCode){
+    private boolean isStatusCodeOk(int statusCode) {
         return statusCode == 200;
     }
 

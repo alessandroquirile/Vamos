@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HomePageFragmentController;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HomePageFragment extends Fragment implements Constants {
+public class HomePageFragment extends Fragment {
 
     private HomePageFragmentController homePageFragmentController;
     private ShimmerRecyclerView shimmerRecyclerViewHotel, shimmerRecyclerViewRestaurant, shimmerRecyclerViewAttraction;

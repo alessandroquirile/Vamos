@@ -7,7 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class CityDAO_MongoDB implements CityDAO, Constants {
+public class CityDAO_MongoDB implements CityDAO {
 
     @Override
     public void findCitiesByName(VolleyCallBack volleyCallBack, String name, Context context) {
@@ -55,7 +55,7 @@ public class CityDAO_MongoDB implements CityDAO, Constants {
 
     @NotNull
     private String createFindCitiesUrl(String name) {
-        String URL = BASE_URL + "city/find-cities-by-name-like/";
+        String URL = Constants.getBaseUrl() + "city/find-cities-by-name-like/";
         URL = URL.concat(name);
         return URL;
     }

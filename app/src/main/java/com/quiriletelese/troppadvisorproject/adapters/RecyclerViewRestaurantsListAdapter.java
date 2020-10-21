@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
@@ -33,8 +33,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder>
-        implements Constants {
+public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<RecyclerViewRestaurantsListAdapter.ViewHolder> {
 
     private final Context context;
     private final List<Restaurant> restaurants;
@@ -192,23 +191,23 @@ public class RecyclerViewRestaurantsListAdapter extends RecyclerView.Adapter<Rec
 
         private Intent createWriteReviewActivityIntent() {
             Intent writeReviewActivityIntent = new Intent(context, WriteReviewActivity.class);
-            writeReviewActivityIntent.putExtra(ID, getId());
-            writeReviewActivityIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+            writeReviewActivityIntent.putExtra(Constants.getId(), getId());
+            writeReviewActivityIntent.putExtra(Constants.getAccomodationType(), Constants.getRestaurant());
             writeReviewActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return writeReviewActivityIntent;
         }
 
         private Intent createAccomodationDetailMapsIntent() {
             Intent accomodationDetailMapsIntent = new Intent(context, AccomodationDetailMapsActivity.class);
-            accomodationDetailMapsIntent.putExtra(ACCOMODATION, getRestaurant());
-            accomodationDetailMapsIntent.putExtra(ACCOMODATION_TYPE, RESTAURANT);
+            accomodationDetailMapsIntent.putExtra(Constants.getAccomodation(), getRestaurant());
+            accomodationDetailMapsIntent.putExtra(Constants.getAccomodationType(), Constants.getRestaurant());
             accomodationDetailMapsIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return accomodationDetailMapsIntent;
         }
 
         private Intent createStartDetailActivityIntent() {
             Intent startDetailActivityIntent = new Intent(context, RestaurantDetailActivity.class);
-            startDetailActivityIntent.putExtra(ID, getId());
+            startDetailActivityIntent.putExtra(Constants.getId(), getId());
             startDetailActivityIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return startDetailActivityIntent;
         }

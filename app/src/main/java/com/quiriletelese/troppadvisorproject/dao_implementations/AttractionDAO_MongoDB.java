@@ -11,9 +11,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
+import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.util_interfaces.Constants;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
+public class AttractionDAO_MongoDB implements AttractionDAO {
 
     @Override
     public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
@@ -127,7 +127,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
     }
 
     private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
-        String URL = BASE_URL + "attraction/search-by-rsql?";
+        String URL = Constants.getBaseUrl() + "attraction/search-by-rsql?";
         if (pointSearch != null)
             URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
         else
@@ -155,14 +155,14 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
 
     @NotNull
     private String createFindByIdUrl(String id) {
-        String URL = BASE_URL + "attraction/find-by-id/";
+        String URL = Constants.getBaseUrl() + "attraction/find-by-id/";
         URL = URL.concat(id);
         return URL;
     }
 
     @NotNull
     private String createFindByNameLikeIgnoreCaseUrl(String name, int page, int size) {
-        String URL = BASE_URL + "attraction/find-by-name-like-ignore-case?";
+        String URL = Constants.getBaseUrl() + "attraction/find-by-name-like-ignore-case?";
         URL = URL.concat("name=" + name);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
@@ -170,7 +170,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO, Constants {
 
     @NotNull
     private String createFindHotelsNameUrl(String name) {
-        String URL = BASE_URL + "attraction/find-attraction-name/";
+        String URL = Constants.getBaseUrl() + "attraction/find-attraction-name/";
         URL = URL.concat(name);
         return URL;
     }
