@@ -200,7 +200,8 @@ public class HotelDetailActivityController implements View.OnClickListener {
     }
 
     private void startCallActivity(){
-        getContext().startActivity(createCallActivityIntent());
+        if (!getTextViewPhoneNumber().getText().toString().equals(getString(R.string.no_phone_number)))
+            getContext().startActivity(createCallActivityIntent());
     }
 
     private void startMapsActivity(){

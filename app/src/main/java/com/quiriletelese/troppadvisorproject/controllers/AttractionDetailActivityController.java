@@ -103,7 +103,7 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         setCertificateOfExcellence(isHasCertificateOfExcellence());
         setAddress();
         setOpeningTime(getOpeningTime());
-        setPhoneNunmber(getPhoneNumber());
+        setPhoneNumber(getPhoneNumber());
     }
 
     private void initializeViewPager() {
@@ -170,7 +170,7 @@ public class AttractionDetailActivityController implements View.OnClickListener 
             getTextViewOpeningTime().setText(getString(R.string.no_information_available));
     }
 
-    private void setPhoneNunmber(String phoneNumber) {
+    private void setPhoneNumber(String phoneNumber) {
         if (!phoneNumber.equals(""))
             getTextViewPhoneNumber().setText(phoneNumber);
         else
@@ -192,8 +192,9 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         return avaragePrice;
     }
 
-    private void startCallActivity(){
-        getContext().startActivity(createCallActivityIntent());
+    private void startCallActivity() {
+        if (!getTextViewPhoneNumber().getText().toString().equals(getString(R.string.no_phone_number)))
+            getContext().startActivity(createCallActivityIntent());
     }
 
     private void startMapsActivity(){
