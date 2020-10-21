@@ -278,9 +278,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void handle204VolleyError() {
-        if (isLoadingData)
-            showToastVolleyError(R.string.end_of_results);
-        else
+        if (!isLoadingData)
             showToastVolleyError(R.string.no_attractions_found_by_filter);
     }
 

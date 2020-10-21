@@ -270,9 +270,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     private void handle204VolleyError() {
-        if (isLoadingData)
-            showToastVolleyError(R.string.end_of_results);
-        else
+        if (!isLoadingData)
             showToastVolleyError(R.string.no_hotels_found_by_filter);
     }
 
