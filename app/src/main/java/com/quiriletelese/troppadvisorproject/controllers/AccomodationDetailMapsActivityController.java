@@ -105,9 +105,11 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         String attractionAddress = "";
         attractionAddress = attractionAddress.concat(accomodation.getTypeOfAddress() + " ");
         attractionAddress = attractionAddress.concat(accomodation.getStreet() + ", ");
-        attractionAddress = attractionAddress.concat(accomodation.getHouseNumber() + ", ");
+        if (!accomodation.getHouseNumber().isEmpty())
+            attractionAddress = attractionAddress.concat(accomodation.getHouseNumber() + ", ");
         attractionAddress = attractionAddress.concat(accomodation.getCity() + ", ");
-        attractionAddress = attractionAddress.concat(accomodation.getProvince() + ", ");
+        if (!accomodation.getProvince().equals(accomodation.getCity()))
+            attractionAddress = attractionAddress.concat(accomodation.getProvince() + ", ");
         attractionAddress = attractionAddress.concat(accomodation.getPostalCode());
         return attractionAddress;
     }
