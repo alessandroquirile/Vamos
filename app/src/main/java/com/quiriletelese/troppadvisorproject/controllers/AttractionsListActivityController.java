@@ -278,6 +278,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void handle204VolleyError() {
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         if (!isLoadingData)
             showToastVolleyError(R.string.no_attractions_found_by_filter);
     }
@@ -359,7 +360,6 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     private void showToastVolleyError(int stringId) {
         setIsLoadingData(false);
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         showToastOnUiThread(stringId);
     }
 
