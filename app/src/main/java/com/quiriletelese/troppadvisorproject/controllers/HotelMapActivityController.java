@@ -399,11 +399,14 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
     }
 
     public void addMarkersOnMap() {
-        if (isSearchingForName())
-            findByNameLikeIgnoreCase(getHotelName());
-        else if (isSearchingForCity())
-            findByRsql(null, getRsqlQuery());
-        else
+        if (!isHotelFilterNull()) {
+            if (isSearchingForName())
+                findByNameLikeIgnoreCase(getHotelName());
+            else if (isSearchingForCity())
+                findByRsql(null, getRsqlQuery());
+            else
+                findByRsql(getPointSearch(), getRsqlQuery());
+        } else
             findByRsql(getPointSearch(), getRsqlQuery());
     }
 

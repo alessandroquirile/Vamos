@@ -401,11 +401,14 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void addMarkersOnMap() {
-        if (isSearchingForName())
-            findByNameLikeIgnoreCase(getAttractionName());
-        else if (isSearchingForCity())
-            findByRsql(null, getRsqlQuery());
-        else
+        if (!isAttractionFilterNull()) {
+            if (isSearchingForName())
+                findByNameLikeIgnoreCase(getAttractionName());
+            else if (isSearchingForCity())
+                findByRsql(null, getRsqlQuery());
+            else
+                findByRsql(getPointSearch(), getRsqlQuery());
+        } else
             findByRsql(getPointSearch(), getRsqlQuery());
     }
 

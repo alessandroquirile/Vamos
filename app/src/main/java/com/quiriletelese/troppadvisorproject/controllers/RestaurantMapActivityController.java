@@ -386,12 +386,15 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void addMarkersOnMap() {
-        if (isSearchingForName())
-            findByNameLikeIgnoreCase(getRestaurantName());
-        else if (isSearchingForCity())
-            findByRsql(restaurantFilter.getTypesOfCuisine(), null, getRsqlQuery());
-        else
-            findByRsql(restaurantFilter.getTypesOfCuisine(), getPointSearch(), getRsqlQuery());
+        if (!isRestaurantFilterNull()) {
+            if (isSearchingForName())
+                findByNameLikeIgnoreCase(getRestaurantName());
+            else if (isSearchingForCity())
+                findByRsql(restaurantFilter.getTypesOfCuisine(), null, getRsqlQuery());
+            else
+                findByRsql(restaurantFilter.getTypesOfCuisine(), getPointSearch(), getRsqlQuery());
+        } else
+            findByRsql(null, getPointSearch(), getRsqlQuery());
     }
 
     private void addMarkersOnSuccess(@NotNull List<Restaurant> restaurants) {
