@@ -512,12 +512,15 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     public void startRestaurantMapActivity() {
-        Intent restaurantMapActivityIntent = new Intent(getContext(), RestaurantMapActivity.class);
-        putPointSearch(restaurantMapActivityIntent);
-        putRsqlQuery(restaurantMapActivityIntent);
-        putResturantName(restaurantMapActivityIntent);
-        putRestaurantFilter(restaurantMapActivityIntent);
-        restaurantsListActivity.startActivity(restaurantMapActivityIntent);
+        if (!(recyclerViewRestaurantsListAdapter == null)) {
+            Intent restaurantMapActivityIntent = new Intent(getContext(), RestaurantMapActivity.class);
+            putPointSearch(restaurantMapActivityIntent);
+            putRsqlQuery(restaurantMapActivityIntent);
+            putResturantName(restaurantMapActivityIntent);
+            putRestaurantFilter(restaurantMapActivityIntent);
+            restaurantsListActivity.startActivity(restaurantMapActivityIntent);
+        } else
+            showToastOnUiThred(R.string.no_restauants_to_show_on_map);
     }
 
     private void putPointSearch(@NotNull Intent restaurantMapActivityIntent) {

@@ -137,4 +137,7 @@
     <string name="missing_location_permission">L\'app non è in grado di cercare le strutture nelle tue vicinanze se il permesso per accedere alla posizione è negato. Fornisci il permesso per permettere all\'app di funzionare correttamente</string>
     <string name="provide_permission">Fornisci autorizzazione</string>
     <string name="wait_for_account_creation">Attendi, creazione account in corso</string>
+    <string name="no_hotels_to_show_on_map">Nessun hotel da mostrare su mappa</string>
+    <string name="no_restauants_to_show_on_map">Nessun ristorante da mostrare su mappa</string>
+    <string name="no_attractions_to_show_on_map">Nessun attrazione da mostrare su mappa</string>
 </resources>

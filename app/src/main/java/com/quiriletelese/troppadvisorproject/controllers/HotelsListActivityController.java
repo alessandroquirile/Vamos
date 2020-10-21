@@ -193,7 +193,6 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
         hotelFilter.setStars(getStarsValueFromBottomSheetFilter());
         hotelFilter.setDistance(getDistanceValueFromBottomSheetFilter());
         hotelFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
-        System.out.println("CITY = " + hotelFilter.getCity());
     }
 
     private void disableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -368,13 +367,16 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     public void startMapsActivity() {
-        Intent intentHotelMapsActivity = new Intent(getContext(), HotelMapActivity.class);
-        putPointSearch(intentHotelMapsActivity);
-        putRsqlQuery(intentHotelMapsActivity);
-        putHotelName(intentHotelMapsActivity);
-        putHotelFilter(intentHotelMapsActivity);
-        intentHotelMapsActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        hotelsListActivity.startActivity(intentHotelMapsActivity);
+        if (!(recyclerViewHotelsListAdapter == null)) {
+            Intent intentHotelMapsActivity = new Intent(getContext(), HotelMapActivity.class);
+            putPointSearch(intentHotelMapsActivity);
+            putRsqlQuery(intentHotelMapsActivity);
+            putHotelName(intentHotelMapsActivity);
+            putHotelFilter(intentHotelMapsActivity);
+            intentHotelMapsActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            hotelsListActivity.startActivity(intentHotelMapsActivity);
+        } else
+            showToastOnUiThred(R.string.no_hotels_to_show_on_map);
     }
 
     private void putPointSearch(@NotNull Intent hotelMapsActivityIntent) {
@@ -386,7 +388,6 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
             hotelMapsActivityIntent.putExtra(Constants.getRsqlQuery(), isRsqlEmpty() ? "0" : createRsqlString());
         else
             hotelMapsActivityIntent.putExtra(Constants.getRsqlQuery(), "0");
-        System.out.println("QUERY = " + createRsqlString());
     }
 
     private void putHotelName(Intent hotelMapsActivityIntent) {

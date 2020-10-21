@@ -375,13 +375,16 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     public void startMapsActivity() {
-        Intent intentAttractionsMapActivity = new Intent(getContext(), AttractionMapActivity.class);
-        putPointSearch(intentAttractionsMapActivity);
-        putRsqlQuery(intentAttractionsMapActivity);
-        putAttractionName(intentAttractionsMapActivity);
-        putAttractionFilter(intentAttractionsMapActivity);
-        intentAttractionsMapActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        attractionsListActivity.startActivity(intentAttractionsMapActivity);
+        if (!(recyclerViewAttractionsListAdapter == null)) {
+            Intent intentAttractionsMapActivity = new Intent(getContext(), AttractionMapActivity.class);
+            putPointSearch(intentAttractionsMapActivity);
+            putRsqlQuery(intentAttractionsMapActivity);
+            putAttractionName(intentAttractionsMapActivity);
+            putAttractionFilter(intentAttractionsMapActivity);
+            intentAttractionsMapActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            attractionsListActivity.startActivity(intentAttractionsMapActivity);
+        } else
+            showToastOnUiThread(R.string.no_attractions_to_show_on_map);
     }
 
     private void putPointSearch(@NotNull Intent attractionMapsActivityIntent) {

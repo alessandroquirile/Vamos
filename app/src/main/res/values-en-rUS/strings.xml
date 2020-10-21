@@ -119,4 +119,7 @@
     <string name="provide_permission">Provide authorization</string>
     <string name="wait_for_account_creation">Please wait, account creation in progress</string>
     <string name="review">review</string>
+    <string name="no_restauants_to_show_on_map">No restaurants to show on map</string>
+    <string name="no_hotels_to_show_on_map">" No hotels to show on map"</string>
+    <string name="no_attractions_to_show_on_map">No attractions to show on map</string>
 </resources>
