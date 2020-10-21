@@ -260,7 +260,7 @@ public class BottomSheetFilterRestaurants extends BottomSheetDialogFragment impl
     }
 
     public String getAutoCompleteTextViewNameValue() {
-        return autoCompleteTextViewName.getText().toString();
+        return autoCompleteTextViewName.getText().toString().trim();
     }
 
     public String getAutoCompleteTextViewCityValue() {

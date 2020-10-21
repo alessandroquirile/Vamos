@@ -334,7 +334,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private String extractCityName(@NotNull String city) {
-        return city.contains(",") ? city.substring(0, city.lastIndexOf(",")) : city;
+        return city.contains(",") ? city.substring(0, city.lastIndexOf(",")) : city.trim();
     }
 
     private String checkPriceValue(String rsqlString) {
