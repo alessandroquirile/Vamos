@@ -151,7 +151,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         return new MarkerOptions()
                 .position(new LatLng(accomodation.getLatitude(), accomodation.getLongitude()))
                 .icon(setCustomMarker(getContext(), getAccomodationMarker()))
-                .title(accomodation.getId());
+                .title(accomodation.getName());
     }
 
     private BitmapDescriptor setCustomMarker(Context context, int id) {
