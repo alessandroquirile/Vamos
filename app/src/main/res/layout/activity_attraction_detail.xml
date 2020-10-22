@@ -86,6 +86,7 @@
                 android:layout_marginTop="10dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
+                android:text="@string/certificate_of_excellence"
                 android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
 

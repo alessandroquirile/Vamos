@@ -45,6 +45,7 @@ import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.RestaurantMapActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
@@ -667,6 +668,9 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
 
     private void onClickHelper(View view) {
         switch (view.getId()) {
+            case R.id.relative_layout_restaurant_details:
+                startDetailActivity();
+                break;
             case R.id.text_view_search_restaurants_on_map:
                 showBottomSheetMapFilters();
                 break;
@@ -680,9 +684,17 @@ public class RestaurantMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void setListenerOnViewComponents() {
+        getRelativeLayoutDetails().setOnClickListener(this);
         getTextViewSearchOnMap().setOnClickListener(this);
         getImageViewMapGoBack().setOnClickListener(this);
         getFloatingActionButtonCenterPositionOnRestaurants().setOnClickListener(this);
+    }
+
+    private void startDetailActivity() {
+        Intent detailActivityIntent = new Intent(getContext(), RestaurantDetailActivity.class);
+        detailActivityIntent.putExtra(Constants.getId(), restaurant.getId());
+        detailActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(detailActivityIntent);
     }
 
     private RestaurantDAO getResaurantDAO() {

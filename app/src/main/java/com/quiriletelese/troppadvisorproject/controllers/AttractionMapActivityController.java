@@ -43,7 +43,9 @@ import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
+import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
 
@@ -203,6 +205,9 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private void onClickHelper(@NotNull View view) {
         switch (view.getId()) {
+            case R.id.relative_layout_attraction_details:
+                startDetailActivity();
+                break;
             case R.id.text_view_search_attractions_on_map:
                 showBottomSheetMapFilters();
                 break;
@@ -607,9 +612,17 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     public void setListenerOnViewComponents() {
+        getRelativeLayoutDetails().setOnClickListener(this);
         getTextViewSearchOnMap().setOnClickListener(this);
         getImageViewMapGoBack().setOnClickListener(this);
         getFloatingActionButtonCenterPositionOnAttractions().setOnClickListener(this);
+    }
+
+    private void startDetailActivity() {
+        Intent detailActivityIntent = new Intent(getContext(), AttractionDetailActivity.class);
+        detailActivityIntent.putExtra(Constants.getId(), attraction.getId());
+        detailActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(detailActivityIntent);
     }
 
     private AttractionDAO getAttractionDAO() {

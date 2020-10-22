@@ -57,7 +57,7 @@ public class AttractionMapActivity extends FragmentActivity implements OnMapRead
     private void intializeViewComponents(GoogleMap googleMap) {
         this.googleMap = googleMap;
         linearLayoutSearchAttractions = findViewById(R.id.linear_layout_search_attractions);
-        relativeLayoutDetails = findViewById(R.id.relative_layout_attraction_information);
+        relativeLayoutDetails = findViewById(R.id.relative_layout_attraction_details);
         imageViewMapGoBack = findViewById(R.id.image_view_attraction_map_go_back);
         imageViewAttraction = findViewById(R.id.image_view_attraction);
         textViewSearchOnMap = findViewById(R.id.text_view_search_attractions_on_map);

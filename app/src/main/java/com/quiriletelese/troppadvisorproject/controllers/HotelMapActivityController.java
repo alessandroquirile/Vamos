@@ -42,6 +42,8 @@ import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.HotelMapActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
@@ -604,6 +606,9 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
 
     private void onClickHelper(View view) {
         switch (view.getId()) {
+            case R.id.relative_layout_hotel_details:
+                startDetailActivity();
+                break;
             case R.id.text_view_search_hotels_on_map:
                 showBottomSheetMapFilters();
                 break;
@@ -620,6 +625,13 @@ public class HotelMapActivityController implements GoogleMap.OnMapClickListener,
         getTextViewSearchOnMap().setOnClickListener(this);
         getImageViewMapGoBack().setOnClickListener(this);
         getFloatingActionButtonCenterPositionOnHotels().setOnClickListener(this);
+    }
+
+    private void startDetailActivity() {
+        Intent detailActivityIntent = new Intent(getContext(), HotelDetailActivity.class);
+        detailActivityIntent.putExtra(Constants.getId(), hotel.getId());
+        detailActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(detailActivityIntent);
     }
 
     private HotelDAO getHotelDAO() {

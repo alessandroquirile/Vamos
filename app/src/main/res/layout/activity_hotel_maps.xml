@@ -67,10 +67,10 @@
         android:src="@drawable/icon_center_result_map_black"
         app:backgroundTint="@color/white"
         app:fabSize="mini"
-        app:rippleColor="@color/lightGrey" />
+        app:rippleColor="@color/lightGrey"/>
 
     <RelativeLayout
-        android:id="@+id/relative_layout_hotel_information"
+        android:id="@+id/relative_layout_hotel_details"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentBottom="true"

@@ -78,6 +78,9 @@ public class RestaurantDetailActivityController implements View.OnClickListener 
             case R.id.text_view_restaurant_phone_number:
                 startCallActivity();
                 break;
+            case R.id.text_view_restaurant_certificate_of_excellence:
+                showCertificateOfExcellenceDialog();
+                break;
             case R.id.text_view_restaurant_address:
                 startMapsActivity();
                 break;
@@ -92,6 +95,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener 
 
     public void setListenerOnViewComponents() {
         getTextViewPhoneNumber().setOnClickListener(this);
+        getTextViewCertificateOfExcellence().setOnClickListener(this);
         getTextViewAddress().setOnClickListener(this);
         getFloatingActionButtonWriteReview().setOnClickListener(this);
         getButtonReadReviews().setOnClickListener(this);
@@ -281,6 +285,15 @@ public class RestaurantDetailActivityController implements View.OnClickListener 
         alertDialogBuilder.setCancelable(false);
         alertDialogLoadingInProgress = alertDialogBuilder.create();
         alertDialogLoadingInProgress.show();
+    }
+
+    private void showCertificateOfExcellenceDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(restaurantDetailActivity);
+        alertDialogBuilder.setTitle(R.string.certificate_of_excellence);
+        alertDialogBuilder.setMessage(R.string.certificate_of_excellence_dialog_message);
+        alertDialogBuilder.setPositiveButton("ok", null);
+        AlertDialog alertDialogCertificateOfExcellence = alertDialogBuilder.create();
+        alertDialogCertificateOfExcellence.show();
     }
 
     private void dismissLoadingInProgressDialog(){

@@ -54,7 +54,7 @@ public class HotelMapActivity extends FragmentActivity implements OnMapReadyCall
     private void intializeViewComponents(GoogleMap googleMap) {
         this.googleMap = googleMap;
         linearLayoutSearchHotels = findViewById(R.id.linear_layout_search_hotels);
-        relativeLayoutDetails = findViewById(R.id.relative_layout_hotel_information);
+        relativeLayoutDetails = findViewById(R.id.relative_layout_hotel_details);
         imageViewMapGoBack = findViewById(R.id.image_view_hotel_map_go_back);
         imageViewHotel = findViewById(R.id.image_view_hotel);
         textViewSearchOnMap = findViewById(R.id.text_view_search_hotels_on_map);
