@@ -122,4 +122,5 @@
     <string name="no_restauants_to_show_on_map">No restaurants to show on map</string>
     <string name="no_hotels_to_show_on_map">" No hotels to show on map"</string>
     <string name="no_attractions_to_show_on_map">No attractions to show on map</string>
+    <string name="certificate_of_excellence_dialog_message">TroppAdvisor gives a certificate of excellence to hotels, restaurants and attractions that get very positive reviews from users</string>
 </resources>
