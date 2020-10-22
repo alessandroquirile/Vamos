@@ -115,8 +115,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
 
             @Override
             public void onError(String errorCode) {
-                if (errorCode.equals("204"))
-                    volleyCallbackOnError(errorCode);
+                volleyCallbackOnError(errorCode);
             }
 
         }, typesOfCuisine, pointSearch, rsqlQuery);
@@ -214,6 +213,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -225,12 +225,11 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     private void handle204VolleyError() {
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         if (!isLoadingData)
             showToastVolleyError(R.string.no_restaurants_found_by_filter);
     }
 
-    private void handleOtherVolleyError(){
+    private void handleOtherVolleyError() {
         showToastVolleyError(R.string.unexpected_error_while_fetch_data);
     }
 
@@ -505,7 +504,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
                 Toast.makeText(restaurantsListActivity, getString(string), Toast.LENGTH_SHORT).show());
     }
 
-    private void setProgressBarVisibilityOnUiThred(int visibility){
+    private void setProgressBarVisibilityOnUiThred(int visibility) {
         restaurantsListActivity.runOnUiThread(() -> getProgressBarLoadMore().setVisibility(visibility));
     }
 
@@ -547,7 +546,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
                 : restaurantFilter);
     }
 
-    private ProgressBar getProgressBarLoadMore(){
+    private ProgressBar getProgressBarLoadMore() {
         return restaurantsListActivity.getProgressBarRestaurantLoadMore();
     }
 
@@ -556,7 +555,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
     }
 
     @NotNull
-    private String getString(int string){
+    private String getString(int string) {
         return getResources().getString(string);
     }
 
@@ -569,7 +568,7 @@ public class RestaurantsListActivityController implements BottomSheetFilterSearc
         return restaurantsListActivity.getSupportFragmentManager();
     }
 
-    private boolean isRsqlEmpty(){
+    private boolean isRsqlEmpty() {
         return createRsqlString().equals("");
     }
 

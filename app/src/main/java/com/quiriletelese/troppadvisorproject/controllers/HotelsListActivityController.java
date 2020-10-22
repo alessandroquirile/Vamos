@@ -259,6 +259,7 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -270,7 +271,6 @@ public class HotelsListActivityController implements BottomSheetFilterSearchButt
     }
 
     private void handle204VolleyError() {
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         if (!isLoadingData)
             showToastVolleyError(R.string.no_hotels_found_by_filter);
     }

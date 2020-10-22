@@ -231,7 +231,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void setBottomSheetFiltersFields() {
-        if (!isBottomSheetFilterHotelsNull() && !isAttractionFilterNull())
+        if (!isAttractionFilterNull())
             new Handler().postDelayed(this::setFields, 100);
     }
 
@@ -267,6 +267,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
+        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         switch (errorCode) {
             case "204":
                 handle204VolleyError();
@@ -278,7 +279,6 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void handle204VolleyError() {
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         if (!isLoadingData)
             showToastVolleyError(R.string.no_attractions_found_by_filter);
     }
