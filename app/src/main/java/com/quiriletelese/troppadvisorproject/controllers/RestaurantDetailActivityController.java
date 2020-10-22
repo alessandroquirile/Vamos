@@ -407,7 +407,7 @@ public class RestaurantDetailActivityController implements View.OnClickListener 
     }
 
     private boolean isHasCertificateOfExcellence(){
-        return restaurant.isHasCertificateOfExcellence();
+        return restaurant.isCertificateOfExcellence();
     }
 
     private String getOpeningTime() {

@@ -2,8 +2,6 @@ package com.quiriletelese.troppadvisorproject.models;
 
 
 import java.io.Serializable;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -23,7 +21,7 @@ public abstract class Accomodation implements Serializable {
     private Long totalReviews;
     private Double totalRating;
     protected List<String> images;
-    protected boolean hasCertificateOfExcellence;
+    protected boolean certificateOfExcellence;
     protected String addedDate;
     protected String lastModificationDate;
 
@@ -123,12 +121,12 @@ public abstract class Accomodation implements Serializable {
         this.images = images;
     }
 
-    public boolean isHasCertificateOfExcellence() {
-        return hasCertificateOfExcellence;
+    public boolean isCertificateOfExcellence() {
+        return certificateOfExcellence;
     }
 
-    public void setHasCertificateOfExcellence(boolean hasCertificateOfExcellence) {
-        this.hasCertificateOfExcellence = hasCertificateOfExcellence;
+    public void setCertificateOfExcellence(boolean certificateOfExcellence) {
+        this.certificateOfExcellence = certificateOfExcellence;
     }
 
     public String getAddedDate() {

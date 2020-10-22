@@ -349,7 +349,7 @@ public class AttractionDetailActivityController implements View.OnClickListener 
     }
 
     private boolean isHasCertificateOfExcellence(){
-        return attraction.isHasCertificateOfExcellence();
+        return attraction.isCertificateOfExcellence();
     }
 
     private String getTypeOfAddress(){

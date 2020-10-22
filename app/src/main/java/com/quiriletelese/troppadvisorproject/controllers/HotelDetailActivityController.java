@@ -358,7 +358,7 @@ public class HotelDetailActivityController implements View.OnClickListener {
     }
 
     private boolean isHasCertificateOfExcellence(){
-        return hotel.isHasCertificateOfExcellence();
+        return hotel.isCertificateOfExcellence();
     }
 
     private String getPhoneNumber(){
