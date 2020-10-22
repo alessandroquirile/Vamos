@@ -58,6 +58,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     public WriteReviewActivityController(WriteReviewActivity writeReviewActivity) {
         this.writeReviewActivity = writeReviewActivity;
+        userSharedPreferences = createUserSharedPreferences();
     }
 
     @Override
@@ -141,6 +142,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void insertRestaurantReview() {
+        System.out.println(userSharedPreferences.getStringSharedPreferences(Constants.getRefreshToken()));
         insertRestaurantReviewHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -207,7 +209,6 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
-        userSharedPreferences = createUserSharedPreferences();
         userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
@@ -391,7 +392,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getUserName() {
-        return createUserSharedPreferences().getStringSharedPreferences(Constants.getUsername());
+        return userSharedPreferences.getStringSharedPreferences(Constants.getUsername());
     }
 
     private boolean isEditTextTitleChanged(@NotNull CharSequence charSequence) {
@@ -407,13 +408,12 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     @NotNull
-    @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
         return new UserSharedPreferences(getContext());
     }
 
     private String getAccessToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(Constants.getAccessToken());
+        return userSharedPreferences.getStringSharedPreferences(Constants.getAccessToken());
     }
 
     private String getAccessToken(@NotNull InitiateAuthResult initiateAuthResult) {
@@ -425,7 +425,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getIdToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(Constants.getIdToken());
+        return userSharedPreferences.getStringSharedPreferences(Constants.getIdToken());
     }
 
     private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {
@@ -433,7 +433,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private String getResfreshToken() {
-        return createUserSharedPreferences().getStringSharedPreferences(Constants.getRefreshToken());
+        return userSharedPreferences.getStringSharedPreferences(Constants.getRefreshToken());
     }
 
     @NotNull
