@@ -124,7 +124,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void refreshTokenHelper(VolleyCallBack volleyCallBack) {
-        getAccountDAO().refreshToken(volleyCallBack, getResfreshToken(), getContext());
+        getAccountDAO().refreshToken(volleyCallBack, getRefreshToken(), getContext());
     }
 
     private void insertHotelReview() {
@@ -142,7 +142,6 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void insertRestaurantReview() {
-        System.out.println(userSharedPreferences.getStringSharedPreferences(Constants.getRefreshToken()));
         insertRestaurantReviewHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -412,12 +411,12 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return new UserSharedPreferences(getContext());
     }
 
-    private String getAccessToken() {
-        return userSharedPreferences.getStringSharedPreferences(Constants.getAccessToken());
-    }
-
     private String getAccessToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getAccessToken();
+    }
+
+    private String getAccessToken() {
+        return userSharedPreferences.getStringSharedPreferences(Constants.getAccessToken());
     }
 
     private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {
@@ -432,7 +431,7 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return initiateAuthResult.getAuthenticationResult().getRefreshToken();
     }
 
-    private String getResfreshToken() {
+    private String getRefreshToken() {
         return userSharedPreferences.getStringSharedPreferences(Constants.getRefreshToken());
     }
 
