@@ -12,8 +12,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.RestaurantDetailActivityController;
 
-import java.util.Objects;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -38,7 +36,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setListenerOnViewComponents();
         showLoadingInProgressDialog();
         initializeActivityFields();
-
     }
 
     @Override
