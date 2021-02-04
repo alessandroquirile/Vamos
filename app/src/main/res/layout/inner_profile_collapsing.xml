@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/text_view_user_title"
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,6 +28,7 @@
                 tools:ignore="HardcodedText" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circle_image_view_user"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
@@ -34,6 +36,7 @@
                 android:src="@drawable/picasso_error" />
 
             <TextView
+                android:id="@+id/text_view_user_name_surname"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +66,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text_view_user_total_reviews"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,9 +79,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Recensioni"
-                    android:textAlignment="center"
-                    tools:ignore="HardcodedText" />
+                    android:text="@string/reviews_profile"
+                    android:textAlignment="center" />
 
             </LinearLayout>
 
@@ -88,6 +91,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text_view_user_avarage_rating"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,9 +104,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Voto medio"
-                    android:textAlignment="center"
-                    tools:ignore="HardcodedText" />
+                    android:text="@string/avarage_rating"
+                    android:textAlignment="center" />
 
             </LinearLayout>
 

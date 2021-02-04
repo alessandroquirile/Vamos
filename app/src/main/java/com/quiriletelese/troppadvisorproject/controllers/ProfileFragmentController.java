@@ -81,10 +81,10 @@ public class ProfileFragmentController {
     }
 
     public void setProfileFields(){
-        setTextViewText(getTextViewName(), getStringSharedPreferences(Constants.getUserFirstName()));
-        setTextViewText(getTextViewFamilyName(), getStringSharedPreferences(Constants.getFamilyName()));
-        setTextViewText(getTextViewEmail(), getStringSharedPreferences(Constants.getEmail()));
-        setTextViewText(getTextViewUserName(), getStringSharedPreferences(Constants.getUsername()));
+        setTextViewText(getTextViewUserTitle(), getStringSharedPreferences(Constants.getUserFirstName()));
+        setTextViewText(getTextViewUserNameSurname(), getStringSharedPreferences(Constants.getFamilyName()));
+        setTextViewText(getTextViewUserTotalReviews(), getStringSharedPreferences(Constants.getEmail()));
+        setTextViewText(getTextViewUserAvarageRating(), getStringSharedPreferences(Constants.getUsername()));
     }
 
     public boolean hasLogged() {
@@ -131,20 +131,20 @@ public class ProfileFragmentController {
         return userSharedPreferences.getStringSharedPreferences(preference);
     }
 
-    private TextView getTextViewName(){
-        return profileFragment.getTextViewName();
+    private TextView getTextViewUserTitle(){
+        return profileFragment.getTextViewUserTitle();
     }
 
-    private TextView getTextViewFamilyName(){
-        return profileFragment.getTextViewFamilyName();
+    private TextView getTextViewUserNameSurname(){
+        return profileFragment.getTextViewUserNameSurname();
     }
 
-    private TextView getTextViewEmail(){
-        return profileFragment.getTextViewEmail();
+    private TextView getTextViewUserTotalReviews(){
+        return profileFragment.getTextViewUserTotalReviews();
     }
 
-    private TextView getTextViewUserName(){
-        return profileFragment.getTextViewUserName();
+    private TextView getTextViewUserAvarageRating(){
+        return profileFragment.getTextViewUserAvarageRating();
     }
 
     private void setTextViewText(@NotNull TextView textView, String value) {

@@ -17,8 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
 
-import java.util.Objects;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -26,8 +24,8 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     private ProfileFragmentController profileFragmentController;
-    private TextView textViewName, textViewFamilyName, textViewEmail,
-            textViewUserName, textViewPassword;
+    private TextView textViewUserTitle, textViewUserNameSurname, textViewUserTotalReviews,
+            textViewUserAvarageRating;
     private View viewNoLoginProfileError;
 
     @Nullable
@@ -88,12 +86,11 @@ public class ProfileFragment extends Fragment {
     }
 
     public void initializeViewComponents(View view) {
-        textViewName = view.findViewById(R.id.text_view_name_profile);
-        textViewFamilyName = view.findViewById(R.id.text_view_family_name_profile);
-        textViewEmail = view.findViewById(R.id.text_view_email_profile);
-        textViewUserName = view.findViewById(R.id.text_view_username_profile);
-        textViewPassword = view.findViewById(R.id.text_view_password_profile);
-        viewNoLoginProfileError = view.findViewById(R.id.no_login_profile_error_layout);
+        textViewUserTitle = view.findViewById(R.id.text_view_user_title);
+        textViewUserNameSurname = view.findViewById(R.id.text_view_user_name_surname);
+        textViewUserTotalReviews = view.findViewById(R.id.text_view_user_total_reviews);
+        textViewUserAvarageRating = view.findViewById(R.id.text_view_user_avarage_rating);
+        //viewNoLoginProfileError = view.findViewById(R.id.no_login_profile_error_layout);
     }
 
     public void initializeController() {
@@ -130,24 +127,20 @@ public class ProfileFragment extends Fragment {
         profileFragmentController.startLoginActivityFromLogOut();
     }
 
-    public TextView getTextViewName() {
-        return textViewName;
+    public TextView getTextViewUserTitle() {
+        return textViewUserTitle;
     }
 
-    public TextView getTextViewFamilyName() {
-        return textViewFamilyName;
+    public TextView getTextViewUserNameSurname() {
+        return textViewUserNameSurname;
     }
 
-    public TextView getTextViewEmail() {
-        return textViewEmail;
+    public TextView getTextViewUserTotalReviews() {
+        return textViewUserTotalReviews;
     }
 
-    public TextView getTextViewUserName() {
-        return textViewUserName;
-    }
-
-    public TextView getTextViewPassword() {
-        return textViewPassword;
+    public TextView getTextViewUserAvarageRating() {
+        return textViewUserAvarageRating;
     }
 
     public View getViewNoLoginProfileError() {
