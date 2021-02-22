@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
         textViewUserNameSurname = view.findViewById(R.id.text_view_user_name_surname);
         textViewUserTotalReviews = view.findViewById(R.id.text_view_user_total_reviews);
         textViewUserAvarageRating = view.findViewById(R.id.text_view_user_avarage_rating);
-        //viewNoLoginProfileError = view.findViewById(R.id.no_login_profile_error_layout);
+        viewNoLoginProfileError = view.findViewById(R.id.no_login_profile_error_layout);
     }
 
     public void initializeController() {

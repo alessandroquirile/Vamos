@@ -55,4 +55,9 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <include
+        layout="@layout/no_login_profile_error_layout"
+        android:id="@+id/no_login_profile_error_layout"
+        android:visibility="gone"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
