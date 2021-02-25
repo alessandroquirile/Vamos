@@ -143,4 +143,5 @@
     <string name="certificate_of_excellence_dialog_message">"TroppAdvisor attribuisce un certificato di eccellenza ad hotel, ristoranti e attrazioni che ottengono recensioni molto positive da parte degli utenti"</string>
     <string name="reviews_profile">Recensioni</string>
     <string name="avarage_rating">Voto medio</string>
+    <string name="leaderboard">Classifica</string>
 </resources>

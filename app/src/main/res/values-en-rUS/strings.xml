@@ -125,4 +125,5 @@
     <string name="certificate_of_excellence_dialog_message">TroppAdvisor gives a certificate of excellence to hotels, restaurants and attractions that get very positive reviews from users</string>
     <string name="reviews_profile">Reviews</string>
     <string name="avarage_rating">Avarage rating</string>
+    <string name="leaderboard">Leaderboard</string>
 </resources>

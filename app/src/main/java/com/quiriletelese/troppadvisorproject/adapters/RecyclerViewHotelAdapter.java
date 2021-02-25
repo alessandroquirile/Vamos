@@ -114,7 +114,6 @@ public class RecyclerViewHotelAdapter extends RecyclerView.Adapter<RecyclerViewH
         return getResources().getString(string);
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private LinearLayout linearLayoutHomePageRecyclerView;
         private ImageView imageViewAccomodation;

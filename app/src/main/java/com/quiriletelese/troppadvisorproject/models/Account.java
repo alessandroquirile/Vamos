@@ -7,11 +7,13 @@ import java.io.Serializable;
  */
 
 public class Account implements Serializable {
+
     private String name;
     private String familyName;
     private String username;
     private String email;
     private String password;
+
     public String getName() {
         return name;
     }

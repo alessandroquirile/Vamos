@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,7 +79,8 @@ public class HomePageFragment extends Fragment {
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh_button_menu_home_page_activity:
-                initializeRecyclerViews();
+                //initializeRecyclerViews();
+                startActivity(new Intent(getActivity(), LeaderboardActivity.class));
                 break;
         }
     }
