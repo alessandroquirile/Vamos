@@ -143,6 +143,7 @@
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textColor="@color/white"
+                android:background="@drawable/button_gray_round_corner"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/icon_badge_yellow" />
 

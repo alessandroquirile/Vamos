@@ -126,4 +126,5 @@
     <string name="reviews_profile">Reviews</string>
     <string name="avarage_rating">Avarage rating</string>
     <string name="leaderboard">Leaderboard</string>
+    <string name="was_it_helpful">Was it helpful?</string>
 </resources>
