@@ -13,7 +13,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="no_login_profile_error.json"
+        app:lottie_fileName="searched_user_private_profile_error.json"
         app:lottie_loop="false" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="@string/no_login_profile_error"
+        android:text="@string/searched_user_private_profile_error"
         android:textColor="@color/black" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

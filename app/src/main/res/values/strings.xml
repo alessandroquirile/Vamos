@@ -145,4 +145,5 @@
     <string name="avarage_rating">Voto medio</string>
     <string name="leaderboard">Classifica</string>
     <string name="was_it_helpful">è stato utile?</string>
+    <string name="searched_user_private_profile_error">Profilo private, le informazioni personali non sono disponibili</string>
 </resources>
