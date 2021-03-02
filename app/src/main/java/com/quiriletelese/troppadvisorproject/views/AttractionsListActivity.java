@@ -70,7 +70,7 @@ public class AttractionsListActivity extends AppCompatActivity {
 
     private void initializeViewComponents() {
         recyclerViewAttractionsList = findViewById(R.id.recycler_view_attractions_list);
-        progressBarAttractionLoadMore = findViewById(R.id.progress_bar_attraction_load_more);
+        progressBarAttractionLoadMore = findViewById(R.id.progress_bar_attraction_list_load_more);
     }
 
     private void initializeController() {

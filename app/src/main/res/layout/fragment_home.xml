@@ -4,112 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view_main"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_attraction"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <ProgressBar
+        android:id="@+id/progress_bar_attraction_home_load_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/text_view_hotel_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="5dp"
-                android:text="@string/all_hotel"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recycler_view_hotel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
-
-                <include
-                    android:id="@+id/no_hotels_error"
-                    layout="@layout/no_hotels_error_home_page_layout"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/text_view_restaurant_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="5dp"
-                android:text="@string/all_restaurant"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recycler_view_restaurant"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
-
-                <include
-                    android:id="@+id/no_restaurants_error"
-                    layout="@layout/no_restaurants_error_home_page_layout"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/text_view_attraction_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="5dp"
-                android:text="@string/all_attraction"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:drawableEndCompat="@drawable/icon_right_arrow_recycler_view_black" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recycler_view_attraction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:shimmer_recycler_layout="@layout/home_page_recycler_view_fake_content" />
-
-                <include
-                    android:visibility="gone"
-                    android:id="@+id/no_attractions_error"
-                    layout="@layout/no_attractions_error_home_page_layout" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    <include
+        android:id="@+id/no_attractions_error"
+        layout="@layout/no_attractions_error_home_page_layout"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/no_geolocation_activated_error_layout"

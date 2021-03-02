@@ -11,15 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.HomePageFragmentController;
-import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,10 +30,9 @@ import org.jetbrains.annotations.NotNull;
 public class HomePageFragment extends Fragment {
 
     private HomePageFragmentController homePageFragmentController;
-    private ShimmerRecyclerView shimmerRecyclerViewHotel, shimmerRecyclerViewRestaurant, shimmerRecyclerViewAttraction;
-    private TextView textViewHotelRecyclerView, textViewRestaurantRecyclerView, textViewAttractionRecyclerView;
-    private View viewNoGeolocationError, viewNoHotelsError, viewNoRestaurantsError, viewNoAttractionsError,
-            viewMissingLocationPermissionError;
+    private RecyclerView recyclerViewAttractions;
+    private ProgressBar progressBarAttractionHomeLoadMore;
+    private View viewNoGeolocationError, viewNoAttractionsError, viewMissingLocationPermissionError;
     private Button buttonEnablePosition, buttonProvidePermission;
 
     @Nullable
@@ -49,7 +48,8 @@ public class HomePageFragment extends Fragment {
         initializeViewComponents(view);
         initializeHomePageFragmentController();
         setListenerOnViewComponents();
-        initializeRecyclerViews();
+        initializeRecyclerView();
+        addRecyclerViewOnScrollListener();
     }
 
     @Override
@@ -90,15 +90,9 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initializeViewComponents(@NotNull View view) {
-        shimmerRecyclerViewHotel = view.findViewById(R.id.recycler_view_hotel);
-        shimmerRecyclerViewRestaurant = view.findViewById(R.id.recycler_view_restaurant);
-        shimmerRecyclerViewAttraction = view.findViewById(R.id.recycler_view_attraction);
-        textViewHotelRecyclerView = view.findViewById(R.id.text_view_hotel_recycler_view);
-        textViewRestaurantRecyclerView = view.findViewById(R.id.text_view_restaurant_recycler_view);
-        textViewAttractionRecyclerView = view.findViewById(R.id.text_view_attraction_recycler_view);
+        recyclerViewAttractions = view.findViewById(R.id.recycler_view_attraction);
+        progressBarAttractionHomeLoadMore = view.findViewById(R.id.progress_bar_attraction_home_load_more);
         viewNoGeolocationError = view.findViewById(R.id.no_geolocation_activated_error_layout);
-        viewNoHotelsError = view.findViewById(R.id.no_hotels_error);
-        viewNoRestaurantsError = view.findViewById(R.id.no_restaurants_error);
         viewNoAttractionsError = view.findViewById(R.id.no_attractions_error);
         viewMissingLocationPermissionError = view.findViewById(R.id.missing_location_permission_error_layout);
         buttonEnablePosition = view.findViewById(R.id.button_enable_position);
@@ -113,25 +107,21 @@ public class HomePageFragment extends Fragment {
         homePageFragmentController.setListenerOnViewComponents();
     }
 
-    private void initializeRecyclerViewsFakeContent() {
-        homePageFragmentController.initializeRecyclerViewsFakeContent();
+    private void addRecyclerViewOnScrollListener() {
+        homePageFragmentController.addRecyclerViewOnScrollListener();
     }
 
     private boolean checkPermission() {
         return homePageFragmentController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
-    public void initializeRecyclerViews() {
+    public void initializeRecyclerView() {
         if (checkPermission()) {
             if (canGeolocate()) {
                 setViewNoGeolocationErrorVisibility(View.INVISIBLE);
                 do {
-                    if (!areCoordinatesNull()) {
-                        initializeRecyclerViewHotel();
-                        initializeRecyclerViewRestaurant();
+                    if (!areCoordinatesNull())
                         initializeRecyclerViewAttraction();
-                        initializeRecyclerViewsFakeContent();
-                    }
                 } while (areCoordinatesNull());
             } else
                 setViewNoGeolocationErrorVisibility(View.VISIBLE);
@@ -139,16 +129,8 @@ public class HomePageFragment extends Fragment {
             setViewMissingLocationPermissionErrorVisibility(View.VISIBLE);
     }
 
-    private void initializeRecyclerViewHotel() {
-        homePageFragmentController.initializeRecyclerViewHotel();
-    }
-
-    private void initializeRecyclerViewRestaurant() {
-        homePageFragmentController.initializeRecyclerViewRestaurant();
-    }
-
     private void initializeRecyclerViewAttraction() {
-        homePageFragmentController.initializeRecyclerViewAttraction();
+        homePageFragmentController.findByRsql();
     }
 
     private void setViewNoGeolocationErrorVisibility(int visibility) {
@@ -167,36 +149,12 @@ public class HomePageFragment extends Fragment {
         return homePageFragmentController.areCoordinatesNull();
     }
 
-    public ShimmerRecyclerView getShimmerRecyclerViewHotel() {
-        return shimmerRecyclerViewHotel;
+    public RecyclerView getRecyclerViewAttractions() {
+        return recyclerViewAttractions;
     }
 
-    public ShimmerRecyclerView getShimmerRecyclerViewRestaurant() {
-        return shimmerRecyclerViewRestaurant;
-    }
-
-    public ShimmerRecyclerView getShimmerRecyclerViewAttraction() {
-        return shimmerRecyclerViewAttraction;
-    }
-
-    public TextView getTextViewHotelRecyclerView() {
-        return textViewHotelRecyclerView;
-    }
-
-    public TextView getTextViewRestaurantRecyclerView() {
-        return textViewRestaurantRecyclerView;
-    }
-
-    public TextView getTextViewAttractionRecyclerView() {
-        return textViewAttractionRecyclerView;
-    }
-
-    public View getViewNoHotelsError() {
-        return viewNoHotelsError;
-    }
-
-    public View getViewNoRestaurantsError() {
-        return viewNoRestaurantsError;
+    public ProgressBar getProgressBarAttractionHomeLoadMore() {
+        return progressBarAttractionHomeLoadMore;
     }
 
     public View getViewNoAttractionsError() {

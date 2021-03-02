@@ -48,7 +48,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private AttractionFilter attractionFilter;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private final int size = 30;
+    private final int size = 50;
     private int page = 0;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
@@ -184,13 +184,13 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     private void loadMoreAttractions() {
         page++;
-        isLoadingData = true;
+        setIsLoadingData(true);
         setProgressBarVisibilityOnUiThred(View.VISIBLE);
         detectSearchType();
     }
 
     private void onBottomSheetFilterSearchButtonClickHelper() {
-        isLoadingData = false;
+        setIsLoadingData(false);
         page = 0;
         createAttractionFilter();
         detectSearchType();
