@@ -367,6 +367,7 @@ public class HomePageFragmentController implements View.OnClickListener {
     private void setRecyclerViewAttractionOnSuccess() {
         getRecyclerViewAttractions().setLayoutManager(linearLayoutManager);
         getRecyclerViewAttractions().setAdapter(recyclerViewAttractionsListAdapter);
+        recyclerViewAttractionsListAdapter.notifyDataSetChanged();
     }
 
     /*private void setShimmerRecyclerViewAttractionOnStart() {
