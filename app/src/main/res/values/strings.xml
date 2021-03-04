@@ -146,4 +146,9 @@
     <string name="leaderboard">Classifica</string>
     <string name="was_it_helpful">è stato utile?</string>
     <string name="searched_user_private_profile_error">Profilo private, le informazioni personali non sono disponibili</string>
+    <string name="change_profile_image">Cambia immagine del profilo</string>
+    <string name="private_account">Account privato</string>
+    <string name="select_title">Seleziona un titolo</string>
+    <string name="edit_profile">Modifica profilo</string>
+    <string name="save_changes">Salva modifiche</string>
 </resources>

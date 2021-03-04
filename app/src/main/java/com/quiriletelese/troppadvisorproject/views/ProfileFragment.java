@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +42,7 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
         initializeViewComponents(view);
         initializeController();
-        checkLogin();
+        //checkLogin();
         setProfileFields();
     }
 
@@ -62,7 +63,7 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         refreshFragment();
-        checkLogin();
+        //checkLogin();
         setProfileFields();
         invalidateOptionsMenu();
     }
@@ -77,7 +78,8 @@ public class ProfileFragment extends Fragment {
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.login_profile:
-                startLoginActivity();
+                //startLoginActivity();
+                startActivity(new Intent(this.getActivity(), EditProfileActivity.class));
                 break;
             case R.id.logout_profile:
                 startLoginActivityFromLogOut();
