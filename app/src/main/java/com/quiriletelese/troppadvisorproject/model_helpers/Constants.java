@@ -48,6 +48,9 @@ public class Constants {
     private static final String unauthorized = "401";
     private static final String internalServerError = "500";
 
+    /* ========== Select image utils ========== */
+    private static final int selectPicture = 200;
+
     public static int getAccessFineLocationCode() {
         return accessFineLocationCode;
     }
@@ -190,5 +193,9 @@ public class Constants {
 
     public static String getInternalServerError() {
         return internalServerError;
+    }
+
+    public static int getSelectPicture() {
+        return selectPicture;
     }
 }

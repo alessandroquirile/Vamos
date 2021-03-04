@@ -151,4 +151,5 @@
     <string name="select_title">Seleziona un titolo</string>
     <string name="edit_profile">Modifica profilo</string>
     <string name="save_changes">Salva modifiche</string>
+    <string name="select_image">Seleziona immagine</string>
 </resources>

@@ -13,6 +13,7 @@ public class User implements Serializable {
     private String username;
     private String email;
     private String image;
+    private boolean isPrivateAccount;
     private Long totalReviews;
     private Double avarageRating;
     private Double totalRating;
@@ -66,6 +67,14 @@ public class User implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isPrivateAccount() {
+        return isPrivateAccount;
+    }
+
+    public void setPrivateAccount(boolean privateAccount) {
+        isPrivateAccount = privateAccount;
     }
 
     public Long getTotalReviews() {
