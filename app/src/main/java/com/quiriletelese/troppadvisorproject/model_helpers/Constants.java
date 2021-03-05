@@ -49,7 +49,8 @@ public class Constants {
     private static final String internalServerError = "500";
 
     /* ========== Select image utils ========== */
-    private static final int selectPicture = 200;
+    private static final int selectPictureCode = 200;
+    private static final String savedProfileImagePath = "saved_profile_image_path";
 
     public static int getAccessFineLocationCode() {
         return accessFineLocationCode;
@@ -195,7 +196,11 @@ public class Constants {
         return internalServerError;
     }
 
-    public static int getSelectPicture() {
-        return selectPicture;
+    public static int getSelectPictureCode() {
+        return selectPictureCode;
+    }
+
+    public static String getSavedProfileImagePath() {
+        return savedProfileImagePath;
     }
 }

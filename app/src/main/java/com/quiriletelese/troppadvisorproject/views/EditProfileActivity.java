@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.EditProfileController;
@@ -24,7 +25,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private EditProfileController editProfileController;
     private CircleImageView circleImageViewUserEdit;
-    private TextView textViewChangeProfileImage;
+    private FloatingActionButton floatingActionButtonChangeProfileImage;
     private TextInputLayout textInputLayoutName, textInputLayoutLastName, textInputLayoutUsername,
             textInputLayoutSelectTitle;
     private SwitchCompat switchCompatPrivateAccount;
@@ -62,7 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void initializeViewComponents() {
         circleImageViewUserEdit = findViewById(R.id.circle_image_view_user_edit);
-        textViewChangeProfileImage = findViewById(R.id.text_view_change_profile_image);
+        floatingActionButtonChangeProfileImage = findViewById(R.id.floating_action_button_change_profile_image);
         textInputLayoutName = findViewById(R.id.text_input_layout_name);
         textInputLayoutLastName = findViewById(R.id.text_input_layout_lastname);
         textInputLayoutUsername = findViewById(R.id.text_input_layout_username);
@@ -86,8 +87,8 @@ public class EditProfileActivity extends AppCompatActivity {
         return circleImageViewUserEdit;
     }
 
-    public TextView getTextViewChangeProfileImage() {
-        return textViewChangeProfileImage;
+    public FloatingActionButton getFloatingActionButtonChangeProfileImage() {
+        return floatingActionButtonChangeProfileImage;
     }
 
     public EditText getEditTextName() {
