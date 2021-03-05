@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -59,12 +60,15 @@ public class EditProfileController implements View.OnClickListener {
     }
 
     public void setEditProfileActivityFields() {
-        /*User user = getUserFromIntent();
-        setCircleImageViewUserEditImage(user);
-        setEditTextNameText(user);
-        setEditTextLastNameText(user);
-        setEditTextUsernameText(user);
-        setSwitchCompatPrivateAccountValue(user);*/
+        User user = getUserFromIntent();
+        if (user != null) {
+            setCircleImageViewUserEditImage(user);
+            setEditTextNameText(user);
+            setEditTextLastNameText(user);
+            setEditTextUsernameText(user);
+            setSwitchCompatPrivateAccountValue(user);
+        } else
+            editProfileActivity.finish();
     }
 
     public void setEditProfileActivityFieldsOnClickListener() {
@@ -103,7 +107,6 @@ public class EditProfileController implements View.OnClickListener {
             }
             InputStream inputStream = editProfileActivity.getContentResolver().openInputStream(selectedImageUri);
             FileOutputStream fileOutputStream = new FileOutputStream(profilePicture);
-            // Copying
             copyStream(inputStream, fileOutputStream);
             fileOutputStream.close();
             inputStream.close();
@@ -115,7 +118,7 @@ public class EditProfileController implements View.OnClickListener {
 
     private File createPictureFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = editProfileActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName /* prefix */, ".jpg", storageDir /* directory */);
@@ -134,15 +137,14 @@ public class EditProfileController implements View.OnClickListener {
     private void deletePreviuosFile() {
         if (!isPreviousSavedPictureEmpty()) {
             Log.d("Previoud image path", getPreviousSavedPicturePath());
-            boolean deleted = new File(getPreviousSavedPicturePath()).delete();
-            System.out.println("DELETEDDDDDDDDDDDDDDDDDDDD = " + deleted);
+            Log.d("DELETED PREVIOUS PIC", String.valueOf(new File(getPreviousSavedPicturePath()).delete()));
         }
     }
 
     private void saveUserProfilePicturePath(String path) {
         UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
         userSharedPreferences.putStringSharedPreferences(Constants.getSavedProfileImagePath(), path);
-        Log.d("Saved path", userSharedPreferences.getStringSharedPreferences(Constants.getSavedProfileImagePath()));
+        Log.d("SAVED FILE PATH", userSharedPreferences.getStringSharedPreferences(Constants.getSavedProfileImagePath()));
     }
 
     private boolean isPreviousSavedPictureEmpty() {
@@ -151,7 +153,7 @@ public class EditProfileController implements View.OnClickListener {
         return previousSavedPicture.isEmpty();
     }
 
-    private String getPreviousSavedPicturePath(){
+    private String getPreviousSavedPicturePath() {
         return new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getSavedProfileImagePath());
     }
 
