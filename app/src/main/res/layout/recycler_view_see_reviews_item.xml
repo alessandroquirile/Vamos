@@ -44,18 +44,38 @@
         android:text="Corpo valutazione"
         tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/text_view_thumb_up_review"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:drawablePadding="10dp"
-        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:text="@string/was_it_helpful"
-        app:drawableStartCompat="@drawable/icon_thumb_up_review" />
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:focusable="true"
+            android:text="@string/was_it_helpful" />
+
+        <ImageView
+            android:id="@+id/image_view_thumb_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/icon_thumb_up" />
+
+        <ImageView
+            android:id="@+id/image_view_thumb_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_thumb_down" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

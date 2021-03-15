@@ -2,6 +2,8 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
 
+import androidx.core.content.ContextCompat;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -50,6 +52,11 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
     @Override
     public void findAccomodationReviews(VolleyCallBack volleyCallBack, String id, Context context, int page, int size) {
         findAccomodationReviewsVolley(volleyCallBack, id, context, page, size);
+    }
+
+    @Override
+    public void updateVoters(VolleyCallBack volleyCallBack, String id, String email, int vote, Context context) {
+        updateVoters(volleyCallBack, id, email, vote, context);
     }
 
     private void insertHotelReviewVolley(VolleyCallBack volleyCallBack, Review review, String idToken, Context context) {
@@ -104,14 +111,21 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
                     volleyCallBack.onSuccess(getReviewFromResponse(response));
                 },
                 error -> {
-                    if (error != null)
-                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+//                    if (error != null)
+//                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + idToken);
                 return headers;
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
             }
         };
         requestQueue.start();
@@ -127,8 +141,27 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
-                if (response.statusCode == 204)
+                if (!isStatusCodeOk(response.statusCode))
                     volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.start();
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updateVotersVolley(VolleyCallBack volleyCallBack, String id, String email, int vote, Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String URL = createUpdateVotersUrl(id, email, vote);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response ->
+                volleyCallBack.onSuccess(getBooleanFromResponse(response)),
+                error -> {
+
+                }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode))
+                    checkUpdateVotersVolleyError(response, volleyCallBack);
                 return super.parseNetworkResponse(response);
             }
         };
@@ -163,6 +196,15 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         return URL;
     }
 
+    @NotNull
+    private String createUpdateVotersUrl(String id, String email, int vote) {
+        String URL = Constants.getBaseUrl() + "review/update-voters?";
+        URL = URL.concat("id=" + id);
+        URL = URL.concat("&email=" + email);
+        URL = URL.concat("&vote=" + vote);
+        return URL;
+    }
+
     private JSONObject jsonObjectInsertAccomodationReview(Review review) {
         JSONObject jsonObjectInsertAccomodationReview = new JSONObject();
         return createJsonObjectInsertAccomodationReview(jsonObjectInsertAccomodationReview, review);
@@ -187,6 +229,11 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         return gson.fromJson(response.toString(), Review.class);
     }
 
+    private Boolean getBooleanFromResponse(@NotNull JSONObject response) {
+        Gson gson = new Gson();
+        return gson.fromJson(response.toString(), Boolean.class);
+    }
+
     @NotNull
     private List<Review> getArrayFromResponse(@NotNull JSONObject response) {
         List<Review> reviews = new ArrayList<>();
@@ -205,6 +252,17 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
             }
         }
         return reviews;
+    }
+
+    private void checkUpdateVotersVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
+        if (networkResponse.headers.containsKey(Constants.getAlreadyVotedError()))
+            volleyCallBack.onError(Constants.getAlreadyVotedError());
+        else
+            volleyCallBack.onError(String.valueOf(networkResponse.statusCode));
+    }
+
+    private boolean isStatusCodeOk(int statusCode) {
+        return statusCode == 200;
     }
 
 }

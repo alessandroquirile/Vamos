@@ -7,6 +7,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Base application theme. -->
+    <style name="AppThemeNoSpace" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
     <!-- Material application theme. -->
     <style name="AppThemeMaterial" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -15,16 +23,25 @@
     </style>
 
     <!-- Profile application theme. -->
-    <style name="AppThemeLogin" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeLogin" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">#ffffff</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="android:textColorHint">@android:color/white</item>
+        <item name="colorSecondary">@color/colorAccent</item>
     </style>
+
+    <!--    <style name="AppThemeLogin" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+<!--        <item name="colorControlNormal">#ffffff</item>-->
+<!--        <item name="colorControlActivated">@color/colorAccent</item>-->
+<!--        <item name="android:textColorHint">@android:color/white</item>-->
+<!--    </style>-->
 
     <style name="SplashScreenTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
@@ -46,6 +63,11 @@
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/duskYellow</item>
         <item name="colorControlActivated">@color/duskYellow</item>
+    </style>
+
+    <style name="RatingBarGreen" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
 </resources>

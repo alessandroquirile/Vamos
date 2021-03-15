@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#00B087</color>
-    <color name="colorPrimaryDark">#008869</color>
+    <color name="colorPrimaryDark">#008164</color>
     <color name="colorAccent">#EF6A45</color>
     <color name="colorAccentDark">#A84327</color>
     <color name="infoboxBackground">#4D579441</color>

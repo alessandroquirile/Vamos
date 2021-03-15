@@ -3,51 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/refresh_button_menu_home_page_activity"
-        android:icon="@drawable/icon_refresh_main_menu_white"
-        android:orderInCategory="1"
-        android:title="@string/refresh"
-        app:showAsAction="always" />
-
-    <!--<item
-        android:id="@+id/search_button_menu_home_page_activity"
+        android:id="@+id/search_attractions"
         android:icon="@drawable/icon_search_white"
-        android:orderInCategory="2"
+        android:orderInCategory="1"
         android:title="@string/search"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/map_button_menu_home_page_activity"
-        android:icon="@drawable/icon_map_white"
-        android:orderInCategory="2"
-        android:title="@string/map"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/filter_button_menu_home_page_activity"
-        android:icon="@drawable/icon_filter_white"
-        android:orderInCategory="3"
-        android:title="@string/filterStructure"
-        app:showAsAction="always">
-        <menu>
-            <group
-                android:id="@+id/radio_group_filter_menu"
-                android:checkableBehavior="single">
-                <item
-                    android:id="@+id/radio_button_subitem_all"
-                    android:checked="true"
-                    android:title="@string/all" />
-                <item
-                    android:id="@+id/radio_button_subitem_hotel"
-                    android:title="@string/hotel" />
-                <item
-                    android:id="@+id/radio_button_subitem_restaurant"
-                    android:title="@string/restaurant" />
-                <item
-                    android:id="@+id/radio_button_subitem_attractions"
-                    android:title="@string/attractions" />
-            </group>
-        </menu>
-    </item>-->
+        app:showAsAction="ifRoom" />
 
 </menu>

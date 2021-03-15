@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="8sp"
-                android:text="@string/informazioni_sulla_struttura"
+                android:text="@string/accomodation_details"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -149,7 +149,7 @@
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/background_see_reviews_button"
-            android:text="@string/leggi_recensioni"
+            android:text="@string/read_all_reviews"
             android:textColor="@android:color/white" />
 
     </RelativeLayout>

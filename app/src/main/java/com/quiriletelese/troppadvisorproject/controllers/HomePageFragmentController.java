@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionAdapter;
@@ -31,6 +32,7 @@ import com.quiriletelese.troppadvisorproject.models.Hotel;
 import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
+import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
 import com.quiriletelese.troppadvisorproject.views.HomePageFragment;
 import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
@@ -41,17 +43,20 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HomePageFragmentController implements View.OnClickListener {
+public class HomePageFragmentController implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private final HomePageFragment homePageFragment;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private final GPSTracker gpsTracker;
+    private final UserSharedPreferences userSharedPreferences;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private PointSearch pointSearch;
@@ -62,11 +67,17 @@ public class HomePageFragmentController implements View.OnClickListener {
     public HomePageFragmentController(HomePageFragment homePageFragment) {
         this.homePageFragment = homePageFragment;
         this.gpsTracker = createGpsTracker();
+        userSharedPreferences = new UserSharedPreferences(getContext());
     }
 
     @Override
     public void onClick(View view) {
         onClickHelper(view);
+    }
+
+    @Override
+    public void onRefresh() {
+        homePageFragment.initializeRecyclerView();
     }
 
     public void findAttractionsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
@@ -94,11 +105,13 @@ public class HomePageFragmentController implements View.OnClickListener {
             addNewAttractionsToList(attractions);
         else
             initializeRecyclerViewOnSuccess(attractions);
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
+        setViewVisibility(getProgressBarLoadMore(), View.GONE);
+        getSwipeRefreshLayoutHomeFrament().setRefreshing(false);
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
+        setViewVisibility(getProgressBarLoadMore(), View.GONE);
+        getSwipeRefreshLayoutHomeFrament().setRefreshing(false);
         switch (errorCode) {
             case "204":
                 initializeRecyclerViewOnError(errorCode);
@@ -142,7 +155,7 @@ public class HomePageFragmentController implements View.OnClickListener {
     private void loadMoreAttractions() {
         page++;
         setIsLoadingData(true);
-        setProgressBarVisibilityOnUiThred(View.VISIBLE);
+        setViewVisibility(getProgressBarLoadMore(), View.VISIBLE);
         findByRsql();
     }
 
@@ -167,7 +180,7 @@ public class HomePageFragmentController implements View.OnClickListener {
     private void addNewAttractionsToList(List<Attraction> attractions) {
         recyclerViewAttractionsListAdapter.addListItems(attractions);
         recyclerViewAttractionsListAdapter.notifyDataSetChanged();
-        setProgressBarVisibilityOnUiThred(View.INVISIBLE);
+        setViewVisibility(getProgressBarLoadMore(), View.GONE);
     }
 
     public PointSearch getLocation() {
@@ -185,23 +198,39 @@ public class HomePageFragmentController implements View.OnClickListener {
         return pointSearch;
     }
 
-    private void setProgressBarVisibilityOnUiThred(int visibility) {
-        homePageFragment.getActivity().runOnUiThread(() -> getProgressBarLoadMore().setVisibility(visibility));
+    private void setViewVisibility(View view, int visibility) {
+        homePageFragment.getActivity().runOnUiThread(() -> view.setVisibility(visibility));
     }
 
     private void onClickHelper(View view) {
         switch (view.getId()) {
-            case R.id.button_enable_position:
-                startEnablePositionActivity();
-                break;
             case R.id.button_provide_permission:
                 requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, Constants.getAccessFineLocationCode());
                 break;
         }
     }
 
+    private boolean existDailyReward() {
+        return userSharedPreferences.constains(Constants.getDailyReward());
+    }
+
+    private boolean isSameDay() {
+        return userSharedPreferences.getStringSharedPreferences(Constants.getDailyReward()).equals(getDayMonthYear());
+    }
+
+    private void saveSharedPreferencesDailyReward() {
+        userSharedPreferences.putStringSharedPreferences(Constants.getDailyReward(), getDayMonthYear());
+    }
+
+    private String getDayMonthYear() {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.YEAR);
+    }
+
     public void setListenerOnViewComponents() {
-        getButtonEnablePosition().setOnClickListener(this);
+        getSwipeRefreshLayoutHomeFrament().setOnRefreshListener(this);
         getButtonProvidePermission().setOnClickListener(this);
     }
 
@@ -268,33 +297,7 @@ public class HomePageFragmentController implements View.OnClickListener {
         requireActivity().runOnUiThread(this::setViewNoAttractionsErrorVisible);
     }
 
-    private void startHotelsListActivity() {
-        Intent hotelsListActivityIntent = createHotelsListActivityIntent();
-        getContext().startActivity(hotelsListActivityIntent);
-    }
-
-    @NotNull
-    private Intent createHotelsListActivityIntent() {
-        Intent intentHotelsListActivity = new Intent(getContext(), HotelsListActivity.class);
-        intentHotelsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
-        intentHotelsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intentHotelsListActivity;
-    }
-
-    private void startRestaurantsListActivity() {
-        Intent restaurantsListActivityIntent = createRestaurantsListActivityIntent();
-        getContext().startActivity(restaurantsListActivityIntent);
-    }
-
-    @NotNull
-    private Intent createRestaurantsListActivityIntent() {
-        Intent intentRestaurantsListActivity = new Intent(getContext(), RestaurantsListActivity.class);
-        intentRestaurantsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
-        intentRestaurantsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intentRestaurantsListActivity;
-    }
-
-    private void startAttractionsListActivity() {
+    public void startAttractionsListActivity() {
         Intent attractionsListActivityIntent = createAttractionsListActivityIntent();
         getContext().startActivity(attractionsListActivityIntent);
     }
@@ -305,16 +308,6 @@ public class HomePageFragmentController implements View.OnClickListener {
         intentAttractionsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
         intentAttractionsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intentAttractionsListActivity;
-    }
-
-    private void startEnablePositionActivity() {
-        getContext().startActivity(createEnablePositionActivityIntent());
-    }
-
-    @NotNull
-    @Contract(" -> new")
-    private Intent createEnablePositionActivityIntent() {
-        return new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
     }
 
     public boolean checkPermission(String permission) {
@@ -356,6 +349,10 @@ public class HomePageFragmentController implements View.OnClickListener {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
+    public SwipeRefreshLayout getSwipeRefreshLayoutHomeFrament() {
+        return homePageFragment.getSwipeRefreshLayoutHomeFrament();
+    }
+
     private RecyclerView getRecyclerViewAttractions() {
         return homePageFragment.getRecyclerViewAttractions();
     }
@@ -370,21 +367,12 @@ public class HomePageFragmentController implements View.OnClickListener {
         recyclerViewAttractionsListAdapter.notifyDataSetChanged();
     }
 
-    /*private void setShimmerRecyclerViewAttractionOnStart() {
-        getShimmerRecyclerViewAttraction().setLayoutManager(linearLayoutManager);
-        getShimmerRecyclerViewAttraction().showShimmer();
-    }*/
-
     private Button getButtonProvidePermission() {
         return homePageFragment.getButtonProvidePermission();
     }
 
     private View getViewNoAttractionsError() {
         return homePageFragment.getViewNoAttractionsError();
-    }
-
-    public Button getButtonEnablePosition() {
-        return homePageFragment.getButtonEnablePosition();
     }
 
     private void setViewNoAttractionsErrorVisible() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="@drawable/login_page_background"
     tools:context=".views.SignUpActivity">
 
     <View
@@ -22,7 +22,8 @@
         android:focusable="true"
         android:src="@drawable/icon_arrow_back_white"
         app:fabSize="mini"
-        app:rippleColor="@color/colorAccentDark" />
+        app:rippleColor="@color/colorAccentDark"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/logo"
@@ -47,6 +48,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tex_input_layout_email_sign_up"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -65,6 +67,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_name_sign_up"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -83,6 +86,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_last_name_sign_up"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -101,6 +105,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_username_sign_up"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -119,6 +124,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_password_sign_up"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -139,6 +145,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_repeat_password_sign_up"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -166,7 +173,7 @@
                 android:layout_marginEnd="60dp"
                 android:background="@drawable/background_login_button"
                 android:text="@string/sign_up"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/black" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

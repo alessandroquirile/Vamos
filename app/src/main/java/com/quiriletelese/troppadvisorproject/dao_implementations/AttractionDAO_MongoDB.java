@@ -112,7 +112,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindHotelsNameUrl(name);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response ->
-                volleyCallBack.onSuccess(getArrayFromResponseAtractionsName(response)), error -> {
+                volleyCallBack.onSuccess(getArrayFromResponseAttractionsName(response)), error -> {
 
         }) {
             @Override
@@ -196,7 +196,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
     }
 
     @NotNull
-    private List<String> getArrayFromResponseAtractionsName(@NotNull JSONArray response) {
+    private List<String> getArrayFromResponseAttractionsName(@NotNull JSONArray response) {
         List<String> attractionsName = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             try {

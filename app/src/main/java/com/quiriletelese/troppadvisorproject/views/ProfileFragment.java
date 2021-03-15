@@ -14,9 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -25,8 +28,10 @@ import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentControll
 public class ProfileFragment extends Fragment {
 
     private ProfileFragmentController profileFragmentController;
-    private TextView textViewUserTitle, textViewUserNameSurname, textViewUserTotalReviews,
-            textViewUserAvarageRating;
+    private CircleImageView circleImageViewUser;
+    private TextView textViewUserTitle, textViewUserLevel, textViewUserNameLastname,
+            textViewUsername, textViewUserTotalReviews, textViewUserAvarageRating;
+    private RecyclerView recyclerViewBadgeProfile;
     private View viewNoLoginProfileError;
 
     @Nullable
@@ -42,8 +47,8 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
         initializeViewComponents(view);
         initializeController();
-        //checkLogin();
-        setProfileFields();
+        findUserByEmail();
+        checkLogin();
     }
 
     @Override
@@ -63,8 +68,8 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         refreshFragment();
-        //checkLogin();
-        setProfileFields();
+        checkLogin();
+        findUserByEmail();
         invalidateOptionsMenu();
     }
 
@@ -78,25 +83,38 @@ public class ProfileFragment extends Fragment {
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.login_profile:
-                //startLoginActivity();
-                startActivity(new Intent(this.getActivity(), EditProfileActivity.class));
+                startLoginActivity();
                 break;
             case R.id.logout_profile:
                 startLoginActivityFromLogOut();
+                break;
+            case R.id.search_users:
+                startSerchUserActivity();
+                break;
+            case R.id.edit_profile:
+                startEditProfileActivity();
                 break;
         }
     }
 
     public void initializeViewComponents(View view) {
         textViewUserTitle = view.findViewById(R.id.text_view_user_title);
-        textViewUserNameSurname = view.findViewById(R.id.text_view_user_name_surname);
+        circleImageViewUser = view.findViewById(R.id.circle_image_view_user);
+        textViewUserLevel = view.findViewById(R.id.text_view_user_level);
+        textViewUserNameLastname = view.findViewById(R.id.text_view_user_name_lastname);
+        textViewUsername = view.findViewById(R.id.text_view_username);
         textViewUserTotalReviews = view.findViewById(R.id.text_view_user_total_reviews);
         textViewUserAvarageRating = view.findViewById(R.id.text_view_user_avarage_rating);
+        recyclerViewBadgeProfile = view.findViewById(R.id.recycler_view_badge_profile);
         viewNoLoginProfileError = view.findViewById(R.id.no_login_profile_error_layout);
     }
 
     public void initializeController() {
         profileFragmentController = new ProfileFragmentController(this);
+    }
+
+    private void findUserByEmail() {
+        profileFragmentController.findUserByEmail();
     }
 
     private void refreshFragment() {
@@ -107,10 +125,6 @@ public class ProfileFragment extends Fragment {
 
     private void checkLogin() {
         profileFragmentController.checkLogin();
-    }
-
-    private void setProfileFields() {
-        profileFragmentController.setProfileFields();
     }
 
     private void invalidateOptionsMenu() {
@@ -129,12 +143,33 @@ public class ProfileFragment extends Fragment {
         profileFragmentController.startLoginActivityFromLogOut();
     }
 
+    private void startSerchUserActivity() {
+        profileFragmentController.startSearchUserActivity();
+    }
+
+    private void startEditProfileActivity() {
+        profileFragmentController.startEditProfileActivity();
+    }
+
+
     public TextView getTextViewUserTitle() {
         return textViewUserTitle;
     }
 
-    public TextView getTextViewUserNameSurname() {
-        return textViewUserNameSurname;
+    public CircleImageView getCircleImageViewUser() {
+        return circleImageViewUser;
+    }
+
+    public TextView getTextViewUserLevel() {
+        return textViewUserLevel;
+    }
+
+    public TextView getTextViewUserNameLastname() {
+        return textViewUserNameLastname;
+    }
+
+    public TextView getTextViewUsername() {
+        return textViewUsername;
     }
 
     public TextView getTextViewUserTotalReviews() {
@@ -143,6 +178,10 @@ public class ProfileFragment extends Fragment {
 
     public TextView getTextViewUserAvarageRating() {
         return textViewUserAvarageRating;
+    }
+
+    public RecyclerView getRecyclerViewBadgeProfile() {
+        return recyclerViewBadgeProfile;
     }
 
     public View getViewNoLoginProfileError() {

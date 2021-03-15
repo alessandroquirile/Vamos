@@ -6,6 +6,7 @@ import com.quiriletelese.troppadvisorproject.dao_implementations.CityDAO_MongoDB
 import com.quiriletelese.troppadvisorproject.dao_implementations.HotelDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.RestaurantDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.ReviewDAO_MongoDB;
+import com.quiriletelese.troppadvisorproject.dao_implementations.S3DAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.TypeOfCuisineDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_implementations.UserDAO_MongoDB;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
@@ -14,6 +15,7 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.CityDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.HotelDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.RestaurantDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.S3DAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.TypeOfCuisineDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.my_exceptions.TechnologyNotSupportedYetException;
@@ -92,6 +94,13 @@ public class DAOFactory {
             return new UserDAO_MongoDB();
         else
             throw new TechnologyNotSupportedYetException(userStorageTechnology);
+    }
+
+    public S3DAO getS3DAO(@NotNull String s3StorageTechnology) {
+        if (s3StorageTechnology.equals("mongodb"))
+            return new S3DAO_MongoDB();
+        else
+            throw new TechnologyNotSupportedYetException(s3StorageTechnology);
     }
 
 }

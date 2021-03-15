@@ -1,6 +1,6 @@
 package com.quiriletelese.troppadvisorproject.model_helpers;
 
-public class Constants {
+public abstract class Constants {
 
     /* ========== Permission utils ========== */
     private static final int accessFineLocationCode = 100;
@@ -13,6 +13,8 @@ public class Constants {
     private static final String accountStorageTechnology = "account_storage_technology";
     private static final String reviewStorageTechnology = "review_storage_technology";
     private static final String typesOfCuisineStorageTechnology = "types_of_cuisine_storage_technology";
+    private static final String userStorageTechnology = "user_storage_technology";
+    private static final String s3StorageTechnology = "s3storage_technology";
 
     /* ========== Accomodation utils ========== */
     private static final String id = "id";
@@ -38,11 +40,25 @@ public class Constants {
     private static final String idToken = "id_token";
     private static final String refreshToken = "refresh_token";
     private static final String isAppOpenedForFirstTime = "is_app_opened_for_first_time";
+    private static final String dailyReward = "daily_reward";
 
     /* ========== Volley utils ========== */
     private static final String baseUrl = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/";
     private static final String baseUrlHttps = "https://5il6dxqqm3.execute-api.us-east-1.amazonaws.com/Secondo/";
+    private static final String userRoute = "user/";
+    private static final String findUserByEmailRoute = "find-by-email/";
+    private static final String findUsersByNameOrUsermaneRoute = "find-by-name-or-username/";
+    private static final String findLeaderboardUser = "find-leaderboard";
+    private static final String updateUserInformationsRoute = "update-user-informations";
+    private static final String updateUserImageRoute = "update-user-image/";
+    private static final String s3Route = "s3/";
+    private static final String s3UploadFileRoute = "upload-file";
+    private static final String s3DeleteFileRoute = "delete-file";
+    private static final String cognitoRoute = "cognito/";
+    private static final String sendConfirmationCodeRoute = "forgot-password/";
+    private static final String changePassworRoute = "confirm-forgot-password?";
     private static final String usernameError = "Username error";
+    private static final String alreadyVotedError = "voted";
     private static final String emailError = "Email error";
     private static final String noContent = "204";
     private static final String unauthorized = "401";
@@ -82,6 +98,14 @@ public class Constants {
 
     public static String getTypesOfCuisineStorageTechnology() {
         return typesOfCuisineStorageTechnology;
+    }
+
+    public static String getUserStorageTechnology() {
+        return userStorageTechnology;
+    }
+
+    public static String getS3StorageTechnology() {
+        return s3StorageTechnology;
     }
 
     public static String getId() {
@@ -168,6 +192,10 @@ public class Constants {
         return isAppOpenedForFirstTime;
     }
 
+    public static String getDailyReward() {
+        return dailyReward;
+    }
+
     public static String getBaseUrl() {
         return baseUrl;
     }
@@ -176,8 +204,60 @@ public class Constants {
         return baseUrlHttps;
     }
 
+    public static String getUserRoute() {
+        return userRoute;
+    }
+
+    public static String getFindUserByEmailRoute() {
+        return findUserByEmailRoute;
+    }
+
+    public static String getFindUsersByNameOrUsermaneRoute() {
+        return findUsersByNameOrUsermaneRoute;
+    }
+
+    public static String getFindLeaderboardUser() {
+        return findLeaderboardUser;
+    }
+
+    public static String getUpdateUserInformationsRoute() {
+        return updateUserInformationsRoute;
+    }
+
+    public static String getUpdateUserImageRoute() {
+        return updateUserImageRoute;
+    }
+
+    public static String getS3Route() {
+        return s3Route;
+    }
+
+    public static String getS3UploadFileRoute() {
+        return s3UploadFileRoute;
+    }
+
+    public static String getS3DeleteFileRoute() {
+        return s3DeleteFileRoute;
+    }
+
+    public static String getCognitoRoute() {
+        return cognitoRoute;
+    }
+
+    public static String getSendConfirmationCodeRoute() {
+        return sendConfirmationCodeRoute;
+    }
+
+    public static String getChangePassworRoute() {
+        return changePassworRoute;
+    }
+
     public static String getUsernameError() {
         return usernameError;
+    }
+
+    public static String getAlreadyVotedError() {
+        return alreadyVotedError;
     }
 
     public static String getEmailError() {

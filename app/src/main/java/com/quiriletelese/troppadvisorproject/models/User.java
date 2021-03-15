@@ -13,13 +13,14 @@ public class User implements Serializable {
     private String username;
     private String email;
     private String image;
-    private boolean isPrivateAccount;
     private Long totalReviews;
     private Double avarageRating;
     private Double totalRating;
     private Double level;
+    private String chosenTitle;
     private Set<Badge> obtainedBadges;
     private Set<Badge> missingBadges;
+    private boolean isPrivateAccount;
 
     public String getId() {
         return id;
@@ -69,12 +70,8 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public boolean isPrivateAccount() {
-        return isPrivateAccount;
-    }
-
-    public void setPrivateAccount(boolean privateAccount) {
-        isPrivateAccount = privateAccount;
+    public boolean hasImage() {
+        return !this.image.isEmpty();
     }
 
     public Long getTotalReviews() {
@@ -109,6 +106,14 @@ public class User implements Serializable {
         this.level = level;
     }
 
+    public String getChosenTitle() {
+        return chosenTitle;
+    }
+
+    public void setChosenTitle(String chosenTitle) {
+        this.chosenTitle = chosenTitle;
+    }
+
     public Set<Badge> getObtainedBadges() {
         return obtainedBadges;
     }
@@ -124,4 +129,13 @@ public class User implements Serializable {
     public void setMissingBadges(Set<Badge> missingBadges) {
         this.missingBadges = missingBadges;
     }
+
+    public boolean isPrivateAccount() {
+        return isPrivateAccount;
+    }
+
+    public void setPrivateAccount(boolean privateAccount) {
+        isPrivateAccount = privateAccount;
+    }
+
 }

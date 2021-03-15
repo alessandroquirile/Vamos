@@ -7,6 +7,20 @@
         android:icon="@drawable/icon_logout_profile_white"
         android:orderInCategory="1"
         android:title="@string/logout"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/search_user_profile"
+        android:icon="@drawable/icon_search_users_white"
+        android:orderInCategory="2"
+        android:title="@string/search_user"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/edit_profile"
+        android:icon="@drawable/icon_edit_white"
+        android:orderInCategory="3"
+        android:title="@string/edit_profile"
+        app:showAsAction="ifRoom" />
 
 </menu>

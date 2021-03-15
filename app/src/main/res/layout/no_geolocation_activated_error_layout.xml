@@ -18,7 +18,7 @@
         app:lottie_loop="true" />
 
     <TextView
-        style="@style/TextAppearance.AppCompat.Body2"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -29,13 +29,4 @@
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/button_enable_position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_login_button"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/active_geolocation"
-        android:textColor="@android:color/white" />
 </androidx.appcompat.widget.LinearLayoutCompat>

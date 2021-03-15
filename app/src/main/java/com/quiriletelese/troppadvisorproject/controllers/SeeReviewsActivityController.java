@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewSeeReviewsAdapter;
+import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewReadReviewsAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
@@ -35,7 +35,7 @@ public class SeeReviewsActivityController {
 
     private final SeeReviewsActivity seeReviewsActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private RecyclerViewSeeReviewsAdapter recyclerViewSeeReviewsAdapter;
+    private RecyclerViewReadReviewsAdapter recyclerViewReadReviewsAdapter;
     private int page = 0;
     private ReviewDAO reviewDAO;
 
@@ -83,9 +83,9 @@ public class SeeReviewsActivityController {
 
     private void initializeRecyclerViewOnSuccess(List<Review> reviews) {
         LinearLayoutManager linearLayoutManager = createLinearLayoutManager();
-        recyclerViewSeeReviewsAdapter = createRecyclerViewAdapter(reviews);
+        recyclerViewReadReviewsAdapter = createRecyclerViewAdapter(reviews);
         getShimmerRecyclerViewSeeReviews().setLayoutManager(linearLayoutManager);
-        getShimmerRecyclerViewSeeReviews().setAdapter(recyclerViewSeeReviewsAdapter);
+        getShimmerRecyclerViewSeeReviews().setAdapter(recyclerViewReadReviewsAdapter);
     }
 
     public void initializeRecyclerViewsFakeContent() {
@@ -105,8 +105,8 @@ public class SeeReviewsActivityController {
 
     @NotNull
     @Contract("_ -> new")
-    private RecyclerViewSeeReviewsAdapter createRecyclerViewAdapter(List<Review> reviews) {
-        return new RecyclerViewSeeReviewsAdapter(getContext(), reviews);
+    private RecyclerViewReadReviewsAdapter createRecyclerViewAdapter(List<Review> reviews) {
+        return new RecyclerViewReadReviewsAdapter(getContext(), seeReviewsActivity, reviews);
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
@@ -139,8 +139,8 @@ public class SeeReviewsActivityController {
     }
 
     private void addNewReviewsToList(List<Review> reviews) {
-        recyclerViewSeeReviewsAdapter.addListItems(reviews);
-        recyclerViewSeeReviewsAdapter.notifyDataSetChanged();
+        recyclerViewReadReviewsAdapter.addListItems(reviews);
+        recyclerViewReadReviewsAdapter.notifyDataSetChanged();
         setProgressBarLoadMoreVisibility(View.INVISIBLE);
     }
 

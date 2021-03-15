@@ -115,11 +115,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterial" />
         <activity
-            android:name=".views.SearchedUserInfoActivity"
+            android:name=".views.SearchedUserProfileActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.SearchUsersActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.ResetPasswordActivity"
+            android:theme="@style/AppThemeMaterial"
+            android:label="@string/forgot_password"/>
+
+        <activity
+            android:name=".views.EnterNewPasswordActivity"
+            android:theme="@style/AppThemeMaterial"
+            android:label="@string/reset_password"/>
     </application>
 
 </manifest>

@@ -133,8 +133,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
 
     private void showConfirmAccountDialog() {
         AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View dialogView = layoutInflater.inflate(getAlertDialogLayout(R.layout.dialog_confirm_account), null);
+        View dialogView = getLayoutInflater().inflate(getAlertDialogLayout(R.layout.dialog_first_500_point_dialog_layout), null);
         alertDialogBuilder.setView(dialogView).
                 setPositiveButton("ok", null);
         AlertDialog dialog = alertDialogBuilder.create();
@@ -263,7 +262,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         getTextInputLayoutEmail().setError(getEmailAlreadyExistErrorMessage());
     }
 
-    private void finish(){
+    private void finish() {
         signUpActivity.finish();
     }
 
@@ -405,15 +404,15 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
 
     @NotNull
     private String getUsernameAlreadyExistErrorMessage() {
-        return signUpActivity.getResources().getString(R.string.username_already_exist);
+        return getString(R.string.username_already_exist);
     }
 
-    private Resources getResources(){
+    private Resources getResources() {
         return signUpActivity.getResources();
     }
 
     @NotNull
-    private String getString(int string){
+    private String getString(int string) {
         return getResources().getString(string);
     }
 

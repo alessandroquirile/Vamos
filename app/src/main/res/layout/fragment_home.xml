@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh_layout_home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_attraction"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress_bar_attraction_home_load_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_attraction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <include
-        android:id="@+id/no_attractions_error"
-        layout="@layout/no_attractions_error_home_page_layout"
-        android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/progress_bar_attraction_home_load_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
 
-    <include
-        android:id="@+id/no_geolocation_activated_error_layout"
-        layout="@layout/no_geolocation_activated_error_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        <include
+            android:id="@+id/no_attractions_error"
+            layout="@layout/no_attractions_error_home_page_layout"
+            android:visibility="gone" />
 
-    <include
-        android:id="@+id/missing_location_permission_error_layout"
-        layout="@layout/missing_location_permission_error_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        <include
+            android:id="@+id/no_geolocation_activated_error_layout"
+            layout="@layout/no_geolocation_activated_error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
-</RelativeLayout>
+        <include
+            android:id="@+id/missing_location_permission_error_layout"
+            layout="@layout/missing_location_permission_error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

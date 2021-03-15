@@ -19,4 +19,8 @@ public interface AccountDAO {
 
     void getUserDetails(VolleyCallBack volleyCallBack, String accessToken, Context context);
 
+    void sendConfirmationCode(VolleyCallBack volleyCallBack, String email, Context context);
+
+    void changePassword(VolleyCallBack volleyCallBack, String email, String confirmationCode, String newPassword, Context context);
+
 }

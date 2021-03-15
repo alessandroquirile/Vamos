@@ -35,6 +35,10 @@ public class UserSharedPreferences {
         return sharedPreferences;
     }
 
+    public boolean constains(String preference){
+        return getSharedPreferences().contains(preference);
+    }
+
     public String getStringSharedPreferences(String preference) {
         return getSharedPreferences().getString(preference, "");
     }

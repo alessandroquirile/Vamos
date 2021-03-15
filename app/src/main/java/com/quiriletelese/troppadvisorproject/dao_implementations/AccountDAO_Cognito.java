@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
 
+import com.amazonaws.services.cognitoidentityprovider.model.CodeDeliveryDetailsType;
 import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.android.volley.NetworkResponse;
@@ -47,6 +48,16 @@ public class AccountDAO_Cognito implements AccountDAO {
         getUserDetailsVolley(volleyCallBack, accessToken, context);
     }
 
+    @Override
+    public void sendConfirmationCode(VolleyCallBack volleyCallBack, String email, Context context) {
+        sendConfirmationCodeVolley(volleyCallBack, email, context);
+    }
+
+    @Override
+    public void changePassword(VolleyCallBack volleyCallBack, String email, String confirmationCode, String newPassword, Context context) {
+        changePasswordVolley(volleyCallBack, email, confirmationCode, newPassword, context);
+    }
+
     private void loginVolley(final VolleyCallBack volleyCallBack, Account account, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
@@ -72,10 +83,11 @@ public class AccountDAO_Cognito implements AccountDAO {
         String URL = createNewUserURL();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
                 jsonObjectNewUser(account), response ->
-                volleyCallBack.onSuccess(getUserResultFromVolley(response)), error -> {
-            if (error != null)
-                checkCreateAccountVolleyError(error.networkResponse, volleyCallBack);
-        }) {
+                volleyCallBack.onSuccess(getUserResultFromVolley(response)),
+                error -> {
+                    if (error != null)
+                        checkCreateAccountVolleyError(error.networkResponse, volleyCallBack);
+                }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 checkCreateAccountVolleyError(response, volleyCallBack);
@@ -122,6 +134,42 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
+    private void sendConfirmationCodeVolley(VolleyCallBack volleyCallBack, String email, Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
+        String URL = createSendConfirmationCodeURL(email);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                response -> volleyCallBack.onSuccess(getCodeDeliveryDetailsTypeFromVolley(response)),
+                error -> {
+                }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void changePasswordVolley(VolleyCallBack volleyCallBack, String email, String confirmationCode, String newPassword, Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
+        String URL = createChangePasswordURL(email, newPassword, confirmationCode);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                response -> volleyCallBack.onSuccess(getUserResultFromVolley(response)),
+                error -> {
+                }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
     @NotNull
     @Contract(pure = true)
     private String createLoginUrl() {
@@ -144,6 +192,19 @@ public class AccountDAO_Cognito implements AccountDAO {
     @Contract(pure = true)
     private String createGetUserDetailsURL() {
         return Constants.getBaseUrl() + "cognito/get-user-details";
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    private String createSendConfirmationCodeURL(String email) {
+        return Constants.getBaseUrl() + Constants.getCognitoRoute() + Constants.getSendConfirmationCodeRoute() + email;
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    private String createChangePasswordURL(String email, String password, String code) {
+        return Constants.getBaseUrl() + Constants.getCognitoRoute() + Constants.getChangePassworRoute()
+                + "email=" + email + "&password=" + password + "&code=" + code;
     }
 
     private JSONObject jsonObjectNewUser(Account account) {
@@ -218,6 +279,11 @@ public class AccountDAO_Cognito implements AccountDAO {
         return gson.fromJson(response.toString(), GetUserResult.class);
     }
 
+    private CodeDeliveryDetailsType getCodeDeliveryDetailsTypeFromVolley(@NotNull JSONObject response) {
+        Gson gson = new Gson();
+        return gson.fromJson(response.toString(), CodeDeliveryDetailsType.class);
+    }
+
     private void checkCreateAccountVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
         if (networkResponse.headers.containsKey(Constants.getUsernameError()))
             volleyCallBack.onError(Constants.getUsernameError());
@@ -225,6 +291,10 @@ public class AccountDAO_Cognito implements AccountDAO {
             volleyCallBack.onError(Constants.getEmailError());
         else
             volleyCallBack.onError(String.valueOf(networkResponse.statusCode));
+    }
+
+    private boolean isStatusCodeOk(int statusCode) {
+        return statusCode == 200;
     }
 
 }

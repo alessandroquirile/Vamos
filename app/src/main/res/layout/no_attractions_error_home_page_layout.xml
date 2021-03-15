@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="210dp"
+    android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
     android:background="@color/white"
@@ -9,8 +9,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="lottie_error.json"/>
 
@@ -21,7 +21,7 @@
         android:textAlignment="center"
         android:text="@string/no_attractions_found_home_page"
         android:textColor="@color/black"
-        style="@style/TextAppearance.AppCompat.Body2"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:textColorLink="@color/colorPrimary"/>
 
 </LinearLayout>

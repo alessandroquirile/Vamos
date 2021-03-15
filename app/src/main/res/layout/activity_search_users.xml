@@ -6,9 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".views.SearchUsersActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_search_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar_search_users"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_search_users"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar_layout_search_users" />
+
+    <include
+        android:id="@+id/search_users_empty_text_layout"
+        layout="@layout/search_users_empty_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar_layout_search_users" />
+
+    <include
+        android:id="@+id/search_users_no_content_layout"
+        layout="@layout/search_users_no_content_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar_layout_search_users"
+        android:visibility="gone" />
 
 </RelativeLayout>

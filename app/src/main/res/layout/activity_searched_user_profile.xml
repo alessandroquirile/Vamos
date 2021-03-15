@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.SearchedUserInfoActivity">
+    tools:context=".views.SearchedUserProfileActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,36 +28,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:padding="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
-            android:id="@+id/searched_user_info_private_error_layout"
-            layout="@layout/searched_user_info_private_error_layout"
-            android:visibility="gone" />
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_searched_user_badge_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout_searched_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabIndicator="@drawable/tab_indicator"
-                app:tabIndicatorAnimationMode="elastic"
-                app:tabIndicatorFullWidth="false"
-                app:tabIndicatorHeight="5dp"
-                app:tabInlineLabel="true"
-                app:tabRippleColor="@null" />
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager_searched_user"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
     </androidx.core.widget.NestedScrollView>
 

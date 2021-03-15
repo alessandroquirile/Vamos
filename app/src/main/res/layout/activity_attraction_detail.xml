@@ -5,7 +5,7 @@
     style="@style/AppTheme.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.RestaurantDetailActivity">
+    tools:context=".views.AttractionDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -53,104 +53,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="8sp"
-                android:text="@string/informazioni_sulla_struttura"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_view_attraction_avarage_rating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_stars_primary_color" />
-
-            <TextView
-                android:id="@+id/text_view_attraction_certificate_of_excellence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="@string/certificate_of_excellence"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
-
-            <TextView
-                android:id="@+id/text_view_attraction_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_location_primary_color" />
-
-            <TextView
-                android:id="@+id/text_view_attraction_opening_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_opening_time_green" />
-
-            <TextView
-                android:id="@+id/text_view_attraction_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_phone_primary_color" />
-
-            <TextView
-                android:id="@+id/text_view_attraction_avarage_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <include layout="@layout/inner_attraction_detail_activity_nested_scrollview" />
 
     </androidx.core.widget.NestedScrollView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/button_attraction_read_reviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/background_see_reviews_button"
-            android:text="@string/leggi_recensioni"
-            android:textColor="@android:color/white" />
-
-    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

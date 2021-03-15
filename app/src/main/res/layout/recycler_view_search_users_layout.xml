@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear_layout_compat_search_users_item"
-    android:background="?attr/selectableItemBackgroundBorderless"
-    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical"
     android:padding="10dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="2">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circle_image_view_search_users_user_photo"
+            android:id="@+id/circle_image_view_search_users"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="0"
@@ -26,7 +27,7 @@
             app:civ_border_width="2dp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
@@ -35,7 +36,7 @@
             tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/text_view_search_users_user_name"
+                android:id="@+id/text_view_search_users_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -45,13 +46,22 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/text_view_search_users_user_level"
+                android:id="@+id/text_view_search_users_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-condensed-medium"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/text_view_search_users_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:maxLines="1"
-                app:drawableStartCompat="@drawable/icon_badge_yellow" />
+                app:drawableStartCompat="@drawable/icon_star_yellow" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
