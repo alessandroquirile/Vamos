@@ -60,7 +60,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class EditProfileActivityController implements View.OnClickListener, TextWatcher, AdapterView.OnItemSelectedListener {
+public class EditProfileActivityController implements View.OnClickListener, TextWatcher, AdapterView.OnItemClickListener {
 
     private final EditProfileActivity editProfileActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -87,6 +87,11 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        isUserInformationsChanged = true;
+    }
+
+    @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         isUserInformationsChanged = true;
         detectEditText(charSequence);
@@ -94,16 +99,6 @@ public class EditProfileActivityController implements View.OnClickListener, Text
 
     @Override
     public void afterTextChanged(Editable editable) {
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        isUserInformationsChanged = true;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
@@ -330,7 +325,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
             setEditTextUsernameText(user);
             setAutoCompleteTextViewChosenTitleText(user);
             setAutoCompleteTextViewChosenTitleTextAdapter(user);
-            if (!checkTapTargetBooleanPreferences()){
+            if (!checkTapTargetBooleanPreferences()) {
                 final Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(() -> setTapTargetSequence(), 200);
             }
@@ -344,7 +339,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         getEditTextName().addTextChangedListener(this);
         getEditTextLastName().addTextChangedListener(this);
         getEditTextUsername().addTextChangedListener(this);
-        getAutoCompleteTextViewChosenTitle().setOnItemSelectedListener(this);
+        getAutoCompleteTextViewChosenTitle().setOnItemClickListener(this);
     }
 
     public void handleOnActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -705,5 +700,4 @@ public class EditProfileActivityController implements View.OnClickListener, Text
                 .tintTarget(tintTarget)
                 .targetRadius(radius);
     }
-
 }
