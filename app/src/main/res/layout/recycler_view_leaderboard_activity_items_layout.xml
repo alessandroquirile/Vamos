@@ -20,7 +20,6 @@
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
             android:layout_weight="0.3"
-            android:background="@drawable/button_orange_round_corner"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center_horizontal"
             android:textColor="@color/white"

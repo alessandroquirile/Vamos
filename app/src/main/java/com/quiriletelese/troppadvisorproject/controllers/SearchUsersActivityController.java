@@ -152,7 +152,9 @@ public class SearchUsersActivityController implements SearchView.OnQueryTextList
     }
 
     private void setViewVisibility(View view, int visibility) {
-        view.setVisibility(visibility);
+        searchUsersActivity.runOnUiThread(() -> {
+            view.setVisibility(visibility);
+        });
     }
 
     public boolean isTextEmpty(String text) {

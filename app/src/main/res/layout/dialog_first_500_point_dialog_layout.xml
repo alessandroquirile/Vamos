@@ -10,10 +10,10 @@
     android:padding="16dp">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="missing_permission_lottie_error.json"
+        app:lottie_fileName="daily_reward.json"
         app:lottie_loop="false" />
 
     <TextView

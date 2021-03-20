@@ -110,11 +110,11 @@ public class ProfileFragment extends Fragment {
     }
 
     public void initializeController() {
-        profileFragmentController = new ProfileFragmentController(this);
+        //profileFragmentController = new ProfileFragmentController(this);
     }
 
     private void findUserByEmail() {
-        profileFragmentController.findUserByEmail();
+        //profileFragmentController.findUserByEmail();
     }
 
     private void refreshFragment() {
@@ -136,7 +136,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void startLoginActivity() {
-        profileFragmentController.startLoginActivity();
+        //profileFragmentController.startLoginActivity();
     }
 
     private void startLoginActivityFromLogOut() {

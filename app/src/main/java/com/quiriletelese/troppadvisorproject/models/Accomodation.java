@@ -13,7 +13,7 @@ public abstract class Accomodation implements Serializable {
     protected String id;
     protected String name;
     protected Double avarageRating;
-    protected Double avaragePrice;
+    protected String avaragePrice;
     protected String phoneNumber;
     protected Address address;
     protected Point point;
@@ -21,6 +21,7 @@ public abstract class Accomodation implements Serializable {
     private Long totalReviews;
     private Double totalRating;
     protected List<String> images;
+    private String webSite;
     protected boolean certificateOfExcellence;
     protected String addedDate;
     protected String lastModificationDate;
@@ -49,13 +50,21 @@ public abstract class Accomodation implements Serializable {
         this.avarageRating = avarageRating;
     }
 
-    public Double getAvaragePrice() {
-        return Math.round(avaragePrice * 100.0) / 100.0;
+    public String getAvaragePrice() {
+        return avaragePrice;
     }
 
-    public void setAvaragePrice(Double avaragePrice) {
+    public void setAvaragePrice(String avaragePrice) {
         this.avaragePrice = avaragePrice;
     }
+
+    //    public Double getAvaragePrice() {
+//        return Math.round(avaragePrice * 100.0) / 100.0;
+//    }
+//
+//    public void setAvaragePrice(Double avaragePrice) {
+//        this.avaragePrice = avaragePrice;
+//    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -121,6 +130,14 @@ public abstract class Accomodation implements Serializable {
         this.images = images;
     }
 
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
     public boolean isCertificateOfExcellence() {
         return certificateOfExcellence;
     }
@@ -145,27 +162,27 @@ public abstract class Accomodation implements Serializable {
         this.lastModificationDate = lastModificationDate;
     }
 
-    public String getCity(){
+    public String getCity() {
         return this.address.getCity();
     }
 
-    public String getStreet(){
+    public String getStreet() {
         return this.address.getStreet();
     }
 
-    public String getHouseNumber(){
+    public String getHouseNumber() {
         return this.address.getHouseNumber();
     }
 
-    public String getPostalCode(){
+    public String getPostalCode() {
         return this.address.getPostalCode();
     }
 
-    public String getProvince(){
+    public String getProvince() {
         return this.address.getProvince();
     }
 
-    public String getTypeOfAddress(){
+    public String getTypeOfAddress() {
         return this.address.getType();
     }
 
@@ -173,7 +190,7 @@ public abstract class Accomodation implements Serializable {
         return this.images.size() > 0;
     }
 
-    public boolean hasAvarageRating(){
+    public boolean hasAvarageRating() {
         return !this.avarageRating.equals(0d);
     }
 

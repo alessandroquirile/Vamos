@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewLeaderboardAdapter;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.User;
+import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.LeaderboardActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -29,7 +31,7 @@ public class LeaderboardActivityController {
     }
 
     private void findLeaderboardHelper(VolleyCallBack volleyCallBack) {
-        daoFactory.getUserDAO(Constants.getUserStorageTechnology()).findLeaderboard(volleyCallBack, getContext());
+       getUserDAO().findLeaderboard(volleyCallBack, getContext());
     }
 
     public void findLeaderboard() {
@@ -87,6 +89,14 @@ public class LeaderboardActivityController {
 
     public View getNoContentLeaderboardLayout() {
         return leaderboardActivity.getNoContentLeaderboardLayout();
+    }
+
+    private UserDAO getUserDAO() {
+        return daoFactory.getUserDAO(getStorageTechnology(Constants.getUserStorageTechnology()));
+    }
+
+    private String getStorageTechnology(String storageTechnology) {
+        return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
     private Context getContext() {

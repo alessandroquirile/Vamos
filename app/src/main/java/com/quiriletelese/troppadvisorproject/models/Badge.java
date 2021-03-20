@@ -1,4 +1,4 @@
-package com.quiriletelese.troppadvisorproject.model_helpers;
+package com.quiriletelese.troppadvisorproject.models;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,8 +8,8 @@ public class Badge implements Serializable {
     private String id;
     private String name;
     private String description;
-    private Date addedDate;
-    private Date lastModificationDate;
+    private String addedDate;
+    private String lastModificationDate;
 
     public String getId() {
         return id;
@@ -35,19 +35,19 @@ public class Badge implements Serializable {
         this.description = description;
     }
 
-    public Date getAddedDate() {
+    public String getAddedDate() {
         return addedDate;
     }
 
-    public void setAddedDate(Date addedDate) {
+    public void setAddedDate(String addedDate) {
         this.addedDate = addedDate;
     }
 
-    public Date getLastModificationDate() {
+    public String getLastModificationDate() {
         return lastModificationDate;
     }
 
-    public void setLastModificationDate(Date lastModificationDate) {
+    public void setLastModificationDate(String lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
     }
 }

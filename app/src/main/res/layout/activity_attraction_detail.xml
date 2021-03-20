@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/colorPrimaryDark"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager_attraction_detail"
@@ -27,9 +27,22 @@
                 android:clipToPadding="false"
                 android:overScrollMode="never" />
 
+            <TextView
+                android:id="@+id/text_view_image_position"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="10dp"
+                android:drawablePadding="10dp"
+                android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/icon_photo_library_white" />
+
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tool_bar_attraction_detail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

@@ -2,16 +2,20 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,20 +29,24 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EditProfileActivity extends AppCompatActivity {
 
     private EditProfileActivityController editProfileActivityController;
+    private Toolbar toolbar;
     private CircleImageView circleImageViewUserEdit;
     private TextView textViewReturnToTheOriginalProfileImage;
     private FloatingActionButton floatingActionButtonChangeProfileImage;
     private TextInputLayout textInputLayoutName, textInputLayoutLastName, textInputLayoutUsername,
             textInputLayoutSelectTitle;
     private AutoCompleteTextView autoCompleteTextViewChosenTitle;
-    private SwitchCompat switchCompatPrivateAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar = findViewById(R.id.tool_bar_edit_profile);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_close_white);
 
         initializeViewComponents();
@@ -65,8 +73,18 @@ public class EditProfileActivity extends AppCompatActivity {
         editProfileActivityController.handleOnActivityResult(requestCode, resultCode, data);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        editProfileActivityController.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                editProfileActivityController.finish(RESULT_CANCELED);
+                break;
             case R.id.menu_save_changes:
                 saveChanges();
                 break;
@@ -82,7 +100,6 @@ public class EditProfileActivity extends AppCompatActivity {
         textInputLayoutUsername = findViewById(R.id.text_input_layout_username);
         textInputLayoutSelectTitle = findViewById(R.id.text_input_layout_select_user_title);
         autoCompleteTextViewChosenTitle = findViewById(R.id.auto_complete_text_view_chosen_title);
-        switchCompatPrivateAccount = findViewById(R.id.switch_compat_private_account);
     }
 
     private void initializeController() {
@@ -99,6 +116,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void saveChanges() {
         editProfileActivityController.saveChanges();
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     public CircleImageView getCircleImageViewUserEdit() {
@@ -139,9 +160,5 @@ public class EditProfileActivity extends AppCompatActivity {
 
     public AutoCompleteTextView getAutoCompleteTextViewChosenTitle() {
         return autoCompleteTextViewChosenTitle;
-    }
-
-    public SwitchCompat getSwitchCompatPrivateAccount() {
-        return switchCompatPrivateAccount;
     }
 }

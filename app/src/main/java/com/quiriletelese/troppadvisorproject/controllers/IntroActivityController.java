@@ -1,11 +1,15 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -20,6 +25,7 @@ import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerIntroAdapter;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
+import com.quiriletelese.troppadvisorproject.views.HomeActivity;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 
@@ -66,6 +72,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
         ActivityCompat.requestPermissions(introActivity, new String[]{permission}, requestCode);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 100:
@@ -74,12 +81,27 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void checkPermissionResult(@NonNull int[] grantResults) {
         if (isPermissionGranted(grantResults)) {
             writeSharedPreferences();
             startHomePageActivity();
         } else
-            showToastOnUiThread(R.string.access_location_permission_requested);
+            showMessageOKCancel((dialogInterface, i) -> requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Constants.getAccessFineLocationCode()));
+    }
+
+    private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(introActivity)
+                .setView(getLayoutInflater().inflate(R.layout.dialog_missing_intro_location_permission_layout, null))
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
+    }
+
+    @NotNull
+    private LayoutInflater getLayoutInflater() {
+        return introActivity.getLayoutInflater();
     }
 
     private void onClickHekper(@NotNull View view) {
@@ -127,7 +149,7 @@ public class IntroActivityController implements ViewPager.OnPageChangeListener, 
     }
 
     private void startHomePageActivity() {
-        getContext().startActivity(createIntent(HomePageActivity.class));
+        getContext().startActivity(createIntent(HomeActivity.class));
     }
 
     @NotNull

@@ -1,7 +1,5 @@
 package com.quiriletelese.troppadvisorproject.models;
 
-import com.quiriletelese.troppadvisorproject.model_helpers.Badge;
-
 import java.io.Serializable;
 import java.util.Set;
 
@@ -20,7 +18,6 @@ public class User implements Serializable {
     private String chosenTitle;
     private Set<Badge> obtainedBadges;
     private Set<Badge> missingBadges;
-    private boolean isPrivateAccount;
 
     public String getId() {
         return id;
@@ -128,14 +125,6 @@ public class User implements Serializable {
 
     public void setMissingBadges(Set<Badge> missingBadges) {
         this.missingBadges = missingBadges;
-    }
-
-    public boolean isPrivateAccount() {
-        return isPrivateAccount;
-    }
-
-    public void setPrivateAccount(boolean privateAccount) {
-        isPrivateAccount = privateAccount;
     }
 
 }

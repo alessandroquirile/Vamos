@@ -1,12 +1,15 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -24,13 +27,18 @@ import java.util.Objects;
 public class AttractionsListActivity extends AppCompatActivity {
 
     private AttractionsListActivityController attractionsListActivityController;
+    private Toolbar toolbar;
     private RecyclerView recyclerViewAttractionsList;
     private ProgressBar progressBarAttractionLoadMore;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attractions_list);
+
+        toolbar = findViewById(R.id.tool_bar_attractions_list);
+        setSupportActionBar(toolbar);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,6 +53,11 @@ public class AttractionsListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_attractions_list_activity, menu);
+//        this.menu = menu;
+//        final Handler handler = new Handler(Looper.getMainLooper());
+//        handler.postDelayed(() -> {
+//            menu.performIdentifierAction(R.id.search_button_menu_attractions_list, 0);
+//        }, 200);
         return true;
     }
 
@@ -77,11 +90,11 @@ public class AttractionsListActivity extends AppCompatActivity {
         attractionsListActivityController = new AttractionsListActivityController(this);
     }
 
-    private void findByRsql(){
+    private void findByRsql() {
         attractionsListActivityController.findByRsql(getPointSearch(), "0");
     }
 
-    private void addRecyclerViewOnScrollListener(){
+    private void addRecyclerViewOnScrollListener() {
         attractionsListActivityController.addRecyclerViewOnScrollListener();
     }
 
@@ -89,12 +102,16 @@ public class AttractionsListActivity extends AppCompatActivity {
         attractionsListActivityController.startMapsActivity();
     }
 
-    private void showBottomSheetFilters(){
+    private void showBottomSheetFilters() {
         attractionsListActivityController.showBottomSheetFilters();
     }
 
     private PointSearch getPointSearch() {
         return attractionsListActivityController.getPointSearch();
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     public RecyclerView getRecyclerViewAttractionsList() {

@@ -43,13 +43,13 @@ public class AccomodationDetailMapsActivity extends FragmentActivity implements 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        googleMap.setOnMapLoadedCallback(this::addMarker);
         intializeViewComponents(googleMap);
         setGoogleMapStyle();
         initializeController();
         setRelativeLayoutDetailsFields();
         setListenerOnViewComponents();
         setMapProperties();
-        addMarker();
     }
 
     private void intializeViewComponents(GoogleMap googleMap) {
@@ -62,7 +62,7 @@ public class AccomodationDetailMapsActivity extends FragmentActivity implements 
         floatingActionButtonGoBack = findViewById(R.id.floating_action_button_go_back_accomodation_map_detail_activity);
     }
 
-    private void setGoogleMapStyle(){
+    private void setGoogleMapStyle() {
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getApplicationContext(), R.raw.map_style));
     }
 
@@ -70,7 +70,7 @@ public class AccomodationDetailMapsActivity extends FragmentActivity implements 
         accomodationDetailMapsActivityController = new AccomodationDetailMapsActivityController(this);
     }
 
-    private void setRelativeLayoutDetailsFields(){
+    private void setRelativeLayoutDetailsFields() {
         accomodationDetailMapsActivityController.setRelativeLayoutDetailsFields();
     }
 

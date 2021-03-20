@@ -58,55 +58,14 @@ public class HomePageFragment extends Fragment {
         initializeViewComponents(view);
         initializeHomePageFragmentController();
         setListenerOnViewComponents();
-        //initializeRecyclerView();
         addRecyclerViewOnScrollListener();
-
-//        new TapTargetSequence(getActivity())
-//                .targets(
-//                        create(view),
-//                        TapTarget.forView(view.findViewById(R.id.recycler_view_attraction), "You", "Up")
-//                                .dimColor(android.R.color.black)
-//                                .outerCircleColor(R.color.colorPrimary)
-//                                .targetCircleColor(R.color.white)
-//                                .textColor(android.R.color.white)
-//                                .targetCircleColor(R.color.white)
-//                                .drawShadow(true)                    // Whether to draw a drop shadow or not
-//                                .cancelable(false)
-//                                .tintTarget(false)                   // Specify whether the target is transparent (displays the content underneath)
-//                                .targetRadius(100))
-//                .listener(new TapTargetSequence.Listener() {
-//                    // This listener will tell us when interesting(tm) events happen in regards
-//                    // to the sequence
-//                    @Override
-//                    public void onSequenceFinish() {
-//                        Toast.makeText(getActivity(), "FINISHHHHHHHHHH", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
-//                        // Perform action for the current target
-//                    }
-//
-//                    @Override
-//                    public void onSequenceCanceled(TapTarget lastTarget) {
-//                        // Boo
-//                    }
-//                }).start();
+        checkDailyReward();
+        //setTapTargetSequence();
     }
 
-//    private TapTarget create(View view) {
-//        return TapTarget.forView(view.findViewById(R.id.prova), "Gonna")
-//                .tintTarget(false)
-//                .dimColor(android.R.color.black)
-//                .outerCircleColor(R.color.colorPrimary)
-//                .targetCircleColor(R.color.white)
-//                .textColor(android.R.color.white)
-//                .targetCircleColor(R.color.white)
-//                .drawShadow(true)
-//                .cancelable(false)
-//                .tintTarget(false)
-//                .targetRadius(100);
-//    }
+    private void setTapTargetSequence() {
+        homePageFragmentController.setTapTargetSequence();
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -135,12 +94,8 @@ public class HomePageFragment extends Fragment {
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_attractions:
-                //startSearchAttractionsActivity();
-                startActivity(new Intent(this.getActivity(), ResetPasswordActivity.class));
+                startSearchAttractionsActivity();
                 break;
-            /*case R.id.refresh_button_menu_home_page_activity:
-                initializeRecyclerView();
-                break;*/
         }
     }
 
@@ -152,7 +107,6 @@ public class HomePageFragment extends Fragment {
         swipeRefreshLayoutHomeFrament = view.findViewById(R.id.swipe_refresh_layout_home_fragment);
         swipeRefreshLayoutHomeFrament.setRefreshing(true);
         recyclerViewAttractions = view.findViewById(R.id.recycler_view_attraction);
-        //progressBarHome = view.findViewById(R.id.progress_bar_home);
         progressBarAttractionHomeLoadMore = view.findViewById(R.id.progress_bar_attraction_home_load_more);
         viewNoGeolocationError = view.findViewById(R.id.no_geolocation_activated_error_layout);
         viewNoAttractionsError = view.findViewById(R.id.no_attractions_error);
@@ -161,7 +115,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initializeHomePageFragmentController() {
-        homePageFragmentController = new HomePageFragmentController(HomePageFragment.this);
+        //homePageFragmentController = new HomePageFragmentController(HomePageFragment.this);
     }
 
     private void setListenerOnViewComponents() {
@@ -172,46 +126,13 @@ public class HomePageFragment extends Fragment {
         homePageFragmentController.addRecyclerViewOnScrollListener();
     }
 
-    private boolean checkPermission() {
-        return homePageFragmentController.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+    public void checkDailyReward() {
+        homePageFragmentController.checkDailyReward();
     }
+
 
     private void startSearchAttractionsActivity() {
         homePageFragmentController.startAttractionsListActivity();
-    }
-
-    public void initializeRecyclerView() {
-        if (checkPermission()) {
-            if (canGeolocate()) {
-                setViewNoGeolocationErrorVisibility(View.INVISIBLE);
-                do {
-                    if (!areCoordinatesNull())
-                        initializeRecyclerViewAttraction();
-                } while (areCoordinatesNull());
-            } else
-                setViewNoGeolocationErrorVisibility(View.VISIBLE);
-        } else
-            setViewMissingLocationPermissionErrorVisibility(View.VISIBLE);
-    }
-
-    private void initializeRecyclerViewAttraction() {
-        homePageFragmentController.findByRsql();
-    }
-
-    private void setViewNoGeolocationErrorVisibility(int visibility) {
-        viewNoGeolocationError.setVisibility(visibility);
-    }
-
-    private void setViewMissingLocationPermissionErrorVisibility(int visibility) {
-        viewMissingLocationPermissionError.setVisibility(visibility);
-    }
-
-    private boolean canGeolocate() {
-        return homePageFragmentController.canGeolocate();
-    }
-
-    private boolean areCoordinatesNull() {
-        return homePageFragmentController.areCoordinatesNull();
     }
 
     public SwipeRefreshLayout getSwipeRefreshLayoutHomeFrament() {
@@ -232,6 +153,10 @@ public class HomePageFragment extends Fragment {
 
     public Button getButtonProvidePermission() {
         return buttonProvidePermission;
+    }
+
+    public View getViewNoGeolocationError() {
+        return viewNoGeolocationError;
     }
 
     public View getViewMissingLocationPermissionError() {

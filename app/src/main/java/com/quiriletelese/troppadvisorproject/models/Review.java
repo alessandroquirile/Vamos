@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
@@ -12,8 +13,9 @@ public class Review implements Serializable {
     private String title;
     private String description;
     private Double rating;
-    private String user;
-    private Boolean isAnonymous;
+    private User user;
+    private Set<String> voters;
+    private Long totalVotes;
     private String accomodationId;
     private String addedDate;
     private String lastModificationDate;
@@ -50,20 +52,28 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Boolean getAnonymous() {
-        return isAnonymous;
+    public Set<String> getVoters() {
+        return voters;
     }
 
-    public void setAnonymous(Boolean anonymous) {
-        isAnonymous = anonymous;
+    public void setVoters(Set<String> voters) {
+        this.voters = voters;
+    }
+
+    public Long getTotalVotes() {
+        return totalVotes;
+    }
+
+    public void setTotalVotes(Long totalVotes) {
+        this.totalVotes = totalVotes;
     }
 
     public String getAccomodationId() {
@@ -88,6 +98,14 @@ public class Review implements Serializable {
 
     public void setLastModificationDate(String lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
+    }
+
+    public boolean userHasImage() {
+        return !user.getImage().isEmpty();
+    }
+
+    public String getUserImage() {
+        return user.getImage();
     }
 
 }

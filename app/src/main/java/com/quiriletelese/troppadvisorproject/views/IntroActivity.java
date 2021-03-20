@@ -1,10 +1,12 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -37,12 +39,14 @@ public class IntroActivity extends AppCompatActivity {
         addDots();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         onRequestPermissionsResultHelper(requestCode, grantResults);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void onRequestPermissionsResultHelper(int requestCode, @NonNull int[] grantResults){
         introActivityController.onRequestPermissionsResult(requestCode, grantResults);
     }

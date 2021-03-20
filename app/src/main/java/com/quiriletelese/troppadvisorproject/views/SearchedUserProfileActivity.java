@@ -1,9 +1,11 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -17,7 +19,7 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
     private SearchedUserProfileActivityController searchedUserProfileActivityController;
     private CircleImageView circleImageViewSearchedUser;
     private TextView textViewSearchedUserTitle, textViewSearchedUserLevel, textViewSearchedUserNameLastname,
-            textViewSearchedUsername, textViewSearchedUserTotalReviews, textViewSearchedUserAvarageRating;
+            textViewSearchedUserTotalReviews, textViewSearchedUserAvarageRating;
     private RecyclerView recyclerViewSearchedUserBadgeProfile;
 
     @Override
@@ -25,9 +27,22 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searched_user_profile);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         initializeViewComponents();
         initializeController();
         findUserByEmail();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
     }
 
     public void initializeViewComponents() {
@@ -35,7 +50,6 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
         textViewSearchedUserTitle = findViewById(R.id.text_view_searched_user_title);
         textViewSearchedUserLevel = findViewById(R.id.text_view_searched_user_level);
         textViewSearchedUserNameLastname = findViewById(R.id.text_view_searched_user_name_lastname);
-        textViewSearchedUsername = findViewById(R.id.text_view_searched_user_username);
         textViewSearchedUserTotalReviews = findViewById(R.id.text_view_searched_user_total_reviews);
         textViewSearchedUserAvarageRating = findViewById(R.id.text_view_searched_user_avarage_rating);
         recyclerViewSearchedUserBadgeProfile = findViewById(R.id.recycler_view_searched_user_badge_profile);
@@ -63,10 +77,6 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public TextView getTextViewSearchedUserNameLastname() {
         return textViewSearchedUserNameLastname;
-    }
-
-    public TextView getTextViewSearchedUsername() {
-        return textViewSearchedUsername;
     }
 
     public TextView getTextViewSearchedUserTotalReviews() {

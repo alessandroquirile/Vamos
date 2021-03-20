@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
@@ -23,7 +25,7 @@ public class ReadReviewThumbController {
 
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private final SeeReviewsActivity seeReviewsActivity;
-    private AlertDialog alertDialog;
+    private AlertDialog alertDialog, alertDialogWaitForVoteResult;
 
     public ReadReviewThumbController(SeeReviewsActivity seeReviewsActivity) {
         this.seeReviewsActivity = seeReviewsActivity;
@@ -34,21 +36,33 @@ public class ReadReviewThumbController {
     }
 
     public void updateVoters(String id, int vote) {
+        //showWaitForVoteResultDialog();
         updateVotersHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-
+                alertDialogWaitForVoteResult.dismiss();
+                showToastOnUiThred(R.string.successfully_voted);
             }
 
             @Override
             public void onError(String errorCode) {
-
+                alertDialogWaitForVoteResult.dismiss();
+                showToastOnUiThred(R.string.vote_error);
             }
         }, id, vote);
     }
 
     public boolean hasLogged() {
         return !getEmail().equals("");
+    }
+
+    private void showWaitForVoteResultDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        View dialogView = getLayoutInflater().inflate(getAlertDialogLayout(), null);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setView(dialogView);
+        alertDialogWaitForVoteResult = alertDialogBuilder.create();
+        alertDialogWaitForVoteResult.show();
     }
 
     public void showLoginDialog() {
@@ -75,7 +89,7 @@ public class ReadReviewThumbController {
     }
 
     private int getAlertDialogLayout() {
-        return R.layout.dialog_wait_reset_password;
+        return R.layout.dialog_wait_vote_result_layout;
     }
 
     private void dismissDialog() {
@@ -113,6 +127,19 @@ public class ReadReviewThumbController {
 
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    public void showToastOnUiThred(int stringId) {
+        seeReviewsActivity.runOnUiThread(() ->
+                Toast.makeText(getContext(), getString(stringId), Toast.LENGTH_SHORT).show());
+    }
+
+    private String getUserEmail(){
+        return new UserSharedPreferences(seeReviewsActivity).getStringSharedPreferences(Constants.getEmail());
+    }
+
+    public boolean isSameUser(String email){
+        return email.equals(getUserEmail());
     }
 
 }

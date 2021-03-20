@@ -1,31 +1,46 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
-import com.quiriletelese.troppadvisorproject.model_helpers.Badge;
+import com.quiriletelese.troppadvisorproject.models.Badge;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -36,33 +51,29 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 
-public class EditProfileActivityController implements View.OnClickListener, TextWatcher, CompoundButton.OnCheckedChangeListener {
+public class EditProfileActivityController implements View.OnClickListener, TextWatcher, AdapterView.OnItemSelectedListener {
 
     private final EditProfileActivity editProfileActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private File newProfilePicture = null;
-    private boolean isUserInformationsChanged = false, isRequiredFieldsCorrectlyFilled = true;
+    private Bitmap bitmapNewProfileImage;
+    private String filePath = "";
+    private int close = 0;
+    private int total = 0;
+    private boolean isUserInformationsChanged = false, isRequiredFieldsCorrectlyFilled = true, canClose = true;
 
     public EditProfileActivityController(EditProfileActivity editProfileActivity) {
         this.editProfileActivity = editProfileActivity;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
     @Override
@@ -87,12 +98,17 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         isUserInformationsChanged = true;
     }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
     private void updateUserImageHelper(VolleyCallBack volleyCallBack) {
-        getUserDAO().updateUserImage(volleyCallBack, getUserEmail(), getByteArrayFromFile(newProfilePicture), getContext());
+        getUserDAO().updateUserImage(volleyCallBack, getUserEmail(), bitmapNewProfileImage, getContext());
     }
 
     private void updateUserInformationsHelper(VolleyCallBack volleyCallBack) {
@@ -117,7 +133,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         updateUserInformationsHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-
+                handleUpdateUserInformationsVolleySuccess();
             }
 
             @Override
@@ -128,22 +144,40 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     private void handleUpdateUserInformationsVolleyError(String errorCode) {
+        canClose = false;
         switch (errorCode) {
             case "Username error":
                 showUsernameAlreadyExistError();
                 break;
             default:
                 showToastOnUiThred(R.string.unexpected_error_while_updating_user_informations);
-
+                break;
         }
     }
 
+    private String getEmail() {
+        //Toast.makeText(editProfileActivity, new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail()), Toast.LENGTH_SHORT).show();
+        return new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail());
+    }
+
     private void handleUpdateUserImageVolleySuccess() {
-        newProfilePicture = null;
+        canClose = true;
+        filePath = "";
+        total += 1;
+        if (total == close && canClose)
+            finish(RESULT_OK);
     }
 
     private void handleUpdateUserImageVolleyError(String errorCode) {
+        canClose = false;
         showToastOnUiThred(R.string.unexpected_error_while_updating_image);
+    }
+
+    private void handleUpdateUserInformationsVolleySuccess() {
+        canClose = true;
+        total += 1;
+        if (total == close && canClose)
+            finish(RESULT_OK);
     }
 
     private void onClickHelper(View view) {
@@ -152,17 +186,86 @@ public class EditProfileActivityController implements View.OnClickListener, Text
                 selectImageFromGallery();
                 break;
             case R.id.text_view_return_to_the_original_profile_image:
+                filePath = "";
                 setCircleImageViewUserEditImage(getUserFromIntent());
                 setTextViewReturnToTheOriginalImageVisibility(View.GONE);
+                break;
         }
     }
 
+    public void finish(int result) {
+        editProfileActivity.setResult(result, new Intent());
+        editProfileActivity.finish();
+    }
+
     private void selectImageFromGallery() {
+        if (!isExternalStoragePermissionsGranted())
+            requestPermissions(createExternalStorageArrayStringPermissions(), Constants.getExternalStoragePermissionsCode());
+        else
+            startSelectImageFromGalleryActivity();
+    }
+
+    private void requestPermissions(String[] permissions, int requestCode) {
+        ActivityCompat.requestPermissions(editProfileActivity, permissions, requestCode);
+    }
+
+    private String[] createExternalStorageArrayStringPermissions() {
+        return new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    }
+
+    private boolean isExternalStoragePermissionsGranted() {
+        return (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1000:
+                checkPermissionResult(grantResults);
+                break;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissionResult(@NonNull int[] grantResults) {
+        if (isPermissionGranted(grantResults)) {
+            startSelectImageFromGalleryActivity();
+        } else
+            showShouldShowRequestPermissionRationaleDialog((dialogInterface, i) ->
+                    requestPermissions(createExternalStorageArrayStringPermissions(), Constants.getAccessFineLocationCode()));
+    }
+
+    private void showShouldShowRequestPermissionRationaleDialog(DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(editProfileActivity)
+                .setView(getLayoutInflater().inflate(R.layout.dialog_missing_external_storage_permission_layout, null))
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
+    }
+
+    private void startSelectImageFromGalleryActivity() {
+        editProfileActivity.startActivityForResult(Intent.createChooser(createSelectImageFromGalleryIntent(),
+                getString(R.string.select_image)), Constants.getSelectPictureCode());
+    }
+
+    private Intent createSelectImageFromGalleryIntent() {
         Intent intentSelectImageFromGallery = new Intent();
         intentSelectImageFromGallery.setType("image/*");
         intentSelectImageFromGallery.setAction(Intent.ACTION_GET_CONTENT);
-        editProfileActivity.startActivityForResult(Intent.createChooser(intentSelectImageFromGallery,
-                getString(R.string.select_image)), Constants.getSelectPictureCode());
+        return intentSelectImageFromGallery;
+    }
+
+    @NotNull
+    private LayoutInflater getLayoutInflater() {
+        return editProfileActivity.getLayoutInflater();
+    }
+
+    private boolean isPermissionGranted(@NonNull int[] grantResults) {
+        return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
     private void detectEditText(CharSequence charSequence) {
@@ -227,7 +330,10 @@ public class EditProfileActivityController implements View.OnClickListener, Text
             setEditTextUsernameText(user);
             setAutoCompleteTextViewChosenTitleText(user);
             setAutoCompleteTextViewChosenTitleTextAdapter(user);
-            setSwitchCompatPrivateAccountValue(user);
+            if (!checkTapTargetBooleanPreferences()){
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(() -> setTapTargetSequence(), 200);
+            }
         } /*else
             editProfileActivity.finish();*/
     }
@@ -238,7 +344,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         getEditTextName().addTextChangedListener(this);
         getEditTextLastName().addTextChangedListener(this);
         getEditTextUsername().addTextChangedListener(this);
-        getSwitchCompatPrivateAccount().setOnCheckedChangeListener(this);
+        getAutoCompleteTextViewChosenTitle().setOnItemSelectedListener(this);
     }
 
     public void handleOnActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -250,122 +356,88 @@ public class EditProfileActivityController implements View.OnClickListener, Text
                 Uri selectedImageUri = Objects.requireNonNull(data).getData();
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
-                    newProfilePicture = createSelectedProfilePictureFile(selectedImageUri);
+                    filePath = getPath(selectedImageUri);/*createSelectedProfilePictureFile(selectedImageUri);*/
+                    try {
+                        bitmapNewProfileImage = resizeBitmap(MediaStore.Images.Media.getBitmap(editProfileActivity.getContentResolver(), selectedImageUri));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     getCircleImageViewUserEdit().setImageURI(selectedImageUri);
                 }
             }
     }
 
-    private File createSelectedProfilePictureFile(Uri selectedImageUri) {
-        deletePreviuosFile();
-        File profilePicture = null;
-        try {
-            try {
-                profilePicture = createPictureFile();
-            } catch (IOException ex) {
-                Log.d(TAG, "Error occurred while creating the file");
-            }
-            InputStream inputStream = editProfileActivity.getContentResolver().openInputStream(selectedImageUri);
-            FileOutputStream fileOutputStream = new FileOutputStream(profilePicture);
-            copyStream(inputStream, fileOutputStream);
-            fileOutputStream.close();
-            inputStream.close();
-        } catch (Exception e) {
-            Log.d(TAG, "onActivityResult: " + e.toString());
+    private Bitmap resizeBitmap(Bitmap bitmap) {
+        final int maxSize = 800;
+        int outWidth;
+        int outHeight;
+        int inWidth = bitmap.getWidth();
+        int inHeight = bitmap.getHeight();
+        if (inWidth > inHeight) {
+            outWidth = maxSize;
+            outHeight = (inHeight * maxSize) / inWidth;
+        } else {
+            outHeight = maxSize;
+            outWidth = (inWidth * maxSize) / inHeight;
         }
-        return profilePicture;
+        return Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
     }
 
-    private File createPictureFile() throws IOException {
-        // Create an image file name
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = editProfileActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName /* prefix */, ".jpg", storageDir /* directory */);
-        saveUserProfilePicturePath(image.getAbsolutePath());
-        return image;
-    }
-
-    public static void copyStream(InputStream input, OutputStream output) throws IOException {
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = input.read(buffer)) != -1) {
-            output.write(buffer, 0, bytesRead);
-        }
-    }
-
-    public static byte[] getByteArrayFromFile(File file) {
-        FileInputStream fis;
-        try {
-            fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] b = new byte[1024];
-            for (int readNum; (readNum = fis.read(b)) != -1; ) {
-                bos.write(b, 0, readNum);
-            }
-            return bos.toByteArray();
-        } catch (Exception e) {
-            Log.d("mylog", e.toString());
-        }
-        return null;
-    }
-
-    private void deletePreviuosFile() {
-        if (!isPreviousSavedPictureEmpty()) {
-            Log.d("Previoud image path", getPreviousSavedPicturePath());
-            Log.d("DELETED PREVIOUS PIC", String.valueOf(new File(getPreviousSavedPicturePath()).delete()));
-        }
-    }
-
-    private void saveUserProfilePicturePath(String path) {
-        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
-        userSharedPreferences.putStringSharedPreferences(Constants.getSavedProfileImagePath(), path);
-        Log.d("SAVED FILE PATH", userSharedPreferences.getStringSharedPreferences(Constants.getSavedProfileImagePath()));
-    }
-
-    private boolean isPreviousSavedPictureEmpty() {
-        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
-        String previousSavedPicture = userSharedPreferences.getStringSharedPreferences(Constants.getSavedProfileImagePath());
-        return previousSavedPicture.isEmpty();
+    public String getPath(Uri uri) {
+        Cursor cursor = editProfileActivity.getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+        cursor = editProfileActivity.getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+        return path;
     }
 
     private boolean isNewProfileImageNull() {
-        return newProfilePicture == null;
+        return "".equals(filePath);
     }
 
-    private String getPreviousSavedPicturePath() {
-        return new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getSavedProfileImagePath());
-    }
 
     public void saveChanges() {
-        if (!isNewProfileImageNull())
-            updateUserImage();
-        if (isUserInformationsChanged) {
-            if (isRequiredFieldsCorrectlyFilled)
+        if (isRequiredFieldsCorrectlyFilled) {
+            if (!isNewProfileImageNull()) {
+                updateUserImage();
+                close += 1;
+            }
+            if (isUserInformationsChanged) {
                 updateUserInformations();
-            else
-                Toast.makeText(editProfileActivity, getString(R.string.fill_required_fields_error), Toast.LENGTH_SHORT).show();
-        }
-        editProfileActivity.onBackPressed();
+                close += 1;
+            }
+        } else
+            Toast.makeText(editProfileActivity, getString(R.string.fill_required_fields_error), Toast.LENGTH_SHORT).show();
     }
 
     private User createUserForUpdate() {
-        return getUserInformationsFromFields(getUserFromIntent());
+        return getUserInformationsFromFields();
     }
 
-    private User getUserInformationsFromFields(User user) {
-        if (!isUserNameEmpty())
-            user.setName(getNewName());
-        if (!isUserLastNameEmpty())
-            user.setLastName(getNewLastName());
-        if (!isUsernameEmpty())
-            user.setUsername(getNewUsername());
+    private User getUserInformationsFromFields() {
+        User user = new User();
+        user.setEmail(getEmail());
+        user.setName(getNewName());
+        user.setLastName(getNewLastName());
+        user.setUsername(getNewUsername());
+        user.setChosenTitle(getNewChosenTitle());
         return user;
     }
 
     private void showToastOnUiThred(int stringId) {
         editProfileActivity.runOnUiThread(() ->
                 Toast.makeText(editProfileActivity, getString(stringId), Toast.LENGTH_SHORT).show());
+    }
+
+    public Toolbar getToolbar() {
+        return editProfileActivity.getToolbar();
     }
 
     public CircleImageView getCircleImageViewUserEdit() {
@@ -442,7 +514,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     public void setAutoCompleteTextViewChosenTitleText(User user) {
-        getEditTextUsername().setText(getChosenTitle(user));
+        getAutoCompleteTextViewChosenTitle().setText(getChosenTitle(user));
     }
 
     private void setAutoCompleteTextViewChosenTitleTextAdapter(User user) {
@@ -462,14 +534,6 @@ public class EditProfileActivityController implements View.OnClickListener, Text
 
     private void setTextViewReturnToTheOriginalImageVisibility(int visibility) {
         getTextViewReturnToTheOriginalProfileImage().setVisibility(visibility);
-    }
-
-    private SwitchCompat getSwitchCompatPrivateAccount() {
-        return editProfileActivity.getSwitchCompatPrivateAccount();
-    }
-
-    private void setSwitchCompatPrivateAccountValue(User user) {
-        getSwitchCompatPrivateAccount().setChecked(getIsPrivateAccount(user));
     }
 
     private void setIsRequiredFieldsCorrect(boolean value) {
@@ -525,10 +589,6 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         return user.getChosenTitle();
     }
 
-    private boolean getIsPrivateAccount(User user) {
-        return user.isPrivateAccount();
-    }
-
     private UserDAO getUserDAO() {
         return daoFactory.getUserDAO(getStorageTechnology(Constants.getUserStorageTechnology()));
     }
@@ -554,7 +614,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     private String getNewLastName() {
-        return getEditTextName().getText().toString();
+        return getEditTextLastName().getText().toString();
     }
 
     private boolean isUsernameEmpty() {
@@ -562,7 +622,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     private String getNewUsername() {
-        return getEditTextName().getText().toString();
+        return getEditTextUsername().getText().toString();
     }
 
     private boolean isChosenTitleEmpty() {
@@ -570,7 +630,80 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     private String getNewChosenTitle() {
-        return getEditTextName().getText().toString();
+        return getAutoCompleteTextViewChosenTitle().getText().toString();
+    }
+
+    private boolean checkTapTargetBooleanPreferences() {
+        return new UserSharedPreferences(getContext()).constains(Constants.getTapTargetEditProfile());
+    }
+
+    private void writeTapTargetBooleanPreferences() {
+        new UserSharedPreferences(getContext()).putBooleanSharedPreferences(Constants.getTapTargetEditProfile(), true);
+    }
+
+    public void setTapTargetSequence() {
+        new TapTargetSequence(editProfileActivity).targets(
+                createTapTargetForToolbarNavigationIcon(getString(R.string.cancel_edit_profile_tap_title),
+                        getString(R.string.cancel_edit_profile_tap_description), 50),
+                createTapTargetForToolbar(R.id.menu_save_changes, getString(R.string.save_changes),
+                        getString(R.string.save_changes_tap_description), 50),
+                create(getFloatingActionButtonChangeProfileImage(), getString(R.string.pick_image_tap_title),
+                        getString(R.string.pick_image_tap_description), false, 70))
+                .listener(new TapTargetSequence.Listener() {
+                    // This listener will tell us when interesting(tm) events happen in regards
+                    // to the sequence
+                    @Override
+                    public void onSequenceFinish() {
+                        writeTapTargetBooleanPreferences();
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Perform action for the current target
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Boo
+                    }
+                }).start();
+
+    }
+
+    private TapTarget createTapTargetForToolbarNavigationIcon(String title, String body, int radius) {
+        return TapTarget.forToolbarNavigationIcon(getToolbar(), title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(true)
+                .targetRadius(radius);
+    }
+
+    private TapTarget createTapTargetForToolbar(int menuItemId, String title, String body, int radius) {
+        return TapTarget.forToolbarMenuItem(getToolbar(), menuItemId, title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(true)
+                .targetRadius(radius);
+    }
+
+    private TapTarget create(View view, String title, String body, boolean tintTarget, int radius) {
+        return TapTarget.forView(view, title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(tintTarget)
+                .targetRadius(radius);
     }
 
 }

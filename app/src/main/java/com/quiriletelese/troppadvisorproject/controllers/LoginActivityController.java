@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -59,29 +60,11 @@ public class LoginActivityController implements View.OnClickListener {
         getAccountDAO().login(volleyCallBack, createAccountForLogin(), getContext());
     }
 
-    private void getUserDetailsHelper(VolleyCallBack volleyCallBack) {
-        getAccountDAO().getUserDetails(volleyCallBack, getAccessToken(), getContext());
-    }
-
     private void login() {
         loginHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                    volleyCallbackLoginOnSuccess(object);
-            }
-
-            @Override
-            public void onError(String errorCode) {
-                volleyCallbackOnError(errorCode);
-            }
-        });
-    }
-
-    private void getUserDetails() {
-        getUserDetailsHelper(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                volleyCallbackGetUserDetailsOnSuccess(object);
+                volleyCallbackLoginOnSuccess(object);
             }
 
             @Override
@@ -93,14 +76,7 @@ public class LoginActivityController implements View.OnClickListener {
 
     private void volleyCallbackLoginOnSuccess(Object object) {
         writeLoginSharedPreferences((InitiateAuthResult) object);
-        setAlertDialogTextViewText(getString(R.string.retrieving_user_details));
-        getUserDetails();
-    }
-
-    private void volleyCallbackGetUserDetailsOnSuccess(Object object) {
-        writeUserDetailsSharedPreferences((GetUserResult) object);
-        dismissWaitForLoginResultDialog();
-        finish();
+        finish(Activity.RESULT_OK);
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
@@ -130,7 +106,7 @@ public class LoginActivityController implements View.OnClickListener {
                 startSignUpActivity();
                 break;
             case R.id.text_view_cancel_login:
-                finish();
+                finish(Activity.RESULT_CANCELED);
                 break;
         }
     }
@@ -166,7 +142,8 @@ public class LoginActivityController implements View.OnClickListener {
         return intentSignUpActivity;
     }
 
-    private void finish() {
+    private void finish(int result) {
+        loginActivity.setResult(result, new Intent());
         loginActivity.finish();
     }
 
@@ -210,19 +187,12 @@ public class LoginActivityController implements View.OnClickListener {
         userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
-    }
-
-    private void writeUserDetailsSharedPreferences(GetUserResult getUserResult) {
-        userSharedPreferences.putStringSharedPreferences(Constants.getUsername(), getUserName(getUserResult));
-        userSharedPreferences.putStringSharedPreferences(Constants.getUserFirstName(), getName(getUserResult.getUserAttributes()));
-        userSharedPreferences.putStringSharedPreferences(Constants.getFamilyName(), getFamilyName(getUserResult.getUserAttributes()));
-        userSharedPreferences.putStringSharedPreferences(Constants.getEmail(), getEmail(getUserResult.getUserAttributes()));
+        userSharedPreferences.putStringSharedPreferences(Constants.getEmail(), getTextInputLayoutKey().getEditText().getText().toString());
     }
 
     private void showWaitForLoginResultDialog() {
         AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
-        LayoutInflater layoutInflater = getLayoutInflater();
-        dialogView = layoutInflater.inflate(getAlertDialogLayout(), null);
+        dialogView = getLayoutInflater().inflate(getAlertDialogLayout(), null);
         alertDialogBuilder.setView(dialogView);
         alertDialogWaitForLoginResult = alertDialogBuilder.create();
         alertDialogWaitForLoginResult.show();
@@ -296,32 +266,12 @@ public class LoginActivityController implements View.OnClickListener {
         return initiateAuthResult.getAuthenticationResult().getAccessToken();
     }
 
-    private String getAccessToken() {
-        return userSharedPreferences.getStringSharedPreferences(Constants.getAccessToken());
-    }
-
     private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getIdToken();
     }
 
     private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {
         return initiateAuthResult.getAuthenticationResult().getRefreshToken();
-    }
-
-    private String getUserName(@NotNull GetUserResult getUserResult) {
-        return getUserResult.getUsername();
-    }
-
-    private String getName(@NotNull List<AttributeType> userAttributes) {
-        return userAttributes.get(2).getValue();
-    }
-
-    private String getFamilyName(@NotNull List<AttributeType> userAttributes) {
-        return userAttributes.get(3).getValue();
-    }
-
-    private String getEmail(@NotNull List<AttributeType> userAttributes) {
-        return userAttributes.get(4).getValue();
     }
 
     @NotNull
@@ -344,11 +294,6 @@ public class LoginActivityController implements View.OnClickListener {
 
     private TextView getAlertDialogWaitForLoginTextView() {
         return dialogView.findViewById(R.id.text_view_wait_for_login_message);
-    }
-
-    private void setAlertDialogTextViewText(String value) {
-        //alertDialogWaitForLoginResult.setMessage(value);
-        getAlertDialogWaitForLoginTextView().setText(value);
     }
 
 }

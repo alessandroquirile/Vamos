@@ -3,24 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/logout_profile"
-        android:icon="@drawable/icon_logout_profile_white"
-        android:orderInCategory="1"
-        android:title="@string/logout"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/search_user_profile"
         android:icon="@drawable/icon_search_users_white"
-        android:orderInCategory="2"
+        android:orderInCategory="1"
         android:title="@string/search_user"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/edit_profile"
         android:icon="@drawable/icon_edit_white"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         android:title="@string/edit_profile"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/leaderboard"
+        android:icon="@drawable/icon_leaderboard_white"
+        android:orderInCategory="4"
+        android:title="@string/leaderboard"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/logout_profile"
+        android:icon="@drawable/icon_logout_profile_white"
+        android:orderInCategory="4"
+        android:title="@string/logout"
+        app:showAsAction="always" />
 
 </menu>

@@ -4,16 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.BottomSheetFilterAttractions;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionsListAdapter;
@@ -27,6 +31,7 @@ import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -73,8 +78,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery) {
-        AttractionDAO attractionDAO = getAttractionDAO();
-        attractionDAO.findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size);
+        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size);
     }
 
     private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
@@ -264,6 +268,14 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         else
             initializeRecyclerViewOnSuccess(attractions);
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
+        if (!checkTapTargetBooleanPreferences())
+            setTapTargetSequence();
+        else {
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                showBottomSheetFilters();
+            }, 200);
+        }
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
@@ -498,11 +510,15 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         return attractionsListActivity.getApplicationContext();
     }
 
+    public Toolbar getToolbar() {
+        return attractionsListActivity.getToolbar();
+    }
+
     private RecyclerView getRecyclerView() {
         return attractionsListActivity.getRecyclerViewAttractionsList();
     }
 
-    private boolean isRsqlEmpty(){
+    private boolean isRsqlEmpty() {
         return createRsqlString().equals("");
     }
 
@@ -510,7 +526,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         return attractionsListActivity.getSupportFragmentManager();
     }
 
-    private AttractionDAO getAttractionDAO(){
+    private AttractionDAO getAttractionDAO() {
         return daoFactory.getAttractionDAO(getStorageTechnology(Constants.getAttractionStorageTechnology()));
     }
 
@@ -609,6 +625,54 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     private boolean isAttractionFilterHasCertificateOfExcellence() {
         return getAttractionFilterHasCertificateOfExcellenceValue();
+    }
+
+    private boolean checkTapTargetBooleanPreferences() {
+        return new UserSharedPreferences(getContext()).constains(Constants.getTapTargetAttractionsList());
+    }
+
+    private void writeTapTargetBooleanPreferences() {
+        new UserSharedPreferences(getContext()).putBooleanSharedPreferences(Constants.getTapTargetAttractionsList(), true);
+    }
+
+    public void setTapTargetSequence() {
+        new TapTargetSequence(attractionsListActivity).targets(
+                createTapTargetForToolbar(R.id.button_see_attractions_on_map, getString(R.string.see_on_map),
+                        getString(R.string.see_on_map_tap_description), 50),
+                createTapTargetForToolbar(R.id.search_button_menu_attractions_list, getString(R.string.search_attractions_list_tap_title),
+                        getString(R.string.search_attractions_list_tap_description), 50))
+                .listener(new TapTargetSequence.Listener() {
+                    // This listener will tell us when interesting(tm) events happen in regards
+                    // to the sequence
+                    @Override
+                    public void onSequenceFinish() {
+                        writeTapTargetBooleanPreferences();
+                        showBottomSheetFilters();
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Perform action for the current target
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Boo
+                    }
+                }).start();
+
+    }
+
+    private TapTarget createTapTargetForToolbar(int menuItemId, String title, String body, int radius) {
+        return TapTarget.forToolbarMenuItem(getToolbar(), menuItemId, title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(true)
+                .targetRadius(radius);
     }
 
 }

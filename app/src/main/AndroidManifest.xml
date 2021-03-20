@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -47,27 +49,12 @@
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.RestaurantMapActivity"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".views.AttractionsListActivity"
             android:label="@string/attractions"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".views.RestaurantsListActivity"
-            android:label="@string/restaurant"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".views.HotelsListActivity"
-            android:label="@string/hotel"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".views.AttractionDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".views.RestaurantDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -76,19 +63,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.HotelDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".views.WriteReviewActivity"
             android:label="@string/add_review"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".views.HotelMapActivity"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".views.SignUpActivity"
             android:screenOrientation="portrait"
@@ -100,11 +79,6 @@
             android:theme="@style/AppThemeLogin"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".views.HomePageActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".views.LeaderboardActivity"
             android:label="@string/leaderboard"
             android:screenOrientation="portrait"
@@ -113,7 +87,7 @@
             android:name=".views.EditProfileActivity"
             android:label="@string/edit_profile"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeMaterial" />
+            android:theme="@style/AppThemeMaterial.NoActionBar" />
         <activity
             android:name=".views.SearchedUserProfileActivity"
             android:screenOrientation="portrait" />
@@ -123,13 +97,22 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.ResetPasswordActivity"
-            android:theme="@style/AppThemeMaterial"
-            android:label="@string/forgot_password"/>
-
+            android:label="@string/forgot_password"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMaterial" />
         <activity
             android:name=".views.EnterNewPasswordActivity"
-            android:theme="@style/AppThemeMaterial"
-            android:label="@string/reset_password"/>
+            android:label="@string/reset_password"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMaterial" />
+        <activity
+            android:name=".views.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".views.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

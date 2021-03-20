@@ -1,7 +1,9 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.text.Editable;
@@ -39,18 +41,16 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class WriteReviewActivityController implements View.OnClickListener, RatingBar.OnRatingBarChangeListener,
-        SwitchCompat.OnCheckedChangeListener, TextWatcher {
+public class WriteReviewActivityController implements View.OnClickListener,
+        RatingBar.OnRatingBarChangeListener, TextWatcher {
 
     private final WriteReviewActivity writeReviewActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private String title = "";
     private String description = "";
-    private String user;
     private String accomodationId;
     private Double rating;
-    private AlertDialog alertDialogWaitWhileInsertingReview;
-    private boolean isAnonymoys = false;
+    private AlertDialog alertDialogWaitWhileInsertingReview, alertDialogFirstReviewReward;
     private UserSharedPreferences userSharedPreferences;
     private ReviewDAO reviewDAO;
     private AccountDAO accountDAO;
@@ -68,32 +68,20 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-        switch ((int) rating) {
-            case 0:
-                getTextViewRating().setText("");
-                ratingBar.setRating(1);
-                break;
-            case 1:
-                getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.pessimo));
-                break;
-            case 2:
-                getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.scarso));
-                break;
-            case 3:
-                getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.nella_media));
-                break;
-            case 4:
-                getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.molto_buono));
-                break;
-            case 5:
-                getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.eccellente));
-                break;
+        if (rating == 0) {
+            getTextViewRating().setText("");
+            ratingBar.setRating(1);
+        } else if (rating == 1) {
+            getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.pessimo));
+        } else if (rating == 2) {
+            getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.scarso));
+        } else if (rating == 3) {
+            getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.nella_media));
+        } else if (rating == 4) {
+            getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.molto_buono));
+        } else if (rating == 5) {
+            getTextViewRating().setText(writeReviewActivity.getApplicationContext().getResources().getString(R.string.eccellente));
         }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        isAnonymoys = isChecked;
     }
 
     @Override
@@ -120,46 +108,46 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private void insertAttractionReviewHelper(VolleyCallBack volleyCallBack) {
-        getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInserting(), getIdToken(), getContext());
+        getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInserting(), getUserEmail(), getContext());
     }
 
     private void refreshTokenHelper(VolleyCallBack volleyCallBack) {
         getAccountDAO().refreshToken(volleyCallBack, getRefreshToken(), getContext());
     }
 
-    private void insertHotelReview() {
-        insertHotelReviewHelper(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                volleyCallbackOnSuccess();
-            }
-
-            @Override
-            public void onError(String errorCode) {
-                volleyCallbackOnError(errorCode);
-            }
-        });
-    }
-
-    private void insertRestaurantReview() {
-        insertRestaurantReviewHelper(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                volleyCallbackOnSuccess();
-            }
-
-            @Override
-            public void onError(String errorCode) {
-                volleyCallbackOnError(errorCode);
-            }
-        });
-    }
+//    private void insertHotelReview() {
+//        insertHotelReviewHelper(new VolleyCallBack() {
+//            @Override
+//            public void onSuccess(Object object) {
+//                volleyCallbackOnSuccess();
+//            }
+//
+//            @Override
+//            public void onError(String errorCode) {
+//                volleyCallbackOnError(errorCode);
+//            }
+//        });
+//    }
+//
+//    private void insertRestaurantReview() {
+//        insertRestaurantReviewHelper(new VolleyCallBack() {
+//            @Override
+//            public void onSuccess(Object object) {
+//                volleyCallbackOnSuccess();
+//            }
+//
+//            @Override
+//            public void onError(String errorCode) {
+//                volleyCallbackOnError(errorCode);
+//            }
+//        });
+//    }
 
     private void insertAttractionReview() {
         insertAttractionReviewHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                volleyCallbackOnSuccess();
+                volleyCallbackOnSuccess(object);
             }
 
             @Override
@@ -169,42 +157,57 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         });
     }
 
-    private void refreshToken() {
-        refreshTokenHelper(new VolleyCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                volleyCallbackOnSuccessRefreshToken((InitiateAuthResult) object);
-            }
+//    private void refreshToken() {
+//        refreshTokenHelper(new VolleyCallBack() {
+//            @Override
+//            public void onSuccess(Object object) {
+//                volleyCallbackOnSuccessRefreshToken((InitiateAuthResult) object);
+//            }
+//
+//            @Override
+//            public void onError(String errorCode) {
+//                volleyCallbackOnError(errorCode);
+//            }
+//        });
+//    }
+//
+//    private void volleyCallbackOnSuccessRefreshToken(InitiateAuthResult initiateAuthResult) {
+//        writeSharedPreferences(initiateAuthResult);
+//        insertReviewBasedOnAccomodationType();
+//    }
 
-            @Override
-            public void onError(String errorCode) {
-                volleyCallbackOnError(errorCode);
-            }
-        });
-    }
-
-    private void volleyCallbackOnSuccessRefreshToken(InitiateAuthResult initiateAuthResult) {
-        writeSharedPreferences(initiateAuthResult);
-        insertReviewBasedOnAccomodationType();
-    }
-
-    private void volleyCallbackOnSuccess() {
+    private void volleyCallbackOnSuccess(Object object) {
+        Review review = (Review) object;
         dismissWaitWhileInsertingReviewDialog();
-        showToastOnUiThred(R.string.review_successfully_submitted);
-        finish();
+        //showToastOnUiThred(R.string.review_successfully_submitted);
+        if (review.getUser().getTotalReviews() == 1)
+            showFirstReviewRewardDialog();
+        else
+            finish(Activity.RESULT_OK);
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
         dismissWaitWhileInsertingReviewDialog();
         Log.e("REVIEW ERROR CODE", errorCode);
         switch (errorCode) {
-            case "401":
-                handle401VolleyError();
-                break;
+//            case "401":
+//                handle401VolleyError();
+//                break;
             case "500":
                 handleOtherVolleyError();
                 break;
         }
+    }
+
+    private void showFirstReviewRewardDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogFirstReviewLayout(), null));
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("OK", (dialogInterface, i) -> {
+            finish(Activity.RESULT_OK);
+        });
+        alertDialogFirstReviewReward = alertDialogBuilder.create();
+        alertDialogFirstReviewReward.show();
     }
 
     private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
@@ -213,9 +216,9 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
     }
 
-    private void handle401VolleyError() {
-        refreshToken();
-    }
+//    private void handle401VolleyError() {
+//        refreshToken();
+//    }
 
     private void handleOtherVolleyError() {
         showToastOnUiThred(R.string.unexpected_error_while_entering_the_review);
@@ -250,24 +253,24 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private void insertReviewBasedOnAccomodationType() {
         showWaitWhileInsertingReviewDialog();
-        switch (getAccomodationType()) {
-            case "hotel":
-                insertHotelReview();
-                break;
-            case "restaurant":
-                insertRestaurantReview();
-                break;
-            case "attraction":
-                insertAttractionReview();
-                break;
-        }
+        insertAttractionReview();
+//        switch (getAccomodationType()) {
+//            case "hotel":
+//                insertHotelReview();
+//                break;
+//            case "restaurant":
+//                insertRestaurantReview();
+//                break;
+//            case "attraction":
+//                insertAttractionReview();
+//                break;
+//        }
     }
 
     private void setReviewInformation() {
         title = getTextInputLayoutReviewTitleValue();
         description = getTextInputLayoutReviewDescriptionValue();
         rating = getRatingBarValue();
-        user = getUserName();
         accomodationId = getAccomodationId();
     }
 
@@ -278,8 +281,6 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         review.setTitle(title);
         review.setDescription(description);
         review.setRating(rating);
-        review.setUser(user);
-        review.setAnonymous(isAnonymoys);
         review.setAccomodationId(accomodationId);
         return review;
     }
@@ -303,10 +304,14 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         alertDialogWaitWhileInsertingReview.dismiss();
     }
 
+    private void dismissFirstReviewRewardDialog() {
+        alertDialogWaitWhileInsertingReview.dismiss();
+    }
+
     public void checkLogin() {
         if (!isLogged()) {
             startLoginActivity();
-            finish();
+            finish(Activity.RESULT_CANCELED);
         }
     }
 
@@ -322,7 +327,9 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return new Intent(getContext(), LoginActivity.class);
     }
 
-    private void finish() {
+    private void finish(int result) {
+        showToastOnUiThred(R.string.review_successfully_submitted);
+        writeReviewActivity.setResult(result, new Intent());
         writeReviewActivity.finish();
     }
 
@@ -337,7 +344,6 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     public void setListenersOnViewComponents() {
         getButtonPublishReview().setOnClickListener(this);
         getRatingBar().setOnRatingBarChangeListener(this);
-        getSwitchCompatButtonPublishAnonymously().setOnCheckedChangeListener(this);
         getTextInputLayoutReviewTitleEditText().addTextChangedListener(this);
         getTextInputLayoutReviewDescriptionEditText().addTextChangedListener(this);
     }
@@ -390,8 +396,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return getIntent().getStringExtra(Constants.getAccomodationType());
     }
 
-    private String getUserName() {
-        return userSharedPreferences.getStringSharedPreferences(Constants.getUsername());
+    private String getUserEmail() {
+        return userSharedPreferences.getStringSharedPreferences(Constants.getEmail());
     }
 
     private boolean isEditTextTitleChanged(@NotNull CharSequence charSequence) {
@@ -444,6 +450,10 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
         return R.layout.dialog_wait_while_insert_review_layout;
     }
 
+    private int getAlertDialogFirstReviewLayout() {
+        return R.layout.dialog_first_review_reward_layout;
+    }
+
     private Context getContext() {
         return writeReviewActivity.getApplicationContext();
     }
@@ -467,10 +477,6 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
 
     private RatingBar getRatingBar() {
         return writeReviewActivity.getRatingBar();
-    }
-
-    private SwitchCompat getSwitchCompatButtonPublishAnonymously() {
-        return writeReviewActivity.getSwitchCompatButtonPublishAnonymously();
     }
 
     private EditText getTextInputLayoutReviewTitleEditText() {
@@ -512,8 +518,8 @@ public class WriteReviewActivityController implements View.OnClickListener, Rati
     }
 
     private boolean areReviewFieldsCorrectlyFilled() {
-        return !isTitleEmpty() && !isDescriptionEmpty() && !isTitleLongerThan(50) &&
-                !isDescriptionLongerThan(350);
+        return !isTitleEmpty() && !isDescriptionEmpty() && !isTitleLongerThan(100) &&
+                !isDescriptionLongerThan(600);
     }
 
 }

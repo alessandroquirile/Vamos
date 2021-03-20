@@ -4,44 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/text_view_title"
-        style="@style/TextAppearance.AppCompat.Body2"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
         android:text="Titolo recensione"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textStyle="bold"
         tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/text_view_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
-        android:paddingStart="15dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="2dp"
         android:text="Valutazione + nome utente"
         android:textColor="@color/black"
         app:drawableStartCompat="@drawable/icon_star_yellow"
         tools:ignore="HardcodedText" />
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        tools:ignore="RtlSymmetry">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_image_view_review_user"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:id="@+id/txt_view_review_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
     <TextView
         android:id="@+id/text_view_review_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="15dp"
         android:paddingTop="5dp"
-        android:paddingEnd="10dp"
         android:text="Corpo valutazione"
+        android:textColor="@color/black"
         tools:ignore="HardcodedText" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -49,7 +66,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="15dp"
         android:paddingTop="10dp"
         tools:ignore="RtlSymmetry">
 
@@ -59,7 +75,6 @@
             android:layout_marginEnd="15dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:drawablePadding="10dp"
             android:focusable="true"
             android:text="@string/was_it_helpful" />
 

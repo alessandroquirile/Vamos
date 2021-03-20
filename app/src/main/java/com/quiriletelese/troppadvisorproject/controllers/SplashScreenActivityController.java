@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
+import com.quiriletelese.troppadvisorproject.views.HomeActivity;
 import com.quiriletelese.troppadvisorproject.views.HomePageActivity;
 import com.quiriletelese.troppadvisorproject.views.IntroActivity;
 import com.quiriletelese.troppadvisorproject.views.SplashScreenActivity;
@@ -32,7 +33,6 @@ public class SplashScreenActivityController {
     @NotNull
     @Contract(" -> new")
     private UserSharedPreferences createUserSharedPreferences() {
-        //return new UserSharedPreferences(getContext());
         userSharedPreferences = new UserSharedPreferences(getContext());
         return userSharedPreferences;
     }
@@ -50,7 +50,7 @@ public class SplashScreenActivityController {
     }
 
     private void startHomePageActivity() {
-        getContext().startActivity(createIntent(HomePageActivity.class));
+        getContext().startActivity(createIntent(HomeActivity.class));
     }
 
     private void startIntroActivity() {

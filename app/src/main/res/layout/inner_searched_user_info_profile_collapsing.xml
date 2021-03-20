@@ -45,15 +45,15 @@
                 android:maxLines="1"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/text_view_searched_user_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/text_view_searched_user_username"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:ellipsize="end"-->
+<!--                android:gravity="center"-->
+<!--                android:maxLines="1"-->
+<!--                android:textStyle="bold" />-->
 
             <TextView
                 android:id="@+id/text_view_searched_user_level"

@@ -2,10 +2,19 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <TextView
+        android:id="@+id/text_view_attraction_name"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black" />
 
     <TextView
         style="@style/TextAppearance.AppCompat.Medium"
@@ -77,11 +86,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:drawablePadding="5dp"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:text="@string/certificate_of_excellence"
             android:textColor="@color/black"
-            app:drawableStartCompat="@drawable/icon_loyalty_primary_color" />
+            app:drawableStartCompat="@drawable/icon_certificate_of_excellence_green" />
 
         <View
             android:layout_width="match_parent"
@@ -98,20 +110,20 @@
         android:layout_height="150dp"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         map:liteMode="true" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_gray_round_corner" />
 
     <TextView
         android:id="@+id/text_view_attraction_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
         android:drawablePadding="5dp"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:textColor="@color/black"
         app:drawableEndCompat="@drawable/icon_arrow_forward_black"
@@ -124,7 +136,6 @@
         android:background="@drawable/button_gray_round_corner" />
 
     <TextView
-        android:id="@+id/text_view_attraction_opening_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -133,6 +144,14 @@
         android:text="@string/opening_time"
         android:textColor="@color/black"
         app:drawableStartCompat="@drawable/icon_opening_time_green" />
+
+    <TextView
+        android:id="@+id/text_view_attraction_opening_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingStart="30dp"
+        tools:ignore="RtlSymmetry" />
 
     <View
         android:layout_width="match_parent"
@@ -145,7 +164,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
         android:drawablePadding="5dp"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:textColor="@color/black"
         app:drawableEndCompat="@drawable/icon_arrow_forward_black"
@@ -166,5 +188,32 @@
         android:gravity="center_vertical"
         android:textColor="@color/black"
         app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_gray_round_corner" />
+
+    <TextView
+        android:id="@+id/text_view_attraction_website"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:text="@string/website"
+        android:textColor="@color/black"
+        app:drawableEndCompat="@drawable/icon_arrow_forward_black"
+        app:drawableStartCompat="@drawable/icon_website_green" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_gray_round_corner" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

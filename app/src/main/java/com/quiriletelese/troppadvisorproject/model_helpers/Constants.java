@@ -4,6 +4,8 @@ public abstract class Constants {
 
     /* ========== Permission utils ========== */
     private static final int accessFineLocationCode = 100;
+    private static final int selectPictureCode = 200;
+    private static final int externalStoragePermissionsCode = 1000;
 
     /* ========== Storage technology utils ========== */
     private static final String hotelStorageTechnology = "hotel_storage_technology";
@@ -41,15 +43,21 @@ public abstract class Constants {
     private static final String refreshToken = "refresh_token";
     private static final String isAppOpenedForFirstTime = "is_app_opened_for_first_time";
     private static final String dailyReward = "daily_reward";
+    private static final String tapTargetHome = "tapTargetHome";
+    private static final String tapTargetProfile = "tap_target_profile";
+    private static final String tapTargetAttractionsList = "tap_target_attractions_list";
+    private static final String tapTargetAttractionsDetail = "tap_target_attractions_detail";
+    private static final String tapTargetEditProfile = "tap_target_edit_profile";
 
     /* ========== Volley utils ========== */
-    private static final String baseUrl = "http://Troppadvisorserver-env.eba-pfsmp3kx.us-east-1.elasticbeanstalk.com/";
+    private static final String baseUrl = "http://hciwebserver-env.eba-xpspwigw.us-east-1.elasticbeanstalk.com/";
     private static final String baseUrlHttps = "https://5il6dxqqm3.execute-api.us-east-1.amazonaws.com/Secondo/";
     private static final String userRoute = "user/";
     private static final String findUserByEmailRoute = "find-by-email/";
     private static final String findUsersByNameOrUsermaneRoute = "find-by-name-or-username/";
     private static final String findLeaderboardUser = "find-leaderboard";
     private static final String updateUserInformationsRoute = "update-user-informations";
+    private static final String updateDailyUserLevelRoute = "update-daily-user-level/";
     private static final String updateUserImageRoute = "update-user-image/";
     private static final String s3Route = "s3/";
     private static final String s3UploadFileRoute = "upload-file";
@@ -64,9 +72,12 @@ public abstract class Constants {
     private static final String unauthorized = "401";
     private static final String internalServerError = "500";
 
-    /* ========== Select image utils ========== */
-    private static final int selectPictureCode = 200;
-    private static final String savedProfileImagePath = "saved_profile_image_path";
+    /* ========== Intent extra utils ========== */
+    private static final String userIntentExtra = "user";
+    private static final int launchLoginActivity = 500;
+    private static final int launchEditProfileActivity = 600;
+    private static final int launchWriteReviewActivity = 700;
+    private static final int uploadUserProfilePage = 10;
 
     public static int getAccessFineLocationCode() {
         return accessFineLocationCode;
@@ -196,6 +207,26 @@ public abstract class Constants {
         return dailyReward;
     }
 
+    public static String getTapTargetHome() {
+        return tapTargetHome;
+    }
+
+    public static String getTapTargetProfile() {
+        return tapTargetProfile;
+    }
+
+    public static String getTapTargetAttractionsList() {
+        return tapTargetAttractionsList;
+    }
+
+    public static String getTapTargetAttractionsDetail() {
+        return tapTargetAttractionsDetail;
+    }
+
+    public static String getTapTargetEditProfile() {
+        return tapTargetEditProfile;
+    }
+
     public static String getBaseUrl() {
         return baseUrl;
     }
@@ -222,6 +253,10 @@ public abstract class Constants {
 
     public static String getUpdateUserInformationsRoute() {
         return updateUserInformationsRoute;
+    }
+
+    public static String getUpdateDailyUserLevelRoute() {
+        return updateDailyUserLevelRoute;
     }
 
     public static String getUpdateUserImageRoute() {
@@ -276,11 +311,31 @@ public abstract class Constants {
         return internalServerError;
     }
 
+    public static String getUserIntentExtra() {
+        return userIntentExtra;
+    }
+
+    public static int getLaunchLoginActivity() {
+        return launchLoginActivity;
+    }
+
+    public static int getLaunchEditProfileActivity() {
+        return launchEditProfileActivity;
+    }
+
+    public static int getLaunchWriteReviewActivity() {
+        return launchWriteReviewActivity;
+    }
+
+    public static int getUploadUserProfilePage() {
+        return uploadUserProfilePage;
+    }
+
     public static int getSelectPictureCode() {
         return selectPictureCode;
     }
 
-    public static String getSavedProfileImagePath() {
-        return savedProfileImagePath;
+    public static int getExternalStoragePermissionsCode() {
+        return externalStoragePermissionsCode;
     }
 }

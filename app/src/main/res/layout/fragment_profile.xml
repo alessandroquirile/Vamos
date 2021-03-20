@@ -4,41 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/white">-->
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:contentScrim="@color/white"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+<!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="16dp"-->
+<!--            app:contentScrim="@color/white"-->
+<!--            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">-->
 
-            <include layout="@layout/inner_profile_collapsing" />
+<!--            <include layout="@layout/inner_profile_collapsing" />-->
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+<!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
 
-    </com.google.android.material.appbar.AppBarLayout>
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:padding="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fillViewport="true"-->
+<!--        android:padding="10dp"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_badge_profile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recycler_view_badge_profile"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
-    </androidx.core.widget.NestedScrollView>
+<!--    </androidx.core.widget.NestedScrollView>-->
 
-    <include
-        android:id="@+id/no_login_profile_error_layout"
-        layout="@layout/no_login_profile_error_layout"
-        android:visibility="gone"/>
+<!--    <include-->
+<!--        android:id="@+id/no_login_profile_error_layout"-->
+<!--        layout="@layout/no_login_profile_error_layout"-->
+<!--        android:visibility="gone"/>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

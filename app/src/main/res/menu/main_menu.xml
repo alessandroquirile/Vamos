@@ -9,4 +9,11 @@
         android:title="@string/search"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/icon_profile_black"
+        android:orderInCategory="1"
+        android:title="@string/profile_tap_title"
+        app:showAsAction="ifRoom" />
+
 </menu>

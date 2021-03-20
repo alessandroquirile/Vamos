@@ -28,7 +28,6 @@ public class WriteReviewActivity extends AppCompatActivity {
     private TextInputLayout textInputLayoutReviewTitle, textInputLayoutReviewDescription;
     private RatingBar ratingBar;
     private TextView textViewRating;
-    private SwitchCompat switchCompatButtonPublishAnonymously;
     private Button buttonPublishReview;
 
     @Override
@@ -76,7 +75,6 @@ public class WriteReviewActivity extends AppCompatActivity {
         textInputLayoutReviewDescription = findViewById(R.id.text_input_layout_review_description);
         ratingBar = findViewById(R.id.rating_bar);
         textViewRating = findViewById(R.id.text_view_about_rating);
-        switchCompatButtonPublishAnonymously = findViewById(R.id.switch_compat_button_publish_anonymously);
         buttonPublishReview = findViewById(R.id.button_publish_review);
     }
 
@@ -119,10 +117,6 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     public TextView getTextViewRating() {
         return textViewRating;
-    }
-
-    public SwitchCompat getSwitchCompatButtonPublishAnonymously() {
-        return switchCompatButtonPublishAnonymously;
     }
 
     public Button getButtonPublishReview() {

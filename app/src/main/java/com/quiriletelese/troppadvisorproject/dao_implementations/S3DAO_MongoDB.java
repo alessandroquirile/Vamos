@@ -65,13 +65,13 @@ public class S3DAO_MongoDB implements S3DAO {
     @NotNull
     @Contract(pure = true)
     private String createUploadFileUrl() {
-        return Constants.getBaseUrlHttps() + Constants.getS3Route() + Constants.getS3UploadFileRoute();
+        return Constants.getBaseUrl() + Constants.getS3Route() + Constants.getS3UploadFileRoute();
     }
 
     @NotNull
     @Contract(pure = true)
     private String createDeleteFileUrl(String image) {
-        return Constants.getBaseUrlHttps() + Constants.getS3Route() + Constants.getS3DeleteFileRoute() + "?" + image;
+        return Constants.getBaseUrl() + Constants.getS3Route() + Constants.getS3DeleteFileRoute() + "?" + image;
     }
 
     private String getImageUrlFromResponse(@NotNull NetworkResponse response) {

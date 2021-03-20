@@ -28,8 +28,6 @@ import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Accomodation;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
-import com.quiriletelese.troppadvisorproject.views.HotelDetailActivity;
-import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Contract;
@@ -69,12 +67,12 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     private void startDetailActivityHelper() {
         switch (getAccomodationType()) {
-            case "hotel":
-                startAccomodationDetailActivity(HotelDetailActivity.class);
-                break;
-            case "restaurant":
-                startAccomodationDetailActivity(RestaurantDetailActivity.class);
-                break;
+//            case "hotel":
+//                startAccomodationDetailActivity(HotelDetailActivity.class);
+//                break;
+//            case "restaurant":
+//                startAccomodationDetailActivity(RestaurantDetailActivity.class);
+//                break;
             case "attraction":
                 startAccomodationDetailActivity(AttractionDetailActivity.class);
                 break;
@@ -144,7 +142,8 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     public void addMarker() {
         getGoogleMap().addMarker(createMarkerOptions(getAccomodation()));
-        zoomOnMap();
+        //zoomOnMap();
+        setMapZoon();
     }
 
     private MarkerOptions createMarkerOptions(Accomodation accomodation) {
@@ -165,13 +164,9 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    private void zoomOnMap() {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(createMarkerLatLng());
-        LatLngBounds bounds = builder.build();
-        int padding = 500;
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        getGoogleMap().animateCamera(cameraUpdate);
+    private void setMapZoon() {
+        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(createMarkerLatLng(), 17.0f);
+        getGoogleMap().animateCamera(yourLocation);
     }
 
     @NotNull

@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,18 +10,22 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +44,8 @@ import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
+import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
@@ -48,18 +55,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class AttractionDetailActivityController implements View.OnClickListener {
+public class AttractionDetailActivityController implements View.OnClickListener, GoogleMap.OnMapClickListener,
+        ViewPager.OnPageChangeListener {
 
     private final AttractionDetailActivity attractionDetailActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private Attraction attraction;
+    public Attraction attraction;
     private AlertDialog alertDialogLoadingInProgress;
+    private String day = "";
 
     public AttractionDetailActivityController(AttractionDetailActivity attractionDetailActivity) {
         this.attractionDetailActivity = attractionDetailActivity;
@@ -68,6 +81,26 @@ public class AttractionDetailActivityController implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         onClickHelper(view);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        startAccomodationDetailMapsActivity();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        setTextViewImagePositionText();
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     private void findByIdHelper(VolleyCallBack volleyCallBack, String id) {
@@ -88,6 +121,14 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         }, getId());
     }
 
+    private void setTextViewImagePositionText() {
+        getTextViewImagePosition().setText(crateTextViewImagePositionString());
+    }
+
+    private String crateTextViewImagePositionString() {
+        return getViewPager().getCurrentItem() + 1 + "/" + getViewPager().getAdapter().getCount();
+    }
+
     private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.text_view_attraction_phone_number:
@@ -97,10 +138,13 @@ public class AttractionDetailActivityController implements View.OnClickListener 
                 showCertificateOfExcellenceDialog();
                 break;
             case R.id.text_view_attraction_address:
-                startMapsActivity();
+                startAccomodationDetailMapsActivity();
                 break;
             case R.id.floating_action_button_attraction_write_review:
                 startWriteReviewActivity();
+                break;
+            case R.id.text_view_attraction_website:
+                startWebSite(attraction.getWebSite());
                 break;
         }
     }
@@ -110,17 +154,36 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         getTextViewCertificateOfExcellence().setOnClickListener(this);
         getTextViewAddress().setOnClickListener(this);
         getFloatingActionButtonWriteReview().setOnClickListener(this);
+        getTextViewAttractionWebsite().setOnClickListener(this);
+        getViewPager().addOnPageChangeListener(this);
     }
 
     public void initializeActivityFields() {
-        setCollapsingToolbarLayoutTitle(getName());
+        setAttractionName();
         setAvaragePrice(getAvaragePrice());
         setAvarageRating();
         setCertificateOfExcellence(isHasCertificateOfExcellence());
         setAddress();
-        setOpeningTime(getOpeningTime());
+        setOpeningDays(getOpeningDays());
         setPhoneNumber(getPhoneNumber());
+    }
 
+    private void startAccomodationDetailMapsActivity() {
+        getContext().startActivity(createAccomodationDetailMapsIntent());
+    }
+
+    private Intent createAccomodationDetailMapsIntent() {
+        Intent accomodationDetailMapsIntent = new Intent(getContext(), AccomodationDetailMapsActivity.class);
+        accomodationDetailMapsIntent.putExtra(Constants.getAccomodation(), attraction);
+        accomodationDetailMapsIntent.putExtra(Constants.getAccomodationType(), Constants.getAttraction());
+        accomodationDetailMapsIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        return accomodationDetailMapsIntent;
+    }
+
+    private void startWebSite(String website) {
+        Intent intentWebsite = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+        intentWebsite.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intentWebsite);
     }
 
     private void initializeViewPager() {
@@ -133,10 +196,14 @@ public class AttractionDetailActivityController implements View.OnClickListener 
 
     private void volleyCallBackOnSuccess(Object object) {
         attraction = (Attraction) object;
+        handleOnMapReady(getMap());
         initializeActivityFields();
         initializeViewPager();
+        setTextViewImagePositionText();
         dismissLoadingInProgressDialog();
         setReviewsPreview();
+        if (!checkTapTargetBooleanPreferences())
+            setTapTargetSequence();
     }
 
     private void volleyCallBackOnError(String errorCode) {
@@ -151,8 +218,8 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         }
     }
 
-    private void setCollapsingToolbarLayoutTitle(String title) {
-        getCollapsingToolbarLayout().setTitle(title);
+    private void setAttractionName() {
+        getTextViewAttractionName().setText(getName());
     }
 
     private void setAvarageRating() {
@@ -176,7 +243,6 @@ public class AttractionDetailActivityController implements View.OnClickListener 
     private void setCertificateOfExcellence(boolean certificateOfExcellence) {
         if (!certificateOfExcellence)
             getLinearLayoutCompatCertificateOfExcellence().setVisibility(View.GONE);
-        //getTextViewCertificateOfExcellence().setVisibility(View.GONE);
     }
 
     private void setAddress() {
@@ -196,11 +262,49 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         return restaurantAddress;
     }
 
-    private void setOpeningTime(String openingTime) {
-        if (!openingTime.equals(""))
-            getTextViewOpeningTime().setText(openingTime);
+    private void setOpeningDays(Map<Integer, String> openingDays) {
+        if (openingDays != null) {
+            for (Map.Entry<Integer, String> entry : openingDays.entrySet())
+                createOpeningDaysString(entry);
+            day = day.substring(0, day.length() - 1);
+            getTextViewOpeningTime().setText(day);
+        } else getTextViewOpeningTime().setText(getString(R.string.no_information_available));
+    }
+
+    private void createOpeningDaysString(Map.Entry<Integer, String> entry) {
+        if (!entry.getValue().equals(""))
+            day = day.concat(detectDay(entry.getKey()) + " " + entry.getValue());
         else
-            getTextViewOpeningTime().setText(getString(R.string.no_information_available));
+            day = day.concat(detectDay(entry.getKey()) + " " + getString(R.string.closed));
+        day = day.concat("\n");
+    }
+
+    private String detectDay(Integer day) {
+        String dayOfWeek = "";
+        switch (day) {
+            case 1:
+                dayOfWeek = getString(R.string.monday);
+                break;
+            case 2:
+                dayOfWeek = getString(R.string.tuesday);
+                break;
+            case 3:
+                dayOfWeek = getString(R.string.wednesday);
+                break;
+            case 4:
+                dayOfWeek = getString(R.string.thursday);
+                break;
+            case 5:
+                dayOfWeek = getString(R.string.friday);
+                break;
+            case 6:
+                dayOfWeek = getString(R.string.saturday);
+                break;
+            case 7:
+                dayOfWeek = getString(R.string.sunday);
+                break;
+        }
+        return dayOfWeek;
     }
 
     private void setPhoneNumber(String phoneNumber) {
@@ -210,20 +314,20 @@ public class AttractionDetailActivityController implements View.OnClickListener 
             getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
-    private void setAvaragePrice(Double price) {
-        if (!price.equals(0d))
-            getTextViewAvaragePrice().setText(createAvaragePriceString(price));
+    private void setAvaragePrice(String price) {
+        if (!price.equals("0"))
+            getTextViewAvaragePrice().setText(price.concat(" ").concat(getString(R.string.currency)));
         else
             getTextViewAvaragePrice().setText(getString(R.string.gratis));
     }
 
-    private String createAvaragePriceString(Double price) {
-        String avaragePrice = "";
-        avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
-        avaragePrice = avaragePrice.concat(price + " ");
-        avaragePrice = avaragePrice.concat(getString(R.string.currency));
-        return avaragePrice;
-    }
+//    private String createAvaragePriceString(Double price) {
+//        String avaragePrice = "";
+//        avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
+//        avaragePrice = avaragePrice.concat(price + " ");
+//        avaragePrice = avaragePrice.concat(getString(R.string.currency));
+//        return avaragePrice;
+//    }
 
     private void setReviewsPreview() {
         if (hasReviews()) {
@@ -253,10 +357,12 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         textView.setTextColor(getColor(R.color.black));
         textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_arrow_forward_black, 0);
         textView.setGravity(Gravity.CENTER_VERTICAL);
-        textView.setPadding(0, 10, 0, 0);
+        textView.setPadding(15, 20, 0, 0);
+        textView.setTextSize(16);
         textView.setOnClickListener(view -> {
             readReviews();
         });
+        getLinearLayoutCompatReviewsPreview().addView(textView);
     }
 
     private TextView createTextView(Review review) {
@@ -266,6 +372,7 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         textView.setText(review.getDescription());
         textView.setTextColor(getColor(R.color.black));
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_person_green, 0, 0, 0);
+        textView.setCompoundDrawablePadding(20);
         textView.setGravity(Gravity.CENTER_VERTICAL);
         textView.setPadding(0, 5, 0, 0);
         return textView;
@@ -287,8 +394,16 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         getContext().startActivity(createMapsActivityIntent());
     }
 
-    private void startWriteReviewActivity() {
-        getContext().startActivity(createWriteReviewActivityIntent());
+    public void startWriteReviewActivity() {
+        attractionDetailActivity.startActivityForResult(createWriteReviewActivityIntent(), Constants.getLaunchWriteReviewActivity());
+        //getContext().startActivity(createWriteReviewActivityIntent());
+    }
+
+    public void handleOnActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d("REQ - RES", requestCode + " - " + resultCode);
+        if (resultCode == RESULT_OK)
+            if (requestCode == Constants.getLaunchWriteReviewActivity())
+                findById();
     }
 
     private void startSeeReviewsActivity() {
@@ -315,7 +430,7 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(Constants.getId(), getId());
         writeReviewActivityIntent.putExtra(Constants.getAccomodationType(), Constants.getAttraction());
-        writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
 
@@ -354,8 +469,16 @@ public class AttractionDetailActivityController implements View.OnClickListener 
     }
 
     public void handleOnMapReady(GoogleMap googleMap) {
+        getMap().setOnMapClickListener(this);
         addMarker(googleMap);
         setMapZoon(googleMap);
+    }
+
+    @SuppressLint("MissingPermission")
+    public void setMapProperties() {
+        getMap().getUiSettings().setMyLocationButtonEnabled(false);
+        getMap().getUiSettings().setMapToolbarEnabled(false);
+        getMap().setMyLocationEnabled(true);
     }
 
     private LatLng createLatLng() {
@@ -402,10 +525,6 @@ public class AttractionDetailActivityController implements View.OnClickListener 
                 Toast.makeText(attractionDetailActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
-    private CollapsingToolbarLayout getCollapsingToolbarLayout() {
-        return attractionDetailActivity.getCollapsingToolbarLayout();
-    }
-
     private TextView getTextViewOpeningTime() {
         return attractionDetailActivity.getTextViewOpeningTime();
     }
@@ -426,6 +545,10 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         return attractionDetailActivity.getRatingBarActivityDetail();
     }
 
+    public TextView getTextViewAttractionName() {
+        return attractionDetailActivity.getTextViewAttractionName();
+    }
+
     private TextView getTextViewAvarageRating() {
         return attractionDetailActivity.getTextViewAvarageRating();
     }
@@ -440,6 +563,18 @@ public class AttractionDetailActivityController implements View.OnClickListener 
 
     private TextView getTextViewAvaragePrice() {
         return attractionDetailActivity.getTextViewAvaragePrice();
+    }
+
+    public TextView getTextViewAttractionWebsite() {
+        return attractionDetailActivity.getTextViewAttractionWebsite();
+    }
+
+    public Toolbar getToolbar() {
+        return attractionDetailActivity.getToolbar();
+    }
+
+    public TextView getTextViewImagePosition() {
+        return attractionDetailActivity.getTextViewImagePosition();
     }
 
     private FloatingActionButton getFloatingActionButtonWriteReview() {
@@ -478,7 +613,7 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         return attraction.getName();
     }
 
-    private Double getAvaragePrice() {
+    private String getAvaragePrice() {
         return attraction.getAvaragePrice();
     }
 
@@ -510,8 +645,8 @@ public class AttractionDetailActivityController implements View.OnClickListener 
         return attraction.getPostalCode();
     }
 
-    private String getOpeningTime() {
-        return attraction.getOpeningTime();
+    private Map<Integer, String> getOpeningDays() {
+        return attraction.getOpeningDays();
     }
 
     private String getPhoneNumber() {
@@ -542,6 +677,61 @@ public class AttractionDetailActivityController implements View.OnClickListener 
 
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
+    }
+
+    public GoogleMap getMap() {
+        return attractionDetailActivity.getMap();
+    }
+
+    private boolean checkTapTargetBooleanPreferences() {
+        return new UserSharedPreferences(getContext()).constains(Constants.getTapTargetAttractionsDetail());
+    }
+
+    private void writeTapTargetBooleanPreferences() {
+        new UserSharedPreferences(getContext()).putBooleanSharedPreferences(Constants.getTapTargetAttractionsDetail(), true);
+    }
+
+    public void setTapTargetSequence() {
+        new TapTargetSequence(attractionDetailActivity).targets(
+                createTapTarget(getTextViewImagePosition(), getString(R.string.view_pager_tap_title),
+                        getString(R.string.view_pager_tap_description), true, 50),
+                createTapTarget(getFloatingActionButtonWriteReview(), getString(R.string.write_review_tap_title),
+                        getString(R.string.write_review_tap_description), false, 70),
+                createTapTarget(getRatingBarActivityDetail(), getString(R.string.avarage_rating),
+                        getString(R.string.avarage_attraction_rating_tap_description), true, 70),
+                createTapTarget(getTextViewAvarageRating(), getString(R.string.total_reviews_tap_title),
+                        getString(R.string.total_reviews_tap_description), true, 70))
+                .listener(new TapTargetSequence.Listener() {
+                    // This listener will tell us when interesting(tm) events happen in regards
+                    // to the sequence
+                    @Override
+                    public void onSequenceFinish() {
+                        writeTapTargetBooleanPreferences();
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Perform action for the current target
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Boo
+                    }
+                }).start();
+
+    }
+
+    private TapTarget createTapTarget(View view, String title, String body, boolean tintTarget, int radius) {
+        return TapTarget.forView(view, title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(tintTarget)
+                .targetRadius(radius);
     }
 
 }

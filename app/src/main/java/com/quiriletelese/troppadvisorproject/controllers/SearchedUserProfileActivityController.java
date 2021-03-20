@@ -64,7 +64,6 @@ public class SearchedUserProfileActivityController {
         setTextViewUserTitleText(user);
         setCircleImageViewUser(user);
         setTextViewUserNameLastnameText(user);
-        setTextViewUsernameText(user);
         setTextViewUserLevelText(user);
         setTextViewUserTotalReviewsText(user);
         setTextViewUserAvarageRatingText(user);
@@ -161,14 +160,6 @@ public class SearchedUserProfileActivityController {
 
     private void setTextViewUserNameLastnameText(User user) {
         getTextViewUserNameLastname().setText(getUserName(user).concat(" ").concat(getUserLastname(user)));
-    }
-
-    public TextView getTextViewUsername() {
-        return searchedUserProfileActivity.getTextViewSearchedUsername();
-    }
-
-    private void setTextViewUsernameText(User user) {
-        getTextViewUsername().setText(getUsername(user));
     }
 
     private TextView getTextViewUserTotalReviews() {

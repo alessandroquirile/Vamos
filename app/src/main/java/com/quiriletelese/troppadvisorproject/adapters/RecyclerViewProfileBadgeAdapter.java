@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.model_helpers.Badge;
+import com.quiriletelese.troppadvisorproject.models.Badge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,14 @@ public class RecyclerViewProfileBadgeAdapter extends RecyclerView.Adapter<Recycl
     private List<Badge> badges;
     private List<Badge> missingBadges;
     private Context context;
+    private int totalBadges;
 
     public RecyclerViewProfileBadgeAdapter(Set<Badge> badges, Set<Badge> missingBadges, Context context) {
         this.badges = new ArrayList<>(badges);
-        missingBadges.removeAll(badges);
         this.missingBadges = new ArrayList<>(missingBadges);
         this.context = context;
+        totalBadges = badges.size();
+        this.badges.addAll(this.missingBadges);
     }
 
     @NonNull
@@ -43,11 +45,11 @@ public class RecyclerViewProfileBadgeAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
-        return badges.size() + missingBadges.size();
+        return badges.size();
     }
 
     private void handleOnBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (position > badges.size())
+        if (position > totalBadges-1)
             holder.imageViewBadge.setImageResource(R.drawable.missing_badge_icon);
         else {
             holder.textViewBadgeName.setTextColor(context.getResources().getColor(R.color.black));
@@ -67,7 +69,7 @@ public class RecyclerViewProfileBadgeAdapter extends RecyclerView.Adapter<Recycl
         }
 
         private void initializeComponents() {
-            imageViewBadge = imageViewBadge.findViewById(R.id.image_view_badge);
+            imageViewBadge = itemView.findViewById(R.id.image_view_badge);
             textViewBadgeName = itemView.findViewById(R.id.text_view_badge_name);
             textViewBadgeDescription = itemView.findViewById(R.id.text_view_badge_description);
         }

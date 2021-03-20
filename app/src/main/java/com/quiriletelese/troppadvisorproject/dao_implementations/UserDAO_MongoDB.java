@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 
@@ -8,15 +9,12 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
-import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.MultipartRequest;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
@@ -26,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,13 +47,18 @@ public class UserDAO_MongoDB implements UserDAO {
     }
 
     @Override
-    public void updateUserImage(VolleyCallBack volleyCallBack, String email, byte[] file, Context context) {
-        updateUserImageVolley(volleyCallBack, email, file, context);
+    public void updateUserImage(VolleyCallBack volleyCallBack, String email, Bitmap bitmap, Context context) {
+        updateUserImageVolley(volleyCallBack, email, bitmap, context);
     }
 
     @Override
     public void updateUserInformations(VolleyCallBack volleyCallBack, User user, Context context) {
         updateUserInformationsVolley(volleyCallBack, user, context);
+    }
+
+    @Override
+    public void updateDailyUserLevel(VolleyCallBack volleyCallBack, String email, Context context) {
+        updateDailyUserLevelVolley(volleyCallBack, email, context);
     }
 
     private void findByEmailVolley(VolleyCallBack volleyCallBack, String email, Context context) {
@@ -120,7 +124,7 @@ public class UserDAO_MongoDB implements UserDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void updateUserImageVolley(VolleyCallBack volleyCallBack, String email, byte[] file, Context context) {
+    private void updateUserImageVolley(VolleyCallBack volleyCallBack, String email, Bitmap bitmap, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = cretateUpdateUserImageUrl(email);
         MultipartRequest multipartRequest = new MultipartRequest(Request.Method.PUT, URL,
@@ -134,7 +138,7 @@ public class UserDAO_MongoDB implements UserDAO {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("image", new DataPart(imagename + ".jpg", file));
+                params.put("image", new DataPart(imagename + ".jpg", getFileDataFromDrawable(bitmap)));
                 return params;
             }
 
@@ -152,7 +156,7 @@ public class UserDAO_MongoDB implements UserDAO {
     private void updateUserInformationsVolley(VolleyCallBack volleyCallBack, User user, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createUpdateUserInfromationsUrl();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObjectUpdateUserInformations(user),
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, URL, jsonObjectUpdateUserInformations(user),
                 response -> {
                     volleyCallBack.onSuccess(getUserFromResponse(response));
                 },
@@ -162,7 +166,28 @@ public class UserDAO_MongoDB implements UserDAO {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 if (!isStatusCodeOk(response.statusCode))
-                    checkCreateAccountVolleyError(response, volleyCallBack);
+                    checkUpdateUserInformationsVolleyError(response, volleyCallBack);
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.start();
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updateDailyUserLevelVolley(VolleyCallBack volleyCallBack, String email, Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String URL = createupdateDailyUserLevelUrl(email);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, URL, null,
+                response -> {
+                    volleyCallBack.onSuccess(getUserFromResponse(response));
+                },
+                error -> {
+
+                }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
         };
@@ -171,21 +196,21 @@ public class UserDAO_MongoDB implements UserDAO {
     }
 
     private JSONObject jsonObjectUpdateUserInformations(User user) {
-        JSONObject jsonObjectInsertAccomodationReview = new JSONObject();
-        return createJsonObjectInsertAccomodationReview(jsonObjectInsertAccomodationReview, user);
+        JSONObject jsonObjectUpdateUserInformations = new JSONObject();
+        return createJsonObjectUpdateUserInformations(jsonObjectUpdateUserInformations, user);
     }
 
-    private JSONObject createJsonObjectInsertAccomodationReview(@NotNull JSONObject jsonObjectInsertAccomodationReview, @NotNull User user) {
+    private JSONObject createJsonObjectUpdateUserInformations(@NotNull JSONObject jsonObjectUpdateUserInformations, @NotNull User user) {
         try {
-            jsonObjectInsertAccomodationReview.put("name", user.getName());
-            jsonObjectInsertAccomodationReview.put("lastName", user.getLastName());
-            jsonObjectInsertAccomodationReview.put("username", user.getUsername());
-            jsonObjectInsertAccomodationReview.put("chosenTitle", user.getChosenTitle());
-            jsonObjectInsertAccomodationReview.put("isPrivateAccount", user.isPrivateAccount());
+            jsonObjectUpdateUserInformations.put("email", user.getEmail());
+            jsonObjectUpdateUserInformations.put("name", user.getName());
+            jsonObjectUpdateUserInformations.put("lastName", user.getLastName());
+            jsonObjectUpdateUserInformations.put("username", user.getUsername());
+            jsonObjectUpdateUserInformations.put("chosenTitle", user.getChosenTitle());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonObjectInsertAccomodationReview;
+        return jsonObjectUpdateUserInformations;
     }
 
     private String createFindByEmailUrl(String email) {
@@ -206,6 +231,10 @@ public class UserDAO_MongoDB implements UserDAO {
 
     private String createUpdateUserInfromationsUrl() {
         return Constants.getBaseUrl() + Constants.getUserRoute() + Constants.getUpdateUserInformationsRoute();
+    }
+
+    private String createupdateDailyUserLevelUrl(String email) {
+        return Constants.getBaseUrl() + Constants.getUserRoute() + Constants.getUpdateDailyUserLevelRoute() + email;
     }
 
     private User getUserFromResponse(@NonNull JSONObject response) {
@@ -229,11 +258,17 @@ public class UserDAO_MongoDB implements UserDAO {
         return new Gson().fromJson(response.toString(), Boolean.class);
     }
 
-    private void checkCreateAccountVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
+    private void checkUpdateUserInformationsVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
         if (networkResponse.headers.containsKey(Constants.getUsernameError()))
             volleyCallBack.onError(Constants.getUsernameError());
         else
             volleyCallBack.onError(String.valueOf(networkResponse.statusCode));
+    }
+
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

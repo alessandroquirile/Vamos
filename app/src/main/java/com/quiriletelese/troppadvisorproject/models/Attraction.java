@@ -1,19 +1,20 @@
 package com.quiriletelese.troppadvisorproject.models;
 
+import java.util.Map;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
 public class Attraction extends Accomodation {
 
-    private String openingTime;
+    private Map<Integer, String> openingDays;
 
-    public String getOpeningTime() {
-        return openingTime;
+    public Map<Integer, String> getOpeningDays() {
+        return openingDays;
     }
 
-    public void setOpeningTime(String openingTime) {
-        this.openingTime = openingTime;
+    public void setOpeningDays(Map<Integer, String> openingDays) {
+        this.openingDays = openingDays;
     }
-
 }

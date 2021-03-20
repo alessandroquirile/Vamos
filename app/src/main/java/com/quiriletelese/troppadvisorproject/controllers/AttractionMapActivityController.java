@@ -45,7 +45,6 @@ import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSe
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionMapActivity;
-import com.quiriletelese.troppadvisorproject.views.RestaurantDetailActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
 
@@ -214,7 +213,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
             case R.id.image_view_attraction_map_go_back:
                 onBackPressed();
                 break;
-            case R.id.floating_action_button_center_position_on_hotels:
+            case R.id.floating_action_button_center_position_on_attractions:
                 zoomOnMap();
                 break;
         }

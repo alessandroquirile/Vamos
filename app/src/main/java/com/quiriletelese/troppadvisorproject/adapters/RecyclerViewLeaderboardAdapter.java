@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.User;
+import com.quiriletelese.troppadvisorproject.views.SearchedUserProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -40,13 +41,14 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_items_layout, parent, false);
-            return new ViewHolder(itemView);
-        } else {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_header_layout, parent, false);
-            return new HeaderViewHolder(itemView);
-        }
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_items_layout, parent, false));
+//        if (viewType == TYPE_ITEM) {
+//            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_items_layout, parent, false);
+//            return new ViewHolder(itemView);
+//        } else {
+//            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_header_layout, parent, false);
+//            return new HeaderViewHolder(itemView);
+//        }
     }
 
     @Override
@@ -56,25 +58,42 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemCount() {
-        return users.size() + 1;
+        return users.size() /*users.size() + 1*/;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 0)
-            return TYPE_HEADER;
-        return TYPE_ITEM;
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+//        if (position == 0)
+//            return TYPE_HEADER;
+//        return TYPE_ITEM;
+//    }
 
     private void handleRecyclerViewItemsFields(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof HeaderViewHolder)
-            handleHeaderItemsFields(holder);
-        else
-            handleBodyItemsFields(holder, position);
+        handleBodyItemsFields(holder, position);
+//        if (holder instanceof HeaderViewHolder)
+//            handleHeaderItemsFields(holder);
+//        else
+//            handleBodyItemsFields(holder, position);
     }
 
     private void handleHeaderItemsFields(@NonNull RecyclerView.ViewHolder holder) {
         HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+        if (users.size() != 0) {
+            if (users.size() <= 1) {
+                setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderFirstUserPhoto, 0);
+                headerViewHolder.textViewLeaderboardHeaderUserNameFirst.setText(users.get(0).getName());
+                headerViewHolder.textViewLeaderboardHeaderUserLevelFirst.setText(String.valueOf(users.get(0).getLevel()));
+            } else if (users.size() <= 2) {
+                setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderFirstUserPhoto, 0);
+                headerViewHolder.textViewLeaderboardHeaderUserNameFirst.setText(users.get(0).getName());
+                headerViewHolder.textViewLeaderboardHeaderUserLevelFirst.setText(String.valueOf(users.get(0).getLevel()));
+                setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderSecondUserPhoto, 1);
+                headerViewHolder.textViewLeaderboardHeaderUserNameSecond.setText(users.get(1).getName());
+                headerViewHolder.textViewLeaderboardHeaderUserNameThird.setText(users.get(2).getName());
+            } else if (users.size() <= 3) {
+
+            }
+        }
         setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderFirstUserPhoto, 0);
         setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderSecondUserPhoto, 1);
         setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderThirdUserPhoto, 2);
@@ -91,7 +110,8 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
         setBodyUsersProfileImage(viewHolder, position);
         viewHolder.textViewLeaderboardUserName.setText(users.get(position).getName());
         viewHolder.textViewLeaderboardUserLevel.setText(String.valueOf(users.get(position).getLevel()));
-        viewHolder.textViewLeaderboardUserPosition.setText(position + 1);
+        setTextViewLeaderboardUserPositionBackground(viewHolder.textViewLeaderboardUserPosition, position);
+        viewHolder.textViewLeaderboardUserPosition.setText(String.valueOf(position + 1));
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -129,6 +149,23 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
         return users.get(position).hasImage();
     }
 
+    private void setTextViewLeaderboardUserPositionBackground(TextView textView, int position) {
+        switch (position) {
+            case 0:
+                textView.setBackground(context.getResources().getDrawable(R.drawable.button_gold_round_corner));
+                break;
+            case 1:
+                textView.setBackground(context.getResources().getDrawable(R.drawable.button_silver_round_corner));
+                break;
+            case 2:
+                textView.setBackground(context.getResources().getDrawable(R.drawable.button_bronze_round_corner));
+                break;
+            default:
+                textView.setBackground(context.getResources().getDrawable(R.drawable.button_green_round_corner));
+                break;
+        }
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private LinearLayoutCompat linearLayoutCompatLeaderboardItem;
         private CircleImageView circleImageViewLeaderboardUserPhoto;
@@ -164,7 +201,7 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
         }
 
         private Intent createStartSearchedUserProfileActivityIntent() {
-            Intent intentSearchedUserProfile = new Intent();
+            Intent intentSearchedUserProfile = new Intent(context, SearchedUserProfileActivity.class);
             intentSearchedUserProfile.putExtra(Constants.getEmail(), getUserEmail());
             intentSearchedUserProfile.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return intentSearchedUserProfile;

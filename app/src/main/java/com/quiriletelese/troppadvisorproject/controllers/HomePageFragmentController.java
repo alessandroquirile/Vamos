@@ -1,42 +1,43 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionAdapter;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewAttractionsListAdapter;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewHotelAdapter;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewRestaurantAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
-import com.quiriletelese.troppadvisorproject.models.Hotel;
-import com.quiriletelese.troppadvisorproject.models.Restaurant;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
-import com.quiriletelese.troppadvisorproject.utils.GPSTracker;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.AttractionsListActivity;
-import com.quiriletelese.troppadvisorproject.views.HomePageFragment;
-import com.quiriletelese.troppadvisorproject.views.HotelsListActivity;
-import com.quiriletelese.troppadvisorproject.views.RestaurantsListActivity;
+import com.quiriletelese.troppadvisorproject.views.HomeActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.Contract;
@@ -51,23 +52,31 @@ import java.util.List;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class HomePageFragmentController implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class HomePageFragmentController implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, LocationListener {
 
-    private final HomePageFragment homePageFragment;
+    private final HomeActivity homeActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private final GPSTracker gpsTracker;
     private final UserSharedPreferences userSharedPreferences;
     private RecyclerViewAttractionsListAdapter recyclerViewAttractionsListAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private PointSearch pointSearch;
+    private PointSearch pointSearch = null;
     private final int size = 50;
     private int page = 0;
     private boolean isLoadingData = false;
+    private boolean isLocated = false;
+    private AlertDialog alertDialog;
+    private final LocationManager locationManager;
 
-    public HomePageFragmentController(HomePageFragment homePageFragment) {
-        this.homePageFragment = homePageFragment;
-        this.gpsTracker = createGpsTracker();
+//    public HomePageFragmentController(HomePageFragment homePageFragment) {
+//        this.homePageFragment = homePageFragment;
+//        userSharedPreferences = new UserSharedPreferences(getContext());
+//        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+//    }
+
+    public HomePageFragmentController(HomeActivity homeActivity) {
+        this.homeActivity = homeActivity;
         userSharedPreferences = new UserSharedPreferences(getContext());
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
     @Override
@@ -77,15 +86,45 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
 
     @Override
     public void onRefresh() {
-        homePageFragment.initializeRecyclerView();
+        findByRsql(pointSearch);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        pointSearch = createPointSearch(Arrays.asList(location.getLatitude(), location.getLongitude()));
+        if (!isLocated) {
+            initializeRecyclerViewAttractions(pointSearch);
+            if (!checkTapTargetBooleanPreferences())
+                setTapTargetSequence();
+            isLocated = true;
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+        getViewNoGeolocationError().setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+        isLocated = false;
+        getViewNoGeolocationError().setVisibility(View.VISIBLE);
     }
 
     public void findAttractionsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
-        this.pointSearch = pointSearch;
         getAttractionDAO().findByRsql(volleyCallBack, pointSearch, "0", getContext(), page, size);
     }
 
-    public void findByRsql() {
+    public void updateDailyUserLevelHelper(VolleyCallBack volleyCallBack) {
+        getUserDAO().updateDailyUserLevel(volleyCallBack, getEmail(), getContext());
+    }
+
+    public void findByRsql(PointSearch pointSearch) {
         findAttractionsByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -96,7 +135,29 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
             public void onError(String errorCode) {
                 volleyCallbackOnError(errorCode);
             }
-        }, getLocation());
+        }, pointSearch);
+    }
+
+    private void updateDailyUserLevel() {
+        updateDailyUserLevelHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+
+            }
+
+            @Override
+            public void onError(String errorCode) {
+
+            }
+        });
+    }
+
+    public void initializeRecyclerViewAttractions(PointSearch pointSearch) {
+        //findByRsql(pointSearch);
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+            findByRsql(pointSearch);
+        else
+            getViewMissingLocationPermissionError().setVisibility(View.VISIBLE);
     }
 
     private void volleyCallbackOnSuccess(Object object) {
@@ -114,7 +175,8 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         getSwipeRefreshLayoutHomeFrament().setRefreshing(false);
         switch (errorCode) {
             case "204":
-                initializeRecyclerViewOnError(errorCode);
+                if (!isLoadingData)
+                    initializeRecyclerViewOnError(errorCode);
                 break;
             default:
                 handleOtherVolleyError(errorCode);
@@ -156,7 +218,7 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         page++;
         setIsLoadingData(true);
         setViewVisibility(getProgressBarLoadMore(), View.VISIBLE);
-        findByRsql();
+        findByRsql(pointSearch);
     }
 
     private void initializeRecyclerViewOnSuccess(List<Attraction> attractions) {
@@ -183,31 +245,49 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         setViewVisibility(getProgressBarLoadMore(), View.GONE);
     }
 
-    public PointSearch getLocation() {
-        Double latitude = gpsTracker.getLatitude();
-        Double longitude = gpsTracker.getLongitude();
-        return createPointSearch(Arrays.asList(latitude, longitude));
-    }
-
     @NotNull
     private PointSearch createPointSearch(@NotNull List<Double> pointSearchInformation) {
         PointSearch pointSearch = new PointSearch();
         pointSearch.setLatitude(pointSearchInformation.get(0));
         pointSearch.setLongitude(pointSearchInformation.get(1));
-        pointSearch.setDistance(5.0);
+        pointSearch.setDistance(155.0);
         return pointSearch;
     }
 
     private void setViewVisibility(View view, int visibility) {
-        homePageFragment.getActivity().runOnUiThread(() -> view.setVisibility(visibility));
+        homeActivity.runOnUiThread(() -> view.setVisibility(visibility));
     }
 
     private void onClickHelper(View view) {
         switch (view.getId()) {
             case R.id.button_provide_permission:
-                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, Constants.getAccessFineLocationCode());
+                requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION);
                 break;
         }
+    }
+
+    public void checkDailyReward() {
+        if (hasLogged() && (!existDailyReward() || !isSameDay())) {
+            showDailyRewardDialog();
+            updateDailyUserLevel();
+            saveSharedPreferencesDailyReward();
+        }
+    }
+
+    private boolean hasLogged() {
+        return !getAccessToken().equals("");
+    }
+
+    private String getAccessToken() {
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getAccessToken());
+    }
+
+    private String getEmail() {
+        return createUserSharedPreferences().getStringSharedPreferences(Constants.getEmail());
+    }
+
+    private UserSharedPreferences createUserSharedPreferences() {
+        return new UserSharedPreferences(getContext());
     }
 
     private boolean existDailyReward() {
@@ -229,9 +309,40 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         return calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.YEAR);
     }
 
+    private void showDailyRewardDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogLayout(), null));
+        alertDialogBuilder.setPositiveButton("OK", null);
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private AlertDialog.Builder createAlertDialogBuilder() {
+        return new AlertDialog.Builder(homeActivity);
+    }
+
+    @NotNull
+    private LayoutInflater getLayoutInflater() {
+        return homeActivity.getLayoutInflater();
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_daily_reward_layout;
+    }
+
     public void setListenerOnViewComponents() {
         getSwipeRefreshLayoutHomeFrament().setOnRefreshListener(this);
         getButtonProvidePermission().setOnClickListener(this);
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        } else
+            requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    private void requestPermissions(String permission) {
+        ActivityCompat.requestPermissions(homeActivity, new String[]{permission}, Constants.getAccessFineLocationCode());
     }
 
     private void showToastVolleyError(int stringId) {
@@ -240,12 +351,12 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     }
 
     private void showToastOnUiThread(int stringId) {
-        homePageFragment.getActivity().runOnUiThread(() ->
-                Toast.makeText(homePageFragment.getActivity(), getString(stringId), Toast.LENGTH_SHORT).show());
+        homeActivity.runOnUiThread(() ->
+                Toast.makeText(homeActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private Resources getResources() {
-        return (homePageFragment.getActivity().getResources());
+        return (homeActivity.getResources());
     }
 
     @NotNull
@@ -268,13 +379,14 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     private void checkPermissionResult(@NonNull int[] grantResults) {
         if (isPermissionGranted(grantResults)) {
             Log.d("PERMISSION", "LOCATION PERMISSION GRANTED");
-            initializeRecyclerViews();
-            homePageFragment.getViewMissingLocationPermissionError().setVisibility(View.GONE);
+            getSwipeRefreshLayoutHomeFrament().setRefreshing(true);
+            getViewMissingLocationPermissionError().setVisibility(View.GONE);
+            if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        } else {
+            getSwipeRefreshLayoutHomeFrament().setRefreshing(false);
+            getViewMissingLocationPermissionError().setVisibility(View.VISIBLE);
         }
-    }
-
-    private void initializeRecyclerViews() {
-        homePageFragment.initializeRecyclerView();
     }
 
     @NotNull
@@ -294,12 +406,15 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     }
 
     private void runNoAttractionsErrorOnUiThread() {
-        requireActivity().runOnUiThread(this::setViewNoAttractionsErrorVisible);
+        homeActivity.runOnUiThread(this::setViewNoAttractionsErrorVisible);
     }
 
     public void startAttractionsListActivity() {
-        Intent attractionsListActivityIntent = createAttractionsListActivityIntent();
-        getContext().startActivity(attractionsListActivityIntent);
+        if (pointSearch != null) {
+            Intent attractionsListActivityIntent = createAttractionsListActivityIntent();
+            getContext().startActivity(attractionsListActivityIntent);
+        } else
+            Toast.makeText(getContext(), getString(R.string.position_calculation_in_progress), Toast.LENGTH_SHORT).show();
     }
 
     @NotNull
@@ -311,54 +426,39 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     }
 
     public boolean checkPermission(String permission) {
-        return ContextCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_DENIED;
-    }
-
-    public void requestPermission(String permission, int requestCode) {
-        homePageFragment.requestPermissions(new String[]{permission}, requestCode);
+        return ActivityCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_DENIED;
     }
 
     private Context getContext() {
-        return homePageFragment.getContext();
-    }
-
-    @NotNull
-    private FragmentActivity requireActivity() {
-        return homePageFragment.requireActivity();
-    }
-
-    @NotNull
-    @Contract(" -> new")
-    private GPSTracker createGpsTracker() {
-        return new GPSTracker(homePageFragment.getActivity());
-    }
-
-    public boolean canGeolocate() {
-        return createGpsTracker().canGetLocation();
-    }
-
-    public boolean areCoordinatesNull() {
-        return gpsTracker.getLatitude() == 0 || gpsTracker.getLongitude() == 0;
+        return homeActivity.getApplicationContext();
     }
 
     private AttractionDAO getAttractionDAO() {
         return daoFactory.getAttractionDAO(getStorageTechnology(Constants.getAttractionStorageTechnology()));
     }
 
+    private UserDAO getUserDAO() {
+        return daoFactory.getUserDAO(getStorageTechnology(Constants.getUserStorageTechnology()));
+    }
+
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
+    public Toolbar getToolbar() {
+        return homeActivity.getToolbar();
+    }
+
     public SwipeRefreshLayout getSwipeRefreshLayoutHomeFrament() {
-        return homePageFragment.getSwipeRefreshLayoutHomeFrament();
+        return homeActivity.getSwipeRefreshLayoutHomeFrament();
     }
 
     private RecyclerView getRecyclerViewAttractions() {
-        return homePageFragment.getRecyclerViewAttractions();
+        return homeActivity.getRecyclerViewAttractions();
     }
 
     private ProgressBar getProgressBarLoadMore() {
-        return homePageFragment.getProgressBarAttractionHomeLoadMore();
+        return homeActivity.getProgressBarAttractionHomeLoadMore();
     }
 
     private void setRecyclerViewAttractionOnSuccess() {
@@ -368,11 +468,11 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     }
 
     private Button getButtonProvidePermission() {
-        return homePageFragment.getButtonProvidePermission();
+        return homeActivity.getButtonProvidePermission();
     }
 
     private View getViewNoAttractionsError() {
-        return homePageFragment.getViewNoAttractionsError();
+        return homeActivity.getViewNoAttractionsError();
     }
 
     private void setViewNoAttractionsErrorVisible() {
@@ -387,4 +487,70 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
+    public View getViewNoGeolocationError() {
+        return homeActivity.getViewNoGeolocationError();
+    }
+
+    public View getViewMissingLocationPermissionError() {
+        return homeActivity.getViewMissingLocationPermissionError();
+    }
+
+    private boolean checkTapTargetBooleanPreferences() {
+        return new UserSharedPreferences(getContext()).constains(Constants.getTapTargetHome());
+    }
+
+    private void writeTapTargetBooleanPreferences() {
+        new UserSharedPreferences(getContext()).putBooleanSharedPreferences(Constants.getTapTargetHome(), true);
+    }
+
+    public void setTapTargetSequence() {
+        new TapTargetSequence(homeActivity).targets(
+                createTapTargetForToolbar(R.id.profile, getString(R.string.profile_tap_title),
+                        getString(R.string.profile_tap_description), 50),
+                createTapTargetForToolbar(R.id.search_attractions, getString(R.string.search_attractions_tap_title),
+                        getString(R.string.search_attractions_tap_description), 50))
+                .listener(new TapTargetSequence.Listener() {
+                    // This listener will tell us when interesting(tm) events happen in regards
+                    // to the sequence
+                    @Override
+                    public void onSequenceFinish() {
+                        writeTapTargetBooleanPreferences();
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Perform action for the current target
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Boo
+                    }
+                }).start();
+
+    }
+
+    private TapTarget createTapTargetForToolbar(int menuItemId, String title, String body, int radius) {
+        return TapTarget.forToolbarMenuItem(getToolbar(), menuItemId, title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(true)
+                .targetRadius(radius);
+    }
+
+    private TapTarget create(View view, String title, String body, int radius) {
+        return TapTarget.forView(view, title, body)
+                .dimColor(android.R.color.black)
+                .outerCircleColor(R.color.colorPrimary)
+                .textColor(android.R.color.white)
+                .targetCircleColor(R.color.white)
+                .drawShadow(true)
+                .cancelable(false)
+                .tintTarget(true)
+                .targetRadius(radius);
+    }
 }

@@ -16,8 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public class MultipartRequest extends Request<NetworkResponse> {
-
-
     private final String twoHyphens = "--";
     private final String lineEnd = "\r\n";
     private final String boundary = "apiclient-" + System.currentTimeMillis();
@@ -28,8 +26,8 @@ public class MultipartRequest extends Request<NetworkResponse> {
 
 
     public MultipartRequest(int method, String url,
-                                  Response.Listener<NetworkResponse> listener,
-                                  Response.ErrorListener errorListener) {
+                            Response.Listener<NetworkResponse> listener,
+                            Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         this.mListener = listener;
         this.mErrorListener = errorListener;
