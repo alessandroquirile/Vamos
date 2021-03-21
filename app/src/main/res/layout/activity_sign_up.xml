@@ -4,13 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_page_background"
     tools:context=".views.SignUpActivity">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/infoboxBackground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button_go_back_sign_up_activity"
@@ -25,14 +19,28 @@
         app:rippleColor="@color/colorAccentDark"
         tools:ignore="ContentDescription" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button_help_sign_up_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/icon_help_white"
+        app:fabSize="mini"
+        app:rippleColor="@color/colorAccentDark"
+        tools:ignore="ContentDescription" />
+
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="120dp"
         android:layout_below="@+id/floating_action_button_go_back_sign_up_activity"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:src="@drawable/troppadvisor_logo"
+        android:src="@drawable/app_icon_no_background"
         tools:ignore="ContentDescription" />
 
     <androidx.core.widget.NestedScrollView
@@ -173,7 +181,7 @@
                 android:layout_marginEnd="60dp"
                 android:background="@drawable/background_login_button"
                 android:text="@string/sign_up"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

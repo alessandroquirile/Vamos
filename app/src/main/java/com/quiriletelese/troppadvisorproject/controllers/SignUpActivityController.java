@@ -58,6 +58,9 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
             case R.id.floating_action_button_go_back_sign_up_activity:
                 onBackPressed();
                 break;
+            case R.id.floating_action_button_help_sign_up_activity:
+                showHelpDialog();
+                break;
         }
     }
 
@@ -83,6 +86,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     public void setListenerOnViewComponents() {
         getButtonSignUp().setOnClickListener(this);
         getFloatingActionButtonGoBack().setOnClickListener(this);
+        getFloatingActionButtonHelp().setOnClickListener(this);
     }
 
     private void createAccount() {
@@ -139,6 +143,15 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         AlertDialog dialog = alertDialogBuilder.create();
         dialog.show();
         dialog.setOnDismissListener(this);
+    }
+
+    private void showHelpDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        View dialogView = getLayoutInflater().inflate(getAlertDialogLayout(R.layout.dialog_help_layout), null);
+        alertDialogBuilder.setView(dialogView).
+                setPositiveButton("ok", null);
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.show();
     }
 
     private void showWaitForSignUpResultDialog() {
@@ -304,6 +317,10 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
 
     private FloatingActionButton getFloatingActionButtonGoBack() {
         return signUpActivity.getFloatingActionButtonGoBack();
+    }
+
+    public FloatingActionButton getFloatingActionButtonHelp() {
+        return signUpActivity.getFloatingActionButtonHelp();
     }
 
     private TextInputLayout getTextInputLayoutEmail() {

@@ -2,9 +2,9 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:padding="16dp"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -16,35 +16,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_view_user_title"
-                style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circle_image_view_user"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
                 android:src="@drawable/user_profile_no_photo" />
 
             <TextView
                 android:id="@+id/text_view_user_name_lastname"
-                style="@style/TextAppearance.AppCompat.Medium"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
-                android:textColor="@android:color/tab_indicator_text"
                 android:gravity="center"
                 android:maxLines="1"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -53,21 +41,32 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:textColor="@android:color/tab_indicator_text"
+                android:maxLines="1"
                 android:paddingTop="5dp"
-                android:maxLines="1" />
+                android:textColor="@android:color/tab_indicator_text" />
+
+            <TextView
+                android:id="@+id/text_view_user_title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingTop="5dp"
+                android:textColor="@android:color/tab_indicator_text"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_view_user_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
                 android:drawablePadding="10dp"
                 android:ellipsize="end"
-                android:gravity="center"
                 android:maxLines="1"
+                android:paddingTop="5dp"
+                android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_star_yellow" />
 
         </LinearLayout>
@@ -81,6 +80,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/linear_layout_user_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -100,8 +100,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reviews_profile"
-                    android:textColor="@color/black"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -123,9 +123,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:text="@string/avarage_rating"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 

@@ -100,7 +100,7 @@
     <string name="no_attractions_found_by_filter">Nessun\'attrazione trovata in base ai criteri di ricerca</string>
     <string name="review">recensione</string>
     <string name="reviews">recensioni</string>
-    <string name="user_reviews">Recensioni degli utenti</string>
+    <string name="users_reviews">Recensioni degli utenti</string>
     <string name="field_cannot_be_empty">Questo campo non può essere vuoto</string>
     <string name="login_error">Si è verificato un errore durante il login, controlla le credenziali o assicurati che il tuo account sia verificato e riprova</string>
     <string name="passwords_not_match">Le password non coincidono</string>
@@ -227,4 +227,7 @@
     <string name="vote_error">Errore imprevisto, riprova</string>
     <string name="wait_for_vote_result">Aggiunta votazione in corso</string>
     <string name="cannot_vote_your_own_review">Errore, non puoi votare per una tua recensione</string>
+    <string name="no_reviews_exists">Non esistono recensioni da mostrare</string>
+    <string name="user_reviews">Recensioni dell\'utente</string>
+    <string name="sign_up_help">Benvenuto nella schermata di registrazione. Riempi i campi sottostanti con le tue informazioni personali ed immetti una password di almeno 8 caratteri e contenente almeno un numero</string>
 </resources>

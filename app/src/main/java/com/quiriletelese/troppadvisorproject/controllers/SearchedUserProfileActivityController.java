@@ -3,6 +3,8 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.SearchedUserProfileActivity;
+import com.quiriletelese.troppadvisorproject.views.UserReviewsActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
 
@@ -26,13 +29,19 @@ import org.jetbrains.annotations.NotNull;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SearchedUserProfileActivityController {
+public class SearchedUserProfileActivityController implements View.OnClickListener {
 
     private SearchedUserProfileActivity searchedUserProfileActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
+    private User user;
 
     public SearchedUserProfileActivityController(SearchedUserProfileActivity searchedUserProfileActivity) {
         this.searchedUserProfileActivity = searchedUserProfileActivity;
+    }
+
+    @Override
+    public void onClick(View view) {
+        onClickHelper(view);
     }
 
     private void findUserByEmailHelper(VolleyCallBack volleyCallBack) {
@@ -53,13 +62,38 @@ public class SearchedUserProfileActivityController {
         });
     }
 
+    private void onClickHelper(View view) {
+        switch (view.getId()) {
+            case R.id.linear_layout_searched_user_reviews:
+                startUserReviewsActivity();
+                break;
+        }
+    }
+
+    public void setListenerOnViewComponents() {
+        getLinearLayoutUserReviews().setOnClickListener(this);
+    }
+
+    private void startUserReviewsActivity() {
+        if (user.getTotalReviews() > 0)
+            getContext().startActivity(createUserReviewsActivityIntent());
+        else showToastOnUiThred(R.string.no_reviews_exists);
+    }
+
+    private Intent createUserReviewsActivityIntent() {
+        Intent intentUserReviewsActivity = new Intent(getContext(), UserReviewsActivity.class);
+        intentUserReviewsActivity.putExtra(Constants.getId(), user.getId());
+        intentUserReviewsActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentUserReviewsActivity;
+    }
+
     private void volleyCallBackOnSuccess(Object object) {
         setProfileFields(object);
         initializeRecylerView(object);
     }
 
     public void setProfileFields(Object object) {
-        User user = (User) object;
+        user = (User) object;
         setToolbarTitle(user);
         setTextViewUserTitleText(user);
         setCircleImageViewUser(user);
@@ -178,6 +212,10 @@ public class SearchedUserProfileActivityController {
         getTextViewUserAvarageRating().setText(String.valueOf(getUserAvarageRating(user)));
     }
 
+    public LinearLayout getLinearLayoutUserReviews() {
+        return searchedUserProfileActivity.getLinearLayoutUserReviews();
+    }
+
     public RecyclerView getRecyclerViewBadgeProfile() {
         return searchedUserProfileActivity.getRecyclerViewSearchedUserBadgeProfile();
     }
@@ -221,5 +259,4 @@ public class SearchedUserProfileActivityController {
     private Double getUserAvarageRating(User user) {
         return user.getAvarageRating();
     }
-
 }

@@ -19,7 +19,7 @@ import java.util.Objects;
 public class SignUpActivity extends AppCompatActivity {
 
     private SignUpActivityController signUpActivityController;
-    private FloatingActionButton floatingActionButtonGoBack;
+    private FloatingActionButton floatingActionButtonGoBack, floatingActionButtonHelp;
     private TextInputLayout textInputLayoutEmail, textInputLayoutName, textInputLayoutLastName,
     textInputLayoutUsername, textInputLayoutPassword, textInputLayoutRepeatPassword;
     private Button buttonSignUp;
@@ -37,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void initializeViewComponents() {
         floatingActionButtonGoBack = findViewById(R.id.floating_action_button_go_back_sign_up_activity);
+        floatingActionButtonHelp = findViewById(R.id.floating_action_button_help_sign_up_activity);
         textInputLayoutEmail = findViewById(R.id.tex_input_layout_email_sign_up);
         textInputLayoutName = findViewById(R.id.text_input_layout_name_sign_up);
         textInputLayoutLastName = findViewById(R.id.text_input_layout_last_name_sign_up);
@@ -56,6 +57,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     public FloatingActionButton getFloatingActionButtonGoBack() {
         return floatingActionButtonGoBack;
+    }
+
+    public FloatingActionButton getFloatingActionButtonHelp() {
+        return floatingActionButtonHelp;
     }
 
     public TextInputLayout getTextInputLayoutEmail() {

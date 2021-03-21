@@ -79,7 +79,7 @@
     <string name="hotel_stars_filter_up_to">Hotel stars: Up to %1$d</string>
     <string name="name">Name</string>
     <string name="reviews">reviews</string>
-    <string name="user_reviews">User reviews</string>
+    <string name="users_reviews">User reviews</string>
     <string name="no_hotels_found_by_filter">"No hotels were found based on your search criteria "</string>
     <string name="field_cannot_be_empty">Field cannot be empty</string>
     <string name="login_error">An error occurred while logging in, please check your credentials or make sure your account is verified and try again</string>

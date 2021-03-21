@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -20,6 +21,7 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
     private CircleImageView circleImageViewSearchedUser;
     private TextView textViewSearchedUserTitle, textViewSearchedUserLevel, textViewSearchedUserNameLastname,
             textViewSearchedUserTotalReviews, textViewSearchedUserAvarageRating;
+    private LinearLayout linearLayoutUserReviews;
     private RecyclerView recyclerViewSearchedUserBadgeProfile;
 
     @Override
@@ -32,6 +34,7 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
         initializeViewComponents();
         initializeController();
+        setListenerOnViewComponents();
         findUserByEmail();
     }
 
@@ -52,11 +55,16 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
         textViewSearchedUserNameLastname = findViewById(R.id.text_view_searched_user_name_lastname);
         textViewSearchedUserTotalReviews = findViewById(R.id.text_view_searched_user_total_reviews);
         textViewSearchedUserAvarageRating = findViewById(R.id.text_view_searched_user_avarage_rating);
+        linearLayoutUserReviews = findViewById(R.id.linear_layout_searched_user_reviews);
         recyclerViewSearchedUserBadgeProfile = findViewById(R.id.recycler_view_searched_user_badge_profile);
     }
 
     public void initializeController() {
         searchedUserProfileActivityController = new SearchedUserProfileActivityController(this);
+    }
+
+    public void setListenerOnViewComponents() {
+        searchedUserProfileActivityController.setListenerOnViewComponents();
     }
 
     private void findUserByEmail() {
@@ -85,6 +93,10 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public TextView getTextViewSearchedUserAvarageRating() {
         return textViewSearchedUserAvarageRating;
+    }
+
+    public LinearLayout getLinearLayoutUserReviews() {
+        return linearLayoutUserReviews;
     }
 
     public RecyclerView getRecyclerViewSearchedUserBadgeProfile() {

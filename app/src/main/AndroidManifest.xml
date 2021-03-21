@@ -52,14 +52,14 @@
             android:name=".views.AttractionsListActivity"
             android:label="@string/attractions"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.AttractionDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.SeeReviewsActivity"
-            android:label="@string/user_reviews"
+            android:label="@string/users_reviews"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -71,12 +71,12 @@
         <activity
             android:name=".views.SignUpActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeLogin"
+            android:theme="@style/AppThemeMaterial.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".views.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeLogin"
+            android:theme="@style/AppThemeMaterial.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".views.LeaderboardActivity"
@@ -108,10 +108,14 @@
         <activity
             android:name=".views.ProfileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.HomeActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.UserReviewsActivity"
+            android:label="@string/user_reviews"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

@@ -8,10 +8,19 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/text_view_title"
+        android:id="@+id/text_view_user_review_attraction_name"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_view_user_review_title"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -23,7 +32,7 @@
         android:orientation="horizontal">
 
         <RatingBar
-            android:id="@+id/rating_bar_reviews"
+            android:id="@+id/rating_bar_user_review"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +43,7 @@
             android:theme="@style/RatingBarGreen" />
 
         <TextView
-            android:id="@+id/text_view_date"
+            android:id="@+id/text_view_date_user_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -54,7 +63,7 @@
         tools:ignore="RtlSymmetry">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circle_image_view_review_user"
+            android:id="@+id/circle_image_view_user_review_user"
             android:layout_width="40dp"
             android:layout_height="40dp" />
 
@@ -65,7 +74,7 @@
             android:paddingStart="15dp">
 
             <TextView
-                android:id="@+id/txt_view_review_user"
+                android:id="@+id/txt_view_user_review_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -74,7 +83,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
-                android:id="@+id/txt_view_review_user_title"
+                android:id="@+id/txt_view_user_review_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -85,7 +94,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
-        android:id="@+id/text_view_review_body"
+        android:id="@+id/text_view_user_review_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
@@ -109,27 +118,27 @@
             android:text="@string/was_it_helpful" />
 
         <ImageView
-            android:id="@+id/image_view_thumb_up"
+            android:id="@+id/image_view_thumb_up_user_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:src="@drawable/icon_thumb_up" />
 
         <TextView
-            android:id="@+id/text_view_total_thumbs_up"
+            android:id="@+id/text_view_total_thumbs_up_user_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp" />
 
         <ImageView
-            android:id="@+id/image_view_thumb_down"
+            android:id="@+id/image_view_thumb_down_user_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:src="@drawable/icon_thumb_down" />
 
         <TextView
-            android:id="@+id/text_view_total_thumbs_down"
+            android:id="@+id/text_view_total_thumbs_down_user_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

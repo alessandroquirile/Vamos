@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -66,6 +67,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
     private void setFieldsOnBindViewHolder(ViewHolder viewHolder, int position) {
         setImage(viewHolder, position);
+        viewHolder.ratingBarAttractionsList.setRating(attractions.get(position).getAvarageRating().floatValue());
         viewHolder.textViewAccomodationName.setText(attractions.get(position).getName());
         viewHolder.textViewAccomodationReview.setText(createAvarageRatingString(attractions.get(position)));
         viewHolder.textViewAccomodationAddress.setText(createAddressString(attractions.get(position)));
@@ -112,9 +114,9 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Attraction attraction) {
         if (attraction.getTotalReviews().intValue() == 1)
-            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.review) + ")";
+            return attraction.getTotalReviews() + " " + getString(R.string.review);
         else
-            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+            return attraction.getTotalReviews() + " " + getString(R.string.reviews) ;
     }
 
     private Resources getResources() {
@@ -133,6 +135,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RelativeLayout relativeLayoutAccomodation;
         private ImageView imageViewAccomodation;
+        private RatingBar ratingBarAttractionsList;
         private TextView textViewAccomodationName, textViewAccomodationReview, textViewAccomodationAddress;
         private Button buttonWriteReview, buttonSeeAccomodationOnMap;
 
@@ -150,6 +153,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         private void initializeComponents() {
             relativeLayoutAccomodation = itemView.findViewById(R.id.relative_layout_main);
             imageViewAccomodation = itemView.findViewById(R.id.image_view_accomodation_list);
+            ratingBarAttractionsList = itemView.findViewById(R.id.rating_bar_attractions_list);
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
             textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);

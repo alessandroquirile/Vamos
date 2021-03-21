@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -13,15 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
-import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
-
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     private CircleImageView circleImageViewUser;
     private TextView textViewUserTitle, textViewUserLevel, textViewUserNameLastname,
             textViewUsername, textViewUserTotalReviews, textViewUserAvarageRating;
+    private LinearLayout linearLayoutUserReviews;
     private RecyclerView recyclerViewBadgeProfile;
     private View viewNoLoginProfileError;
 
@@ -51,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         initializeViewComponents();
         initializeController();
+        setListenerOnViewComponents();
         findUserByEmail();
         checkLogin();
     }
@@ -83,6 +80,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
             case R.id.login_profile:
                 startLoginActivity();
                 break;
@@ -98,9 +98,6 @@ public class ProfileActivity extends AppCompatActivity {
             case R.id.leaderboard:
                 startLeaderboardActivity();
                 break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
         }
     }
 
@@ -112,12 +109,17 @@ public class ProfileActivity extends AppCompatActivity {
         textViewUsername = findViewById(R.id.text_view_username);
         textViewUserTotalReviews = findViewById(R.id.text_view_user_total_reviews);
         textViewUserAvarageRating = findViewById(R.id.text_view_user_avarage_rating);
+        linearLayoutUserReviews = findViewById(R.id.linear_layout_user_reviews);
         recyclerViewBadgeProfile = findViewById(R.id.recycler_view_badge_profile);
         viewNoLoginProfileError = findViewById(R.id.no_login_profile_error_layout);
     }
 
     public void initializeController() {
         profileFragmentController = new ProfileFragmentController(this);
+    }
+
+    public void setListenerOnViewComponents() {
+        profileFragmentController.setListenerOnViewComponents();
     }
 
     private void findUserByEmail() {
@@ -182,6 +184,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public TextView getTextViewUserAvarageRating() {
         return textViewUserAvarageRating;
+    }
+
+    public LinearLayout getLinearLayoutUserReviews() {
+        return linearLayoutUserReviews;
     }
 
     public RecyclerView getRecyclerViewBadgeProfile() {

@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginActivityController loginActivityController;
     private TextInputLayout textInputLayoutKey, textInputLayoutPassword;
     private Button buttonLogin;
-    private TextView textViewSignIn, textViewCancelLogin;
+    private TextView textViewForgotPassword, textViewSignIn, textViewCancelLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         textInputLayoutKey = findViewById(R.id.text_input_layout_key_login);
         textInputLayoutPassword = findViewById(R.id.text_input_layout_password_login);
         buttonLogin = findViewById(R.id.button_login);
+        textViewForgotPassword = findViewById(R.id.text_view_forgot_password);
         textViewSignIn = findViewById(R.id.text_view_sign_in);
         textViewCancelLogin = findViewById(R.id.text_view_cancel_login);
     }
@@ -59,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public Button getButtonLogin() {
         return buttonLogin;
+    }
+
+    public TextView getTextViewForgotPassword() {
+        return textViewForgotPassword;
     }
 
     public TextView getTextViewSignIn() {

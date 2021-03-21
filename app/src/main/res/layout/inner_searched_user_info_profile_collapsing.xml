@@ -3,68 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_view_searched_user_title"
-                style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textStyle="bold" />
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circle_image_view_searched_user"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
                 android:src="@drawable/user_profile_no_photo" />
 
             <TextView
                 android:id="@+id/text_view_searched_user_name_lastname"
-                style="@style/TextAppearance.AppCompat.Medium"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/text_view_searched_user_username"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:ellipsize="end"-->
-<!--                android:gravity="center"-->
-<!--                android:maxLines="1"-->
-<!--                android:textStyle="bold" />-->
+            <TextView
+                android:id="@+id/text_view_searched_user_title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingTop="5dp"
+                android:textColor="@android:color/tab_indicator_text"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_view_searched_user_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:drawablePadding="10dp"
                 android:ellipsize="end"
-                android:gravity="center"
                 android:maxLines="1"
-                android:textStyle="bold"
+                android:paddingTop="5dp"
+                android:textColor="@color/black"
                 app:drawableStartCompat="@drawable/icon_star_yellow" />
 
         </LinearLayout>
@@ -78,6 +70,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/linear_layout_searched_user_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

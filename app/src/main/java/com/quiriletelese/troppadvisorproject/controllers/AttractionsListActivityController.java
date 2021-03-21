@@ -57,6 +57,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private int page = 0;
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
+    private boolean hasToShowBottomSheetFilter = true;
 
     public AttractionsListActivityController(AttractionsListActivity attractionsListActivity) {
         this.attractionsListActivity = attractionsListActivity;
@@ -271,10 +272,11 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         if (!checkTapTargetBooleanPreferences())
             setTapTargetSequence();
         else {
-            final Handler handler = new Handler(Looper.getMainLooper());
-            handler.postDelayed(() -> {
-                showBottomSheetFilters();
-            }, 200);
+            if (hasToShowBottomSheetFilter) {
+                hasToShowBottomSheetFilter = false;
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(this::showBottomSheetFilters, 200);
+            }
         }
     }
 
@@ -648,6 +650,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
                     public void onSequenceFinish() {
                         writeTapTargetBooleanPreferences();
                         showBottomSheetFilters();
+                        hasToShowBottomSheetFilter = false;
                     }
 
                     @Override

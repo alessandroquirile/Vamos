@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -15,20 +13,20 @@ import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
-import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
+import com.quiriletelese.troppadvisorproject.views.UserReviewsActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-public class ReadReviewThumbController {
+public class ReadUserReviewsThumbController {
 
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private final SeeReviewsActivity seeReviewsActivity;
+    private final UserReviewsActivity userReviewsActivity;
     private AlertDialog alertDialog;
 
-    public ReadReviewThumbController(SeeReviewsActivity seeReviewsActivity) {
-        this.seeReviewsActivity = seeReviewsActivity;
+    public ReadUserReviewsThumbController(UserReviewsActivity userReviewsActivity) {
+        this.userReviewsActivity = userReviewsActivity;
     }
 
     private void updateVotersHelper(VolleyCallBack volleyCallBack, String id, int vote) {
@@ -67,7 +65,7 @@ public class ReadReviewThumbController {
     @NotNull
     @Contract(" -> new")
     private AlertDialog.Builder createAlertDialogBuilder() {
-        return new AlertDialog.Builder(seeReviewsActivity);
+        return new AlertDialog.Builder(userReviewsActivity);
     }
 
     private void dismissDialog() {
@@ -75,7 +73,7 @@ public class ReadReviewThumbController {
     }
 
     private void startLoginActivity() {
-        seeReviewsActivity.startActivity(new Intent(getContext(), LoginActivity.class));
+        userReviewsActivity.startActivity(new Intent(getContext(), LoginActivity.class));
     }
 
     private String getEmail() {
@@ -83,15 +81,15 @@ public class ReadReviewThumbController {
     }
 
     private UserSharedPreferences createUserSharedPreferences() {
-        return new UserSharedPreferences(seeReviewsActivity.getApplicationContext());
+        return new UserSharedPreferences(userReviewsActivity.getApplicationContext());
     }
 
     private Context getContext() {
-        return seeReviewsActivity.getApplicationContext();
+        return userReviewsActivity.getApplicationContext();
     }
 
     private Resources getResources() {
-        return seeReviewsActivity.getResources();
+        return userReviewsActivity.getResources();
     }
 
     @NotNull
@@ -108,16 +106,15 @@ public class ReadReviewThumbController {
     }
 
     public void showToastOnUiThred(int stringId) {
-        seeReviewsActivity.runOnUiThread(() ->
+        userReviewsActivity.runOnUiThread(() ->
                 Toast.makeText(getContext(), getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private String getUserEmail(){
-        return new UserSharedPreferences(seeReviewsActivity).getStringSharedPreferences(Constants.getEmail());
+        return new UserSharedPreferences(userReviewsActivity).getStringSharedPreferences(Constants.getEmail());
     }
 
     public boolean isSameUser(String email){
         return email.equals(getUserEmail());
     }
-
 }

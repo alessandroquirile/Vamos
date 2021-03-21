@@ -15,8 +15,10 @@ public class Review implements Serializable {
     private Double rating;
     private User user;
     private Set<String> voters;
-    private Long totalVotes;
+    private Long totalThumbUp;
+    private Long totalThumbDown;
     private String accomodationId;
+    private String accomodationName;
     private String addedDate;
     private String lastModificationDate;
 
@@ -68,12 +70,20 @@ public class Review implements Serializable {
         this.voters = voters;
     }
 
-    public Long getTotalVotes() {
-        return totalVotes;
+    public Long getTotalThumbUp() {
+        return totalThumbUp;
     }
 
-    public void setTotalVotes(Long totalVotes) {
-        this.totalVotes = totalVotes;
+    public void setTotalThumbUp(Long totalThumbUp) {
+        this.totalThumbUp = totalThumbUp;
+    }
+
+    public Long getTotalThumbDown() {
+        return totalThumbDown;
+    }
+
+    public void setTotalThumbDown(Long totalThumbDown) {
+        this.totalThumbDown = totalThumbDown;
     }
 
     public String getAccomodationId() {
@@ -82,6 +92,14 @@ public class Review implements Serializable {
 
     public void setAccomodationId(String accomodationId) {
         this.accomodationId = accomodationId;
+    }
+
+    public String getAccomodationName() {
+        return accomodationName;
+    }
+
+    public void setAccomodationName(String accomodationName) {
+        this.accomodationName = accomodationName;
     }
 
     public String getAddedDate() {

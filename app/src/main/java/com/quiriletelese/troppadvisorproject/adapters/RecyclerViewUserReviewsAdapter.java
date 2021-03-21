@@ -2,8 +2,6 @@ package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.media.Rating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.ReadReviewThumbController;
+import com.quiriletelese.troppadvisorproject.controllers.ReadUserReviewsThumbController;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
-import com.quiriletelese.troppadvisorproject.views.SearchedUserProfileActivity;
-import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
+import com.quiriletelese.troppadvisorproject.views.UserReviewsActivity;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,31 +27,27 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * @author Alessandro Quirile, Mauro Telese
- */
-
-public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<RecyclerViewReadReviewsAdapter.ViewHolder> {
+public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<RecyclerViewUserReviewsAdapter.ViewHolder> {
 
     private final Context context;
-    private final SeeReviewsActivity seeReviewsActivity;
+    private final UserReviewsActivity userReviewsActivity;
     private final List<Review> reviews;
 
-    public RecyclerViewReadReviewsAdapter(Context context, SeeReviewsActivity seeReviewsActivity, List<Review> reviews) {
+    public RecyclerViewUserReviewsAdapter(Context context, UserReviewsActivity userReviewsActivity, List<Review> reviews) {
         this.context = context;
-        this.seeReviewsActivity = seeReviewsActivity;
+        this.userReviewsActivity = userReviewsActivity;
         this.reviews = reviews;
     }
 
     @NonNull
     @Override
-    public RecyclerViewReadReviewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_see_reviews_item, parent, false);
-        return new ViewHolder(view, seeReviewsActivity);
+        return new RecyclerViewUserReviewsAdapter.ViewHolder(view, userReviewsActivity);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewReadReviewsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         setFieldsOnBindViewHolder(holder, position);
     }
 
@@ -67,11 +60,12 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         this.reviews.addAll(reviews);
     }
 
-    private void setFieldsOnBindViewHolder(@NotNull ViewHolder viewHolder, int position) {
+    private void setFieldsOnBindViewHolder(@NotNull RecyclerViewUserReviewsAdapter.ViewHolder viewHolder, int position) {
+        viewHolder.textViewAccomodationName.setText(reviews.get(position).getAccomodationName());
         setImage(viewHolder, position);
         viewHolder.ratingBarReviews.setRating(reviews.get(position).getRating().floatValue());
         viewHolder.textViewTitle.setText(reviews.get(position).getTitle());
-        viewHolder.textViewDate.setText(reviews.get(position).getAddedDate() );
+        viewHolder.textViewDate.setText(reviews.get(position).getAddedDate());
         setUserName(viewHolder, position);
         viewHolder.textViewUserTitle.setText(reviews.get(position).getUser().getChosenTitle());
         viewHolder.textViewReviewBody.setText(reviews.get(position).getDescription());
@@ -85,7 +79,7 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void setImage(RecyclerViewReadReviewsAdapter.ViewHolder viewHolder, int position) {
+    private void setImage(RecyclerViewUserReviewsAdapter.ViewHolder viewHolder, int position) {
         if (hasImage(position)) {
             Picasso.with(context).load(getUserImage(position))
                     .fit()
@@ -105,25 +99,26 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         return reviews.get(position).getUserImage();
     }
 
-    private void setUserName(ViewHolder viewHolder, int position) {
+    private void setUserName(RecyclerViewUserReviewsAdapter.ViewHolder viewHolder, int position) {
         viewHolder.textViewUser.setText(createUserNameString(reviews.get(position).getUser()));
     }
 
-    private void handleThumbsButton(ViewHolder viewHolder, int position) {
+    private void handleThumbsButton(RecyclerViewUserReviewsAdapter.ViewHolder viewHolder, int position) {
         for (String user : reviews.get(position).getVoters()) {
             String localUserEmail = getLocalUserEmail();
             String[] voter = user.split("/", 0);
-            if (voter[0].equals(localUserEmail))
+            if (voter[0].equals(localUserEmail)) {
                 changeThumbsColor(viewHolder, voter[voter.length - 1]);
+            }
         }
     }
 
-    private void handleThumbsTextViews(ViewHolder viewHolder, int position) {
+    private void handleThumbsTextViews(RecyclerViewUserReviewsAdapter.ViewHolder viewHolder, int position) {
         viewHolder.textViewToatalThumbsUp.setText(String.valueOf(reviews.get(position).getTotalThumbUp()));
         viewHolder.textViewToatalThumbsDown.setText(String.valueOf(reviews.get(position).getTotalThumbDown()));
     }
 
-    private void changeThumbsColor(ViewHolder viewHolder, String vote) {
+    private void changeThumbsColor(RecyclerViewUserReviewsAdapter.ViewHolder viewHolder, String vote) {
         switch (vote) {
             case "Y":
                 viewHolder.imageViewThumbUp.setImageDrawable(context.getDrawable(R.drawable.icon_thumb_up_green));
@@ -139,23 +134,24 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         return new UserSharedPreferences(context).getStringSharedPreferences(Constants.getEmail());
     }
 
-    private void disableThumbsIcon(ViewHolder viewHolder) {
+    private void disableThumbsIcon(RecyclerViewUserReviewsAdapter.ViewHolder viewHolder) {
         viewHolder.imageViewThumbUp.setClickable(false);
         viewHolder.imageViewThumbDown.setClickable(false);
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final SeeReviewsActivity seeReviewsActivity;
+        private final UserReviewsActivity userReviewsActivity;
         private CircleImageView circleImageViewUser;
         private RatingBar ratingBarReviews;
-        private TextView textViewTitle, textViewDate, textViewUser, textViewUserTitle,
+        private TextView textViewAccomodationName, textViewTitle, textViewDate, textViewUser, textViewUserTitle,
                 textViewReviewBody, textViewToatalThumbsUp, textViewToatalThumbsDown;
         private ImageView imageViewThumbUp, imageViewThumbDown;
-        private ReadReviewThumbController readReviewThumbController;
+        private ReadUserReviewsThumbController readUserReviewsThumbController;
 
-        public ViewHolder(@NonNull View itemView, SeeReviewsActivity seeReviewsActivity) {
+        public ViewHolder(@NonNull View itemView, UserReviewsActivity userReviewsActivity) {
             super(itemView);
-            this.seeReviewsActivity = seeReviewsActivity;
+            this.userReviewsActivity = userReviewsActivity;
             initializeComponents();
             initializeController();
             setListenerOnComponents();
@@ -168,9 +164,6 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
 
         private void onClickHelper(View view) {
             switch (view.getId()) {
-                case R.id.circle_image_view_review_user:
-                    startUserActivity();
-                    break;
                 case R.id.image_view_thumb_up:
                     doUpdateVoters(1);
                     break;
@@ -181,21 +174,22 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         }
 
         private void initializeComponents() {
-            circleImageViewUser = itemView.findViewById(R.id.circle_image_view_review_user);
-            ratingBarReviews = itemView.findViewById(R.id.rating_bar_reviews);
-            textViewTitle = itemView.findViewById(R.id.text_view_title);
-            textViewDate = itemView.findViewById(R.id.text_view_date);
-            textViewUser = itemView.findViewById(R.id.txt_view_review_user);
-            textViewUserTitle = itemView.findViewById(R.id.txt_view_review_user_title);
-            textViewReviewBody = itemView.findViewById(R.id.text_view_review_body);
-            textViewToatalThumbsUp = itemView.findViewById(R.id.text_view_total_thumbs_up);
-            textViewToatalThumbsDown = itemView.findViewById(R.id.text_view_total_thumbs_down);
-            imageViewThumbUp = itemView.findViewById(R.id.image_view_thumb_up);
-            imageViewThumbDown = itemView.findViewById(R.id.image_view_thumb_down);
+            circleImageViewUser = itemView.findViewById(R.id.circle_image_view_user_review_user);
+            ratingBarReviews = itemView.findViewById(R.id.rating_bar_user_review);
+            textViewAccomodationName = itemView.findViewById(R.id.text_view_user_review_attraction_name);
+            textViewTitle = itemView.findViewById(R.id.text_view_user_review_title);
+            textViewDate = itemView.findViewById(R.id.text_view_date_user_review);
+            textViewUser = itemView.findViewById(R.id.txt_view_user_review_name);
+            textViewUserTitle = itemView.findViewById(R.id.txt_view_user_review_title);
+            textViewReviewBody = itemView.findViewById(R.id.text_view_user_review_body);
+            textViewToatalThumbsUp = itemView.findViewById(R.id.text_view_total_thumbs_up_user_review);
+            textViewToatalThumbsDown = itemView.findViewById(R.id.text_view_total_thumbs_down_user_review);
+            imageViewThumbUp = itemView.findViewById(R.id.image_view_thumb_up_user_review);
+            imageViewThumbDown = itemView.findViewById(R.id.image_view_thumb_down_user_review);
         }
 
         private void initializeController() {
-            readReviewThumbController = new ReadReviewThumbController(this.seeReviewsActivity);
+            readUserReviewsThumbController = new ReadUserReviewsThumbController(this.userReviewsActivity);
         }
 
         private void setListenerOnComponents() {
@@ -205,11 +199,11 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         }
 
         private boolean hasLogged() {
-            return readReviewThumbController.hasLogged();
+            return readUserReviewsThumbController.hasLogged();
         }
 
         private void showLoginDialog() {
-            readReviewThumbController.showLoginDialog();
+            readUserReviewsThumbController.showLoginDialog();
         }
 
         private void doUpdateVoters(int vote) {
@@ -219,19 +213,8 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
                 updateVoters(vote);
         }
 
-        private void startUserActivity() {
-            context.startActivity(createUserActivityIntent());
-        }
-
-        private Intent createUserActivityIntent() {
-            Intent intentUserActivity = new Intent(context, SearchedUserProfileActivity.class);
-            intentUserActivity.putExtra(Constants.getEmail(), reviews.get(this.getAdapterPosition()).getUser().getEmail());
-            intentUserActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return intentUserActivity;
-        }
-
         private boolean isSameUser() {
-            return readReviewThumbController.isSameUser(reviews.get(this.getAdapterPosition()).getUser().getEmail());
+            return readUserReviewsThumbController.isSameUser(reviews.get(this.getAdapterPosition()).getUser().getEmail());
         }
 
         private void updateVoters(int vote) {
@@ -239,18 +222,18 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
                 changeIconColor(vote);
                 handleTotalThumbsCount(vote);
                 disableThumbsIcon();
-                readReviewThumbController.updateVoters(reviews.get(this.getAdapterPosition()).getId(), vote);
+                readUserReviewsThumbController.updateVoters(reviews.get(this.getAdapterPosition()).getId(), vote);
             } else
-                readReviewThumbController.showToastOnUiThred(R.string.cannot_vote_your_own_review);
+                readUserReviewsThumbController.showToastOnUiThred(R.string.cannot_vote_your_own_review);
         }
 
         private void changeIconColor(int vote) {
             switch (vote) {
                 case 1:
-                    imageViewThumbUp.setImageDrawable(seeReviewsActivity.getResources().getDrawable(R.drawable.icon_thumb_up_green));
+                    imageViewThumbUp.setImageDrawable(userReviewsActivity.getResources().getDrawable(R.drawable.icon_thumb_up_green));
                     break;
                 case -1:
-                    imageViewThumbDown.setImageDrawable(seeReviewsActivity.getResources().getDrawable(R.drawable.icon_thumb_down_green));
+                    imageViewThumbDown.setImageDrawable(userReviewsActivity.getResources().getDrawable(R.drawable.icon_thumb_down_green));
                     break;
             }
         }
@@ -270,6 +253,5 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
                     break;
             }
         }
-
     }
 }

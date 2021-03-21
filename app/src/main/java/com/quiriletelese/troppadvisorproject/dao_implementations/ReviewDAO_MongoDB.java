@@ -56,6 +56,11 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
     }
 
     @Override
+    public void findUserReviews(VolleyCallBack volleyCallBack, String userId, Context context, int page, int size) {
+        findUserReviewsVolley(volleyCallBack, userId, context, page, size);
+    }
+
+    @Override
     public void updateVoters(VolleyCallBack volleyCallBack, String id, String email, int vote, Context context) {
         updateVotersVolley(volleyCallBack, id, email, vote, context);
     }
@@ -151,6 +156,24 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
+    private void findUserReviewsVolley(VolleyCallBack volleyCallBack, String userId, Context context, int page, int size) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String URL = createFindUserReviewsUrl(userId, page, size);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response ->
+                volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
+
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.start();
+        requestQueue.add(jsonObjectRequest);
+    }
+
     private void updateVotersVolley(VolleyCallBack volleyCallBack, String id, String email, int vote, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createUpdateVotersUrl(id, email, vote);
@@ -194,6 +217,15 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
     private String createFindAccomodationReviewsUrl(String id, int page, int size) {
         String URL = Constants.getBaseUrl() + "review/find-accomodation-reviews?";
         URL = URL.concat("id=" + id);
+        URL = URL.concat("&page=" + page);
+        URL = URL.concat("&size=" + size);
+        return URL;
+    }
+
+    @NotNull
+    private String createFindUserReviewsUrl(String id, int page, int size) {
+        String URL = Constants.getBaseUrl() + "review/find-user-reviews?";
+        URL = URL.concat("userId=" + id);
         URL = URL.concat("&page=" + page);
         URL = URL.concat("&size=" + size);
         return URL;

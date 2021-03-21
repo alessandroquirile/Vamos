@@ -23,6 +23,7 @@ import com.quiriletelese.troppadvisorproject.models.Account;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
+import com.quiriletelese.troppadvisorproject.views.ResetPasswordActivity;
 import com.quiriletelese.troppadvisorproject.views.SignUpActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -102,6 +103,9 @@ public class LoginActivityController implements View.OnClickListener {
             case R.id.button_login:
                 checkUserInformation();
                 break;
+            case R.id.text_view_forgot_password:
+                startForgotPasswordActivity();
+                break;
             case R.id.text_view_sign_in:
                 startSignUpActivity();
                 break;
@@ -113,6 +117,7 @@ public class LoginActivityController implements View.OnClickListener {
 
     public void setListenerOnViewComponents() {
         getButtonLogin().setOnClickListener(this);
+        getTextViewForgotPassword().setOnClickListener(this);
         getTextViewSignIn().setOnClickListener(this);
         getTextViewCancelLogin().setOnClickListener(this);
     }
@@ -130,9 +135,21 @@ public class LoginActivityController implements View.OnClickListener {
         }
     }
 
+    public void startForgotPasswordActivity() {
+        Intent intentForgotPasswordActivity = createForgotPasswordIntent();
+        getContext().startActivity(intentForgotPasswordActivity);
+    }
+
     public void startSignUpActivity() {
         Intent intentSignUpActivity = createSignUpActivityIntent();
         getContext().startActivity(intentSignUpActivity);
+    }
+
+    @NotNull
+    private Intent createForgotPasswordIntent() {
+        Intent intentSignUpActivity = new Intent(getContext(), ResetPasswordActivity.class);
+        intentSignUpActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intentSignUpActivity;
     }
 
     @NotNull
@@ -227,6 +244,10 @@ public class LoginActivityController implements View.OnClickListener {
 
     private Button getButtonLogin() {
         return loginActivity.getButtonLogin();
+    }
+
+    public TextView getTextViewForgotPassword() {
+        return loginActivity.getTextViewForgotPassword();
     }
 
     private TextView getTextViewSignIn() {

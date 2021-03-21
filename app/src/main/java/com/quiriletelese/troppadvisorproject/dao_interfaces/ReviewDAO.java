@@ -19,6 +19,8 @@ public interface ReviewDAO {
 
     void findAccomodationReviews(VolleyCallBack volleyCallBack, String id, Context context, int page, int size);
 
+    void findUserReviews(VolleyCallBack volleyCallBack, String userId, Context context, int page, int size);
+
     void updateVoters(VolleyCallBack volleyCallBack, String id, String email, int vote, Context context);
 
 }

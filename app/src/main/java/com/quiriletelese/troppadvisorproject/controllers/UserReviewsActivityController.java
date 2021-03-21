@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewReadReviewsAdapter;
+import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewUserReviewsAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
-import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
+import com.quiriletelese.troppadvisorproject.views.UserReviewsActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -27,28 +28,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/**
- * @author Alessandro Quirile, Mauro Telese
- */
+public class UserReviewsActivityController {
 
-public class SeeReviewsActivityController {
-
-    private final SeeReviewsActivity seeReviewsActivity;
+    private final UserReviewsActivity userReviewsActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private RecyclerViewReadReviewsAdapter recyclerViewReadReviewsAdapter;
+    private RecyclerViewUserReviewsAdapter recyclerViewUserReviewsAdapter;
     private int page = 0;
 
-    public SeeReviewsActivityController(SeeReviewsActivity seeReviewsActivity) {
-        this.seeReviewsActivity = seeReviewsActivity;
+    public UserReviewsActivityController(UserReviewsActivity userReviewsActivity) {
+        this.userReviewsActivity = userReviewsActivity;
     }
 
-    private void findAccomodationReviewsHelper(VolleyCallBack volleyCallBack) {
+    private void findUserReviewsHelper(VolleyCallBack volleyCallBack) {
         int size = 30;
-        getReviewDAO().findAccomodationReviews(volleyCallBack, getAccomodationId(), getContext(), page, size);
+        getReviewDAO().findUserReviews(volleyCallBack, getUserId(), getContext(), page, size);
     }
 
-    private void findAccomodationReviews() {
-        findAccomodationReviewsHelper(new VolleyCallBack() {
+    private void findUserReviews() {
+        findUserReviewsHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
                 initializeRecyclerViewOnSuccess((List<Review>) object);
@@ -63,7 +60,7 @@ public class SeeReviewsActivityController {
 
     private void loadMoreAccomodationReviews() {
         page++;
-        findAccomodationReviewsHelper(new VolleyCallBack() {
+        findUserReviewsHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
                 addNewReviewsToList((List<Review>) object);
@@ -77,14 +74,14 @@ public class SeeReviewsActivityController {
     }
 
     public void intializeRecyclerView() {
-        findAccomodationReviews();
+        findUserReviews();
     }
 
     private void initializeRecyclerViewOnSuccess(List<Review> reviews) {
         LinearLayoutManager linearLayoutManager = createLinearLayoutManager();
-        recyclerViewReadReviewsAdapter = createRecyclerViewAdapter(reviews);
+        recyclerViewUserReviewsAdapter = createRecyclerViewAdapter(reviews);
         getShimmerRecyclerViewSeeReviews().setLayoutManager(linearLayoutManager);
-        getShimmerRecyclerViewSeeReviews().setAdapter(recyclerViewReadReviewsAdapter);
+        getShimmerRecyclerViewSeeReviews().setAdapter(recyclerViewUserReviewsAdapter);
     }
 
     public void initializeRecyclerViewsFakeContent() {
@@ -104,8 +101,8 @@ public class SeeReviewsActivityController {
 
     @NotNull
     @Contract("_ -> new")
-    private RecyclerViewReadReviewsAdapter createRecyclerViewAdapter(List<Review> reviews) {
-        return new RecyclerViewReadReviewsAdapter(getContext(), seeReviewsActivity, reviews);
+    private RecyclerViewUserReviewsAdapter createRecyclerViewAdapter(List<Review> reviews) {
+        return new RecyclerViewUserReviewsAdapter(getContext(), userReviewsActivity, reviews);
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
@@ -128,8 +125,8 @@ public class SeeReviewsActivityController {
     }
 
     private void showToastOnUiThread(int stringId) {
-        seeReviewsActivity.runOnUiThread(() ->
-                Toast.makeText(seeReviewsActivity, getString(stringId), Toast.LENGTH_SHORT).show());
+        userReviewsActivity.runOnUiThread(() ->
+                Toast.makeText(userReviewsActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
 
     private void loadMoreReviews() {
@@ -138,8 +135,8 @@ public class SeeReviewsActivityController {
     }
 
     private void addNewReviewsToList(List<Review> reviews) {
-        recyclerViewReadReviewsAdapter.addListItems(reviews);
-        recyclerViewReadReviewsAdapter.notifyDataSetChanged();
+        recyclerViewUserReviewsAdapter.addListItems(reviews);
+        recyclerViewUserReviewsAdapter.notifyDataSetChanged();
         setProgressBarLoadMoreVisibility(View.INVISIBLE);
     }
 
@@ -177,16 +174,9 @@ public class SeeReviewsActivityController {
         getProgressBarLoadMore().setVisibility(visibility);
     }
 
-    public void setToolbarSubtitle() {
-        getSupportActionBar().setSubtitle(getAccomodationName());
-    }
 
-    private String getAccomodationId() {
-        return seeReviewsActivity.getIntent().getStringExtra(Constants.getId());
-    }
-
-    private String getAccomodationName() {
-        return seeReviewsActivity.getIntent().getStringExtra(Constants.getAccomodationName());
+    private String getUserId() {
+        return userReviewsActivity.getIntent().getStringExtra(Constants.getId());
     }
 
     private ReviewDAO getReviewDAO() {
@@ -197,24 +187,20 @@ public class SeeReviewsActivityController {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
-    private ActionBar getSupportActionBar(){
-        return seeReviewsActivity.getSupportActionBar();
-    }
-
     private ProgressBar getProgressBarLoadMore(){
-        return seeReviewsActivity.getProgressBarLoadMore();
+        return userReviewsActivity.getProgressBarLoadMore();
     }
 
     private ShimmerRecyclerView getShimmerRecyclerViewSeeReviews() {
-        return seeReviewsActivity.getShimmerRecyclerViewSeeReviews();
+        return userReviewsActivity.getShimmerRecyclerViewSeeReviews();
     }
 
     private Context getContext() {
-        return seeReviewsActivity.getApplicationContext();
+        return userReviewsActivity.getApplicationContext();
     }
 
     private Resources getResources() {
-        return seeReviewsActivity.getResources();
+        return userReviewsActivity.getResources();
     }
 
     @NotNull
