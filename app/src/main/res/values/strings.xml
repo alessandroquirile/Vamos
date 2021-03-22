@@ -31,7 +31,7 @@
     <string name="what">Cosa:</string>
     <string name="price_search_page">Prezzo: Qualsiasi</string>
     <string name="distance_filter_page">Distanza: Fino a 1 km</string>
-    <string name="default_distance_filter_page">Distanza: Fino a 5 km</string>
+    <string name="default_distance_filter_page">Distanza: Fino a 10 km</string>
     <string name="rank_search_page">Voto medio: Qualsiasi</string>
     <string name="see_results">Vedi risultati</string>
     <string name="current_position">Posizione attuale</string>
