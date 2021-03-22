@@ -210,7 +210,9 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
     }
 
     private void setTextViewUserAvarageRatingText(User user) {
-        getTextViewUserAvarageRating().setText(String.valueOf(getUserAvarageRating(user)));
+        //getTextViewUserAvarageRating().setText(String.valueOf(getUserAvarageRating(user)));
+        double roundOff = Math.round(Double.parseDouble(String.valueOf(getUserAvarageRating(user))) * 100.0) / 100.0;
+        getTextViewUserAvarageRating().setText(String.valueOf(roundOff));
     }
 
     private TextView getTextViewUserReviewsLabel() {
