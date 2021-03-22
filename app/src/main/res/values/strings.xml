@@ -213,8 +213,6 @@
     <string name="view_pager_tap_description">Fai swipe per visualizzare le immagini di questa attrazione</string>
     <string name="write_review_tap_title">Recensisci</string>
     <string name="write_review_tap_description">Cliccando su questo pulsante verrai reindirizzato alla pagina per rilasciare una recensione, se hai già un account</string>
-    <string name="total_reviews_tap_title">Recensioni totali</string>
-    <string name="total_reviews_tap_description">Qui puoi visualizzare il numero totale delle recensioni scritte per questa attrazione. Se ce n\'è già qualcuna, ne verranno mostrate un paio come anteprima</string>
     <string name="avarage_attraction_rating_tap_description">Questo campo ti mostra il voto medio che questa attrazione ha totalizzato tramite le recensioni degli utenti</string>
     <string name="pick_image_tap_title">Scegli immagine</string>
     <string name="pick_image_tap_description">Clicca su questa icona per scegliere la tua immagine del profilo. Per accere alle foto sul tuo dispositivo to verrà chiesto di fornire l\'autorizzazione, forniscila per permettere all\'app di funzionare al meglio</string>

@@ -693,14 +693,14 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     public void setTapTargetSequence() {
         new TapTargetSequence(attractionDetailActivity).targets(
-                createTapTarget(getTextViewImagePosition(), getString(R.string.view_pager_tap_title),
-                        getString(R.string.view_pager_tap_description), true, 50),
+//                createTapTarget(getTextViewImagePosition(), getString(R.string.view_pager_tap_title),
+//                        getString(R.string.view_pager_tap_description), true, 50),
                 createTapTarget(getFloatingActionButtonWriteReview(), getString(R.string.write_review_tap_title),
                         getString(R.string.write_review_tap_description), false, 70),
                 createTapTarget(getRatingBarActivityDetail(), getString(R.string.avarage_rating),
-                        getString(R.string.avarage_attraction_rating_tap_description), true, 70),
-                createTapTarget(getTextViewAvarageRating(), getString(R.string.total_reviews_tap_title),
-                        getString(R.string.total_reviews_tap_description), true, 70))
+                        getString(R.string.avarage_attraction_rating_tap_description), true, 70))
+//                createTapTarget(getTextViewAvarageRating(), getString(R.string.total_reviews_tap_title),
+//                        getString(R.string.total_reviews_tap_description), true, 70))
                 .listener(new TapTargetSequence.Listener() {
                     // This listener will tell us when interesting(tm) events happen in regards
                     // to the sequence

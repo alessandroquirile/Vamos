@@ -64,7 +64,7 @@ public class ViewPagerIntroAdapter extends PagerAdapter {
 
     private int[] getIntroImages(){
         return new int[]{
-                R.drawable.troppadvisor_logo_no_text,
+                R.drawable.app_icon_no_background,
                 R.drawable.travel_intro,
                 R.drawable.see_on_map_intro,
                 R.drawable.see_reviews_intro,

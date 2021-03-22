@@ -655,8 +655,13 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
                     @Override
                     public void onSequenceFinish() {
                         writeTapTargetBooleanPreferences();
-                        showBottomSheetFilters();
-                        hasToShowBottomSheetFilter = false;
+                        if (hasToShowBottomSheetFilter) {
+                            final Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(() -> {
+                                showBottomSheetFilters();
+                            }, 200);
+                            hasToShowBottomSheetFilter = false;
+                        }
                     }
 
                     @Override
