@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">TroppAdvisor</string>
+    <string name="app_name" translatable="false">Vamos!</string>
     <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="profile_home">Profilo</string>
@@ -114,7 +114,7 @@
     <string name="no_content_error_restaurant_detail">Errore, nessun ristorante trovato</string>
     <string name="no_content_error_attraction_detail">Errore, nessun attrazione trovata</string>
     <string name="unexpected_error_while_fetch_data">Errore imprevisto durante il recupero dei dati, riprova</string>
-    <string name="no_attractions_found_home_page">Non è stato possibile trovare attrazioni entro 5 km da te. Apri la pagina della ricerca e modifica i filtri</string>
+    <string name="no_attractions_found_home_page">Non ci sono attrazioni interessanti nelle tue vicinanze. Modifica i filtri di ricerca cliccando sulla lente di ingrandimento in alto a destra</string>
     <string name="no_hotels_found_nearby">Nessun hotel trovato nelle vicinanze</string>
     <string name="no_hotels_found_home_page">Non è stato possibile trovare hotel nelle vicinanze, accedi alla lista degli hotel e modifica i filtri di ricerca</string>
     <string name="no_restaurants_found_home_page">Non è stato possibile trovare ristoranti nelle vicinanze, accedi alla lista dei ristoranti e modifica i filtri di ricerca</string>
@@ -128,11 +128,11 @@
     <string name="add_make_login">Effettua un nuovo login</string>
     <string name="retrieving_user_details">Attendi, sto recuperando le informazioni del tuo account</string>
     <string name="forward">Avanti</string>
-    <string name="welcome_tropp_advisor">Benvenuto in TroppAdvisor, l\'app che ti aiuta a scegliere le migliori attrazioni turistiche per le tue escursioni</string>
+    <string name="welcome_tropp_advisor">Benvenuto su Vamos! l\'app che ti aiuta a scegliere le migliori attrazioni turistiche per le tue escursioni</string>
     <string name="travel_intro">Scegli tra migliaia di attrazioni da visitare. L\'app cerca in automatico in un raggio di 5 km dalla tua posizione attuale</string>
     <string name="see_on_map_intro">Per avere una visione più chiara, puoi vedere le attrazioni intorno a te anche sulla mappa</string>
-    <string name="see_reviews_intro">Puoi leggere recensioni oppure scriverne di nuove per aiutare gli altri utenti nella scelta di un\'attrazione e salire di livello acquisendo badge e titoli per poter competere con gli altri</string>
-    <string name="enjoy_intro">Goditi le tue escursioni, clicca avanti e fornisci i permessi all\'app per poter accedere alla tua posizione</string>
+    <string name="see_reviews_intro">Puoi leggere recensioni oppure scriverne di nuove per aiutare gli altri utenti nella scelta di un\'attrazione e salire di livello acquisendo badge e titoli per poter competere</string>
+    <string name="enjoy_intro">Goditi le tue escursioni, clicca avanti e fornisci i permessi all\'app per poter accedere alla tua posizione. Vamos? Vamos!</string>
     <string name="access_location_permission_required">Per poter proseguire è necessario fornire l\'autorizzazione per l\'accesso alla posizione in modo da poter trovare tutte le attrazioni nelle tue vicinanze. Premi "ok" per fornire l\'autorizzazione</string>
     <string name="missing_location_permission">L\'app non è in grado di cercare le strutture nelle tue vicinanze se il permesso per accedere alla posizione è negato. Fornisci il permesso per permettere all\'app di funzionare correttamente</string>
     <string name="provide_permission">Fornisci autorizzazione</string>
