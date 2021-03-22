@@ -203,7 +203,7 @@
     <string name="read_all_reviews_tap_description">Clicca qui per leggere tutte le recensioni che hai rilasciato nel tempo</string>
     <string name="avarage_rating_tap_description">Qui verrà mostrato il voto medio considerando tutte le recensioni da te rilasciate</string>
     <string name="external_storage_permission_required">Per poter scegliere una foto dalla galleria abbiamo bisogno del permesso per accere alle foto. Permi \"ok\" per fornire tale permesso</string>
-    <string name="see_on_map_tap_description">Puoi visualizzare le strutture sulla mappa così da avere un\'idea più chiara della loro posizione</string>
+    <string name="see_on_map_tap_description">Puoi visualizzare le strutture sulla mappa così da avere un\'idea più chiara della loro posizione geografica</string>
     <string name="search_attractions_list_tap_title">Cerca attrazioni</string>
     <string name="search_attractions_list_tap_description">Applica dei filtri per da trovare ciò che più si avvicina alle tue esigenze</string>
     <string name="first_review_reward">Complimenti, ti sei aggiudicato un nuovo badge. Hai ottenuto \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
@@ -212,7 +212,7 @@
     <string name="view_pager_tap_title">Foto attrazioni</string>
     <string name="view_pager_tap_description">Fai swipe per visualizzare le immagini di questa attrazione</string>
     <string name="write_review_tap_title">Recensisci</string>
-    <string name="write_review_tap_description">Cliccando su questo pulsante verrai reindirizzato alla pagina per rilasciare una recensione, se hai già un account</string>
+    <string name="write_review_tap_description">Se hai già un account puoi cliccare qui per scrivere una recensione ed aumentare i tuoi punti livello</string>
     <string name="avarage_attraction_rating_tap_description">Questo campo ti mostra il voto medio che questa attrazione ha totalizzato tramite le recensioni degli utenti</string>
     <string name="pick_image_tap_title">Scegli immagine</string>
     <string name="pick_image_tap_description">Clicca su questa icona per scegliere la tua immagine del profilo. Per accere alle foto sul tuo dispositivo to verrà chiesto di fornire l\'autorizzazione, forniscila per permettere all\'app di funzionare al meglio</string>
@@ -220,11 +220,11 @@
     <string name="cancel_edit_profile_tap_description">Se vuoi annullare le modifiche o semplicemente tornare indietro ti basta premere quest\'icona</string>
     <string name="save_changes_tap_description">Quando sei sicuro di aver terminato le modifiche clicca su quest\'icona per salvarle</string>
     <string name="user_title_profile_tap_title">Il tuo titolo</string>
-    <string name="user_title_profile_tap_description">Questo è il tuo Titolo. Te ne verranno assegnati di nuovi mano a mano che acquisisci dei badge. Puoi scegliere il tuo preferito dalla pagina per modificare le tue informazioni personali</string>
+    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi mano a mano che acquisisci dei badge. Puoi scegliere il tuo preferito dalla pagina per modificare le tue informazioni personali</string>
     <string name="successfully_voted">Votazione avvenuta con successo</string>
     <string name="vote_error">Errore imprevisto, riprova</string>
     <string name="wait_for_vote_result">Aggiunta votazione in corso</string>
-    <string name="cannot_vote_your_own_review">Errore, non puoi votare per una tua recensione</string>
+    <string name="cannot_vote_your_own_review">Non puoi votare per una tua recensione</string>
     <string name="no_reviews_exists">Non esistono recensioni da mostrare</string>
     <string name="user_reviews">Recensioni dell\'utente</string>
     <string name="sign_up_help">Benvenuto nella schermata di registrazione. Riempi i campi sottostanti con le tue informazioni personali ed immetti una password con almeno 8 caratteri e contenente almeno un numero</string>
