@@ -131,7 +131,7 @@
     <string name="welcome_tropp_advisor">Benvenuto in TroppAdvisor, l\'app che ti aiuta a scegliere le migliori attrazioni turistiche per le tue escursioni</string>
     <string name="travel_intro">Scegli tra migliaia di attrazioni da visitare. L\'app cerca in automatico in un raggio di 5 km dalla tua posizione attuale</string>
     <string name="see_on_map_intro">Per avere una visione più chiara, puoi vedere le attrazioni intorno a te anche sulla mappa</string>
-    <string name="see_reviews_intro">Puoi leggere recensioni oppure scriverne per aiutare gli altri utenti nella scelta di un\'attrazione e salire di livello acquisendo badge e titoli per poter competere con gli altri utenti</string>
+    <string name="see_reviews_intro">Puoi leggere recensioni oppure scriverne di nuove per aiutare gli altri utenti nella scelta di un\'attrazione e salire di livello acquisendo badge e titoli per poter competere con gli altri</string>
     <string name="enjoy_intro">Goditi le tue escursioni, clicca avanti e fornisci i permessi all\'app per poter accedere alla tua posizione</string>
     <string name="access_location_permission_required">Per poter proseguire è necessario fornire l\'autorizzazione per l\'accesso alla posizione in modo da poter trovare tutte le attrazioni nelle tue vicinanze. Premi "ok" per fornire l\'autorizzazione</string>
     <string name="missing_location_permission">L\'app non è in grado di cercare le strutture nelle tue vicinanze se il permesso per accedere alla posizione è negato. Fornisci il permesso per permettere all\'app di funzionare correttamente</string>
@@ -194,7 +194,7 @@
     <string name="profile_tap_title">Profilo</string>
     <string name="profile_tap_description">Clicca su questa icona per accedere velocemente alla tua pagina personale</string>
     <string name="search_attractions_tap_title">Cerca attrazioni</string>
-    <string name="search_attractions_tap_description">Clicca su questa icona per ricercare un\'attrazione, visualizzarla su mappa o vederne i dettagli</string>
+    <string name="search_attractions_tap_description">Clicca su questa icona per cercare un\'attrazione, visualizzarla su mappa o vederne i dettagli</string>
     <string name="search_user_profile_tap_title">Cerca utenti</string>
     <string name="search_user_profile_tap_description">Cerca gli altri utenti della nostra community, guarda i loro profili, il loro livello e le recensioni che hanno rilasciato</string>
     <string name="edit_profile_tap_description">Accedi alla sezione per modificare le tue informazioni personali</string>
@@ -203,10 +203,10 @@
     <string name="read_all_reviews_tap_description">Clicca qui per leggere tutte le recensioni che hai rilasciato nel tempo</string>
     <string name="avarage_rating_tap_description">Qui verrà mostrato il voto medio considerando tutte le recensioni da te rilasciate</string>
     <string name="external_storage_permission_required">Per poter scegliere una foto dalla galleria abbiamo bisogno del permesso per accere alle foto. Permi \"ok\" per fornire tale permesso</string>
-    <string name="see_on_map_tap_description">Vedi le strutture sulla mappa così da avere un\'idea più chiara della loro posizione</string>
+    <string name="see_on_map_tap_description">Puoi visualizzare le strutture sulla mappa così da avere un\'idea più chiara della loro posizione</string>
     <string name="search_attractions_list_tap_title">Cerca attrazioni</string>
     <string name="search_attractions_list_tap_description">Applica dei filtri per da trovare ciò che più si avvicina alle tue esigenze</string>
-    <string name="first_review_reward">Complimenti, ti sei aggiudicato un nuovo badge. Hai ottenuto \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per restare sempre aggiornato sui badge ottenuti</string>
+    <string name="first_review_reward">Complimenti, ti sei aggiudicato un nuovo badge. Hai ottenuto \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="user_level_profile_tap_title">Il tuo livello</string>
     <string name="user_level_profile_tap_description">Questo valore rappresenta i tuoi punti livello. Ottieni: \n200 punti per ogni recensione sottomessa.\n100 punti per ogni votazione data alle recensioni di altri utenti,\n50 punti per ogni accesso giornaliero.</string>
     <string name="view_pager_tap_title">Foto attrazioni</string>
