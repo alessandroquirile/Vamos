@@ -129,7 +129,7 @@
     <string name="retrieving_user_details">Attendi, sto recuperando le informazioni del tuo account</string>
     <string name="forward">Avanti</string>
     <string name="welcome_tropp_advisor">Benvenuto su Vamos! l\'app che ti aiuta a scegliere le migliori attrazioni turistiche per le tue escursioni</string>
-    <string name="travel_intro">Scegli tra migliaia di attrazioni da visitare. L\'app cerca in automatico in un raggio di 5 km dalla tua posizione attuale</string>
+    <string name="travel_intro">Scegli tra migliaia di attrazioni da visitare. L\'app cerca in automatico in un raggio di 10 km dalla tua posizione attuale</string>
     <string name="see_on_map_intro">Per avere una visione più chiara, puoi vedere le attrazioni intorno a te anche sulla mappa</string>
     <string name="see_reviews_intro">Puoi leggere recensioni oppure scriverne di nuove per aiutare gli altri utenti nella scelta di un\'attrazione e salire di livello acquisendo badge e titoli per poter competere</string>
     <string name="enjoy_intro">Goditi le tue escursioni, clicca avanti e fornisci i permessi all\'app per poter accedere alla tua posizione. Vamos? Vamos!</string>
@@ -206,7 +206,7 @@
     <string name="see_on_map_tap_description">Puoi visualizzare le strutture sulla mappa così da avere un\'idea più chiara della loro posizione geografica</string>
     <string name="search_attractions_list_tap_title">Cerca attrazioni</string>
     <string name="search_attractions_list_tap_description">Applica dei filtri per da trovare ciò che più si avvicina alle tue esigenze</string>
-    <string name="first_review_reward">Complimenti, ti sei aggiudicato un nuovo badge. Hai ottenuto \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
+    <string name="first_review_reward">Complimenti, ti sei aggiudicato il badge \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="user_level_profile_tap_title">Il tuo livello</string>
     <string name="user_level_profile_tap_description">Questo valore rappresenta i tuoi punti livello. Ottieni: \n200 punti per ogni recensione sottomessa.\n100 punti per ogni votazione data alle recensioni di altri utenti,\n50 punti per ogni accesso giornaliero.</string>
     <string name="view_pager_tap_title">Foto attrazioni</string>
@@ -220,7 +220,7 @@
     <string name="cancel_edit_profile_tap_description">Se vuoi annullare le modifiche o semplicemente tornare indietro ti basta premere quest\'icona</string>
     <string name="save_changes_tap_description">Quando sei sicuro di aver terminato le modifiche clicca su quest\'icona per salvarle</string>
     <string name="user_title_profile_tap_title">Il tuo titolo</string>
-    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi mano a mano che acquisisci dei badge. Puoi scegliere il tuo preferito dalla pagina per modificare le tue informazioni personali</string>
+    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi mano a mano che acquisisci dei badge e scriverai recensioni. Puoi mostrare il tuo preferito dalla pagina per modificare le tue informazioni personali</string>
     <string name="successfully_voted">Votazione avvenuta con successo</string>
     <string name="vote_error">Errore imprevisto, riprova</string>
     <string name="wait_for_vote_result">Aggiunta votazione in corso</string>

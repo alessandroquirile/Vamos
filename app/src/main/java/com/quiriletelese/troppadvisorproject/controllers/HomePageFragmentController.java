@@ -243,7 +243,7 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         PointSearch pointSearch = new PointSearch();
         pointSearch.setLatitude(pointSearchInformation.get(0));
         pointSearch.setLongitude(pointSearchInformation.get(1));
-        pointSearch.setDistance(5.0);
+        pointSearch.setDistance(10.0);
         return pointSearch;
     }
 
