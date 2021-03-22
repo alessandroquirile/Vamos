@@ -42,7 +42,7 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_see_reviews_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_user_revies_adapter_layout, parent, false);
         return new RecyclerViewUserReviewsAdapter.ViewHolder(view, userReviewsActivity);
     }
 

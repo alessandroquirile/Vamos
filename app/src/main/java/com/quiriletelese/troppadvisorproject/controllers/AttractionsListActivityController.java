@@ -290,6 +290,11 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
                 handleOtherVolleyError();
                 break;
         }
+        if (hasToShowBottomSheetFilter) {
+            hasToShowBottomSheetFilter = false;
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(this::showBottomSheetFilters, 200);
+        }
     }
 
     private void handle204VolleyError() {

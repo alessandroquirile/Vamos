@@ -142,7 +142,6 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     public void addMarker() {
         getGoogleMap().addMarker(createMarkerOptions(getAccomodation()));
-        //zoomOnMap();
         setMapZoon();
     }
 

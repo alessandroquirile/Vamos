@@ -523,6 +523,9 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         getTextViewName().setText(attraction.getName());
         getTextViewRating().setText(createAvarageRatingString(attraction));
         getTextViewAddress().setText(createAddressString(attraction));
+        marker.setTitle(getTextViewName().getText().toString());
+        marker.showInfoWindow();
+        marker.setTitle(attraction.getId());
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

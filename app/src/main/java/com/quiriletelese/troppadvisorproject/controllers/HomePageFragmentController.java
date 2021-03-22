@@ -67,12 +67,6 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     private AlertDialog alertDialog;
     private final LocationManager locationManager;
 
-//    public HomePageFragmentController(HomePageFragment homePageFragment) {
-//        this.homePageFragment = homePageFragment;
-//        userSharedPreferences = new UserSharedPreferences(getContext());
-//        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-//    }
-
     public HomePageFragmentController(HomeActivity homeActivity) {
         this.homeActivity = homeActivity;
         userSharedPreferences = new UserSharedPreferences(getContext());
@@ -153,7 +147,6 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     }
 
     public void initializeRecyclerViewAttractions(PointSearch pointSearch) {
-        //findByRsql(pointSearch);
         if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
             findByRsql(pointSearch);
         else

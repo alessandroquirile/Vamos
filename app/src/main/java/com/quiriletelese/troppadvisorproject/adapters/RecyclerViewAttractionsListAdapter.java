@@ -79,7 +79,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
             Picasso.with(context).load(getFirtsImage(position))
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.troppadvisor_logo)
+                    .placeholder(R.drawable.app_icon_no_background)
                     .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
         } else
@@ -116,7 +116,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         if (attraction.getTotalReviews().intValue() == 1)
             return attraction.getTotalReviews() + " " + getString(R.string.review);
         else
-            return attraction.getTotalReviews() + " " + getString(R.string.reviews) ;
+            return attraction.getTotalReviews() + " " + getString(R.string.reviews);
     }
 
     private Resources getResources() {
