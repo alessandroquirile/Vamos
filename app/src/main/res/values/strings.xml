@@ -230,4 +230,5 @@
     <string name="no_reviews_exists">Non esistono recensioni da mostrare</string>
     <string name="user_reviews">Recensioni dell\'utente</string>
     <string name="sign_up_help">Benvenuto nella schermata di registrazione. Riempi i campi sottostanti con le tue informazioni personali ed immetti una password con almeno 8 caratteri e contenente almeno un numero</string>
+    <string name="approximately_distance">Km circa da te</string>
 </resources>

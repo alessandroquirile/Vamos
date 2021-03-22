@@ -122,7 +122,7 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         findAttractionsByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                volleyCallbackOnSuccess(object);
+                volleyCallbackOnSuccess(object, pointSearch);
             }
 
             @Override
@@ -153,12 +153,12 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
             getViewMissingLocationPermissionError().setVisibility(View.VISIBLE);
     }
 
-    private void volleyCallbackOnSuccess(Object object) {
+    private void volleyCallbackOnSuccess(Object object, PointSearch pointSearch) {
         List<Attraction> attractions = (List<Attraction>) object;
         if (isLoadingData)
             addNewAttractionsToList(attractions);
         else
-            initializeRecyclerViewOnSuccess(attractions);
+            initializeRecyclerViewOnSuccess(attractions, pointSearch);
         setViewVisibility(getProgressBarLoadMore(), View.GONE);
         getSwipeRefreshLayoutHomeFrament().setRefreshing(false);
     }
@@ -214,10 +214,10 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
         findByRsql(pointSearch);
     }
 
-    private void initializeRecyclerViewOnSuccess(List<Attraction> attractions) {
+    private void initializeRecyclerViewOnSuccess(List<Attraction> attractions, PointSearch pointSearch) {
         setViewNoAttractionsErrorInvisible();
         linearLayoutManager = createLinearLayoutManager();
-        recyclerViewAttractionsListAdapter = createRecyclerViewAttractionAdapter(attractions);
+        recyclerViewAttractionsListAdapter = createRecyclerViewAttractionAdapter(attractions, pointSearch);
         setRecyclerViewAttractionOnSuccess();
     }
 
@@ -394,8 +394,8 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
 
     @NotNull
     @Contract("_ -> new")
-    private RecyclerViewAttractionsListAdapter createRecyclerViewAttractionAdapter(List<Attraction> attractions) {
-        return new RecyclerViewAttractionsListAdapter(getContext(), attractions);
+    private RecyclerViewAttractionsListAdapter createRecyclerViewAttractionAdapter(List<Attraction> attractions, PointSearch pointSearch) {
+        return new RecyclerViewAttractionsListAdapter(getContext(), attractions, pointSearch);
     }
 
     private void runNoAttractionsErrorOnUiThread() {

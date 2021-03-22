@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
+import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
@@ -38,10 +39,12 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
 
     private final Context context;
     private final List<Attraction> attractions;
+    private final PointSearch pointSearch;
 
-    public RecyclerViewAttractionsListAdapter(Context context, List<Attraction> attractions) {
+    public RecyclerViewAttractionsListAdapter(Context context, List<Attraction> attractions, PointSearch pointSearch) {
         this.context = context;
         this.attractions = attractions;
+        this.pointSearch = pointSearch;
     }
 
     @NonNull
@@ -71,6 +74,9 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         viewHolder.textViewAccomodationName.setText(attractions.get(position).getName());
         viewHolder.textViewAccomodationReview.setText(createAvarageRatingString(attractions.get(position)));
         viewHolder.textViewAccomodationAddress.setText(createAddressString(attractions.get(position)));
+        viewHolder.textViewDistance.setText(String.valueOf(distance(attractions.get(position).getLatitude(),
+                attractions.get(position).getLongitude(), pointSearch.getLatitude(), pointSearch.getLongitude()))
+                .concat(" ").concat(getString(R.string.approximately_distance)));
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -132,11 +138,33 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
         return attraction.hasReviews();
     }
 
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = (dist * 60 * 1.1515) * 1.609;
+        return (double) Math.round(dist * 100) / 100;
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RelativeLayout relativeLayoutAccomodation;
         private ImageView imageViewAccomodation;
         private RatingBar ratingBarAttractionsList;
-        private TextView textViewAccomodationName, textViewAccomodationReview, textViewAccomodationAddress;
+        private TextView textViewAccomodationName, textViewAccomodationReview, textViewAccomodationAddress,
+                textViewDistance;
         private Button buttonWriteReview, buttonSeeAccomodationOnMap;
 
         public ViewHolder(@NonNull View itemView) {
@@ -157,6 +185,7 @@ public class RecyclerViewAttractionsListAdapter extends RecyclerView.Adapter<Rec
             textViewAccomodationName = itemView.findViewById(R.id.text_view_accomodation_name);
             textViewAccomodationReview = itemView.findViewById(R.id.text_view_accomodation_review);
             textViewAccomodationAddress = itemView.findViewById(R.id.text_view_hotel_address);
+            textViewDistance = itemView.findViewById(R.id.text_view_distance);
             buttonWriteReview = itemView.findViewById(R.id.button_write_review);
             buttonSeeAccomodationOnMap = itemView.findViewById(R.id.button_see_accomodation_on_map);
         }

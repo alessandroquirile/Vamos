@@ -25,7 +25,7 @@
 
     <item
         android:id="@+id/logout_profile"
-        android:icon="@drawable/icon_logout_profile_white"
+        android:icon="@drawable/icon_logout_white"
         android:orderInCategory="4"
         android:title="@string/logout"
         app:showAsAction="always" />

@@ -28,6 +28,7 @@ import com.quiriletelese.troppadvisorproject.model_helpers.AttractionFilter;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
+import com.quiriletelese.troppadvisorproject.models.Point;
 import com.quiriletelese.troppadvisorproject.util_interfaces.AutoCompleteTextViewsAccomodationFilterTextChangeListener;
 import com.quiriletelese.troppadvisorproject.util_interfaces.BottomSheetFilterSearchButtonClick;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
@@ -101,7 +102,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         findByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                volleyCallbackOnSuccess(object);
+                volleyCallbackOnSuccess(object, pointSearch);
             }
 
             @Override
@@ -112,11 +113,11 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         }, pointSearch, rsqlQuery);
     }
 
-    private void findByNameLikeIgnoreCase() {
+    private void findByNameLikeIgnoreCase(PointSearch pointSearch) {
         findByNameLikeIgnoreCaseHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
-                initializeRecyclerViewOnSuccess((List<Attraction>) object);
+                initializeRecyclerViewOnSuccess((List<Attraction>) object, pointSearch);
             }
 
             @Override
@@ -257,17 +258,17 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
                 findByRsql(isSearchingForCity() ? null : createPointSearch(),
                         isRsqlEmpty() ? "0" : createRsqlString());
             } else
-                findByNameLikeIgnoreCase();
+                findByNameLikeIgnoreCase(createPointSearch());
         } else
             findByRsql(createPointSearch(), "0");
     }
 
-    private void volleyCallbackOnSuccess(Object object) {
+    private void volleyCallbackOnSuccess(Object object, PointSearch pointSearch) {
         List<Attraction> attractions = (List<Attraction>) object;
         if (isLoadingData)
             addNewAttractionsToList(attractions);
         else
-            initializeRecyclerViewOnSuccess(attractions);
+            initializeRecyclerViewOnSuccess(attractions, pointSearch);
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         if (!checkTapTargetBooleanPreferences())
             setTapTargetSequence();
@@ -306,9 +307,9 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         showToastVolleyError(R.string.unexpected_error_while_fetch_data);
     }
 
-    private void initializeRecyclerViewOnSuccess(List<Attraction> attractions) {
+    private void initializeRecyclerViewOnSuccess(List<Attraction> attractions, PointSearch pointSearch) {
         dismissBottomSheetFilterAttractions();
-        recyclerViewAttractionsListAdapter = createRecyclerViewAdapter(attractions);
+        recyclerViewAttractionsListAdapter = createRecyclerViewAdapter(attractions, pointSearch);
         attractionsListActivity.getRecyclerViewAttractionsList().setLayoutManager(createLinearLayoutManager());
         attractionsListActivity.getRecyclerViewAttractionsList().setAdapter(recyclerViewAttractionsListAdapter);
         attractionsListActivity.getRecyclerViewAttractionsList().smoothScrollToPosition(0);
@@ -317,8 +318,8 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     @NotNull
     @Contract("_ -> new")
-    private RecyclerViewAttractionsListAdapter createRecyclerViewAdapter(List<Attraction> attractions) {
-        return new RecyclerViewAttractionsListAdapter(getContext(), attractions);
+    private RecyclerViewAttractionsListAdapter createRecyclerViewAdapter(List<Attraction> attractions, PointSearch pointSearch) {
+        return new RecyclerViewAttractionsListAdapter(getContext(), attractions, pointSearch);
     }
 
     @NotNull

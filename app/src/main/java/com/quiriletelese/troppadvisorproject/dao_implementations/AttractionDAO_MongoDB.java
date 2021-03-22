@@ -170,7 +170,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
 
     @NotNull
     private String createFindHotelsNameUrl(String name) {
-        String URL = Constants.getBaseUrl() + "attraction/find-attraction-name/";
+        String URL = Constants.getBaseUrl() + "attraction/find-attractions-name/";
         URL = URL.concat(name);
         return URL;
     }

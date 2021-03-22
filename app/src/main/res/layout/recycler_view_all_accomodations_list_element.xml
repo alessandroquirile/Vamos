@@ -90,6 +90,20 @@
                 app:drawableStartCompat="@drawable/icon_position_white"
                 tools:ignore="HardcodedText" />
 
+            <TextView
+                android:id="@+id/text_view_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawablePadding="5dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="17.34 km circa da te"
+                android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/icon_distance_white"
+                tools:ignore="HardcodedText" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
