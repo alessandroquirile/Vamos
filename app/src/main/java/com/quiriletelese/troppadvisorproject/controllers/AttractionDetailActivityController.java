@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -54,6 +55,8 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -267,16 +270,24 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             for (Map.Entry<Integer, String> entry : openingDays.entrySet())
                 createOpeningDaysString(entry);
             day = day.substring(0, day.length() - 1);
-            getTextViewOpeningTime().setText(day);
+            getTextViewOpeningTime().setText(Html.fromHtml(day));
         } else getTextViewOpeningTime().setText(getString(R.string.no_information_available));
     }
 
     private void createOpeningDaysString(Map.Entry<Integer, String> entry) {
-        if (!entry.getValue().equals(""))
-            day = day.concat(detectDay(entry.getKey()) + " " + entry.getValue());
-        else
+        if (!entry.getValue().equals("")) {
+            if (isSameDay(entry.getKey()))
+                day = day.concat("<b>" + detectDay(entry.getKey()) + " " + entry.getValue() + "</b>");
+            else
+                day = day.concat(detectDay(entry.getKey()) + " " + entry.getValue());
+        } else
             day = day.concat(detectDay(entry.getKey()) + " " + getString(R.string.closed));
-        day = day.concat("\n");
+        day = day.concat("<br>");
+    }
+
+    private boolean isSameDay(Integer day) {
+        Calendar calendar = Calendar.getInstance();
+        return day == calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
 
     private String detectDay(Integer day) {
@@ -320,14 +331,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         else
             getTextViewAvaragePrice().setText(getString(R.string.gratis));
     }
-
-//    private String createAvaragePriceString(Double price) {
-//        String avaragePrice = "";
-//        avaragePrice = avaragePrice.concat(getString(R.string.avarage_price) + " ");
-//        avaragePrice = avaragePrice.concat(price + " ");
-//        avaragePrice = avaragePrice.concat(getString(R.string.currency));
-//        return avaragePrice;
-//    }
 
     private void setReviewsPreview() {
         if (hasReviews()) {

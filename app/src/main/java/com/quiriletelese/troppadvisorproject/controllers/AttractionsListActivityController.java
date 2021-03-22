@@ -349,7 +349,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private PointSearch createPointSearch() {
         isPointSearchNull = false;
         PointSearch pointSearch = getPointSearch();
-        pointSearch.setDistance(isAttractionFilterNull() ? 5d : checkDistanceValue());
+        pointSearch.setDistance(isAttractionFilterNull() ? 10d : checkDistanceValue());
         return pointSearch;
     }
 
@@ -486,7 +486,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private Double checkDistanceValue() {
-        double distance = 1.0;
+        double distance = 10d;
         if (!isAttractionFilterDistanceEqualsToZero())
             distance = getAttractionFilterDistanceValue();
         return distance;

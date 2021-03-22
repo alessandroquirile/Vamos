@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +50,12 @@ public class WriteReviewActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_write_review, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         onOptionsItemSelectedHepler(item);
         return super.onOptionsItemSelected(item);
@@ -58,6 +65,9 @@ public class WriteReviewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.write_review_done:
+                insertReviewBasedOnAccomodationType();
                 break;
         }
     }
@@ -89,6 +99,10 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     private void setListenerOnViewComponents() {
         writeReviewActivityController.setListenersOnViewComponents();
+    }
+
+    private void insertReviewBasedOnAccomodationType() {
+        writeReviewActivityController.insertReviewBasedOnAccomodationType();
     }
 
     public EditText getTextInputLayoutReviewTitleEditText() {

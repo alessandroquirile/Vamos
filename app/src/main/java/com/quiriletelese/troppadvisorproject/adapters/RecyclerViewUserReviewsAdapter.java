@@ -164,10 +164,10 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
 
         private void onClickHelper(View view) {
             switch (view.getId()) {
-                case R.id.image_view_thumb_up:
+                case R.id.image_view_thumb_up_user_review:
                     doUpdateVoters(1);
                     break;
-                case R.id.image_view_thumb_down:
+                case R.id.image_view_thumb_down_user_review:
                     doUpdateVoters(-1);
                     break;
             }

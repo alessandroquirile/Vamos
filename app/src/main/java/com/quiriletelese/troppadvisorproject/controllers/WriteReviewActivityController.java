@@ -55,6 +55,7 @@ public class WriteReviewActivityController implements View.OnClickListener,
     private ReviewDAO reviewDAO;
     private AccountDAO accountDAO;
     private Review review;
+    private boolean canReview = false;
 
     public WriteReviewActivityController(WriteReviewActivity writeReviewActivity) {
         this.writeReviewActivity = writeReviewActivity;
@@ -237,23 +238,24 @@ public class WriteReviewActivityController implements View.OnClickListener,
 
     private void editTextTitleOnTextChanged(@NotNull CharSequence charSequence) {
         title = charSequence.toString();
-        if (areReviewFieldsCorrectlyFilled())
-            enableButtonPublishReview();
-        else
-            disableButtonPublishReview();
+        //enableButtonPublishReview();
+        canReview = areReviewFieldsCorrectlyFilled();
+        //disableButtonPublishReview();
     }
 
     private void editTextDescriptionOnTextChanged(@NotNull CharSequence charSequence) {
         description = charSequence.toString();
-        if (areReviewFieldsCorrectlyFilled())
-            enableButtonPublishReview();
-        else
-            disableButtonPublishReview();
+        //enableButtonPublishReview();
+        canReview = areReviewFieldsCorrectlyFilled();
+        //disableButtonPublishReview();
     }
 
-    private void insertReviewBasedOnAccomodationType() {
-        showWaitWhileInsertingReviewDialog();
-        insertAttractionReview();
+    public void insertReviewBasedOnAccomodationType() {
+        if (canReview) {
+            showWaitWhileInsertingReviewDialog();
+            insertAttractionReview();
+        } else
+            showToastOnUiThred(R.string.fill_required_fields_error);
 //        switch (getAccomodationType()) {
 //            case "hotel":
 //                insertHotelReview();
@@ -336,7 +338,7 @@ public class WriteReviewActivityController implements View.OnClickListener,
     private void onClickHelper(@NotNull View view) {
         switch (view.getId()) {
             case R.id.button_publish_review:
-                insertReviewBasedOnAccomodationType();
+                //insertReviewBasedOnAccomodationType();
                 break;
         }
     }
@@ -502,19 +504,19 @@ public class WriteReviewActivityController implements View.OnClickListener,
     }
 
     private boolean isTitleEmpty() {
-        return title.isEmpty();
+        return title.trim().isEmpty();
     }
 
     private boolean isTitleLongerThan(int numberOfCharacters) {
-        return title.length() > numberOfCharacters;
+        return title.trim().length() > numberOfCharacters;
     }
 
     private boolean isDescriptionEmpty() {
-        return description.isEmpty();
+        return description.trim().isEmpty();
     }
 
     private boolean isDescriptionLongerThan(int numberOfCharacters) {
-        return description.length() > numberOfCharacters;
+        return description.trim().length() > numberOfCharacters;
     }
 
     private boolean areReviewFieldsCorrectlyFilled() {

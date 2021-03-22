@@ -117,15 +117,9 @@ public class ReviewDAO_MongoDB implements ReviewDAO {
                     volleyCallBack.onSuccess(getReviewFromResponse(response));
                 },
                 error -> {
-//                    if (error != null)
-//                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+                    if (error != null)
+                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
                 }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", "Bearer " + idToken);
-//                return headers;
-//            }
 
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {

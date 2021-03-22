@@ -42,13 +42,6 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_items_layout, parent, false));
-//        if (viewType == TYPE_ITEM) {
-//            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_items_layout, parent, false);
-//            return new ViewHolder(itemView);
-//        } else {
-//            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_header_layout, parent, false);
-//            return new HeaderViewHolder(itemView);
-//        }
     }
 
     @Override
@@ -58,73 +51,20 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemCount() {
-        return users.size() /*users.size() + 1*/;
+        return users.size();
     }
-
-//    @Override
-//    public int getItemViewType(int position) {
-//        if (position == 0)
-//            return TYPE_HEADER;
-//        return TYPE_ITEM;
-//    }
 
     private void handleRecyclerViewItemsFields(@NonNull RecyclerView.ViewHolder holder, int position) {
         handleBodyItemsFields(holder, position);
-//        if (holder instanceof HeaderViewHolder)
-//            handleHeaderItemsFields(holder);
-//        else
-//            handleBodyItemsFields(holder, position);
-    }
-
-    private void handleHeaderItemsFields(@NonNull RecyclerView.ViewHolder holder) {
-        HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
-        if (users.size() != 0) {
-            if (users.size() <= 1) {
-                setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderFirstUserPhoto, 0);
-                headerViewHolder.textViewLeaderboardHeaderUserNameFirst.setText(users.get(0).getName());
-                headerViewHolder.textViewLeaderboardHeaderUserLevelFirst.setText(String.valueOf(users.get(0).getLevel()));
-            } else if (users.size() <= 2) {
-                setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderFirstUserPhoto, 0);
-                headerViewHolder.textViewLeaderboardHeaderUserNameFirst.setText(users.get(0).getName());
-                headerViewHolder.textViewLeaderboardHeaderUserLevelFirst.setText(String.valueOf(users.get(0).getLevel()));
-                setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderSecondUserPhoto, 1);
-                headerViewHolder.textViewLeaderboardHeaderUserNameSecond.setText(users.get(1).getName());
-                headerViewHolder.textViewLeaderboardHeaderUserNameThird.setText(users.get(2).getName());
-            } else if (users.size() <= 3) {
-
-            }
-        }
-        setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderFirstUserPhoto, 0);
-        setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderSecondUserPhoto, 1);
-        setHeaderUsersProfileImage(headerViewHolder.circleImageViewLeaderboardHeaderThirdUserPhoto, 2);
-        headerViewHolder.textViewLeaderboardHeaderUserNameFirst.setText(users.get(0).getName());
-        headerViewHolder.textViewLeaderboardHeaderUserNameSecond.setText(users.get(1).getName());
-        headerViewHolder.textViewLeaderboardHeaderUserNameThird.setText(users.get(2).getName());
-        headerViewHolder.textViewLeaderboardHeaderUserLevelFirst.setText(String.valueOf(users.get(0).getLevel()));
-        headerViewHolder.textViewLeaderboardHeaderUserLevelSecond.setText(String.valueOf(users.get(1).getLevel()));
-        headerViewHolder.textViewLeaderboardHeaderUserLevelThird.setText(String.valueOf(users.get(2).getLevel()));
     }
 
     private void handleBodyItemsFields(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         setBodyUsersProfileImage(viewHolder, position);
-        viewHolder.textViewLeaderboardUserName.setText(users.get(position).getName());
+        viewHolder.textViewLeaderboardUserName.setText(users.get(position).getName().concat(" - ").concat(users.get(position).getUsername()));
         viewHolder.textViewLeaderboardUserLevel.setText(String.valueOf(users.get(position).getLevel()));
         setTextViewLeaderboardUserPositionBackground(viewHolder.textViewLeaderboardUserPosition, position);
         viewHolder.textViewLeaderboardUserPosition.setText(String.valueOf(position + 1));
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private void setHeaderUsersProfileImage(CircleImageView circleImageView, int position) {
-        if (hasImage(position)) {
-            Picasso.with(context).load(getImage(position))
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.troppadvisor_logo)
-                    .error(R.drawable.picasso_error)
-                    .into(circleImageView);
-        } else
-            circleImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.user_profile_no_photo));
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
