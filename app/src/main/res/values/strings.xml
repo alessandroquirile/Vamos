@@ -210,12 +210,12 @@
     <string name="user_level_profile_tap_title">Il tuo livello</string>
     <string name="user_level_profile_tap_description">Questo valore rappresenta i tuoi punti livello. Ottieni: \n200 punti per ogni recensione sottomessa.\n100 punti per ogni votazione data alle recensioni di altri utenti,\n50 punti per ogni accesso giornaliero.</string>
     <string name="view_pager_tap_title">Foto attrazioni</string>
-    <string name="view_pager_tap_description">Questo campo tiene conto di quante foto ha un\'attrazione e ad ogni swipe sulle foto ti avvisa quale stai osservando in quel momento</string>
+    <string name="view_pager_tap_description">Fai swipe per visualizzare le immagini di questa attrazione</string>
     <string name="write_review_tap_title">Recensisci</string>
     <string name="write_review_tap_description">Cliccando su questo pulsante verrai reindirizzato alla pagina per rilasciare una recensione, se hai già un account</string>
     <string name="total_reviews_tap_title">Recensioni totali</string>
-    <string name="total_reviews_tap_description">Questo campo ti mostra il totale delle recensioni se presenti. Inoltre, se l\'attrazione ha delle recensioni, ne verranno mostrate alcune come anteprima</string>
-    <string name="avarage_attraction_rating_tap_description">Questo campo ti mostra il voto medio dell\'attrazione ricevuto tramite le recensioni degli utenti</string>
+    <string name="total_reviews_tap_description">Qui puoi visualizzare il numero totale delle recensioni scritte per questa attrazione. Se ce n\'è già qualcuna, ne verranno mostrate un paio come anteprima</string>
+    <string name="avarage_attraction_rating_tap_description">Questo campo ti mostra il voto medio che questa attrazione ha totalizzato tramite le recensioni degli utenti</string>
     <string name="pick_image_tap_title">Scegli immagine</string>
     <string name="pick_image_tap_description">Clicca su questa icona per scegliere la tua immagine del profilo. Per accere alle foto sul tuo dispositivo to verrà chiesto di fornire l\'autorizzazione, forniscila per permettere all\'app di funzionare al meglio</string>
     <string name="cancel_edit_profile_tap_title">Cancella modifiche</string>
