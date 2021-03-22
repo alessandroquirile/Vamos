@@ -40,7 +40,7 @@
     <string name="price_up_to_something">Prezzo: Fino a %1$d €</string>
     <string name="price_over_limit">Prezzo: Oltre %1$d €</string>
     <string name="distance_up_to_something">Distanza: Fino a %1$d km</string>
-    <string name="rank_up_to_something">Voto medio: Da %1$d+ </string>
+    <string name="rank_up_to_something">Voto medio: Da %1$d</string>
     <string name="title_activity_maps" translatable="false">Map</string>
     <string name="posizione_attuale">Posizione attuale</string>
     <string name="where">Dove</string>
