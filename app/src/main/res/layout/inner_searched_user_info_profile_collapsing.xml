@@ -87,6 +87,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/text_view_searched_user_reviews_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reviews_profile"

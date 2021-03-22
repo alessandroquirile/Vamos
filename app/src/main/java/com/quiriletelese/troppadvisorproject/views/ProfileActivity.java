@@ -1,11 +1,5 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
@@ -30,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayout linearLayoutUserReviews;
     private RecyclerView recyclerViewBadgeProfile;
     private View viewNoLoginProfileError;
+    private TextView textViewUserReviewsLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
         linearLayoutUserReviews = findViewById(R.id.linear_layout_user_reviews);
         recyclerViewBadgeProfile = findViewById(R.id.recycler_view_badge_profile);
         viewNoLoginProfileError = findViewById(R.id.no_login_profile_error_layout);
+        textViewUserReviewsLabel = findViewById(R.id.text_view_user_reviews_label);
     }
 
     public void initializeController() {
@@ -196,5 +198,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public View getViewNoLoginProfileError() {
         return viewNoLoginProfileError;
+    }
+
+    public TextView getTextViewUserReviewsLabel() {
+        return textViewUserReviewsLabel;
     }
 }

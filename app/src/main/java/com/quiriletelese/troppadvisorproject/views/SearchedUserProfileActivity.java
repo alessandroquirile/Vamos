@@ -1,16 +1,15 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
 import com.quiriletelese.troppadvisorproject.controllers.SearchedUserProfileActivityController;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,6 +22,7 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
             textViewSearchedUserTotalReviews, textViewSearchedUserAvarageRating;
     private LinearLayout linearLayoutUserReviews;
     private RecyclerView recyclerViewSearchedUserBadgeProfile;
+    private TextView textViewSearchedUserReviewsLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
         textViewSearchedUserAvarageRating = findViewById(R.id.text_view_searched_user_avarage_rating);
         linearLayoutUserReviews = findViewById(R.id.linear_layout_searched_user_reviews);
         recyclerViewSearchedUserBadgeProfile = findViewById(R.id.recycler_view_searched_user_badge_profile);
+        textViewSearchedUserReviewsLabel = findViewById(R.id.text_view_searched_user_reviews_label);
     }
 
     public void initializeController() {
@@ -101,5 +102,9 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public RecyclerView getRecyclerViewSearchedUserBadgeProfile() {
         return recyclerViewSearchedUserBadgeProfile;
+    }
+
+    public TextView getTextViewSearchedUserReviewsLabel() {
+        return textViewSearchedUserReviewsLabel;
     }
 }

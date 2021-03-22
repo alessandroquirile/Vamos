@@ -122,6 +122,7 @@ public class ProfileFragmentController implements View.OnClickListener {
         setTextViewUserLevelText(user);
         setTextViewUserTotalReviewsText(user);
         setTextViewUserAvarageRatingText(user);
+        setTextViewUserReviewsLabel(user);
     }
 
     private void initializeRecylerView(Object object) {
@@ -354,6 +355,15 @@ public class ProfileFragmentController implements View.OnClickListener {
 
     private void setTextViewUserAvarageRatingText(User user) {
         getTextViewUserAvarageRating().setText(String.valueOf(getUserAvarageRating(user)));
+    }
+
+    private TextView getTextViewUserReviewsLabel() {
+        return profileActivity.getTextViewUserReviewsLabel();
+    }
+
+    private void setTextViewUserReviewsLabel(User user) {
+        if (user.getTotalReviews() == 1)
+            getTextViewUserReviewsLabel().setText("Recensione");
     }
 
     public LinearLayout getLinearLayoutUserReviews() {

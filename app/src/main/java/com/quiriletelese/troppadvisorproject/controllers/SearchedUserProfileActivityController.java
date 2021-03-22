@@ -31,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SearchedUserProfileActivityController implements View.OnClickListener {
 
-    private SearchedUserProfileActivity searchedUserProfileActivity;
+    private final SearchedUserProfileActivity searchedUserProfileActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private User user;
 
@@ -101,6 +101,7 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
         setTextViewUserLevelText(user);
         setTextViewUserTotalReviewsText(user);
         setTextViewUserAvarageRatingText(user);
+        setTextViewSearchedUserReviewsLabel(user);
     }
 
     public void setToolbarTitle(User user) {
@@ -210,6 +211,15 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
 
     private void setTextViewUserAvarageRatingText(User user) {
         getTextViewUserAvarageRating().setText(String.valueOf(getUserAvarageRating(user)));
+    }
+
+    private TextView getTextViewUserReviewsLabel() {
+        return searchedUserProfileActivity.getTextViewSearchedUserReviewsLabel();
+    }
+
+    private void setTextViewSearchedUserReviewsLabel(User user) {
+        if (user.getTotalReviews() == 1)
+            getTextViewUserReviewsLabel().setText("Recensione");
     }
 
     public LinearLayout getLinearLayoutUserReviews() {
