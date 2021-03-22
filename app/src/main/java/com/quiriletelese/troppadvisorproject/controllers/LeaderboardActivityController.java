@@ -23,7 +23,7 @@ import java.util.List;
 
 public class LeaderboardActivityController {
 
-    private LeaderboardActivity leaderboardActivity;
+    private final LeaderboardActivity leaderboardActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
 
     public LeaderboardActivityController(LeaderboardActivity leaderboardActivity) {
@@ -75,7 +75,7 @@ public class LeaderboardActivityController {
         return new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
     }
 
-    private void setViewVisibility(View view, int visibility) {
+    private void setViewVisibility(@NotNull View view, int visibility) {
         view.setVisibility(visibility);
     }
 

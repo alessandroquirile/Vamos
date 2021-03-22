@@ -20,7 +20,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiriletelese.troppadvisorproject.R;
@@ -118,7 +117,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Accomodation accomodation) {
-        if (accomodation.getAvarageRating().intValue() == 1)
+        if (accomodation.getTotalReviews().intValue() == 1)
             return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.review) + ")";
         else
             return accomodation.getAvarageRating().intValue() + "/5 (" + accomodation.getTotalReviews() + " " + getString(R.string.reviews) + ")";
