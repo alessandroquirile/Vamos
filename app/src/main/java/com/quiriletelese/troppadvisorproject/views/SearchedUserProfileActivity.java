@@ -62,7 +62,7 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
         textViewSearchedUserTotalReviews = findViewById(R.id.text_view_searched_user_total_reviews);
         textViewSearchedUserAvarageRating = findViewById(R.id.text_view_searched_user_avarage_rating);
         linearLayoutUserReviews = findViewById(R.id.linear_layout_searched_user_reviews);
-        linearLayoutEnlargedImage =  findViewById(R.id.enlarged_image_layout);
+        linearLayoutEnlargedImage =  findViewById(R.id.enlarged_image_layout_searched_user);
         recyclerViewSearchedUserBadgeProfile = findViewById(R.id.recycler_view_searched_user_badge_profile);
         textViewSearchedUserReviewsLabel = findViewById(R.id.text_view_searched_user_reviews_label);
     }

@@ -264,9 +264,6 @@ public class ProfileFragmentController implements View.OnClickListener {
         userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), "");
         userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), "");
         userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), "");
-//        userSharedPreferences.putStringSharedPreferences(Constants.getUsername(), "");
-//        userSharedPreferences.putStringSharedPreferences(Constants.getUserFirstName(), "");
-//        userSharedPreferences.putStringSharedPreferences(Constants.getFamilyName(), "");
         userSharedPreferences.putStringSharedPreferences(Constants.getEmail(), "");
     }
 

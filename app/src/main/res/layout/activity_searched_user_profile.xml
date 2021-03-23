@@ -39,7 +39,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/enlarged_image_layout"
+        android:id="@+id/enlarged_image_layout_searched_user"
         layout="@layout/enlarged_image_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
