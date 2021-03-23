@@ -179,7 +179,7 @@
     <string name="password_changed_successfully">Password aggiornata con successo</string>
     <string name="do_login">Effettua il login</string>
     <string name="do_login_for_vote">Effettua il login per poter accedere a tutte le funzionalità dell\'app</string>
-    <string name="first_500_point">Grazie per esserti unito alla nostra community! Come premio di benvenuto ti abbiamo conferito i tuoi primi 500 punti livello. Ora non ti resta altro da fare che attivare il tuo account tramite il link che ti abbiamo inviato tramite email e goderti la tua nuova app</string>
+    <string name="first_500_point">Grazie per esserti unito alla nostra community! Come premio di benvenuto ti abbiamo conferito i tuoi primi 500 punti livello.</string>
     <string name="daily_reward">Complimenti, hai guadagnato 50 punti livello. Ti verranno riconosciuti ad ogni accesso giornaliero così potrai aumentare il tuo livello ed essere tra i migliori</string>
     <string name="closed">chiuso</string>
     <string name="monday">Lunedì:</string>
@@ -236,4 +236,5 @@
     <string name="pay_attention_body_review">Sei sicuro di voler annullare la scrittura di questa recensione?</string>
     <string name="leave">Abbandona</string>
     <string name="pay_attention_body_profile">Sei sicuro di voler annullare le modifiche al tuo profilo?</string>
+    <string name="confirm_email">Ora non ti resta altro da fare che attivare il tuo account tramite il link che ti abbiamo inviato tramite email e goderti la tua nuova app.</string>
 </resources>
