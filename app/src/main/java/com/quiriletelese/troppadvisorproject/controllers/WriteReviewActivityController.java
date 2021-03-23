@@ -41,8 +41,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class WriteReviewActivityController implements View.OnClickListener,
-        RatingBar.OnRatingBarChangeListener, TextWatcher {
+public class WriteReviewActivityController implements RatingBar.OnRatingBarChangeListener, TextWatcher {
 
     private final WriteReviewActivity writeReviewActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -60,11 +59,6 @@ public class WriteReviewActivityController implements View.OnClickListener,
     public WriteReviewActivityController(WriteReviewActivity writeReviewActivity) {
         this.writeReviewActivity = writeReviewActivity;
         userSharedPreferences = createUserSharedPreferences();
-    }
-
-    @Override
-    public void onClick(@NotNull View view) {
-        onClickHelper(view);
     }
 
     @Override
@@ -211,12 +205,12 @@ public class WriteReviewActivityController implements View.OnClickListener,
         alertDialogFirstReviewReward.show();
     }
 
-    private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
-        userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
-        userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
-        userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
-    }
-
+//    private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
+//        userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
+//        userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
+//        userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
+//    }
+//
 //    private void handle401VolleyError() {
 //        refreshToken();
 //    }
@@ -335,29 +329,10 @@ public class WriteReviewActivityController implements View.OnClickListener,
         writeReviewActivity.finish();
     }
 
-    private void onClickHelper(@NotNull View view) {
-        switch (view.getId()) {
-            case R.id.button_publish_review:
-                //insertReviewBasedOnAccomodationType();
-                break;
-        }
-    }
-
     public void setListenersOnViewComponents() {
-        getButtonPublishReview().setOnClickListener(this);
         getRatingBar().setOnRatingBarChangeListener(this);
         getTextInputLayoutReviewTitleEditText().addTextChangedListener(this);
         getTextInputLayoutReviewDescriptionEditText().addTextChangedListener(this);
-    }
-
-    private void enableButtonPublishReview() {
-        getButtonPublishReview().setBackgroundResource(R.drawable.background_write_review_button_enabled);
-        getButtonPublishReview().setEnabled(true);
-    }
-
-    private void disableButtonPublishReview() {
-        getButtonPublishReview().setBackgroundResource(R.drawable.background_write_review_button_disabled);
-        getButtonPublishReview().setEnabled(false);
     }
 
     public void setToolbarSubtitle() {
@@ -471,10 +446,6 @@ public class WriteReviewActivityController implements View.OnClickListener,
 
     private TextView getTextViewRating() {
         return writeReviewActivity.getTextViewRating();
-    }
-
-    private Button getButtonPublishReview() {
-        return writeReviewActivity.getButtonPublishReview();
     }
 
     private RatingBar getRatingBar() {

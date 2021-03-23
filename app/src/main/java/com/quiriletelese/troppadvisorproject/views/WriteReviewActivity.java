@@ -29,7 +29,6 @@ public class WriteReviewActivity extends AppCompatActivity {
     private TextInputLayout textInputLayoutReviewTitle, textInputLayoutReviewDescription;
     private RatingBar ratingBar;
     private TextView textViewRating;
-    private Button buttonPublishReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +84,6 @@ public class WriteReviewActivity extends AppCompatActivity {
         textInputLayoutReviewDescription = findViewById(R.id.text_input_layout_review_description);
         ratingBar = findViewById(R.id.rating_bar);
         textViewRating = findViewById(R.id.text_view_about_rating);
-        buttonPublishReview = findViewById(R.id.button_publish_review);
     }
 
     private void setRatingBarDefaultValue() {
@@ -131,9 +129,5 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     public TextView getTextViewRating() {
         return textViewRating;
-    }
-
-    public Button getButtonPublishReview() {
-        return buttonPublishReview;
     }
 }

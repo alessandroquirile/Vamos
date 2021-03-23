@@ -1,8 +1,10 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -41,12 +43,22 @@ public class SeeReviewsActivity extends AppCompatActivity {
         addRecyclerViewOnScrollListener();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
+
     private void initializeViewsComponents() {
         shimmerRecyclerViewSeeReviews = findViewById(R.id.recycler_view_see_reviews);
         progressBarLoadMore = findViewById(R.id.progress_bar_reviews_load_more);
     }
 
-    private void setToolbarSubtitle(){
+    private void setToolbarSubtitle() {
         seeReviewsActivityController.setToolbarSubtitle();
     }
 
@@ -54,7 +66,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
         seeReviewsActivityController = new SeeReviewsActivityController(this);
     }
 
-    private void initializeRecyclerViewsFakeContent(){
+    private void initializeRecyclerViewsFakeContent() {
         seeReviewsActivityController.initializeRecyclerViewsFakeContent();
     }
 
@@ -62,7 +74,7 @@ public class SeeReviewsActivity extends AppCompatActivity {
         seeReviewsActivityController.intializeRecyclerView();
     }
 
-    private void addRecyclerViewOnScrollListener(){
+    private void addRecyclerViewOnScrollListener() {
         seeReviewsActivityController.addRecyclerViewOnScrollListener();
     }
 

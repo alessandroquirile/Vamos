@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,6 +50,7 @@ import com.quiriletelese.troppadvisorproject.views.EditProfileActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -69,6 +71,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     private int close = 0;
     private int total = 0;
     private boolean isUserInformationsChanged = false, isRequiredFieldsCorrectlyFilled = true, canClose = true;
+    private AlertDialog alertDialogWaitSaveChanges;
 
     public EditProfileActivityController(EditProfileActivity editProfileActivity) {
         this.editProfileActivity = editProfileActivity;
@@ -139,6 +142,8 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     private void handleUpdateUserInformationsVolleyError(String errorCode) {
+        if (alertDialogWaitSaveChanges.isShowing())
+            alertDialogWaitSaveChanges.dismiss();
         canClose = false;
         switch (errorCode) {
             case "Username error":
@@ -151,7 +156,6 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     private String getEmail() {
-        //Toast.makeText(editProfileActivity, new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail()), Toast.LENGTH_SHORT).show();
         return new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail());
     }
 
@@ -159,11 +163,16 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         canClose = true;
         filePath = "";
         total += 1;
-        if (total == close && canClose)
+        if (total == close && canClose) {
+            if (alertDialogWaitSaveChanges.isShowing())
+                alertDialogWaitSaveChanges.dismiss();
             finish(RESULT_OK);
+        }
     }
 
     private void handleUpdateUserImageVolleyError(String errorCode) {
+        if (alertDialogWaitSaveChanges.isShowing())
+            alertDialogWaitSaveChanges.dismiss();
         canClose = false;
         showToastOnUiThred(R.string.unexpected_error_while_updating_image);
     }
@@ -171,8 +180,11 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     private void handleUpdateUserInformationsVolleySuccess() {
         canClose = true;
         total += 1;
-        if (total == close && canClose)
+        if (total == close && canClose) {
+            if (alertDialogWaitSaveChanges.isShowing())
+                alertDialogWaitSaveChanges.dismiss();
             finish(RESULT_OK);
+        }
     }
 
     private void onClickHelper(View view) {
@@ -351,7 +363,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
                 Uri selectedImageUri = Objects.requireNonNull(data).getData();
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
-                    filePath = getPath(selectedImageUri);/*createSelectedProfilePictureFile(selectedImageUri);*/
+                    filePath = getRealPathFromURI(selectedImageUri);/*createSelectedProfilePictureFile(selectedImageUri);*/
                     try {
                         bitmapNewProfileImage = resizeBitmap(MediaStore.Images.Media.getBitmap(editProfileActivity.getContentResolver(), selectedImageUri));
                     } catch (IOException e) {
@@ -378,19 +390,31 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         return Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
     }
 
-    public String getPath(Uri uri) {
-        Cursor cursor = editProfileActivity.getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+//    public String getPath(Uri uri) {
+//        Cursor cursor = editProfileActivity.getContentResolver().query(uri, null, null, null, null);
+//        cursor.moveToFirst();
+//        String document_id = cursor.getString(0);
+//        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+//        cursor.close();
+//        cursor = editProfileActivity.getContentResolver().query(
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+//        cursor.moveToFirst();
+//        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//        cursor.close();
+//        return path;
+//    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String thePath = "no-path-found";
+        String[] filePathColumn = {MediaStore.Images.Media.DISPLAY_NAME};
+        Cursor cursor = editProfileActivity.getContentResolver().query(contentURI, filePathColumn, null, null, null);
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            thePath = cursor.getString(columnIndex);
+        }
         cursor.close();
-        cursor = editProfileActivity.getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-        return path;
+        return thePath.isEmpty() ? null : thePath;
     }
 
     private boolean isNewProfileImageNull() {
@@ -399,6 +423,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
 
 
     public void saveChanges() {
+        showWaitSaveChangesDialog();
         if (isRequiredFieldsCorrectlyFilled) {
             if (!isNewProfileImageNull()) {
                 updateUserImage();
@@ -429,6 +454,27 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     private void showToastOnUiThred(int stringId) {
         editProfileActivity.runOnUiThread(() ->
                 Toast.makeText(editProfileActivity, getString(stringId), Toast.LENGTH_SHORT).show());
+    }
+
+    private void showWaitSaveChangesDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogLayout(), null));
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("OK", (dialogInterface, i) -> {
+            finish(Activity.RESULT_OK);
+        });
+        alertDialogWaitSaveChanges = alertDialogBuilder.create();
+        alertDialogWaitSaveChanges.show();
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private AlertDialog.Builder createAlertDialogBuilder() {
+        return new AlertDialog.Builder(editProfileActivity);
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_wait_save_changes_layout;
     }
 
     public Toolbar getToolbar() {
