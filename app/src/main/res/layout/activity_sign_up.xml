@@ -64,7 +64,7 @@
                 android:hint="@string/email_login_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890-@."
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890-_@."
                     android:inputType="textFilter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
