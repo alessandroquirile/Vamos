@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,7 +85,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void onOptionsItemSelectedHelper(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                editProfileActivityController.finish(RESULT_CANCELED);
+                showWarningDialog();
                 break;
             case R.id.menu_save_changes:
                 saveChanges();
@@ -112,6 +114,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     public void setListenersOnViewComponents() {
         editProfileActivityController.setListenersOnViewComponents();
+    }
+
+    public void showWarningDialog() {
+        editProfileActivityController.showWarningDialog();
     }
 
     private void saveChanges() {

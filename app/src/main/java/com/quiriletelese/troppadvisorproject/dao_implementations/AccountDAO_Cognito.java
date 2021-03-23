@@ -63,13 +63,16 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.start();
         String URL = createLoginUrl();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
-                jsonObjectLogin(account), response ->
-                volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response)), error -> {
+                jsonObjectLogin(account), response -> {
+            volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response));
+            InitiateAuthResult initiateAuthResult = getInitiateAuthResultFromVolley(response);
+        }, error -> {
             if (error != null)
                 volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
         }) {
             @Override
-            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse
+                                                                        response) {
                 volleyCallBack.onError(String.valueOf(response.statusCode));
                 return super.parseNetworkResponse(response);
             }
@@ -77,7 +80,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void createAccountVolley(final VolleyCallBack volleyCallBack, Account account, Context context) {
+    private void createAccountVolley(final VolleyCallBack volleyCallBack, Account
+            account, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
         String URL = createNewUserURL();
@@ -97,7 +101,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void refreshTokenVolley(VolleyCallBack volleyCallBack, String refreshToken, Context context) {
+    private void refreshTokenVolley(VolleyCallBack volleyCallBack, String refreshToken, Context
+            context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
         String URL = createRefreshTokenURL();
@@ -116,7 +121,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void getUserDetailsVolley(VolleyCallBack volleyCallBack, String accessToken, Context context) {
+    private void getUserDetailsVolley(VolleyCallBack volleyCallBack, String
+            accessToken, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
         String URL = createGetUserDetailsURL();
@@ -134,7 +140,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void sendConfirmationCodeVolley(VolleyCallBack volleyCallBack, String email, Context context) {
+    private void sendConfirmationCodeVolley(VolleyCallBack volleyCallBack, String
+            email, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
         String URL = createSendConfirmationCodeURL(email);
@@ -152,7 +159,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void changePasswordVolley(VolleyCallBack volleyCallBack, String email, String confirmationCode, String newPassword, Context context) {
+    private void changePasswordVolley(VolleyCallBack volleyCallBack, String email, String
+            confirmationCode, String newPassword, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
         String URL = createChangePasswordURL(email, newPassword, confirmationCode);
@@ -227,7 +235,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         return createJsonObjectGetUserDetails(jsonObjectGetUserDetails, accessToken);
     }
 
-    private JSONObject createJsonObjectNewUser(@NotNull JSONObject jsonObjectNewUser, @NotNull Account account) {
+    private JSONObject createJsonObjectNewUser(@NotNull JSONObject
+                                                       jsonObjectNewUser, @NotNull Account account) {
         try {
             jsonObjectNewUser.put("name", account.getName());
             jsonObjectNewUser.put("lastname", account.getFamilyName());
@@ -240,7 +249,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         return jsonObjectNewUser;
     }
 
-    private JSONObject createJsonObjectLogin(@NotNull JSONObject jsonObjectLogin, @NotNull Account account) {
+    private JSONObject createJsonObjectLogin(@NotNull JSONObject
+                                                     jsonObjectLogin, @NotNull Account account) {
         try {
 
             jsonObjectLogin.put("key", account.getUsername());
@@ -251,7 +261,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         return jsonObjectLogin;
     }
 
-    private JSONObject createJsonObjectRefreshToken(@NotNull JSONObject jsonObjectRefreshToken, @NotNull String refreshToken) {
+    private JSONObject createJsonObjectRefreshToken(@NotNull JSONObject
+                                                            jsonObjectRefreshToken, @NotNull String refreshToken) {
         try {
             jsonObjectRefreshToken.put("refreshToken", refreshToken);
         } catch (JSONException e) {
@@ -260,7 +271,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         return jsonObjectRefreshToken;
     }
 
-    private JSONObject createJsonObjectGetUserDetails(@NotNull JSONObject jsonObjectGetUserDetails, @NotNull String accessToken) {
+    private JSONObject createJsonObjectGetUserDetails(@NotNull JSONObject
+                                                              jsonObjectGetUserDetails, @NotNull String accessToken) {
         try {
             jsonObjectGetUserDetails.put("accessToken", accessToken);
         } catch (JSONException e) {
@@ -279,12 +291,14 @@ public class AccountDAO_Cognito implements AccountDAO {
         return gson.fromJson(response.toString(), GetUserResult.class);
     }
 
-    private CodeDeliveryDetailsType getCodeDeliveryDetailsTypeFromVolley(@NotNull JSONObject response) {
+    private CodeDeliveryDetailsType getCodeDeliveryDetailsTypeFromVolley(@NotNull JSONObject
+                                                                                 response) {
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), CodeDeliveryDetailsType.class);
     }
 
-    private void checkCreateAccountVolleyError(@NotNull NetworkResponse networkResponse, VolleyCallBack volleyCallBack) {
+    private void checkCreateAccountVolleyError(@NotNull NetworkResponse
+                                                       networkResponse, VolleyCallBack volleyCallBack) {
         if (networkResponse.headers.containsKey(Constants.getUsernameError()))
             volleyCallBack.onError(Constants.getUsernameError());
         else if (networkResponse.headers.containsKey(Constants.getEmailError()))

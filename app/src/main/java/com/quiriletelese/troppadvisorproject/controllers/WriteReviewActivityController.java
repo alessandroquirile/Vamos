@@ -3,6 +3,7 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.text.Editable;
@@ -90,49 +91,9 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
 
     }
 
-    private void insertHotelReviewHelper(VolleyCallBack volleyCallBack) {
-        getReviewDAO().insertHotelReview(volleyCallBack, createReviewForInserting(), getIdToken(), getContext());
-    }
-
-    private void insertRestaurantReviewHelper(VolleyCallBack volleyCallBack) {
-        getReviewDAO().insertRestaurantReview(volleyCallBack, createReviewForInserting(), getIdToken(), getContext());
-    }
-
     private void insertAttractionReviewHelper(VolleyCallBack volleyCallBack) {
         getReviewDAO().insertAttractionReview(volleyCallBack, createReviewForInserting(), getUserEmail(), getContext());
     }
-
-    private void refreshTokenHelper(VolleyCallBack volleyCallBack) {
-        getAccountDAO().refreshToken(volleyCallBack, getRefreshToken(), getContext());
-    }
-
-//    private void insertHotelReview() {
-//        insertHotelReviewHelper(new VolleyCallBack() {
-//            @Override
-//            public void onSuccess(Object object) {
-//                volleyCallbackOnSuccess();
-//            }
-//
-//            @Override
-//            public void onError(String errorCode) {
-//                volleyCallbackOnError(errorCode);
-//            }
-//        });
-//    }
-//
-//    private void insertRestaurantReview() {
-//        insertRestaurantReviewHelper(new VolleyCallBack() {
-//            @Override
-//            public void onSuccess(Object object) {
-//                volleyCallbackOnSuccess();
-//            }
-//
-//            @Override
-//            public void onError(String errorCode) {
-//                volleyCallbackOnError(errorCode);
-//            }
-//        });
-//    }
 
     private void insertAttractionReview() {
         insertAttractionReviewHelper(new VolleyCallBack() {
@@ -148,29 +109,10 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         });
     }
 
-//    private void refreshToken() {
-//        refreshTokenHelper(new VolleyCallBack() {
-//            @Override
-//            public void onSuccess(Object object) {
-//                volleyCallbackOnSuccessRefreshToken((InitiateAuthResult) object);
-//            }
-//
-//            @Override
-//            public void onError(String errorCode) {
-//                volleyCallbackOnError(errorCode);
-//            }
-//        });
-//    }
-//
-//    private void volleyCallbackOnSuccessRefreshToken(InitiateAuthResult initiateAuthResult) {
-//        writeSharedPreferences(initiateAuthResult);
-//        insertReviewBasedOnAccomodationType();
-//    }
-
     private void volleyCallbackOnSuccess(Object object) {
         Review review = (Review) object;
         dismissWaitWhileInsertingReviewDialog();
-        //showToastOnUiThred(R.string.review_successfully_submitted);
+        showToastOnUiThred(R.string.review_successfully_submitted);
         if (review.getUser().getTotalReviews() == 1)
             showFirstReviewRewardDialog();
         else
@@ -181,13 +123,23 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         dismissWaitWhileInsertingReviewDialog();
         Log.e("REVIEW ERROR CODE", errorCode);
         switch (errorCode) {
-//            case "401":
-//                handle401VolleyError();
-//                break;
             case "500":
                 handleOtherVolleyError();
                 break;
         }
+    }
+
+    public void showWarningDialog() {
+        new AlertDialog.Builder(writeReviewActivity)
+                .setTitle(getString(R.string.pay_attention))
+                .setMessage(getString(R.string.pay_atention_body))
+                .setPositiveButton(getString(R.string.leave), ((dialogInterface, i) -> {
+                    finish(Activity.RESULT_CANCELED);
+                }))
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     private void showFirstReviewRewardDialog() {
@@ -200,16 +152,6 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         alertDialogFirstReviewReward = alertDialogBuilder.create();
         alertDialogFirstReviewReward.show();
     }
-
-//    private void writeSharedPreferences(InitiateAuthResult initiateAuthResult) {
-//        userSharedPreferences.putStringSharedPreferences(Constants.getAccessToken(), getAccessToken(initiateAuthResult));
-//        userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
-//        userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
-//    }
-//
-//    private void handle401VolleyError() {
-//        refreshToken();
-//    }
 
     private void handleOtherVolleyError() {
         showToastOnUiThred(R.string.unexpected_error_while_entering_the_review);
@@ -281,10 +223,6 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         alertDialogWaitWhileInsertingReview.dismiss();
     }
 
-    private void dismissFirstReviewRewardDialog() {
-        alertDialogWaitWhileInsertingReview.dismiss();
-    }
-
     public void checkLogin() {
         if (!isLogged()) {
             startLoginActivity();
@@ -305,8 +243,6 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
     }
 
     private void finish(int result) {
-        // TODO: esce questo toast anche quando non mi sono loggato.
-        showToastOnUiThred(R.string.review_successfully_submitted);
         writeReviewActivity.setResult(result, new Intent());
         writeReviewActivity.finish();
     }
@@ -330,11 +266,6 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         return reviewDAO;
     }
 
-    private AccountDAO getAccountDAO() {
-        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
-        return accountDAO;
-    }
-
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
@@ -349,10 +280,6 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
 
     private String getAccomodationName() {
         return getIntent().getStringExtra(Constants.getAccomodationName());
-    }
-
-    private String getAccomodationType() {
-        return getIntent().getStringExtra(Constants.getAccomodationType());
     }
 
     private String getUserEmail() {
@@ -376,28 +303,8 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         return new UserSharedPreferences(getContext());
     }
 
-    private String getAccessToken(@NotNull InitiateAuthResult initiateAuthResult) {
-        return initiateAuthResult.getAuthenticationResult().getAccessToken();
-    }
-
     private String getAccessToken() {
         return userSharedPreferences.getStringSharedPreferences(Constants.getAccessToken());
-    }
-
-    private String getIdToken(@NotNull InitiateAuthResult initiateAuthResult) {
-        return initiateAuthResult.getAuthenticationResult().getIdToken();
-    }
-
-    private String getIdToken() {
-        return userSharedPreferences.getStringSharedPreferences(Constants.getIdToken());
-    }
-
-    private String getRefreshToken(@NotNull InitiateAuthResult initiateAuthResult) {
-        return initiateAuthResult.getAuthenticationResult().getRefreshToken();
-    }
-
-    private String getRefreshToken() {
-        return userSharedPreferences.getStringSharedPreferences(Constants.getRefreshToken());
     }
 
     @NotNull

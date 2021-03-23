@@ -56,7 +56,7 @@ public class ViewPagerOverViewActivityAdapter extends PagerAdapter {
                 .load(images.get(position))
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.troppadvisor_logo)
+                .placeholder(R.drawable.app_icon_no_background)
                 .error(R.drawable.picasso_error)
                 .into(imageViewOverviewActivity);
     }

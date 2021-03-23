@@ -1,5 +1,7 @@
 package com.quiriletelese.troppadvisorproject.views;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,7 +65,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     private void onOptionsItemSelectedHepler(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                showWarningDialog();
                 break;
             case R.id.write_review_done:
                 insertReviewBasedOnAccomodationType();
@@ -97,6 +99,10 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     private void setListenerOnViewComponents() {
         writeReviewActivityController.setListenersOnViewComponents();
+    }
+
+    public void showWarningDialog() {
+        writeReviewActivityController.showWarningDialog();
     }
 
     private void insertReviewBasedOnAccomodationType() {

@@ -232,4 +232,7 @@
     <string name="wait_save_changes">Attendi, sto salvando le modifiche</string>
     <string name="legit_password_error">Inserisci una password di almeno 8 caratteri contenente almeno un numero</string>
     <string name="no_photo_to_view">Nessuna foto da mostrare</string>
+    <string name="pay_attention">Attenzione</string>
+    <string name="pay_atention_body">Stai per abbandonare la pagina, tutti i dati immessi verranno persi, sei sicuro di voler continuare?</string>
+    <string name="leave">Abbandona</string>
 </resources>

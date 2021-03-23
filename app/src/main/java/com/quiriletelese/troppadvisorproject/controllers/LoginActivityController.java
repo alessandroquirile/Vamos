@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,11 +30,13 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class LoginActivityController implements View.OnClickListener {
+public class LoginActivityController implements View.OnClickListener, TextWatcher {
 
     private final LoginActivity loginActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
@@ -49,6 +53,21 @@ public class LoginActivityController implements View.OnClickListener {
     @Override
     public void onClick(@NotNull View view) {
         onClickHelper(view);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        onTextChangedHelper(charSequence);
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 
     private void loginHelper(VolleyCallBack volleyCallBack) {
@@ -87,6 +106,49 @@ public class LoginActivityController implements View.OnClickListener {
         showToastOnUiThread(R.string.login_error);
     }
 
+    private void onTextChangedHelper(CharSequence charSequence) {
+        detectEditText(charSequence);
+        setViewEnabled(getButtonLogin(), areFieldsCorrectlyInserted());
+    }
+
+    private void detectEditText(CharSequence charSequence) {
+        if (isEditTextEmailChanged(charSequence))
+            editTextEmailChanged(charSequence);
+        else
+            editTextPasswordChanged();
+    }
+
+    private boolean isEditTextEmailChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutKey().getEditText().getText().hashCode();
+    }
+
+    private void editTextEmailChanged(CharSequence email) {
+        if (!isEmailValid(email))
+            setTextInputLayoutError(getTextInputLayoutKey(), R.string.email_pattern_error);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutKey());
+    }
+
+    private void editTextPasswordChanged() {
+        if (isPasswordEmpty())
+            setTextInputLayoutError(getTextInputLayoutPassword(), R.string.field_cannot_be_empty);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutPassword());
+    }
+
+    private void setViewEnabled(View view, boolean enable) {
+        view.setEnabled(enable);
+    }
+
+    private void setTextInputLayoutError(TextInputLayout textInputLayout, int errorString) {
+        textInputLayout.setError(getString(errorString));
+    }
+
+    private void setTextInputLayoutErrorNull(TextInputLayout textInputLayout) {
+        textInputLayout.setError(null);
+        textInputLayout.setErrorEnabled(false);
+    }
+
     private void showToastOnUiThread(int stringId) {
         loginActivity.runOnUiThread(() ->
                 Toast.makeText(loginActivity, getString(stringId), Toast.LENGTH_LONG).show());
@@ -111,6 +173,8 @@ public class LoginActivityController implements View.OnClickListener {
 
     public void setListenerOnViewComponents() {
         getButtonLogin().setOnClickListener(this);
+        getTextInputLayoutKey().getEditText().addTextChangedListener(this);
+        getTextInputLayoutPassword().getEditText().addTextChangedListener(this);
         getTextViewForgotPassword().setOnClickListener(this);
         getTextViewSignIn().setOnClickListener(this);
         getTextViewCancelLogin().setOnClickListener(this);
@@ -167,44 +231,15 @@ public class LoginActivityController implements View.OnClickListener {
     }
 
     private boolean areFieldsCorrectlyInserted() {
-        return isKeyCorrectlyInserted() && isPasswordCorrectlyInserted();
+        return isKeyCorrectlyInserted() && !isPasswordEmpty() /*isPasswordLegit(getTextInputLayoutPasswordValue())*/;
     }
 
     private boolean isKeyCorrectlyInserted() {
-        if (isKeyEmpty()) {
-            showFieldErrorMessage(getTextInputLayoutKey(), getFieldCannotBeEmptyErrorMessage());
-            return false;
-        } else {
-            showFieldErrorMessage(getTextInputLayoutKey(), null);
-            return true;
-        }
-    }
-
-    private boolean isPasswordCorrectlyInserted() {
-        if (isPasswordEmpty()) {
-            showFieldErrorMessage(getTextInputLayoutPassword(), getFieldCannotBeEmptyErrorMessage());
-            return false;
-        } else {
-            if (isEmailValid(getTextInputLayoutKeyValue())) {
-                showFieldErrorMessage(getTextInputLayoutPassword(), null);
-                return true;
-            } else {
-                setTextInputLayoutError(R.string.email_pattern_error);
-                return false;
-            }
-        }
-    }
-
-    private void setTextInputLayoutError(int errorString) {
-        getTextInputLayoutKey().setError(getString(errorString));
+        return isEmailValid(getTextInputLayoutKeyValue().trim());
     }
 
     private boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private void showFieldErrorMessage(@NotNull TextInputLayout textInputLayout, String error) {
-        textInputLayout.setError(error);
     }
 
     private void writeLoginSharedPreferences(InitiateAuthResult initiateAuthResult) {
@@ -232,17 +267,12 @@ public class LoginActivityController implements View.OnClickListener {
         alertDialogWaitForLoginResult.dismiss();
     }
 
-    private boolean isKeyEmpty() {
-        return key.isEmpty();
-    }
-
     private boolean isPasswordEmpty() {
-        return password.isEmpty();
+        return getTextInputLayoutPassword().getEditText().getText().toString().trim().isEmpty();
     }
 
     private AccountDAO getAccountDAO() {
-        AccountDAO accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
-        return accountDAO;
+        return daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {
@@ -323,5 +353,4 @@ public class LoginActivityController implements View.OnClickListener {
     private TextView getAlertDialogWaitForLoginTextView() {
         return dialogView.findViewById(R.id.text_view_wait_for_login_message);
     }
-
 }

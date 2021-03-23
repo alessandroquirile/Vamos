@@ -245,6 +245,19 @@ public class EditProfileActivityController implements View.OnClickListener, Text
                     requestPermissions(createExternalStorageArrayStringPermissions(), Constants.getAccessFineLocationCode()));
     }
 
+    public void showWarningDialog() {
+        new AlertDialog.Builder(editProfileActivity)
+                .setTitle(getString(R.string.pay_attention))
+                .setMessage(getString(R.string.pay_atention_body))
+                .setPositiveButton(getString(R.string.leave), ((dialogInterface, i) -> {
+                    finish(Activity.RESULT_CANCELED);
+                }))
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
     private void showShouldShowRequestPermissionRationaleDialog(DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(editProfileActivity)
                 .setView(getLayoutInflater().inflate(R.layout.dialog_missing_external_storage_permission_layout, null))

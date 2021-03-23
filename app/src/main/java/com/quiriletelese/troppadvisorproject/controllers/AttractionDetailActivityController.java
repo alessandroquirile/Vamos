@@ -437,7 +437,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         Intent writeReviewActivityIntent = new Intent(getContext(), WriteReviewActivity.class);
         writeReviewActivityIntent.putExtra(Constants.getId(), getId());
         writeReviewActivityIntent.putExtra(Constants.getAccomodationType(), Constants.getAttraction());
-        //writeReviewActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return writeReviewActivityIntent;
     }
 
