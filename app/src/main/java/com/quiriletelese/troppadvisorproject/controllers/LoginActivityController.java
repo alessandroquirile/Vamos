@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.services.cognitoidentityprovider.model.AttributeType;
-import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
@@ -30,8 +28,6 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
@@ -44,8 +40,6 @@ public class LoginActivityController implements View.OnClickListener {
     private final UserSharedPreferences userSharedPreferences;
     private AlertDialog alertDialogWaitForLoginResult;
     private View dialogView;
-    private AccountDAO accountDAO;
-    private Account account;
 
     public LoginActivityController(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
@@ -166,7 +160,7 @@ public class LoginActivityController implements View.OnClickListener {
 
     @NotNull
     private Account createAccountForLogin() {
-        account = new Account();
+        Account account = new Account();
         account.setUsername(key);
         account.setPassword(password);
         return account;
@@ -191,9 +185,22 @@ public class LoginActivityController implements View.OnClickListener {
             showFieldErrorMessage(getTextInputLayoutPassword(), getFieldCannotBeEmptyErrorMessage());
             return false;
         } else {
-            showFieldErrorMessage(getTextInputLayoutPassword(), null);
-            return true;
+            if (isEmailValid(getTextInputLayoutKeyValue())) {
+                showFieldErrorMessage(getTextInputLayoutPassword(), null);
+                return true;
+            } else {
+                setTextInputLayoutError(R.string.email_pattern_error);
+                return false;
+            }
         }
+    }
+
+    private void setTextInputLayoutError(int errorString) {
+        getTextInputLayoutKey().setError(getString(errorString));
+    }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void showFieldErrorMessage(@NotNull TextInputLayout textInputLayout, String error) {
@@ -234,7 +241,7 @@ public class LoginActivityController implements View.OnClickListener {
     }
 
     private AccountDAO getAccountDAO() {
-        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
+        AccountDAO accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
         return accountDAO;
     }
 
