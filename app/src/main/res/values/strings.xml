@@ -233,6 +233,7 @@
     <string name="legit_password_error">Inserisci una password di almeno 8 caratteri contenente almeno un numero</string>
     <string name="no_photo_to_view">Nessuna foto da mostrare</string>
     <string name="pay_attention">Attenzione</string>
-    <string name="pay_atention_body">Stai per abbandonare la pagina, tutti i dati immessi verranno persi, sei sicuro di voler continuare?</string>
+    <string name="pay_attention_body_review">Sei sicuro di voler annullare la scrittura di questa recensione?</string>
     <string name="leave">Abbandona</string>
+    <string name="pay_attention_body_profile">Sei sicuro di voler annullare le modifiche al tuo profilo?</string>
 </resources>

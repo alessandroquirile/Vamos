@@ -3,7 +3,6 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.text.Editable;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 
-import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
@@ -132,11 +130,11 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
     public void showWarningDialog() {
         new AlertDialog.Builder(writeReviewActivity)
                 .setTitle(getString(R.string.pay_attention))
-                .setMessage(getString(R.string.pay_atention_body))
-                .setPositiveButton(getString(R.string.leave), ((dialogInterface, i) -> {
+                .setMessage(getString(R.string.pay_attention_body_review))
+                .setPositiveButton("Sì", ((dialogInterface, i) -> {
                     finish(Activity.RESULT_CANCELED);
                 }))
-                .setNegativeButton(R.string.cancel, null)
+                .setNegativeButton("No", null)
                 .setCancelable(false)
                 .create()
                 .show();

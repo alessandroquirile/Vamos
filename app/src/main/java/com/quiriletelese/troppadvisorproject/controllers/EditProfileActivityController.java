@@ -41,8 +41,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
-import com.quiriletelese.troppadvisorproject.models.Badge;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
+import com.quiriletelese.troppadvisorproject.models.Badge;
 import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
@@ -248,11 +248,11 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     public void showWarningDialog() {
         new AlertDialog.Builder(editProfileActivity)
                 .setTitle(getString(R.string.pay_attention))
-                .setMessage(getString(R.string.pay_atention_body))
-                .setPositiveButton(getString(R.string.leave), ((dialogInterface, i) -> {
+                .setMessage(getString(R.string.pay_attention_body_profile))
+                .setPositiveButton("Sì", ((dialogInterface, i) -> {
                     finish(Activity.RESULT_CANCELED);
                 }))
-                .setNegativeButton(R.string.cancel, null)
+                .setNegativeButton("No", null)
                 .setCancelable(false)
                 .create()
                 .show();
