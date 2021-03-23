@@ -476,7 +476,7 @@ public class ProfileFragmentController implements View.OnClickListener {
                 createTapTargetForToolbar(R.id.logout_profile, getString(R.string.logout),
                         getString(R.string.logout_profile_tap_description), 50),
                 createTapTarget(getTextViewUserTitle(), getString(R.string.user_title_profile_tap_title),
-                        getString(R.string.user_title_profile_tap_description), 50),
+                        getString(R.string.user_title_profile_tap_description), 70),
                 createTapTarget(getTextViewUserLevel(), getString(R.string.user_level_profile_tap_title),
                         getString(R.string.user_level_profile_tap_description), 50),
                 createTapTarget(getTextViewUserTotalReviews(), getString(R.string.read_all_reviews),

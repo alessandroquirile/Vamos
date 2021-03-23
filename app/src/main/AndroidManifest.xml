@@ -50,7 +50,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.AttractionsListActivity"
-            android:label="@string/attractions"
+            android:label="@string/search"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -112,6 +112,7 @@
         <activity
             android:name=".views.HomeActivity"
             android:screenOrientation="portrait"
+            android:label="@string/title_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.UserReviewsActivity"

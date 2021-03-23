@@ -412,6 +412,7 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
 
     @NotNull
     private Intent createAttractionsListActivityIntent() {
+        System.out.println("DISTTTTTTTTTTTTTTTTTTTT = " + pointSearch.getDistance());
         Intent intentAttractionsListActivity = new Intent(getContext(), AttractionsListActivity.class);
         intentAttractionsListActivity.putExtra(Constants.getPointSearch(), pointSearch);
         intentAttractionsListActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
