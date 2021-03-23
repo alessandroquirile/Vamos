@@ -305,8 +305,8 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
     }
 
     private void finish(int result) {
-        // TODO: esce questo toast anche quando non mi sono loggato. L'ho commentato momentaneamente
-        //showToastOnUiThred(R.string.review_successfully_submitted);
+        // TODO: esce questo toast anche quando non mi sono loggato.
+        showToastOnUiThred(R.string.review_successfully_submitted);
         writeReviewActivity.setResult(result, new Intent());
         writeReviewActivity.finish();
     }
