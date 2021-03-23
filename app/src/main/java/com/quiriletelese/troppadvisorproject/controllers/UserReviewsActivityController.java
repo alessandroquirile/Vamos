@@ -7,12 +7,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
-import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewReadReviewsAdapter;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewUserReviewsAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.ReviewDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
@@ -142,7 +140,7 @@ public class UserReviewsActivityController {
 
     private void showToastNoMoreReviews() {
         setProgressBarLoadMoreVisibility(View.INVISIBLE);
-        showToastOnUiThread(R.string.end_of_results);
+        //showToastOnUiThread(R.string.end_of_results);
     }
 
     public void addRecyclerViewOnScrollListener() {

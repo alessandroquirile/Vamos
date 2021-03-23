@@ -145,7 +145,7 @@ public class SeeReviewsActivityController {
 
     private void showToastNoMoreReviews() {
         setProgressBarLoadMoreVisibility(View.INVISIBLE);
-        showToastOnUiThread(R.string.end_of_results);
+        //showToastOnUiThread(R.string.end_of_results);
     }
 
     public void addRecyclerViewOnScrollListener() {
