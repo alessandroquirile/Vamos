@@ -184,7 +184,7 @@ public class ProfileFragmentController implements View.OnClickListener {
     public void startLoginActivityFromLogOut() {
         clearUserSharedPreferences();
         profileActivity.startActivityForResult(createStartLoginActivityIntent(), Constants.getLaunchLoginActivity());
-        showToastOnUiThred(R.string.add_make_login);
+        //showToastOnUiThred(R.string.add_make_login);
     }
 
     public void startSearchUserActivity() {
