@@ -166,7 +166,7 @@
     <string name="opening_time">Orari di apertura</string>
     <string name="what_users_say">Quello che gli utenti dicono</string>
     <string name="forgot_password">Password dimenticata?</string>
-    <string name="forgot_password_insert_email">Inserisci la password associata al tuo account, ti invieremo un codice con il quale potrai resettare la password</string>
+    <string name="forgot_password_insert_email">Inserisci l\'email associata al tuo account. Ti invieremo il codice con il quale potrai reimpostare la password</string>
     <string name="reset_password">Resetta password</string>
     <string name="reset_password_body">Inserisci una nuova password di lunghezza minima di 8 caratteri e contenente almeno un numero</string>
     <string name="confirmation_code">Codice conferma</string>
