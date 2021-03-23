@@ -2,6 +2,7 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
     private SignUpActivityController signUpActivityController;
     private FloatingActionButton floatingActionButtonGoBack, floatingActionButtonHelp;
     private TextInputLayout textInputLayoutEmail, textInputLayoutName, textInputLayoutLastName,
-    textInputLayoutUsername, textInputLayoutPassword, textInputLayoutRepeatPassword;
+            textInputLayoutUsername, textInputLayoutPassword, textInputLayoutRepeatPassword;
     private Button buttonSignUp;
 
     @Override
@@ -51,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUpActivityController = new SignUpActivityController(this);
     }
 
-    private void setListenerOnViewComponents(){
+    private void setListenerOnViewComponents() {
         signUpActivityController.setListenerOnViewComponents();
     }
 
@@ -67,52 +68,76 @@ public class SignUpActivity extends AppCompatActivity {
         return textInputLayoutEmail;
     }
 
+    public EditText getTextInputLayoutEmailEditText() {
+        return textInputLayoutEmail.getEditText();
+    }
+
     public TextInputLayout getTextInputLayoutName() {
         return textInputLayoutName;
+    }
+
+    public EditText getTextInputLayoutNameEditText() {
+        return textInputLayoutName.getEditText();
     }
 
     public TextInputLayout getTextInputLayoutLastName() {
         return textInputLayoutLastName;
     }
 
+    public EditText getTextInputLayoutLastNameEditText() {
+        return textInputLayoutLastName.getEditText();
+    }
+
     public TextInputLayout getTextInputLayoutUsername() {
         return textInputLayoutUsername;
+    }
+
+    public EditText getTextInputLayoutUsernameEditText() {
+        return textInputLayoutUsername.getEditText();
     }
 
     public TextInputLayout getTextInputLayoutPassword() {
         return textInputLayoutPassword;
     }
 
+    public EditText getTextInputLayoutPasswordEditText() {
+        return textInputLayoutPassword.getEditText();
+    }
+
     public TextInputLayout getTextInputLayoutRepeatPassword() {
         return textInputLayoutRepeatPassword;
+    }
+
+    public EditText getTextInputLayoutRepeatPasswordEditText() {
+        return textInputLayoutRepeatPassword.getEditText();
     }
 
     public Button getButtonSignUp() {
         return buttonSignUp;
     }
 
-    public String getTextInputLayoutEmailValue(){
-        return Objects.requireNonNull(textInputLayoutEmail.getEditText()).getText().toString().trim();
+    public String getTextInputLayoutEmailValue() {
+        return Objects.requireNonNull(getTextInputLayoutEmailEditText()).getText().toString().trim();
     }
 
-    public String getTextInputLayoutNameValue(){
-        return Objects.requireNonNull(textInputLayoutName.getEditText()).getText().toString().trim();
+    public String getTextInputLayoutNameValue() {
+        return Objects.requireNonNull(getTextInputLayoutNameEditText()).getText().toString().trim();
     }
 
-    public String getTextInputLayoutLastNameValue(){
-        return Objects.requireNonNull(textInputLayoutLastName.getEditText()).getText().toString().trim();
+    public String getTextInputLayoutLastNameValue() {
+        return Objects.requireNonNull(getTextInputLayoutLastNameEditText()).getText().toString().trim();
     }
 
-    public String getTextInputLayoutUsernameValue(){
-        return Objects.requireNonNull(textInputLayoutUsername.getEditText()).getText().toString().trim();
+    public String getTextInputLayoutUsernameValue() {
+        return Objects.requireNonNull(getTextInputLayoutUsernameEditText()).getText().toString().trim();
     }
 
-    public String getTextInputLayoutPasswordValue(){
-        return Objects.requireNonNull(textInputLayoutPassword.getEditText()).getText().toString().trim();
+    public String getTextInputLayoutPasswordValue() {
+        return Objects.requireNonNull(getTextInputLayoutPasswordEditText()).getText().toString().trim();
     }
 
-    public String getTextInputLayoutRepeatPasswordValue(){
-        return Objects.requireNonNull(textInputLayoutRepeatPassword.getEditText()).getText().toString().trim();
+    public String getTextInputLayoutRepeatPasswordValue() {
+        return Objects.requireNonNull(getTextInputLayoutRepeatPasswordEditText()).getText().toString().trim();
     }
 
 }

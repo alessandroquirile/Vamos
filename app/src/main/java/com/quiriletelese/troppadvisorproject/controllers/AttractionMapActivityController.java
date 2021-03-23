@@ -109,8 +109,8 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         findCitiesName(newText);
     }
 
-    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery) {
-        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10000);
+    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery, boolean canPutPointSearch) {
+        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), 0, 10000, canPutPointSearch);
     }
 
     private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
@@ -125,7 +125,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         getCityDAO().findCitiesByName(volleyCallBack, name, getContext());
     }
 
-    private void findByRsql(PointSearch pointSearch, String rsqlQuery) {
+    private void findByRsql(PointSearch pointSearch, String rsqlQuery, boolean canPutPointSearch) {
         findByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -137,7 +137,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
                 volleyCallbackOnError(errorCode);
             }
 
-        }, pointSearch, rsqlQuery);
+        }, pointSearch, rsqlQuery, canPutPointSearch);
     }
 
     private void findByNameLikeIgnoreCase(String name) {
@@ -295,8 +295,9 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private void detectSearchType() {
         if (!isSearchingForName())
-            findByRsql(isSearchingForCity() ? null : createPointSearch(),
-                    !createRsqlString().equals("") ? createRsqlString() : "0");
+            findByRsql(createPointSearch(), !createRsqlString().equals("") ? createRsqlString() : "0", !isSearchingForCity());
+//            findByRsql(isSearchingForCity() ? null : createPointSearch(),
+//                    !createRsqlString().equals("") ? createRsqlString() : "0");
         else
             findByNameLikeIgnoreCase(getAttractionNameValueFromBottomSheetFilter());
     }
@@ -332,7 +333,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     private String checkCityNameValue(String rsqlString) {
         if (isSearchingForCity()) {
             String cityName = extractCityName(getAttractionFilterCityValue());
-            rsqlString = rsqlString.concat("address.city==" + cityName + ";");
+            rsqlString = rsqlString.concat("address.city==\"" + cityName + "\";");
         }
         return rsqlString;
     }
@@ -409,11 +410,11 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
             if (isSearchingForName())
                 findByNameLikeIgnoreCase(getAttractionName());
             else if (isSearchingForCity())
-                findByRsql(null, getRsqlQuery());
+                findByRsql(null, getRsqlQuery(), false);
             else
-                findByRsql(getPointSearch(), getRsqlQuery());
+                findByRsql(getPointSearch(), getRsqlQuery(), true);
         } else
-            findByRsql(getPointSearch(), getRsqlQuery());
+            findByRsql(getPointSearch(), getRsqlQuery(), true);
     }
 
     private void addMarkersOnSuccess(@NotNull List<Attraction> attractions) {

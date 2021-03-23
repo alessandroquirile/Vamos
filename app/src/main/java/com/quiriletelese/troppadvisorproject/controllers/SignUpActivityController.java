@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,18 +26,19 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Alessandro Quirile, Mauro Telese
  */
 
-public class SignUpActivityController implements View.OnClickListener, DialogInterface.OnDismissListener {
+public class SignUpActivityController implements View.OnClickListener, DialogInterface.OnDismissListener,
+        TextWatcher {
 
     private final SignUpActivity signUpActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
-    private String email, name, lastName, username, password, repeatPassword;
+    //private String email, name, lastName, username, password, repeatPassword;
     private AlertDialog alertDialogWaitForSignUpResult;
-    private AccountDAO accountDAO;
-    private Account account;
 
     public SignUpActivityController(SignUpActivity signUpActivity) {
         this.signUpActivity = signUpActivity;
@@ -64,13 +68,29 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         }
     }
 
-    private void createAccount(VolleyCallBack volleyCallBack) {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        detectEditText(charSequence);
+        setButtonSignUpEnabled(areFieldsCorrectlyInserted());
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    private void createAccountHelper(VolleyCallBack volleyCallBack) {
         getAccountDAO().createAccount(volleyCallBack, createAccountForSignUp(), getContext());
     }
 
-    public void createAccountHelper() {
+    public void createAccount() {
         showWaitForSignUpResultDialog();
-        createAccount(new VolleyCallBack() {
+        createAccountHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
                 volleyCallbackOnSuccess();
@@ -87,31 +107,37 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         getButtonSignUp().setOnClickListener(this);
         getFloatingActionButtonGoBack().setOnClickListener(this);
         getFloatingActionButtonHelp().setOnClickListener(this);
+        getTextInputLayoutEmailEditText().addTextChangedListener(this);
+        getTextInputLayoutNameEditText().addTextChangedListener(this);
+        getTextInputLayoutLastNameEditText().addTextChangedListener(this);
+        getTextInputLayoutUsernameEditText().addTextChangedListener(this);
+        getTextInputLayoutPasswordEditText().addTextChangedListener(this);
+        getTextInputLayoutRepeatPasswordEditText().addTextChangedListener(this);
     }
 
-    private void createAccount() {
-        setAccountInformation();
-        if (areAllFieldsCorrect())
-            createAccountHelper();
-    }
+//    private void createAccount() {
+//        setAccountInformation();
+//        if (areAllFieldsCorrect())
+//            createAccountHelper();
+//    }
 
-    private void setAccountInformation() {
-        email = getTextInputLayoutEmailValue();
-        name = getTextInputLayoutNameValue();
-        lastName = getTextInputLayoutLastNameValue();
-        username = getTextInputLayoutUsernameValue();
-        password = getTextInputLayoutPasswordValue();
-        repeatPassword = getTextInputLayoutRepeatPasswordValue();
-    }
+//    private void setAccountInformation() {
+//        email = getTextInputLayoutEmailValue();
+//        name = getTextInputLayoutNameValue();
+//        lastName = getTextInputLayoutLastNameValue();
+//        username = getTextInputLayoutUsernameValue();
+//        password = getTextInputLayoutPasswordValue();
+//        repeatPassword = getTextInputLayoutRepeatPasswordValue();
+//    }
 
     @NotNull
     private Account createAccountForSignUp() {
-        account = new Account();
-        account.setEmail(email);
-        account.setName(name);
-        account.setFamilyName(lastName);
-        account.setUsername(username);
-        account.setPassword(password);
+        Account account = new Account();
+        account.setEmail(getTextInputLayoutEmailValue());
+        account.setName(getTextInputLayoutNameValue());
+        account.setFamilyName(getTextInputLayoutLastNameValue());
+        account.setUsername(getTextInputLayoutUsernameValue());
+        account.setPassword(getTextInputLayoutPasswordValue());
         return account;
     }
 
@@ -133,6 +159,76 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
                 showToastOnUiThread(R.string.unexpected_error_during_sign_up);
                 break;
         }
+    }
+
+    private void detectEditText(CharSequence charSequence) {
+        if (isEditTextEmailChanged(charSequence))
+            handleEditTextEmailChanged(charSequence);
+        else if (isEditTextNameChanged(charSequence))
+            handleEditTextNameChanged(charSequence);
+        else if (isEditTextLastNameChanged(charSequence))
+            handleEditTextLastNameChanged(charSequence);
+        else if (isEditTextUsernameChanged(charSequence))
+            handleEditTextUsernameChanged(charSequence);
+        else if (isEditTextPasswordChanged(charSequence))
+            handleEditTextPasswordChanged(charSequence);
+        else
+            handleEditTextRepeatPasswordChanged();
+    }
+
+    private void handleEditTextEmailChanged(CharSequence charSequence) {
+        if (!isEmailValid(charSequence.toString()))
+            setTextInputLayoutError(getTextInputLayoutEmail(), R.string.email_pattern_error);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutEmail());
+    }
+
+    private void handleEditTextNameChanged(CharSequence charSequence) {
+        if (isNameEmpty(charSequence.toString()))
+            setTextInputLayoutError(getTextInputLayoutName(), R.string.field_cannot_be_empty);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutName());
+    }
+
+    private void handleEditTextLastNameChanged(CharSequence charSequence) {
+        if (isLastNameEmpty(charSequence.toString()))
+            setTextInputLayoutError(getTextInputLayoutLastName(), R.string.field_cannot_be_empty);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutLastName());
+    }
+
+    private void handleEditTextUsernameChanged(CharSequence charSequence) {
+        if (isUsernameEmpty(charSequence.toString()))
+            setTextInputLayoutError(getTextInputLayoutUsername(), R.string.field_cannot_be_empty);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutUsername());
+    }
+
+    private void handleEditTextPasswordChanged(CharSequence charSequence) {
+        if (!isPasswordLegit(charSequence.toString()))
+            setTextInputLayoutError(getTextInputLayoutPassword(), R.string.legit_password_error);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutPassword());
+    }
+
+    private void handleEditTextRepeatPasswordChanged() {
+        if (!arePasswordsEquals())
+            setTextInputLayoutError(getTextInputLayoutRepeatPassword(), R.string.passwords_not_match);
+        else
+            setTextInputLayoutErrorNull(getTextInputLayoutRepeatPassword());
+    }
+
+    private void setTextInputLayoutError(TextInputLayout textInputLayout, int errorString) {
+        textInputLayout.setError(getString(errorString));
+    }
+
+    private void setTextInputLayoutErrorNull(TextInputLayout textInputLayout) {
+        textInputLayout.setError(null);
+        textInputLayout.setErrorEnabled(false);
+    }
+
+    private void setButtonSignUpEnabled(boolean enabled) {
+        getButtonSignUp().setEnabled(enabled);
     }
 
     private void showConfirmAccountDialog() {
@@ -173,31 +269,37 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         alertDialogWaitForSignUpResult.dismiss();
     }
 
-    private boolean areAllFieldsCorrect() {
-        return areFieldsCorrectlyInserted() && isEmailCorrectlyFilled() && arePasswordsEqual();
-    }
+//    private boolean areAllFieldsCorrect() {
+//        return areFieldsCorrectlyInserted()
+//    }
+
+//    private boolean areFieldsCorrectlyInserted() {
+//        return isEmailCorrectlyInserted() && isNameCorrectlyInserted() && isLastNameCorrectlyInserted()
+//                && isUsernameCorrectlyInserted() && isPasswordCorrectlyInserted() && isRepeatPasswordCorrectlyInserted();
+//    }
 
     private boolean areFieldsCorrectlyInserted() {
-        return isEmailCorrectlyInserted() && isNameCorrectlyInserted() && isLastNameCorrectlyInserted()
-                && isUsernameCorrectlyInserted() && isPasswordCorrectlyInserted() && isRepeatPasswordCorrectlyInserted();
+        return isEmailValid(getTextInputLayoutEmailValue()) && !isNameEmpty(getTextInputLayoutNameValue())
+                && !isLastNameEmpty(getTextInputLayoutLastNameValue()) && !isUsernameEmpty(getTextInputLayoutUsernameValue())
+                && isPasswordLegit(getTextInputLayoutPasswordValue()) && arePasswordsEquals();
     }
 
-    private boolean isEmailCorrectlyInserted() {
-        if (isEmailEmpty()) {
-            showFieldErrorMessage(getTextInputLayoutEmail(), getFieldCannotBeEmptyErrorMessage());
+    /*private boolean isEmailCorrectlyInserted() {
+        if (!isEmailValid()) {
+            setTextInputLayoutError(getTextInputLayoutEmail(), R.string.email_pattern_error);
             return false;
         } else {
-            showFieldErrorMessage(getTextInputLayoutEmail(), null);
+            setTextInputLayoutErrorNull(getTextInputLayoutEmail());
             return true;
         }
     }
 
     private boolean isNameCorrectlyInserted() {
         if (isNameEmpty()) {
-            showFieldErrorMessage(getTextInputLayoutName(), getFieldCannotBeEmptyErrorMessage());
+            setTextInputLayoutError(getTextInputLayoutName(), R.string.field_cannot_be_empty);
             return false;
         } else {
-            showFieldErrorMessage(getTextInputLayoutName(), null);
+            setTextInputLayoutErrorNull(getTextInputLayoutName());
             return true;
         }
     }
@@ -240,32 +342,27 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
             showFieldErrorMessage(getTextInputLayoutRepeatPassword(), null);
             return true;
         }
-    }
+    }*/
 
-    private void showFieldErrorMessage(@NotNull TextInputLayout textInputLayout, String error) {
+    /*private void showFieldErrorMessage(@NotNull TextInputLayout textInputLayout, String error) {
         textInputLayout.setError(error);
+    }*/
+
+    private boolean arePasswordsEquals() {
+        return getTextInputLayoutPasswordValue().equals(getTextInputLayoutRepeatPasswordValue());
     }
 
-    private boolean arePasswordsEqual() {
-        if (!arePasswordsEqualHelper()) {
-            getTextInputLayoutPassword().setError(getPasswordsNotMatchErrorMessage());
-            getTextInputLayoutRepeatPassword().setError(getPasswordsNotMatchErrorMessage());
-            return false;
-        } else
-            return true;
-    }
+//    private boolean arePasswordsEqualHelper() {
+//        return password.equals(repeatPassword);
+//    }
 
-    private boolean arePasswordsEqualHelper() {
-        return password.equals(repeatPassword);
-    }
-
-    private boolean isEmailCorrectlyFilled() {
-        if (!isEmailValid()) {
-            getTextInputLayoutEmail().setError(getEmailPatternErrorMessage());
-            return false;
-        } else
-            return true;
-    }
+//    private boolean isEmailCorrectlyFilled() {
+//        if (!isEmailValid()) {
+//            getTextInputLayoutEmail().setError(getEmailPatternErrorMessage());
+//            return false;
+//        } else
+//            return true;
+//    }
 
     private void showUsernameAlreadyExistError() {
         getTextInputLayoutUsername().setError(getUsernameAlreadyExistErrorMessage());
@@ -294,8 +391,7 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     }
 
     private AccountDAO getAccountDAO() {
-        accountDAO = daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
-        return accountDAO;
+        return daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {
@@ -327,24 +423,48 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return signUpActivity.getTextInputLayoutEmail();
     }
 
+    public EditText getTextInputLayoutEmailEditText() {
+        return signUpActivity.getTextInputLayoutEmailEditText();
+    }
+
     private TextInputLayout getTextInputLayoutName() {
         return signUpActivity.getTextInputLayoutName();
+    }
+
+    public EditText getTextInputLayoutNameEditText() {
+        return signUpActivity.getTextInputLayoutNameEditText();
     }
 
     private TextInputLayout getTextInputLayoutLastName() {
         return signUpActivity.getTextInputLayoutLastName();
     }
 
+    public EditText getTextInputLayoutLastNameEditText() {
+        return signUpActivity.getTextInputLayoutLastNameEditText();
+    }
+
     private TextInputLayout getTextInputLayoutUsername() {
         return signUpActivity.getTextInputLayoutUsername();
+    }
+
+    public EditText getTextInputLayoutUsernameEditText() {
+        return signUpActivity.getTextInputLayoutUsernameEditText();
     }
 
     private TextInputLayout getTextInputLayoutPassword() {
         return signUpActivity.getTextInputLayoutPassword();
     }
 
+    public EditText getTextInputLayoutPasswordEditText() {
+        return signUpActivity.getTextInputLayoutPasswordEditText();
+    }
+
     private TextInputLayout getTextInputLayoutRepeatPassword() {
         return signUpActivity.getTextInputLayoutRepeatPassword();
+    }
+
+    public EditText getTextInputLayoutRepeatPasswordEditText() {
+        return signUpActivity.getTextInputLayoutRepeatPasswordEditText();
     }
 
     private String getTextInputLayoutEmailValue() {
@@ -371,32 +491,60 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
         return signUpActivity.getTextInputLayoutRepeatPasswordValue();
     }
 
-    private boolean isEmailEmpty() {
-        return email.isEmpty();
-    }
+//    private boolean isEmailEmpty() {
+//        return email.isEmpty();
+//    }
 
-    boolean isEmailValid() {
+    private boolean isEmailValid(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private boolean isNameEmpty() {
-        return name.isEmpty();
+    private boolean isNameEmpty(String name) {
+        return name.trim().isEmpty();
     }
 
-    private boolean isLastNameEmpty() {
-        return lastName.isEmpty();
+    private boolean isLastNameEmpty(String lastName) {
+        return lastName.trim().isEmpty();
     }
 
-    private boolean isUsernameEmpty() {
-        return username.isEmpty();
+    private boolean isUsernameEmpty(String username) {
+        return username.trim().isEmpty();
     }
 
-    private boolean isPasswordEmpty() {
-        return password.isEmpty();
+    private boolean isPasswordLegit(String password) {
+        return password.length() >= 8 && Pattern.compile("[0-9]").matcher(password).find();
     }
 
-    private boolean isRepeatPasswordEmpty() {
-        return repeatPassword.isEmpty();
+//    private boolean isPasswordEmpty() {
+//        return password.isEmpty();
+//    }
+//
+//    private boolean isRepeatPasswordEmpty() {
+//        return repeatPassword.isEmpty();
+//    }
+
+    private boolean isEditTextEmailChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutEmailEditText().getText().hashCode();
+    }
+
+    private boolean isEditTextNameChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutNameEditText().getText().hashCode();
+    }
+
+    private boolean isEditTextLastNameChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutLastNameEditText().getText().hashCode();
+    }
+
+    private boolean isEditTextUsernameChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutUsernameEditText().getText().hashCode();
+    }
+
+    private boolean isEditTextPasswordChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutPasswordEditText().getText().hashCode();
+    }
+
+    private boolean isEditTextRepeatPasswordChanged(CharSequence charSequence) {
+        return charSequence.hashCode() == getTextInputLayoutRepeatPasswordEditText().getText().hashCode();
     }
 
     @NotNull
@@ -432,5 +580,4 @@ public class SignUpActivityController implements View.OnClickListener, DialogInt
     private String getString(int string) {
         return getResources().getString(string);
     }
-
 }

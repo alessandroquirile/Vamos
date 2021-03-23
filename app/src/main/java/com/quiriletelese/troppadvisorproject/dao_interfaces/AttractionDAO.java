@@ -12,7 +12,7 @@ import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 public interface AttractionDAO {
 
     void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
-                    Context context, int page, int size);
+                    Context context, int page, int size, boolean canPutPointSearch);
 
     void findById(VolleyCallBack volleyCallBack, String id, Context context);
 

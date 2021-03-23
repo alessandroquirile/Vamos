@@ -232,16 +232,12 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
 
     private void editTextTitleOnTextChanged(@NotNull CharSequence charSequence) {
         title = charSequence.toString();
-        //enableButtonPublishReview();
         canReview = areReviewFieldsCorrectlyFilled();
-        //disableButtonPublishReview();
     }
 
     private void editTextDescriptionOnTextChanged(@NotNull CharSequence charSequence) {
         description = charSequence.toString();
-        //enableButtonPublishReview();
         canReview = areReviewFieldsCorrectlyFilled();
-        //disableButtonPublishReview();
     }
 
     public void insertReviewBasedOnAccomodationType() {
@@ -250,17 +246,6 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
             insertAttractionReview();
         } else
             showToastOnUiThred(R.string.fill_required_fields_error);
-//        switch (getAccomodationType()) {
-//            case "hotel":
-//                insertHotelReview();
-//                break;
-//            case "restaurant":
-//                insertRestaurantReview();
-//                break;
-//            case "attraction":
-//                insertAttractionReview();
-//                break;
-//        }
     }
 
     private void setReviewInformation() {

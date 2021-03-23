@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,6 +68,12 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
 
     private void onClickHelper(View view) {
         switch (view.getId()) {
+            case R.id.circle_image_view_searched_user:
+                enlargeImageView();
+                break;
+            case R.id.image_view_close_enlarge_image:
+                closeEnlargedImageView();
+                break;
             case R.id.linear_layout_searched_user_reviews:
                 startUserReviewsActivity();
                 break;
@@ -71,7 +81,35 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
     }
 
     public void setListenerOnViewComponents() {
+        getCircleImageViewUser().setOnClickListener(this);
         getLinearLayoutUserReviews().setOnClickListener(this);
+        getImageViewCloseEnlarge().setOnClickListener(this);
+    }
+
+    private void enlargeImageView() {
+        if (userHasImage(user)) {
+            Animation aniFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+            setEnlargedImageViewUser(user);
+            getLinearLayoutEnlargedImage().setVisibility(View.VISIBLE);
+            getLinearLayoutEnlargedImage().startAnimation(aniFade);
+        } else
+            showToastOnUiThred(R.string.no_photo_to_view);
+
+    }
+
+    private void closeEnlargedImageView() {
+        Animation aniFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        getLinearLayoutEnlargedImage().setVisibility(View.INVISIBLE);
+        getLinearLayoutEnlargedImage().startAnimation(aniFade);
+    }
+
+    public void setEnlargedImageViewUser(User user) {
+        Picasso.with(getContext()).load(getUserImage(user))
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.user_profile_no_photo)
+                .error(R.drawable.picasso_error)
+                .into(getImageViewEnlarge());
     }
 
     private void startUserReviewsActivity() {
@@ -181,6 +219,14 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
             getCircleImageViewUser().setImageResource(R.drawable.user_profile_no_photo);
     }
 
+    public ImageView getImageViewCloseEnlarge() {
+        return searchedUserProfileActivity.getImageViewCloseEnlarge();
+    }
+
+    public ImageView getImageViewEnlarge() {
+        return searchedUserProfileActivity.getImageViewEnlarge();
+    }
+
     public TextView getTextViewUserLevel() {
         return searchedUserProfileActivity.getTextViewSearchedUserLevel();
     }
@@ -210,9 +256,7 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
     }
 
     private void setTextViewUserAvarageRatingText(User user) {
-        //getTextViewUserAvarageRating().setText(String.valueOf(getUserAvarageRating(user)));
-        double roundOff = Math.round(Double.parseDouble(String.valueOf(getUserAvarageRating(user))) * 100.0) / 100.0;
-        getTextViewUserAvarageRating().setText(String.valueOf(roundOff));
+        getTextViewUserAvarageRating().setText(String.valueOf(user.getAvarageRating()));
     }
 
     private TextView getTextViewUserReviewsLabel() {
@@ -221,11 +265,15 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
 
     private void setTextViewSearchedUserReviewsLabel(User user) {
         if (user.getTotalReviews() == 1)
-            getTextViewUserReviewsLabel().setText("Recensione");
+            getTextViewUserReviewsLabel().setText(getString(R.string.review));
     }
 
     public LinearLayout getLinearLayoutUserReviews() {
         return searchedUserProfileActivity.getLinearLayoutUserReviews();
+    }
+
+    public LinearLayoutCompat getLinearLayoutEnlargedImage() {
+        return searchedUserProfileActivity.getLinearLayoutEnlargedImage();
     }
 
     public RecyclerView getRecyclerViewBadgeProfile() {

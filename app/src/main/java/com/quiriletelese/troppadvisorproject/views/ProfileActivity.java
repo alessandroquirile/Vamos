@@ -6,16 +6,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.florent37.androidslidr.Slidr;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
 
@@ -26,9 +27,11 @@ public class ProfileActivity extends AppCompatActivity {
     private ProfileFragmentController profileFragmentController;
     private Toolbar toolbar;
     private CircleImageView circleImageViewUser;
+    private ImageView imageViewCloseEnlarge, imageViewEnlarge;
     private TextView textViewUserTitle, textViewUserLevel, textViewUserNameLastname,
             textViewUsername, textViewUserTotalReviews, textViewUserAvarageRating;
     private LinearLayout linearLayoutUserReviews;
+    private LinearLayoutCompat linearLayoutEnlargedImage;
     private RecyclerView recyclerViewBadgeProfile;
     private View viewNoLoginProfileError;
     private TextView textViewUserReviewsLabel;
@@ -106,12 +109,15 @@ public class ProfileActivity extends AppCompatActivity {
     public void initializeViewComponents() {
         textViewUserTitle = findViewById(R.id.text_view_user_title);
         circleImageViewUser = findViewById(R.id.circle_image_view_user);
+        imageViewCloseEnlarge = findViewById(R.id.image_view_close_enlarge_image);
+        imageViewEnlarge = findViewById(R.id.profile_image_enlarge);
         textViewUserLevel = findViewById(R.id.text_view_user_level);
         textViewUserNameLastname = findViewById(R.id.text_view_user_name_lastname);
         textViewUsername = findViewById(R.id.text_view_username);
         textViewUserTotalReviews = findViewById(R.id.text_view_user_total_reviews);
         textViewUserAvarageRating = findViewById(R.id.text_view_user_avarage_rating);
         linearLayoutUserReviews = findViewById(R.id.linear_layout_user_reviews);
+        linearLayoutEnlargedImage =  findViewById(R.id.enlarged_image_layout);
         recyclerViewBadgeProfile = findViewById(R.id.recycler_view_badge_profile);
         viewNoLoginProfileError = findViewById(R.id.no_login_profile_error_layout);
         textViewUserReviewsLabel = findViewById(R.id.text_view_user_reviews_label);
@@ -169,6 +175,14 @@ public class ProfileActivity extends AppCompatActivity {
         return circleImageViewUser;
     }
 
+    public ImageView getImageViewCloseEnlarge() {
+        return imageViewCloseEnlarge;
+    }
+
+    public ImageView getImageViewEnlarge() {
+        return imageViewEnlarge;
+    }
+
     public TextView getTextViewUserLevel() {
         return textViewUserLevel;
     }
@@ -191,6 +205,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public LinearLayout getLinearLayoutUserReviews() {
         return linearLayoutUserReviews;
+    }
+
+    public LinearLayoutCompat getLinearLayoutEnlargedImage() {
+        return linearLayoutEnlargedImage;
     }
 
     public RecyclerView getRecyclerViewBadgeProfile() {

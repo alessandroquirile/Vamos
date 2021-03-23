@@ -460,9 +460,6 @@ public class EditProfileActivityController implements View.OnClickListener, Text
         AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
         alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogLayout(), null));
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setPositiveButton("OK", (dialogInterface, i) -> {
-            finish(Activity.RESULT_OK);
-        });
         alertDialogWaitSaveChanges = alertDialogBuilder.create();
         alertDialogWaitSaveChanges.show();
     }

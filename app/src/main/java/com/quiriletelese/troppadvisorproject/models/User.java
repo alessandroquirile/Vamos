@@ -80,7 +80,7 @@ public class User implements Serializable {
     }
 
     public Double getAvarageRating() {
-        return avarageRating;
+        return Math.round(Double.parseDouble(String.valueOf(avarageRating)) * 100.0) / 100.0;
     }
 
     public void setAvarageRating(Double avarageRating) {

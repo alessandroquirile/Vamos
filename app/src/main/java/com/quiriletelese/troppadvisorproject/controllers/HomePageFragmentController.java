@@ -111,7 +111,7 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     }
 
     public void findAttractionsByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch) {
-        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, "0", getContext(), page, size);
+        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, "0", getContext(), page, size, true);
     }
 
     public void updateDailyUserLevelHelper(VolleyCallBack volleyCallBack) {

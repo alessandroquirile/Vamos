@@ -2,11 +2,13 @@ package com.quiriletelese.troppadvisorproject.views;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -18,9 +20,11 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     private SearchedUserProfileActivityController searchedUserProfileActivityController;
     private CircleImageView circleImageViewSearchedUser;
+    private ImageView imageViewCloseEnlarge, imageViewEnlarge;
     private TextView textViewSearchedUserTitle, textViewSearchedUserLevel, textViewSearchedUserNameLastname,
             textViewSearchedUserTotalReviews, textViewSearchedUserAvarageRating;
     private LinearLayout linearLayoutUserReviews;
+    private LinearLayoutCompat linearLayoutEnlargedImage;
     private RecyclerView recyclerViewSearchedUserBadgeProfile;
     private TextView textViewSearchedUserReviewsLabel;
 
@@ -50,12 +54,15 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public void initializeViewComponents() {
         circleImageViewSearchedUser = findViewById(R.id.circle_image_view_searched_user);
+        imageViewCloseEnlarge = findViewById(R.id.image_view_close_enlarge_image);
+        imageViewEnlarge = findViewById(R.id.profile_image_enlarge);
         textViewSearchedUserTitle = findViewById(R.id.text_view_searched_user_title);
         textViewSearchedUserLevel = findViewById(R.id.text_view_searched_user_level);
         textViewSearchedUserNameLastname = findViewById(R.id.text_view_searched_user_name_lastname);
         textViewSearchedUserTotalReviews = findViewById(R.id.text_view_searched_user_total_reviews);
         textViewSearchedUserAvarageRating = findViewById(R.id.text_view_searched_user_avarage_rating);
         linearLayoutUserReviews = findViewById(R.id.linear_layout_searched_user_reviews);
+        linearLayoutEnlargedImage =  findViewById(R.id.enlarged_image_layout);
         recyclerViewSearchedUserBadgeProfile = findViewById(R.id.recycler_view_searched_user_badge_profile);
         textViewSearchedUserReviewsLabel = findViewById(R.id.text_view_searched_user_reviews_label);
     }
@@ -74,6 +81,14 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public CircleImageView getCircleImageViewSearchedUser() {
         return circleImageViewSearchedUser;
+    }
+
+    public ImageView getImageViewCloseEnlarge() {
+        return imageViewCloseEnlarge;
+    }
+
+    public ImageView getImageViewEnlarge() {
+        return imageViewEnlarge;
     }
 
     public TextView getTextViewSearchedUserTitle() {
@@ -98,6 +113,10 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public LinearLayout getLinearLayoutUserReviews() {
         return linearLayoutUserReviews;
+    }
+
+    public LinearLayoutCompat getLinearLayoutEnlargedImage() {
+        return linearLayoutEnlargedImage;
     }
 
     public RecyclerView getRecyclerViewSearchedUserBadgeProfile() {

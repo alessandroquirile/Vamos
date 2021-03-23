@@ -32,8 +32,8 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
 
     @Override
     public void findByRsql(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
-                           Context context, int page, int size) {
-        findByRsqlVolley(volleyCallBack, pointSearch, rsqlQuery, context, page, size);
+                           Context context, int page, int size, boolean canPutPointSearch) {
+        findByRsqlVolley(volleyCallBack, pointSearch, rsqlQuery, context, page, size, canPutPointSearch);
     }
 
     @Override
@@ -53,9 +53,9 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
     }
 
     private void findByRsqlVolley(final VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery,
-                                  final Context context, int page, int size) {
+                                  final Context context, int page, int size, boolean canPutPointSearch) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size);
+        String URL = createSearchByRsqlUrl(pointSearch, rsqlQuery, page, size, canPutPointSearch);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, response ->
                 volleyCallBack.onSuccess(getArrayFromResponse(response)), error -> {
 
@@ -126,19 +126,12 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
         requestQueue.add(jsonArrayRequest);
     }
 
-    private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size) {
+    private String createSearchByRsqlUrl(PointSearch pointSearch, String rsqlQuery, int page, int size, boolean canPutPointSearch) {
         String URL = Constants.getBaseUrl() + "attraction/search-by-rsql?";
-        if (pointSearch != null)
+        if (pointSearch != null && canPutPointSearch)
             URL = createStringSearchByRsqlUrlWithPointSearch(URL, pointSearch, rsqlQuery, page, size);
         else
             URL = createStringSearchByRsqlUrlNoPointSearch(URL, rsqlQuery, page, size);
-        return URL;
-    }
-
-    @NotNull
-    private String createStringSearchByRsqlUrlNoPointSearch(String URL, String rsqlQuery, int page, int size) {
-        URL = URL.concat("query=" + rsqlQuery);
-        URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }
 
@@ -149,6 +142,13 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
         URL = URL.concat("&longitude=" + pointSearch.getLongitude());
         URL = URL.concat("&distance=" + pointSearch.getDistance());
         URL = URL.concat("&query=" + "" + rsqlQuery);
+        URL = URL.concat("&page=" + page + "&size=" + size);
+        return URL;
+    }
+
+    @NotNull
+    private String createStringSearchByRsqlUrlNoPointSearch(String URL, String rsqlQuery, int page, int size) {
+        URL = URL.concat("query=" + rsqlQuery);
         URL = URL.concat("&page=" + page + "&size=" + size);
         return URL;
     }

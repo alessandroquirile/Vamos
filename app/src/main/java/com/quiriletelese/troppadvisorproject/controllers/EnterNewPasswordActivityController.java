@@ -43,7 +43,7 @@ public class EnterNewPasswordActivityController implements TextWatcher, View.OnC
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        onTextChandedHelper(charSequence);
+        onTextChangedHelper(charSequence);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class EnterNewPasswordActivityController implements TextWatcher, View.OnC
         });
     }
 
-    private void onTextChandedHelper(CharSequence charSequence) {
+    private void onTextChangedHelper(CharSequence charSequence) {
         detectEditText(charSequence);
         setViewEnabled(getButtonResetPassword(), areFieldsCorrectlyFilled());
     }

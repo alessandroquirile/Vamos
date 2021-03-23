@@ -30,7 +30,6 @@ public class AttractionsListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerViewAttractionsList;
     private ProgressBar progressBarAttractionLoadMore;
-    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +52,6 @@ public class AttractionsListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_attractions_list_activity, menu);
-//        this.menu = menu;
-//        final Handler handler = new Handler(Looper.getMainLooper());
-//        handler.postDelayed(() -> {
-//            menu.performIdentifierAction(R.id.search_button_menu_attractions_list, 0);
-//        }, 200);
         return true;
     }
 
@@ -91,7 +85,7 @@ public class AttractionsListActivity extends AppCompatActivity {
     }
 
     private void findByRsql() {
-        attractionsListActivityController.findByRsql(getPointSearch(), "0");
+        attractionsListActivityController.findByRsql(getPointSearch(), "0", true);
     }
 
     private void addRecyclerViewOnScrollListener() {

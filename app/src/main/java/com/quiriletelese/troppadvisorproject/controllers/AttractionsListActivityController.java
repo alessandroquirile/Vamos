@@ -79,26 +79,23 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         findCitiesName(newText);
     }
 
-    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery) {
-        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size);
+    private void findByRsqlHelper(VolleyCallBack volleyCallBack, PointSearch pointSearch, String rsqlQuery, boolean canPutPointSearch) {
+        getAttractionDAO().findByRsql(volleyCallBack, pointSearch, rsqlQuery, getContext(), page, size, canPutPointSearch);
     }
 
     private void findByNameLikeIgnoreCaseHelper(VolleyCallBack volleyCallBack, String name) {
-        AttractionDAO attractionDAO = getAttractionDAO();
-        attractionDAO.findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), page, size);
+        getAttractionDAO().findByNameLikeIgnoreCase(volleyCallBack, name, getContext(), page, size);
     }
 
     public void findAttractionsNameHelper(VolleyCallBack volleyCallBack, String name) {
-        AttractionDAO attractionDAO = getAttractionDAO();
-        attractionDAO.findAttractionsName(volleyCallBack, name, getContext());
+        getAttractionDAO().findAttractionsName(volleyCallBack, name, getContext());
     }
 
     public void findCitiesNameHelper(VolleyCallBack volleyCallBack, String name) {
-        CityDAO cityDAO = getCityDAO();
-        cityDAO.findCitiesByName(volleyCallBack, name, getContext());
+        getCityDAO().findCitiesByName(volleyCallBack, name, getContext());
     }
 
-    public void findByRsql(PointSearch pointSearch, String rsqlQuery) {
+    public void findByRsql(PointSearch pointSearch, String rsqlQuery, boolean canPutPointSearch) {
         findByRsqlHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -110,7 +107,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
                 volleyCallbackOnError(errorCode);
             }
 
-        }, pointSearch, rsqlQuery);
+        }, pointSearch, rsqlQuery, canPutPointSearch);
     }
 
     private void findByNameLikeIgnoreCase(PointSearch pointSearch) {
@@ -255,12 +252,13 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private void detectSearchType() {
         if (!isAttractionFilterNull()) {
             if (!isSearchingForName()) {
-                findByRsql(isSearchingForCity() ? null : createPointSearch(),
-                        isRsqlEmpty() ? "0" : createRsqlString());
+                findByRsql(createPointSearch(), isRsqlEmpty() ? "0" : createRsqlString(), !isSearchingForCity());
+//                findByRsql(isSearchingForCity() ? null : createPointSearch(),
+//                        isRsqlEmpty() ? "0" : createRsqlString());
             } else
                 findByNameLikeIgnoreCase(createPointSearch());
         } else
-            findByRsql(createPointSearch(), "0");
+            findByRsql(createPointSearch(), "0", true);
     }
 
     private void volleyCallbackOnSuccess(Object object, PointSearch pointSearch) {
@@ -460,7 +458,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private String checkCityNameValue(String rsqlString) {
         if (isSearchingForCity()) {
             String cityName = extractCityName(getAttractionFilterCityValue());
-            rsqlString = rsqlString.concat("address.city==" + cityName + ";");
+            rsqlString = rsqlString.concat("address.city==\"" + cityName + "\";");
         }
         return rsqlString;
     }

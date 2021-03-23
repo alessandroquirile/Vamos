@@ -280,8 +280,12 @@ public class AttractionDetailActivityController implements View.OnClickListener,
                 day = day.concat("<b>" + detectDay(entry.getKey()) + " " + entry.getValue() + "</b>");
             else
                 day = day.concat(detectDay(entry.getKey()) + " " + entry.getValue());
-        } else
-            day = day.concat(detectDay(entry.getKey()) + " " + getString(R.string.closed));
+        } else {
+            if (isSameDay(entry.getKey()))
+                day = day.concat("<b>" + detectDay(entry.getKey()) + " " + getString(R.string.closed) + "</b>");
+            else
+                day = day.concat(detectDay(entry.getKey()) + " " + getString(R.string.closed));
+        }
         day = day.concat("<br>");
     }
 
