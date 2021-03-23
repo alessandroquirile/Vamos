@@ -97,7 +97,7 @@
     <string name="name">Nome</string>
     <string name="no_hotels_found_by_filter">Nessun hotel trovato in base ai criteri di ricerca</string>
     <string name="no_restaurants_found_by_filter">Nessun ristorante trovato in base ai criteri di ricerca</string>
-    <string name="no_attractions_found_by_filter">Nessun\'attrazione trovata in base ai criteri di ricerca</string>
+    <string name="no_attractions_found_by_filter">Nessuna attrazione trovata in base ai criteri di ricerca</string>
     <string name="review">recensione</string>
     <string name="reviews">recensioni</string>
     <string name="users_reviews">Recensioni degli utenti</string>
@@ -155,7 +155,7 @@
     <string name="name_required_field">Nome *</string>
     <string name="last_name_profile_required_field">Cognome *</string>
     <string name="username_required_field" translatable="false">Username *</string>
-    <string name="fill_required_fields_error">Riempi tutti i campi obbligatori prima di proseguire</string>
+    <string name="fill_required_fields_error">Riempi tutti i campi</string>
     <string name="unexpected_error_while_updating_image">Errore imprevisto durante l\'aggiornamento dell\'immagine del profilo, riprova</string>
     <string name="unexpected_error_while_updating_user_informations">Errore imprevisto durante l\'aggiornamento delle informazioni personali, riprova</string>
     <string name="search_user">Cerca utente</string>
