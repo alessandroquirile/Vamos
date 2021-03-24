@@ -110,7 +110,7 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
     private void volleyCallbackOnSuccess(Object object) {
         Review review = (Review) object;
         dismissWaitWhileInsertingReviewDialog();
-        showToastOnUiThred(R.string.review_successfully_submitted);
+        showToastOnUiThread(R.string.review_successfully_submitted);
         if (review.getUser().getTotalReviews() == 1)
             showFirstReviewRewardDialog();
         else
@@ -152,10 +152,10 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
     }
 
     private void handleOtherVolleyError() {
-        showToastOnUiThred(R.string.unexpected_error_while_entering_the_review);
+        showToastOnUiThread(R.string.unexpected_error_while_entering_the_review);
     }
 
-    private void showToastOnUiThred(int stringId) {
+    private void showToastOnUiThread(int stringId) {
         writeReviewActivity.runOnUiThread(() ->
                 Toast.makeText(writeReviewActivity, getString(stringId), Toast.LENGTH_SHORT).show());
     }
@@ -181,7 +181,7 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
             showWaitWhileInsertingReviewDialog();
             insertAttractionReview();
         } else
-            showToastOnUiThred(R.string.fill_required_fields_error);
+            showToastOnUiThread(R.string.fill_required_fields_error);
     }
 
     private void setReviewInformation() {

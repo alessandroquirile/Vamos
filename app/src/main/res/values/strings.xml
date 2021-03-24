@@ -120,7 +120,7 @@
     <string name="no_restaurants_found_home_page">Non è stato possibile trovare ristoranti nelle vicinanze, accedi alla lista dei ristoranti e modifica i filtri di ricerca</string>
     <string name="title_activity_accomodation_detail_maps" translatable="false">Map</string>
     <string name="loading_in_progress">Caricamento in corso</string>
-    <string name="review_successfully_submitted">Recensione inserita con successo</string>
+    <string name="review_successfully_submitted">Recensione inserita con successo.\nHai ottenuto 30 punti livello</string>
     <string name="unexpected_error_while_entering_the_review">Errore imprevisto durante l\'inserimento della recensione, riprova</string>
     <string name="wait_while_insert_review">Attendi, sto salvando la tua recensione</string>
     <string name="no_login_profile_error">Sembra che tu non abbia ancora effettuato il login. Collega un account cliccando il tasto in alto a destra per poter accedere a funzionalità aggiuntive</string>
@@ -208,7 +208,7 @@
     <string name="search_attractions_list_tap_description">Applica dei filtri per da trovare ciò che più si avvicina alle tue esigenze</string>
     <string name="first_review_reward">Complimenti, ti sei aggiudicato il badge \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="user_level_profile_tap_title">Il tuo livello</string>
-    <string name="user_level_profile_tap_description">Questi sono i tuoi punti livello. Ottieni: \n200 punti per ogni recensione scritta.\n100 punti per ogni votazione data alle recensioni di altri utenti,\n50 punti per ogni accesso giornaliero.</string>
+    <string name="user_level_profile_tap_description">Questi sono i tuoi punti livello. Ottieni: \30 punti per ogni recensione scritta.\15 punti per ogni votazione data alle recensioni di altri utenti,\n5 punti per ogni accesso giornaliero.</string>
     <string name="view_pager_tap_title">Foto attrazioni</string>
     <string name="view_pager_tap_description">Fai swipe per visualizzare le immagini di questa attrazione</string>
     <string name="write_review_tap_title">Recensisci</string>
