@@ -33,15 +33,14 @@
         app:rippleColor="@color/colorAccentDark"
         tools:ignore="ContentDescription" />
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/floating_action_button_go_back_sign_up_activity"
+        android:layout_width="250dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:src="@drawable/app_icon_no_background"
-        tools:ignore="ContentDescription" />
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="curious_toucan_sign_up.json"
+        app:lottie_loop="false" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
