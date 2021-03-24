@@ -168,7 +168,7 @@
     <string name="forgot_password">Password dimenticata?</string>
     <string name="forgot_password_insert_email">Inserisci l\'email associata al tuo account. Ti invieremo il codice con il quale potrai reimpostare la password</string>
     <string name="reset_password">Resetta password</string>
-    <string name="reset_password_body">Inserisci una nuova password di lunghezza minima di 8 caratteri e contenente almeno un numero</string>
+    <string name="reset_password_body">Inserisci una nuova password con almeno 8 caratteri e un numero</string>
     <string name="confirmation_code">Codice conferma</string>
     <string name="send_confirmation_code">Invia codice</string>
     <string name="wait_for_confirmation_code">Attendi, invio codice in corso</string>
@@ -227,10 +227,10 @@
     <string name="cannot_vote_your_own_review">Non puoi votare per una tua recensione</string>
     <string name="no_reviews_exists">Non esistono recensioni da mostrare</string>
     <string name="user_reviews">Recensioni dell\'utente</string>
-    <string name="sign_up_help">Benvenuto nella schermata di registrazione. Riempi i campi sottostanti con le tue informazioni personali ed immetti una password con almeno 8 caratteri e contenente almeno un numero</string>
+    <string name="sign_up_help">Benvenuto nella schermata di registrazione. Riempi i campi sottostanti con le tue informazioni personali ed immetti una password con almeno 8 caratteri e un numero</string>
     <string name="approximately_distance">km circa da te</string>
     <string name="wait_save_changes">Attendi, sto salvando le modifiche</string>
-    <string name="legit_password_error">Inserisci una password di almeno 8 caratteri contenente almeno un numero</string>
+    <string name="legit_password_error">Inserisci una password con almeno 8 caratteri e un numero</string>
     <string name="no_photo_to_view">Nessuna foto da mostrare</string>
     <string name="pay_attention">Attenzione</string>
     <string name="pay_attention_body_review">Sei sicuro di voler annullare la scrittura di questa recensione?</string>
