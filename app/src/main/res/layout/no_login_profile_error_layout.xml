@@ -10,11 +10,11 @@
     android:orientation="vertical">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="no_login_profile_error.json"
-        app:lottie_loop="false" />
+        app:lottie_loop="true" />
 
     <TextView
         style="@style/TextAppearance.AppCompat.Medium"
