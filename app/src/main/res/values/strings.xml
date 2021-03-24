@@ -192,13 +192,13 @@
     <string name="website">Sito web</string>
     <string name="position_calculation_in_progress">Calcolo posizione in corso</string>
     <string name="profile_tap_title">Profilo</string>
-    <string name="profile_tap_description">Clicca su questa icona per accedere velocemente alla tua pagina personale</string>
+    <string name="profile_tap_description">Clicca su questa icona per accedere al tuo profilo</string>
     <string name="search_attractions_tap_title">Cerca attrazioni</string>
     <string name="search_attractions_tap_description">Clicca su questa icona per cercare un\'attrazione, visualizzarla su mappa o vederne i dettagli</string>
     <string name="search_user_profile_tap_title">Cerca utenti</string>
     <string name="search_user_profile_tap_description">Cerca gli altri utenti della nostra community, guarda i loro profili, il loro livello e le recensioni che hanno rilasciato</string>
-    <string name="edit_profile_tap_description">Accedi alla sezione per modificare le tue informazioni personali</string>
-    <string name="leaderboard_tap_description">Accedi alla classifica degli utenti per visualizzare i primi 200 della community per punti livello accumulati</string>
+    <string name="edit_profile_tap_description">Clicca su questo pulsante per modificare le tue informazioni personali</string>
+    <string name="leaderboard_tap_description">Puoi visualizzare la classifica dei primi 200 utenti della community organizzata in base ai loro punti livello</string>
     <string name="logout_profile_tap_description">"Se vuoi cambiare account, o semplicemente scollegarti dall'app, clicca su questa icona "</string>
     <string name="read_all_reviews_tap_description">Clicca qui per leggere tutte le recensioni che hai rilasciato nel tempo</string>
     <string name="avarage_rating_tap_description">Qui verrà mostrato il voto medio considerando tutte le recensioni da te rilasciate</string>
@@ -208,7 +208,7 @@
     <string name="search_attractions_list_tap_description">Applica dei filtri per da trovare ciò che più si avvicina alle tue esigenze</string>
     <string name="first_review_reward">Complimenti, ti sei aggiudicato il badge \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="user_level_profile_tap_title">Il tuo livello</string>
-    <string name="user_level_profile_tap_description">Questi sono i tuoi punti livello. Ottieni: \n200 punti per ogni recensione sottomessa.\n100 punti per ogni votazione data alle recensioni di altri utenti,\n50 punti per ogni accesso giornaliero.</string>
+    <string name="user_level_profile_tap_description">Questi sono i tuoi punti livello. Ottieni: \n200 punti per ogni recensione scritta.\n100 punti per ogni votazione data alle recensioni di altri utenti,\n50 punti per ogni accesso giornaliero.</string>
     <string name="view_pager_tap_title">Foto attrazioni</string>
     <string name="view_pager_tap_description">Fai swipe per visualizzare le immagini di questa attrazione</string>
     <string name="write_review_tap_title">Recensisci</string>
@@ -220,7 +220,7 @@
     <string name="cancel_edit_profile_tap_description">Se vuoi annullare le modifiche o semplicemente tornare indietro ti basta premere quest\'icona</string>
     <string name="save_changes_tap_description">Quando sei sicuro di aver terminato le modifiche clicca su quest\'icona per salvarle</string>
     <string name="user_title_profile_tap_title">Il tuo titolo</string>
-    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi mano a mano che acquisisci dei badge e scriverai recensioni. Puoi mostrare il tuo preferito scegliendolo dalla pagina per modificare le tue informazioni personali</string>
+    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi mano a mano che sblocchi degli obiettivi. Puoi mostrare il tuo preferito scegliendolo dalla pagina per modificare le tue informazioni personali</string>
     <string name="successfully_voted">Votazione avvenuta con successo</string>
     <string name="vote_error">Errore imprevisto, riprova</string>
     <string name="wait_for_vote_result">Aggiunta votazione in corso</string>
