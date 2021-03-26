@@ -221,24 +221,24 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
         alertDialogWaitWhileInsertingReview.dismiss();
     }
 
-    public void checkLogin() {
-        if (!isLogged()) {
-            startLoginActivity();
-            finish(Activity.RESULT_CANCELED);
-        }
-    }
-
-    private void startLoginActivity() {
-        writeReviewActivity.startActivity(createLoginActivityIntent());
-    }
-
-    @NotNull
-    @Contract(" -> new")
-    private Intent createLoginActivityIntent() {
-        Intent intentLoginActivity = new Intent(getContext(), LoginActivity.class);
-        intentLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return new Intent(getContext(), LoginActivity.class);
-    }
+//    public void checkLogin() {
+//        if (!isLogged()) {
+//            startLoginActivity();
+//            finish(Activity.RESULT_CANCELED);
+//        }
+//    }
+//
+//    private void startLoginActivity() {
+//        writeReviewActivity.startActivity(createLoginActivityIntent());
+//    }
+//
+//    @NotNull
+//    @Contract(" -> new")
+//    private Intent createLoginActivityIntent() {
+//        Intent intentLoginActivity = new Intent(getContext(), LoginActivity.class);
+//        intentLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        return new Intent(getContext(), LoginActivity.class);
+//    }
 
     private void finish(int result) {
         writeReviewActivity.setResult(result, new Intent());

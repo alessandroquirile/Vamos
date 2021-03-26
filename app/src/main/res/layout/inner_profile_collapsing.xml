@@ -57,17 +57,38 @@
                 android:textColor="@android:color/tab_indicator_text"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/text_view_user_level"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="10dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingTop="5dp"
-                android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_star_yellow" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/text_view_user_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:drawableStartCompat="@drawable/icon_star_hotel_detail_activity_green" />
+
+                <TextView
+                    android:id="@+id/text_view_user_wallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    app:drawableStartCompat="@drawable/icon_account_wallet_green" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </LinearLayout>
 

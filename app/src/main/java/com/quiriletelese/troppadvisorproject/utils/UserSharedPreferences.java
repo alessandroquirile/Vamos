@@ -25,6 +25,12 @@ public class UserSharedPreferences {
         editor.apply();
     }
 
+    public void putLongSharedPreferences(String name, Long value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(name, value);
+        editor.apply();
+    }
+
     public void putBooleanSharedPreferences(String name, boolean value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(name, value);
@@ -35,12 +41,16 @@ public class UserSharedPreferences {
         return sharedPreferences;
     }
 
-    public boolean constains(String preference){
+    public boolean constains(String preference) {
         return getSharedPreferences().contains(preference);
     }
 
     public String getStringSharedPreferences(String preference) {
         return getSharedPreferences().getString(preference, "");
+    }
+
+    public Long getLongSharedPreferences(String preference) {
+        return getSharedPreferences().getLong(preference, 0L);
     }
 
     public boolean getBooleanSharedPreferences(String preference) {

@@ -3,18 +3,22 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,21 +41,29 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.ViewPagerOverViewActivityAdapter;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
 import com.quiriletelese.troppadvisorproject.models.Review;
+import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.AccomodationDetailMapsActivity;
 import com.quiriletelese.troppadvisorproject.views.AttractionDetailActivity;
+import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.SeeReviewsActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -74,7 +86,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     private final AttractionDetailActivity attractionDetailActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     public Attraction attraction;
-    private AlertDialog alertDialogLoadingInProgress;
+    private AlertDialog alertDialogLoadingInProgress, alertDialogWaitShowQRCode, alertDialogVisitedAttractions;
     private String day = "";
 
     public AttractionDetailActivityController(AttractionDetailActivity attractionDetailActivity) {
@@ -110,6 +122,10 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         getAttractionDAO().findById(volleyCallBack, id, getContext());
     }
 
+    private void updateWalletHelper(VolleyCallBack volleyCallBack) {
+        getUserDAO().updateWallet(volleyCallBack, getEmail(), attraction.getFreeAccessPrice(), getContext());
+    }
+
     public void findById() {
         findByIdHelper(new VolleyCallBack() {
             @Override
@@ -122,6 +138,20 @@ public class AttractionDetailActivityController implements View.OnClickListener,
                 volleyCallBackOnError(errorCode);
             }
         }, getId());
+    }
+
+    public void updateWallet() {
+        updateWalletHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                updateUserWalletVolleyCallBackOnSuccess(object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                updateUserWalletVolleyCallBackOnError(errorCode);
+            }
+        });
     }
 
     private void setTextViewImagePositionText() {
@@ -143,6 +173,9 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             case R.id.text_view_attraction_address:
                 startAccomodationDetailMapsActivity();
                 break;
+            case R.id.text_view_attraction_free_access:
+                handleGetFreeAccess();
+                break;
             case R.id.floating_action_button_attraction_write_review:
                 startWriteReviewActivity();
                 break;
@@ -156,6 +189,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         getTextViewPhoneNumber().setOnClickListener(this);
         getTextViewCertificateOfExcellence().setOnClickListener(this);
         getTextViewAddress().setOnClickListener(this);
+        getTextViewFreeAccess().setOnClickListener(this);
         getFloatingActionButtonWriteReview().setOnClickListener(this);
         getTextViewAttractionWebsite().setOnClickListener(this);
         getViewPager().addOnPageChangeListener(this);
@@ -163,16 +197,122 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     public void initializeActivityFields() {
         setAttractionName();
-        setAvaragePrice(getAvaragePrice());
+        setAvaragePrice(attraction.getPrice());
         setAvarageRating();
         setCertificateOfExcellence(isHasCertificateOfExcellence());
         setAddress();
+        setFreeAccess();
         setOpeningDays(getOpeningDays());
         setPhoneNumber(getPhoneNumber());
     }
 
     private void startAccomodationDetailMapsActivity() {
         getContext().startActivity(createAccomodationDetailMapsIntent());
+    }
+
+    private void handleGetFreeAccess() {
+        Long userWallet = getUserWallet();
+        if (hasLogged()) {
+            if (attraction.getFreeAccessPrice() != 0)
+                if (userWallet != null && userWallet != 0) {
+                    if (userWallet < attraction.getFreeAccessPrice())
+                        showToastOnUiThread(R.string.not_enough_coin);
+                    else {
+                        showQRCode();
+                        createQRCode(alertDialogWaitShowQRCode);
+                    }
+                }
+        } else
+            showLoginDialog();
+        System.out.println("WALLET = " + userWallet);
+    }
+
+    public void showLoginDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setTitle(R.string.do_login);
+        alertDialogBuilder.setMessage(R.string.do_login_for_vote);
+        alertDialogBuilder.setPositiveButton(R.string.do_login, (dialogInterface, i) -> {
+            startLoginActivity();
+        });
+        alertDialogBuilder.setNegativeButton(R.string.cancel, null);
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void startLoginActivity() {
+        getContext().startActivity(createStartLoginActivityIntent());
+    }
+
+    private Intent createStartLoginActivityIntent() {
+        Intent intentLoginActitivy = new Intent(getContext(), LoginActivity.class);
+        intentLoginActitivy.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        return intentLoginActitivy;
+    }
+
+    private void showQRCode() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogLayout(), null));
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Riscattato", (dialogInterface, i) -> {
+            updateWallet();
+        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.cancel), null);
+        alertDialogWaitShowQRCode = alertDialogBuilder.create();
+        alertDialogWaitShowQRCode.show();
+    }
+
+    private void createQRCode(AlertDialog alertDialog) {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        ImageView imageView = alertDialog.findViewById(R.id.image_view_qr_code);
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(getEmail(), BarcodeFormat.QR_CODE, 500, 500);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showVisitedAttractionsBadge() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogUpdateWalletLayout(), null));
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("ok", (dialogInterface, i) -> {
+            alertDialogVisitedAttractions.dismiss();
+        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.cancel), null);
+        alertDialogVisitedAttractions = alertDialogBuilder.create();
+        alertDialogVisitedAttractions.show();
+    }
+
+    private void setVisitedDialogField(int body) {
+        TextView textView = alertDialogVisitedAttractions.findViewById(R.id.text_view_body);
+        textView.setText(getString(body));
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private AlertDialog.Builder createAlertDialogBuilder() {
+        return new AlertDialog.Builder(attractionDetailActivity);
+    }
+
+    @NotNull
+    private LayoutInflater getLayoutInflater() {
+        return attractionDetailActivity.getLayoutInflater();
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_get_free_access_layout;
+    }
+
+    private int getAlertDialogUpdateWalletLayout() {
+        return R.layout.dialog_visited_badge_layout;
+    }
+
+    private Long getUserWallet() {
+        return new UserSharedPreferences(getContext()).getLongSharedPreferences(Constants.getWallet());
     }
 
     private Intent createAccomodationDetailMapsIntent() {
@@ -209,8 +349,28 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             setTapTargetSequence();
     }
 
+    private void updateUserWalletVolleyCallBackOnSuccess(Object object) {
+        alertDialogWaitShowQRCode.dismiss();
+        User user = (User) object;
+        if (user.getTotalAttractionsVisited() == 1) {
+            showVisitedAttractionsBadge();
+            setVisitedDialogField(R.string.one_attractions_visited);
+        } else if (user.getTotalAttractionsVisited() == 5) {
+            showVisitedAttractionsBadge();
+            setVisitedDialogField(R.string.five_attractions_visited);
+        } else if (user.getTotalAttractionsVisited() == 10) {
+            showVisitedAttractionsBadge();
+            setVisitedDialogField(R.string.ten_attractions_visited);
+        }
+        writeUserWalletSharedPreferences();
+    }
+
     private void volleyCallBackOnError(String errorCode) {
         detectVolleyError(errorCode);
+    }
+
+    private void updateUserWalletVolleyCallBackOnError(String errorCode) {
+        Toast.makeText(attractionDetailActivity, "Errore imprevisto", Toast.LENGTH_SHORT).show();
     }
 
     private void detectVolleyError(String errorCode) {
@@ -219,6 +379,14 @@ public class AttractionDetailActivityController implements View.OnClickListener,
                 showToastOnUiThread(R.string.no_content_error_attraction_detail);
                 break;
         }
+    }
+
+    private void writeUserWalletSharedPreferences() {
+        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
+        Long userWallet = userSharedPreferences.getLongSharedPreferences(Constants.getWallet());
+        userWallet -= attraction.getFreeAccessPrice();
+        userSharedPreferences.putLongSharedPreferences(Constants.getWallet(), userWallet);
+
     }
 
     private void setAttractionName() {
@@ -250,6 +418,15 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private void setAddress() {
         getTextViewAddress().setText(createAddressString());
+    }
+
+    private void setFreeAccess() {
+        if (attraction.getFreeAccessPrice() != 0) {
+            getTextViewFreeAccess().setText(Html.fromHtml(getString(R.string.get_free_acess).concat(" (<b>")
+                    .concat(String.valueOf(attraction.getFreeAccessPrice())).concat(" gettoni</b>)")));
+            getTextViewFreeAccess().setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_account_wallet_green, 0, R.drawable.icon_arrow_forward_black, 0);
+        } else
+            getTextViewFreeAccess().setText(getString(R.string.free_acces_not_allowed));
     }
 
     private String createAddressString() {
@@ -329,11 +506,27 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             getTextViewPhoneNumber().setText(getString(R.string.no_phone_number));
     }
 
-    private void setAvaragePrice(String price) {
-        if (!price.equals("0"))
-            getTextViewAvaragePrice().setText(price.concat(" ").concat(getString(R.string.currency)));
-        else
+    private void setAvaragePrice(Map<String, Double> price) {
+        if (price != null) {
+            String priceString = createPriceString(price);
+            priceString = priceString.substring(0, (priceString.length() - 1));
+            getTextViewAvaragePrice().setText((Html.fromHtml(priceString)));
+        } else
             getTextViewAvaragePrice().setText(getString(R.string.gratis));
+    }
+
+    private String createPriceString(Map<String, Double> price) {
+        String priceString = "";
+        for (Map.Entry<String, Double> entry : price.entrySet()) {
+            if (entry.getValue() != 0)
+                priceString = priceString.concat("- ").concat("<b>" + entry.getKey().concat(":</b>  ")
+                        .concat(String.valueOf(entry.getValue())).concat(getString(R.string.currency)));
+            else
+                priceString = priceString.concat("- ").concat("<b>" + entry.getKey().concat(":</b>  ")
+                        .concat(getString(R.string.gratis)));
+            priceString = priceString.concat("<br>");
+        }
+        return priceString;
     }
 
     private void setReviewsPreview() {
@@ -402,8 +595,10 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     public void startWriteReviewActivity() {
-        attractionDetailActivity.startActivityForResult(createWriteReviewActivityIntent(), Constants.getLaunchWriteReviewActivity());
-        //getContext().startActivity(createWriteReviewActivityIntent());
+        if (hasLogged())
+            attractionDetailActivity.startActivityForResult(createWriteReviewActivityIntent(), Constants.getLaunchWriteReviewActivity());
+        else
+            showLoginDialog();
     }
 
     public void handleOnActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -411,6 +606,8 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         if (resultCode == RESULT_OK)
             if (requestCode == Constants.getLaunchWriteReviewActivity())
                 findById();
+//            else if(requestCode == Constants.getLaunchLoginActivity())
+//                userWallet = getUserWallet();
     }
 
     private void startSeeReviewsActivity() {
@@ -543,6 +740,10 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return attractionDetailActivity.getTextViewAddress();
     }
 
+    public TextView getTextViewFreeAccess() {
+        return attractionDetailActivity.getTextViewFreeAccess();
+    }
+
     private TextView getTextViewCertificateOfExcellence() {
         return attractionDetailActivity.getTextViewCertificateOfExcellence();
     }
@@ -615,12 +816,12 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return getIntent().getStringExtra(Constants.getId());
     }
 
-    private String getName() {
-        return attraction.getName();
+    private String getEmail() {
+        return new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail());
     }
 
-    private String getAvaragePrice() {
-        return attraction.getAvaragePrice();
+    private String getName() {
+        return attraction.getName();
     }
 
     private boolean isHasCertificateOfExcellence() {
@@ -681,12 +882,21 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         return daoFactory.getAttractionDAO(getStorageTechnology(Constants.getAttractionStorageTechnology()));
     }
 
+    private UserDAO getUserDAO() {
+        return daoFactory.getUserDAO(getStorageTechnology(Constants.getUserStorageTechnology()));
+    }
+
     private String getStorageTechnology(String storageTechnology) {
         return ConfigFileReader.getProperty(storageTechnology, getContext());
     }
 
     public GoogleMap getMap() {
         return attractionDetailActivity.getMap();
+    }
+
+    private boolean hasLogged() {
+        String email = new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail());
+        return email != null && !email.equals("");
     }
 
     private boolean checkTapTargetBooleanPreferences() {

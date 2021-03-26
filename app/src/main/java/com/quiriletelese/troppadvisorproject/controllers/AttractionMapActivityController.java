@@ -345,9 +345,9 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     private String checkPriceValue(String rsqlString) {
         if (!isAttractionFilterAvaragePriceEqualsToZero()) {
             if (isAttractionFilterAvaragePriceGreaterEqualsThan150())
-                rsqlString = rsqlString.concat("avaragePrice=ge=" + getAttractionFilterAvaragePriceValue() + ";");
+                rsqlString = rsqlString.concat("maxPrice=ge=" + getAttractionFilterAvaragePriceValue() + ";");
             else
-                rsqlString = rsqlString.concat("avaragePrice=le=" + getAttractionFilterAvaragePriceValue() + ";");
+                rsqlString = rsqlString.concat("maxPrice=le=" + getAttractionFilterAvaragePriceValue() + ";");
         }
         return rsqlString;
     }

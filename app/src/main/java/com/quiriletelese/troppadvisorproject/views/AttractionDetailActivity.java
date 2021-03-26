@@ -47,6 +47,7 @@ public class AttractionDetailActivity extends AppCompatActivity implements
     private LinearLayoutCompat linearLayoutCompatReviewsPreview, linearLayoutCompatCertificateOfExcellence;
     private TextView textViewCertificateOfExcellence;
     private TextView textViewAddress;
+    private TextView textViewFreeAccess;
     private TextView textViewPhoneNumber;
     private TextView textViewOpeningTime;
     private TextView textViewAvaragePrice;
@@ -122,6 +123,7 @@ public class AttractionDetailActivity extends AppCompatActivity implements
         linearLayoutCompatCertificateOfExcellence = findViewById(R.id.linear_layout_compat_certificate_of_excellence);
         textViewCertificateOfExcellence = findViewById(R.id.text_view_attraction_certificate_of_excellence);
         textViewAddress = findViewById(R.id.text_view_attraction_address);
+        textViewFreeAccess = findViewById(R.id.text_view_attraction_free_access);
         textViewOpeningTime = findViewById(R.id.text_view_attraction_opening_time);
         textViewPhoneNumber = findViewById(R.id.text_view_attraction_phone_number);
         textViewAvaragePrice = findViewById(R.id.text_view_attraction_avarage_price);
@@ -206,6 +208,10 @@ public class AttractionDetailActivity extends AppCompatActivity implements
 
     public TextView getTextViewAddress() {
         return textViewAddress;
+    }
+
+    public TextView getTextViewFreeAccess() {
+        return textViewFreeAccess;
     }
 
     public TextView getTextViewPhoneNumber() {

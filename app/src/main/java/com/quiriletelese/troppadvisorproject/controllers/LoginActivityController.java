@@ -17,9 +17,11 @@ import com.amazonaws.services.cognitoidentityprovider.model.InitiateAuthResult;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.dao_interfaces.AccountDAO;
+import com.quiriletelese.troppadvisorproject.dao_interfaces.UserDAO;
 import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Account;
+import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LoginActivity;
@@ -74,6 +76,10 @@ public class LoginActivityController implements View.OnClickListener, TextWatche
         getAccountDAO().login(volleyCallBack, createAccountForLogin(), getContext());
     }
 
+    private void findUserByEmailHelper(VolleyCallBack volleyCallBack) {
+        getUserDAO().findByEmail(volleyCallBack, getTextInputLayoutKey().getEditText().getText().toString(), getContext());
+    }
+
     private void login() {
         loginHelper(new VolleyCallBack() {
             @Override
@@ -88,8 +94,28 @@ public class LoginActivityController implements View.OnClickListener, TextWatche
         });
     }
 
+    public void findUserByEmail() {
+        findUserByEmailHelper(new VolleyCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                volleyCallBackFindUserkOnSuccess(object);
+            }
+
+            @Override
+            public void onError(String errorCode) {
+                //showToastOnUiThred(R.string.unexpected_error_while_fetch_data);
+            }
+        });
+    }
+
     private void volleyCallbackLoginOnSuccess(Object object) {
         writeLoginSharedPreferences((InitiateAuthResult) object);
+        findUserByEmail();
+        //finish(Activity.RESULT_OK);
+    }
+
+    private void volleyCallBackFindUserkOnSuccess(Object object) {
+        writeUserSharedPreferences((User) object);
         finish(Activity.RESULT_OK);
     }
 
@@ -231,7 +257,7 @@ public class LoginActivityController implements View.OnClickListener, TextWatche
     }
 
     private boolean areFieldsCorrectlyInserted() {
-        return isKeyCorrectlyInserted() && !isPasswordEmpty() /*isPasswordLegit(getTextInputLayoutPasswordValue())*/;
+        return isKeyCorrectlyInserted() && !isPasswordEmpty();
     }
 
     private boolean isKeyCorrectlyInserted() {
@@ -247,6 +273,10 @@ public class LoginActivityController implements View.OnClickListener, TextWatche
         userSharedPreferences.putStringSharedPreferences(Constants.getIdToken(), getIdToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(Constants.getRefreshToken(), getRefreshToken(initiateAuthResult));
         userSharedPreferences.putStringSharedPreferences(Constants.getEmail(), getTextInputLayoutKey().getEditText().getText().toString());
+    }
+
+    private void writeUserSharedPreferences(User user) {
+        userSharedPreferences.putLongSharedPreferences(Constants.getWallet(), user.getWallet());
     }
 
     private void showWaitForLoginResultDialog() {
@@ -273,6 +303,10 @@ public class LoginActivityController implements View.OnClickListener, TextWatche
 
     private AccountDAO getAccountDAO() {
         return daoFactory.getAccountDAO(getStorageTechnology(Constants.getAccountStorageTechnology()));
+    }
+
+    private UserDAO getUserDAO() {
+        return daoFactory.getUserDAO(getStorageTechnology(Constants.getUserStorageTechnology()));
     }
 
     private String getStorageTechnology(String storageTechnology) {

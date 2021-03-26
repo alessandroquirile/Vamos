@@ -2,6 +2,8 @@ package com.quiriletelese.troppadvisorproject.dao_implementations;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,6 +16,7 @@ import com.quiriletelese.troppadvisorproject.dao_interfaces.AttractionDAO;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.model_helpers.PointSearch;
 import com.quiriletelese.troppadvisorproject.models.Attraction;
+import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
 import org.jetbrains.annotations.NotNull;
@@ -110,7 +113,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
 
     private void findAttractionsNameVolley(final VolleyCallBack volleyCallBack, String name, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String URL = createFindHotelsNameUrl(name);
+        String URL = createFindAttractionsNameUrl(name);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response ->
                 volleyCallBack.onSuccess(getArrayFromResponseAttractionsName(response)), error -> {
 
@@ -169,7 +172,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
     }
 
     @NotNull
-    private String createFindHotelsNameUrl(String name) {
+    private String createFindAttractionsNameUrl(String name) {
         String URL = Constants.getBaseUrl() + "attraction/find-attractions-name/";
         URL = URL.concat(name);
         return URL;
@@ -213,7 +216,7 @@ public class AttractionDAO_MongoDB implements AttractionDAO {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean isStatusCodeOk(int statusCode){
+    private boolean isStatusCodeOk(int statusCode) {
         return statusCode == 200;
     }
 

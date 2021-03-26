@@ -24,4 +24,6 @@ public interface UserDAO {
 
     void updateDailyUserLevel(VolleyCallBack volleyCallBack, String email, Context context);
 
+    void updateWallet(VolleyCallBack volleyCallBack, String email, int value, Context context);
+
 }

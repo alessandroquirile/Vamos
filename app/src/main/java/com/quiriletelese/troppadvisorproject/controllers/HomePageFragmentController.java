@@ -86,6 +86,7 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     @Override
     public void onLocationChanged(Location location) {
         pointSearch = createPointSearch(Arrays.asList(location.getLatitude(), location.getLongitude()));
+        System.out.println("LAT = " + location.getLatitude() + "\nLONG = " + location.getLongitude());
         if (!isLocated) {
             initializeRecyclerViewAttractions(pointSearch);
             if (!checkTapTargetBooleanPreferences())
@@ -264,7 +265,14 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
             showDailyRewardDialog();
             updateDailyUserLevel();
             saveSharedPreferencesDailyReward();
+            writeWalletPreferences();
         }
+    }
+
+    private void writeWalletPreferences() {
+        UserSharedPreferences userSharedPreferences = new UserSharedPreferences(getContext());
+        Long wallet = userSharedPreferences.getLongSharedPreferences(Constants.getWallet());
+        userSharedPreferences.putLongSharedPreferences(Constants.getWallet(), wallet + 1);
     }
 
     private boolean hasLogged() {

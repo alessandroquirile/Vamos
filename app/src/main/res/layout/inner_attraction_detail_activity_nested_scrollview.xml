@@ -86,13 +86,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:drawablePadding="5dp"
             android:focusable="true"
             android:gravity="center_vertical"
             android:text="@string/certificate_of_excellence"
             android:textColor="@color/black"
+            app:drawableEndCompat="@drawable/icon_arrow_forward_black"
             app:drawableStartCompat="@drawable/icon_certificate_of_excellence_green" />
 
         <View
@@ -128,6 +129,24 @@
         android:textColor="@color/black"
         app:drawableEndCompat="@drawable/icon_arrow_forward_black"
         app:drawableStartCompat="@drawable/icon_location_primary_color" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_gray_round_corner" />
+
+    <TextView
+        android:id="@+id/text_view_attraction_free_access"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"/>
 
     <View
         android:layout_width="match_parent"
@@ -180,14 +199,22 @@
         android:background="@drawable/button_gray_round_corner" />
 
     <TextView
-        android:id="@+id/text_view_attraction_avarage_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
+        android:text="Tariffe"
         android:textColor="@color/black"
         app:drawableStartCompat="@drawable/icon_avarage_price_hotel_detail_green" />
+
+    <TextView
+        android:id="@+id/text_view_attraction_avarage_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingStart="30dp"
+        tools:ignore="RtlSymmetry" />
 
     <View
         android:layout_width="match_parent"

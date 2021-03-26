@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private CircleImageView circleImageViewUser;
     private ImageView imageViewCloseEnlarge, imageViewEnlarge;
-    private TextView textViewUserTitle, textViewUserLevel, textViewUserNameLastname,
+    private TextView textViewUserTitle, textViewUserLevel, textViewUserWallet, textViewUserNameLastname,
             textViewUsername, textViewUserTotalReviews, textViewUserAvarageRating;
     private LinearLayout linearLayoutUserReviews;
     private LinearLayoutCompat linearLayoutEnlargedImage;
@@ -112,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
         imageViewCloseEnlarge = findViewById(R.id.image_view_close_enlarge_image);
         imageViewEnlarge = findViewById(R.id.profile_image_enlarge);
         textViewUserLevel = findViewById(R.id.text_view_user_level);
+        textViewUserWallet = findViewById(R.id.text_view_user_wallet);
         textViewUserNameLastname = findViewById(R.id.text_view_user_name_lastname);
         textViewUsername = findViewById(R.id.text_view_username);
         textViewUserTotalReviews = findViewById(R.id.text_view_user_total_reviews);
@@ -185,6 +186,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public TextView getTextViewUserLevel() {
         return textViewUserLevel;
+    }
+
+    public TextView getTextViewUserWallet() {
+        return textViewUserWallet;
     }
 
     public TextView getTextViewUserNameLastname() {

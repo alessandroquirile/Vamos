@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.2'
     // GiftView dependency
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     implementation 'com.github.florent37:android-slidr:1.0.3'
     // jUnit testing dependencies
     testImplementation 'junit:junit:4.13.2'

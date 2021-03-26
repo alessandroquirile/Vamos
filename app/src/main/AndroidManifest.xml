@@ -90,7 +90,8 @@
             android:theme="@style/AppThemeMaterial.NoActionBar" />
         <activity
             android:name=".views.SearchedUserProfileActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.SearchUsersActivity"
             android:screenOrientation="portrait"

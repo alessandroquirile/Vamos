@@ -14,7 +14,9 @@ public class User implements Serializable {
     private Long totalReviews;
     private Double avarageRating;
     private Double totalRating;
-    private Double level;
+    private Long totalAttractionsVisited;
+    private Long level;
+    private Long wallet;
     private String chosenTitle;
     private Set<Badge> obtainedBadges;
     private Set<Badge> missingBadges;
@@ -95,11 +97,27 @@ public class User implements Serializable {
         this.totalRating = totalRating;
     }
 
-    public Double getLevel() {
+    public Long getTotalAttractionsVisited() {
+        return totalAttractionsVisited;
+    }
+
+    public void setTotalAttractionsVisited(Long totalAttractionsVisited) {
+        this.totalAttractionsVisited = totalAttractionsVisited;
+    }
+
+    public Long getLevel() {
         return level;
     }
 
-    public void setLevel(Double level) {
+    public Long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Long wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setLevel(Long level) {
         this.level = level;
     }
 

@@ -13,7 +13,6 @@ public abstract class Accomodation implements Serializable {
     protected String id;
     protected String name;
     protected Double avarageRating;
-    protected String avaragePrice;
     protected String phoneNumber;
     protected Address address;
     protected Point point;
@@ -49,22 +48,6 @@ public abstract class Accomodation implements Serializable {
     public void setAvarageRating(Double avarageRating) {
         this.avarageRating = avarageRating;
     }
-
-    public String getAvaragePrice() {
-        return avaragePrice;
-    }
-
-    public void setAvaragePrice(String avaragePrice) {
-        this.avaragePrice = avaragePrice;
-    }
-
-    //    public Double getAvaragePrice() {
-//        return Math.round(avaragePrice * 100.0) / 100.0;
-//    }
-//
-//    public void setAvaragePrice(Double avaragePrice) {
-//        this.avaragePrice = avaragePrice;
-//    }
 
     public String getPhoneNumber() {
         return phoneNumber;

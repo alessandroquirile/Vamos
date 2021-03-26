@@ -253,8 +253,6 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         if (!isAttractionFilterNull()) {
             if (!isSearchingForName()) {
                 findByRsql(createPointSearch(), isRsqlEmpty() ? "0" : createRsqlString(), !isSearchingForCity());
-//                findByRsql(isSearchingForCity() ? null : createPointSearch(),
-//                        isRsqlEmpty() ? "0" : createRsqlString());
             } else
                 findByNameLikeIgnoreCase(createPointSearch());
         } else
@@ -470,9 +468,9 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private String checkPriceValue(String rsqlString) {
         if (!isAttractionFilterAvaragePriceEqualsToZero()) {
             if (isAttractionFilterAvaragePriceGreaterEqualsThan150())
-                rsqlString = rsqlString.concat("avaragePrice=ge=" + getAttractionFilterAvaragePriceValue() + ";");
+                rsqlString = rsqlString.concat("maxPrice=ge=" + getAttractionFilterAvaragePriceValue() + ";");
             else
-                rsqlString = rsqlString.concat("avaragePrice=le=" + getAttractionFilterAvaragePriceValue() + ";");
+                rsqlString = rsqlString.concat("maxPrice=le=" + getAttractionFilterAvaragePriceValue() + ";");
         }
         return rsqlString;
     }

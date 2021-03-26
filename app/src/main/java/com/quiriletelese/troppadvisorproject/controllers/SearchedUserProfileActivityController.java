@@ -296,7 +296,7 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
         return user.getImage();
     }
 
-    private Double getUserLevel(User user) {
+    private Long getUserLevel(User user) {
         return user.getLevel();
     }
 

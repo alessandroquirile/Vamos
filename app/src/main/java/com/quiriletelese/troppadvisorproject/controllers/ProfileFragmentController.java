@@ -138,8 +138,13 @@ public class ProfileFragmentController implements View.OnClickListener {
     private void volleyCallBackOnSuccess(Object object) {
         if (!checkTapTargetBooleanPreferences())
             setTapTargetSequence();
+        writeWalletPreferences();
         setProfileFields(object);
         initializeRecylerView(object);
+    }
+
+    private void writeWalletPreferences() {
+        new UserSharedPreferences(getContext()).putLongSharedPreferences(Constants.getWallet(), user.getWallet());
     }
 
     public void setProfileFields(Object object) {
@@ -149,6 +154,7 @@ public class ProfileFragmentController implements View.OnClickListener {
         setTextViewUserNameLastnameText(user);
         setTextViewUsernameText(user);
         setTextViewUserLevelText(user);
+        setTextViewUserWalletText(user);
         setTextViewUserTotalReviewsText(user);
         setTextViewUserAvarageRatingText(user);
         setTextViewUserReviewsLabel(user);
@@ -368,6 +374,14 @@ public class ProfileFragmentController implements View.OnClickListener {
         getTextViewUserLevel().setText(String.valueOf(getUserLevel(user)));
     }
 
+    public TextView getTextViewUserWallet() {
+        return profileActivity.getTextViewUserWallet();
+    }
+
+    private void setTextViewUserWalletText(User user) {
+        getTextViewUserWallet().setText(String.valueOf(getUserWallet(user)));
+    }
+
     private TextView getTextViewUserNameLastname() {
         return profileActivity.getTextViewUserNameLastname();
     }
@@ -433,8 +447,12 @@ public class ProfileFragmentController implements View.OnClickListener {
         return user.getImage();
     }
 
-    private Double getUserLevel(User user) {
+    private Long getUserLevel(User user) {
         return user.getLevel();
+    }
+
+    private Long getUserWallet(User user) {
+        return user.getWallet();
     }
 
     private String getUserName(User user) {
@@ -479,6 +497,8 @@ public class ProfileFragmentController implements View.OnClickListener {
                         getString(R.string.user_title_profile_tap_description), 70),
                 createTapTarget(getTextViewUserLevel(), getString(R.string.user_level_profile_tap_title),
                         getString(R.string.user_level_profile_tap_description), 50),
+                createTapTarget(getTextViewUserWallet(), getString(R.string.user_wallet_profile_tap_title),
+                        getString(R.string.user_wallet_profile_tap_description), 50),
                 createTapTarget(getTextViewUserTotalReviews(), getString(R.string.read_all_reviews),
                         getString(R.string.read_all_reviews_tap_description), 50),
                 createTapTarget(getTextViewUserAvarageRating(), getString(R.string.avarage_rating),

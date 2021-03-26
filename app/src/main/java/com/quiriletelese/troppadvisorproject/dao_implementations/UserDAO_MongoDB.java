@@ -61,6 +61,11 @@ public class UserDAO_MongoDB implements UserDAO {
         updateDailyUserLevelVolley(volleyCallBack, email, context);
     }
 
+    @Override
+    public void updateWallet(VolleyCallBack volleyCallBack, String email, int value, Context context) {
+        updateWalletVolley(volleyCallBack, email, value, context);
+    }
+
     private void findByEmailVolley(VolleyCallBack volleyCallBack, String email, Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String URL = createFindByEmailUrl(email);
@@ -195,6 +200,28 @@ public class UserDAO_MongoDB implements UserDAO {
         requestQueue.add(jsonObjectRequest);
     }
 
+    private void updateWalletVolley(VolleyCallBack volleyCallBack, String email, int value, Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String URL = createUpdateWalletUrl(email, value);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, URL, null,
+                response -> {
+                    volleyCallBack.onSuccess(getUserFromResponse(response));
+                },
+                error -> {
+                    if (error != null)
+                        volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+                }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                if (!isStatusCodeOk(response.statusCode) && isErrorNotMAnagedFromVolley(response.statusCode))
+                    volleyCallBack.onError(String.valueOf(response.statusCode));
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.start();
+        requestQueue.add(jsonObjectRequest);
+    }
+
     private JSONObject jsonObjectUpdateUserInformations(User user) {
         JSONObject jsonObjectUpdateUserInformations = new JSONObject();
         return createJsonObjectUpdateUserInformations(jsonObjectUpdateUserInformations, user);
@@ -237,6 +264,14 @@ public class UserDAO_MongoDB implements UserDAO {
         return Constants.getBaseUrl() + Constants.getUserRoute() + Constants.getUpdateDailyUserLevelRoute() + email;
     }
 
+    @NotNull
+    private String createUpdateWalletUrl(String email, int value) {
+        String URL = Constants.getBaseUrl() + "user/update-wallet?";
+        URL = URL.concat("email=" + email);
+        URL = URL.concat("&value=" + value);
+        return URL;
+    }
+
     private User getUserFromResponse(@NonNull JSONObject response) {
         return new Gson().fromJson(response.toString(), User.class);
     }
@@ -274,6 +309,10 @@ public class UserDAO_MongoDB implements UserDAO {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isStatusCodeOk(int statusCode) {
         return statusCode == 200;
+    }
+
+    private boolean isErrorNotMAnagedFromVolley(int statusCode) {
+        return statusCode >= 200 && statusCode < 400;
     }
 
 }

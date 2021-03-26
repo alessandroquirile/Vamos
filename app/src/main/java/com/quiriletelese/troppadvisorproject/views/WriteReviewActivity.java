@@ -45,7 +45,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         initializeViewComponents();
         setRatingBarDefaultValue();
         initializeController();
-        checkLogin();
+        //checkLogin();
         setToolbarSubtitle();
         setListenerOnViewComponents();
     }
@@ -77,9 +77,9 @@ public class WriteReviewActivity extends AppCompatActivity {
         writeReviewActivityController.setToolbarSubtitle();
     }
 
-    private void checkLogin() {
-        writeReviewActivityController.checkLogin();
-    }
+//    private void checkLogin() {
+//        writeReviewActivityController.checkLogin();
+//    }
 
     public void initializeViewComponents() {
         textInputLayoutReviewTitle = findViewById(R.id.text_input_layout_review_title);

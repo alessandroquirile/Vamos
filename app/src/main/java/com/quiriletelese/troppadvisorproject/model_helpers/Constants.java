@@ -43,6 +43,7 @@ public abstract class Constants {
     private static final String refreshToken = "refresh_token";
     private static final String isAppOpenedForFirstTime = "is_app_opened_for_first_time";
     private static final String dailyReward = "daily_reward";
+    private static final String wallet = "wallet";
     private static final String tapTargetHome = "tapTargetHome";
     private static final String tapTargetProfile = "tap_target_profile";
     private static final String tapTargetAttractionsList = "tap_target_attractions_list";
@@ -57,7 +58,7 @@ public abstract class Constants {
     private static final String findUsersByNameOrUsermaneRoute = "find-by-name-or-username/";
     private static final String findLeaderboardUser = "find-leaderboard";
     private static final String updateUserInformationsRoute = "update-user-informations";
-    private static final String updateDailyUserLevelRoute = "update-daily-user-level/";
+    private static final String updateDailyUserLevelRoute = "update-daily-user-access/";
     private static final String updateUserImageRoute = "update-user-image/";
     private static final String s3Route = "s3/";
     private static final String s3UploadFileRoute = "upload-file";
@@ -205,6 +206,10 @@ public abstract class Constants {
 
     public static String getDailyReward() {
         return dailyReward;
+    }
+
+    public static String getWallet() {
+        return wallet;
     }
 
     public static String getTapTargetHome() {
