@@ -1,5 +1,6 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -96,13 +97,68 @@ public class ProfileFragmentController implements View.OnClickListener {
             case R.id.linear_layout_user_reviews:
                 startUserReviewsActivity();
                 break;
+            case R.id.text_view_user_level:
+                showDialogUserLevel();
+                break;
+            case R.id.text_view_user_wallet:
+                showDialogUserWallet();
+                break;
+            case R.id.text_view_user_title:
+                showDialogUserTitle();
+                break;
         }
+    }
+
+    public void showDialogUserLevel() {
+        new AlertDialog.Builder(profileActivity)
+                .setTitle(getString(R.string.user_level_profile_tap_title))
+                .setMessage(getString(R.string.user_level_profile_tap_description))
+                .setPositiveButton("Ok", ((dialogInterface, i) -> {
+                    finish(RESULT_OK);
+                }))
+                //.setNegativeButton("Indietro", null)
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    private void finish(int result) {
+        profileActivity.setResult(result, new Intent());
+    }
+
+    public void showDialogUserWallet() {
+        new AlertDialog.Builder(profileActivity)
+                .setTitle(getString(R.string.user_wallet_profile_tap_title))
+                .setMessage(getString(R.string.user_wallet_profile_tap_description))
+                .setPositiveButton("Ok", ((dialogInterface, i) -> {
+                    finish(RESULT_OK);
+                }))
+                //.setNegativeButton("Indietro", null)
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    public void showDialogUserTitle() {
+        new AlertDialog.Builder(profileActivity)
+                .setTitle(getString(R.string.user_title_profile_tap_title))
+                .setMessage(getString(R.string.user_title_profile_tap_description))
+                .setPositiveButton("Ok", ((dialogInterface, i) -> {
+                    finish(RESULT_OK);
+                }))
+                //.setNegativeButton("Indietro", null)
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     public void setListenerOnViewComponents() {
         getCircleImageViewUser().setOnClickListener(this);
         getLinearLayoutUserReviews().setOnClickListener(this);
         getImageViewCloseEnlarge().setOnClickListener(this);
+        getTextViewUserLevel().setOnClickListener(this);
+        getTextViewUserWallet().setOnClickListener(this);
+        getTextViewUserTitle().setOnClickListener(this);
     }
 
     private void enlargeImageView() {
