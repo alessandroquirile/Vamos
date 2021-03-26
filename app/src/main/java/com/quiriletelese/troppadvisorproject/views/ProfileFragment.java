@@ -1,6 +1,5 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
+
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -128,7 +129,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void invalidateOptionsMenu() {
-        getActivity().invalidateOptionsMenu();
+        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
 
     private boolean isLogged() {

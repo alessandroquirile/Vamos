@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.ProfileFragmentController;
 
+import java.util.Objects;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -45,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_arrow_back_white);
         getSupportActionBar().setTitle(null);
