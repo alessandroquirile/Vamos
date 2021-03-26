@@ -565,7 +565,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     @NotNull
     private String createAvarageRatingStringHelper(@NotNull Attraction attraction) {
-        return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
+        if (attraction.getTotalReviews() == 1)
+            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.review) + ")";
+        else
+            return attraction.getAvarageRating().intValue() + "/5 (" + attraction.getTotalReviews() + " " + getString(R.string.reviews) + ")";
     }
 
     private boolean hasReviews(@NotNull Attraction attraction) {
