@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -143,7 +144,7 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
     }
 
     public void setToolbarTitle(User user) {
-        searchedUserProfileActivity.setTitle(getUsername(user));
+        getToolbar().setTitle(getUsername(user));
     }
 
     private void initializeRecylerView(Object object) {
@@ -266,6 +267,10 @@ public class SearchedUserProfileActivityController implements View.OnClickListen
     private void setTextViewSearchedUserReviewsLabel(User user) {
         if (user.getTotalReviews() == 1)
             getTextViewUserReviewsLabel().setText(getString(R.string.review));
+    }
+
+    public Toolbar getToolbar() {
+        return searchedUserProfileActivity.getToolbar();
     }
 
     public LinearLayout getLinearLayoutUserReviews() {

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiriletelese.troppadvisorproject.R;
@@ -27,14 +28,19 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
     private LinearLayoutCompat linearLayoutEnlargedImage;
     private RecyclerView recyclerViewSearchedUserBadgeProfile;
     private TextView textViewSearchedUserReviewsLabel;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searched_user_profile);
 
+        toolbar = findViewById(R.id.tool_bar_searched_user_profile);
+        setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_arrow_back_white);
 
         initializeViewComponents();
         initializeController();
@@ -125,5 +131,9 @@ public class SearchedUserProfileActivity extends AppCompatActivity {
 
     public TextView getTextViewSearchedUserReviewsLabel() {
         return textViewSearchedUserReviewsLabel;
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 }

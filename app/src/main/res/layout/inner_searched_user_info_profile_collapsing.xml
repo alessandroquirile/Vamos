@@ -91,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reviews_profile"
+                    android:textColor="@color/black"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -114,6 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/avarage_rating"
+                    android:textColor="@color/black"
                     android:textAlignment="center" />
 
             </LinearLayout>
