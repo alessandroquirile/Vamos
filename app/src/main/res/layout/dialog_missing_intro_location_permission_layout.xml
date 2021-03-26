@@ -14,7 +14,7 @@
         android:layout_height="130dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="no_position_error_lottie.json"
-        app:lottie_loop="false" />
+        app:lottie_loop="true" />
 
     <TextView
         style="@style/TextAppearance.AppCompat.Medium"
