@@ -220,7 +220,7 @@
     <string name="cancel_edit_profile_tap_description">Se vuoi annullare le modifiche o semplicemente tornare indietro ti basta premere quest\'icona</string>
     <string name="save_changes_tap_description">Quando sei sicuro di aver terminato le modifiche clicca su quest\'icona per salvarle</string>
     <string name="user_title_profile_tap_title">Il tuo titolo</string>
-    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi mano a mano che sblocchi degli obiettivi. Puoi mostrare il tuo preferito scegliendolo dalla pagina per modificare le tue informazioni personali</string>
+    <string name="user_title_profile_tap_description">Questo è il tuo titolo. Te ne verranno assegnati di nuovi quando sblocchi degli obiettivi. Puoi mostrare il tuo preferito scegliendolo dalla pagina per modificare le tue informazioni personali</string>
     <string name="successfully_voted">Votazione avvenuta con successo</string>
     <string name="vote_error">Errore imprevisto, riprova</string>
     <string name="wait_for_vote_result">Aggiunta votazione in corso</string>
@@ -238,7 +238,7 @@
     <string name="pay_attention_body_profile">Sei sicuro di voler annullare le modifiche al tuo profilo?</string>
     <string name="confirm_email">Ora non ti resta altro da fare che attivare il tuo account tramite il link che ti abbiamo inviato tramite email e goderti la tua nuova app.</string>
     <string name="user_wallet_profile_tap_title">Portafogli virtuale</string>
-    <string name="user_wallet_profile_tap_description">Questo è il tuo portafogli virtuale all\'interno del quale accumuli gettoni. Ogni accesso giornaliero ti da diritto ad 1 gettone. Usali per riscattare gli ingressi gratuiti alle strutture dove previsto</string>
+    <string name="user_wallet_profile_tap_description">Questo è il tuo portafogli virtuale all\'interno del quale accumuli gettoni. Ogni accesso giornaliero ti dà diritto ad 1 gettone. Usali per riscattare gli ingressi gratuiti alle strutture dove previsto</string>
     <string name="get_free_acess">Riscatta accesso gratuito</string>
     <string name="free_acces_not_allowed">Riscatta ingresso gratuito non consentito</string>
     <string name="not_enough_coin">Non hai abbastanza gettoni per riscattare</string>
