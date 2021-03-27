@@ -347,6 +347,7 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     public void setEditProfileActivityFields() {
         User user = getUserFromIntent();
         if (user != null) {
+            setEditTextEmailText(user);
             setCircleImageViewUserEditImage(user);
             setEditTextNameText(user);
             setEditTextLastNameText(user);
@@ -355,10 +356,14 @@ public class EditProfileActivityController implements View.OnClickListener, Text
             setAutoCompleteTextViewChosenTitleTextAdapter(user);
             if (!checkTapTargetBooleanPreferences()) {
                 final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(() -> setTapTargetSequence(), 200);
+                handler.postDelayed(this::setTapTargetSequence, 200);
             }
         } /*else
             editProfileActivity.finish();*/
+    }
+
+    private void setEditTextEmailText(@NotNull User user) {
+        getEditTextEmail().setText(user.getEmail());
     }
 
     public void setListenersOnViewComponents() {
@@ -541,6 +546,10 @@ public class EditProfileActivityController implements View.OnClickListener, Text
 
     private EditText getEditTextName() {
         return editProfileActivity.getEditTextName();
+    }
+
+    private EditText getEditTextEmail() {
+        return editProfileActivity.getEditTextEmail();
     }
 
     public void setEditTextNameText(User user) {

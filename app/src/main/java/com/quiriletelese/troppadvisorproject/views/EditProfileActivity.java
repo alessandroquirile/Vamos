@@ -1,14 +1,5 @@
 package com.quiriletelese.troppadvisorproject.views;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
-
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,14 +8,17 @@ import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.controllers.EditProfileActivityController;
-
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,7 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView textViewReturnToTheOriginalProfileImage;
     private FloatingActionButton floatingActionButtonChangeProfileImage;
     private TextInputLayout textInputLayoutName, textInputLayoutLastName, textInputLayoutUsername,
-            textInputLayoutSelectTitle;
+            textInputLayoutSelectTitle, textInputLayoutEmail;
     private AutoCompleteTextView autoCompleteTextViewChosenTitle;
 
     @Override
@@ -94,6 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void initializeViewComponents() {
+        textInputLayoutEmail = findViewById(R.id.text_input_layout_email);
         circleImageViewUserEdit = findViewById(R.id.circle_image_view_user_edit);
         textViewReturnToTheOriginalProfileImage = findViewById(R.id.text_view_return_to_the_original_profile_image);
         floatingActionButtonChangeProfileImage = findViewById(R.id.floating_action_button_change_profile_image);
@@ -154,6 +149,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     public EditText getEditTextName() {
         return textInputLayoutName.getEditText();
+    }
+
+    public EditText getEditTextEmail() {
+        return textInputLayoutEmail.getEditText();
     }
 
     public EditText getEditTextLastame() {

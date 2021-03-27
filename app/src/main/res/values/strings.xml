@@ -245,4 +245,5 @@
     <string name="one_attractions_visited">Complimenti, ti sei aggiudicato il badge \"Nuovo visitatore\" per aver riscattato il tuo primo ingresso gratuito. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="five_attractions_visited">Complimenti, ti sei aggiudicato il badge \"Visitatore provetto\" per aver riscattato 5 ingressi gratuiti. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="ten_attractions_visited">Complimenti, ti sei aggiudicato il badge \"Visitatore esperto\" per aver riscattato 10 ingressi gratuiti. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
+    <string name="email">Email *</string>
 </resources>
