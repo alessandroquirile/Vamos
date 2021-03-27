@@ -72,6 +72,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     private boolean isRelativeLayoutAttractionInformationVisible = false;
     private boolean isLinearLayoutSearchAttractionVisible = true;
     private boolean isFloatingActionButtonCenterPositionOnAttractionsVisible = true;
+    private Marker latestMarkerClicked;
 
     public AttractionMapActivityController(AttractionMapActivity attractionMapActivity) {
         this.attractionMapActivity = attractionMapActivity;
@@ -472,9 +473,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private void onMapClickHelper() {
         if (attraction != null) {
-            if (isRelativeLayoutAttractionInformationVisible)
+            if (isRelativeLayoutAttractionInformationVisible) {
                 setRelativeLayoutDetailsInvisible();
-            else
+                latestMarkerClicked.setIcon(setCustomMarker(getContext(), getAttractionMarker()));
+            } else
                 setRelativeLayoutDetailsVisible();
         }
         if (isLinearLayoutSearchAttractionVisible)
@@ -488,6 +490,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void onMarkerClickHelper(Marker marker) {
+        latestMarkerClicked = marker;
         setMarkerClicked(marker.getId());
         if (!isRelativeLayoutAttractionInformationVisible)
             setRelativeLayoutDetailsVisible();
