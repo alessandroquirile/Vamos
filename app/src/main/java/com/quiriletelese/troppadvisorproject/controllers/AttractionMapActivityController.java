@@ -537,7 +537,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         if (hasImage(attraction))
             Picasso.with(getContext())
                     .load(attraction.getImages().get(0))
-                    .placeholder(R.drawable.troppadvisor_logo)
+                    .placeholder(R.drawable.app_icon_no_background)
                     .error(R.drawable.picasso_error)
                     .into(getImageViewAttraction());
         else

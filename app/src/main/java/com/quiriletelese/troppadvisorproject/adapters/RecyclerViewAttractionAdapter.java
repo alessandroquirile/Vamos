@@ -67,7 +67,7 @@ public class RecyclerViewAttractionAdapter extends RecyclerView.Adapter<Recycler
             Picasso.with(context).load(getFirtsImage(position))
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.troppadvisor_logo)
+                    .placeholder(R.drawable.app_icon_no_background)
                     .error(R.drawable.picasso_error)
                     .into(viewHolder.imageViewAccomodation);
         } else

@@ -132,7 +132,7 @@ public class AccomodationDetailMapsActivityController implements View.OnClickLis
         if (hasImage(accomodation))
             Picasso.with(getContext())
                     .load(accomodation.getImages().get(0))
-                    .placeholder(R.drawable.troppadvisor_logo)
+                    .placeholder(R.drawable.app_icon_no_background)
                     .error(R.drawable.picasso_error)
                     .into(getImageViewAccomodation());
         else
