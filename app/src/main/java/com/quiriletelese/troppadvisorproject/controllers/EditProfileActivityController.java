@@ -246,16 +246,19 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     }
 
     public void showWarningDialog() {
-        new AlertDialog.Builder(editProfileActivity)
-                .setTitle(getString(R.string.pay_attention))
-                .setMessage(getString(R.string.pay_attention_body_profile))
-                .setPositiveButton("Sì", ((dialogInterface, i) -> {
-                    finish(Activity.RESULT_CANCELED);
-                }))
-                .setNegativeButton("No", null)
-                .setCancelable(false)
-                .create()
-                .show();
+        if (isUserInformationsChanged)
+            new AlertDialog.Builder(editProfileActivity)
+                    .setTitle(getString(R.string.pay_attention))
+                    .setMessage(getString(R.string.pay_attention_body_profile))
+                    .setPositiveButton("Sì", ((dialogInterface, i) -> {
+                        finish(Activity.RESULT_CANCELED);
+                    }))
+                    .setNegativeButton("No", null)
+                    .setCancelable(false)
+                    .create()
+                    .show();
+        else
+            finish(Activity.RESULT_CANCELED);
     }
 
     private void showShouldShowRequestPermissionRationaleDialog(DialogInterface.OnClickListener okListener) {
@@ -575,7 +578,8 @@ public class EditProfileActivityController implements View.OnClickListener, Text
     private List<String> getObtainedTitlesFromUser(User user) {
         List<String> titles = new ArrayList<>();
         for (Badge title : user.getObtainedBadges())
-            titles.add(title.getName());
+            if (!title.getName().equals("Clemente") && !title.getName().equals("Severo"))
+                titles.add(title.getName());
         return titles;
     }
 
