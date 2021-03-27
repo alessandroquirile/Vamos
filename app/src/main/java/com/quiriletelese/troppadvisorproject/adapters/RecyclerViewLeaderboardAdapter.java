@@ -73,7 +73,7 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
             Picasso.with(context).load(getImage(position))
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.troppadvisor_logo)
+                    .placeholder(R.drawable.user_profile_no_photo)
                     .error(R.drawable.picasso_error)
                     .into(viewHolder.circleImageViewLeaderboardUserPhoto);
         } else
