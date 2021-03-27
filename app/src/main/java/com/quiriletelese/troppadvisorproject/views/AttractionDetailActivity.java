@@ -141,7 +141,7 @@ public class AttractionDetailActivity extends AppCompatActivity implements
     }
 
     private void setAppBarLayout() {
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar_layout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
             boolean isCollapsed = false;

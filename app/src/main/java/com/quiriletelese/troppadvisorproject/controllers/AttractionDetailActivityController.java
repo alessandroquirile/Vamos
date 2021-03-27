@@ -425,8 +425,10 @@ public class AttractionDetailActivityController implements View.OnClickListener,
             getTextViewFreeAccess().setText(Html.fromHtml(getString(R.string.get_free_acess).concat(" (<b>")
                     .concat(String.valueOf(attraction.getFreeAccessPrice())).concat(" gettoni</b>)")));
             getTextViewFreeAccess().setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_account_wallet_green, 0, R.drawable.icon_arrow_forward_black, 0);
-        } else
+        } else {
             getTextViewFreeAccess().setText(getString(R.string.free_acces_not_allowed));
+            getTextViewFreeAccess().setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_not_allowed_green, 0, 0, 0);
+        }
     }
 
     private String createAddressString() {

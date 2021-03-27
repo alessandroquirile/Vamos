@@ -336,9 +336,10 @@ public class HomePageFragmentController implements View.OnClickListener, SwipeRe
     public void setListenerOnViewComponents() {
         getSwipeRefreshLayoutHomeFrament().setOnRefreshListener(this);
         getButtonProvidePermission().setOnClickListener(this);
-        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        } else
+        else
             requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
