@@ -20,18 +20,7 @@
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="@string/first_500_point"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textColorLink="@color/colorPrimary" />
-
-    <TextView
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/confirm_email"
-        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textColorLink="@color/colorPrimary" />
