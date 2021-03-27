@@ -138,7 +138,7 @@
     <string name="wait_for_account_creation">Attendi, creazione account in corso</string>
     <string name="no_hotels_to_show_on_map">Nessun hotel da mostrare su mappa</string>
     <string name="no_restauants_to_show_on_map">Nessun ristorante da mostrare su mappa</string>
-    <string name="no_attractions_to_show_on_map">Nessun\'attrazione da mostrare su mappa</string>
+    <string name="no_attractions_to_show_on_map">Nessuna attrazione da mostrare su mappa</string>
     <string name="certificate_of_excellence_dialog_message">"L'app attribuisce un certificato di eccellenza alle attrazioni meritevoli"</string>
     <string name="reviews_profile">Recensioni</string>
     <string name="avarage_rating">Voto medio</string>
