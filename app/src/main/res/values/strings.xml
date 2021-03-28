@@ -248,5 +248,5 @@
     <string name="email">Email *</string>
     <string name="accept_free_access">Riscatta ingresso gratuito consentito</string>
     <string name="report_review">Segnala recensione</string>
-    <string name="report_review_body">Se scegli di continuare verrà inviata una segnalazione per questa recensione che sarà poi analizzata dal nostro staff che verificherà se essa viole le regole dell\'app. Vuoi inviare la segnalazione?</string>
+    <string name="report_review_body">Se scegli di continuare verrà inviata una segnalazione per questa recensione che sarà poi analizzata dal nostro staff che verificherà se essa viola le regole dell\'app. Vuoi inviare la segnalazione?</string>
 </resources>
