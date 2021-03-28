@@ -226,10 +226,10 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
             new AlertDialog.Builder(userReviewsActivity)
                     .setTitle(getString(R.string.report_review))
                     .setMessage(getString(R.string.report_review_body))
-                    .setPositiveButton("Invia", ((dialogInterface, i) -> {
+                    .setPositiveButton("Invia segnalazione", ((dialogInterface, i) -> {
                         Toast.makeText(userReviewsActivity, "Segnalazione inviata con successo", Toast.LENGTH_SHORT).show();
                     }))
-                    .setNegativeButton(getString(R.string.cancel), null)
+                    .setNegativeButton("Annulla", null)
                     .setCancelable(false)
                     .create()
                     .show();

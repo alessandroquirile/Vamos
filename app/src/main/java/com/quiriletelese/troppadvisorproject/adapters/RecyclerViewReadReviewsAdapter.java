@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.media.Rating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -231,10 +230,10 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
             new AlertDialog.Builder(seeReviewsActivity)
                     .setTitle(getString(R.string.report_review))
                     .setMessage(getString(R.string.report_review_body))
-                    .setPositiveButton("Invia", ((dialogInterface, i) -> {
+                    .setPositiveButton("Invia segnalazione", ((dialogInterface, i) -> {
                         Toast.makeText(seeReviewsActivity, "Segnalazione inviata con successo", Toast.LENGTH_SHORT).show();
                     }))
-                    .setNegativeButton(getString(R.string.cancel), null)
+                    .setNegativeButton("Annulla", null)
                     .setCancelable(false)
                     .create()
                     .show();
