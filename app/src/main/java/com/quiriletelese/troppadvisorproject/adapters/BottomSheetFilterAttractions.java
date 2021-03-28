@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,7 +34,7 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
     private AutoCompleteTextView autoCompleteTextViewName, autoCompleteTextViewCity;
     private TextView textViewPrice, textViewRating, textViewDistance;
     private SeekBar seekBarPrice, seekBarRating, seekBarDistance;
-    private SwitchCompat switchCompatCertificateOfExcellence;
+    private SwitchCompat switchCompatCertificateOfExcellence, switchCompatAcceptFreeAccess;
     private BottomSheetFilterSearchButtonClick bottomSheetFilterSearchButtonClick;
     private AutoCompleteTextViewsAccomodationFilterTextChangeListener autoCompleteTextViewsAccomodationFilterTextChangeListener;
 
@@ -115,6 +116,7 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
         seekBarRating = bottomSheetView.findViewById(R.id.seek_bar_attraction_map_rating);
         seekBarDistance = bottomSheetView.findViewById(R.id.seek_bar_attraction_map_distance);
         switchCompatCertificateOfExcellence = bottomSheetView.findViewById(R.id.switch_attraction_map_certificate_of_excellence);
+        switchCompatAcceptFreeAccess = bottomSheetView.findViewById(R.id.switch_attraction_map_accept_free_access);
     }
 
     private void setListenerOnComponents() {
@@ -219,6 +221,10 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
         return switchCompatCertificateOfExcellence.isChecked();
     }
 
+    public boolean getSwitchCompatAcceptFreeAccesIsSelecteds() {
+        return switchCompatAcceptFreeAccess.isChecked();
+    }
+
     public void setAutoCompleteTextViewNameText(String value) {
         autoCompleteTextViewName.setText(value);
     }
@@ -243,6 +249,10 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
         switchCompatCertificateOfExcellence.setEnabled(value);
     }
 
+    public void setSwitchCompatAcceptFreeAccesEnabled(boolean value) {
+        switchCompatAcceptFreeAccess.setEnabled(value);
+    }
+
     public void setSeekBarPriceProgress(Integer progress) {
         seekBarPrice.setProgress(progress);
     }
@@ -257,6 +267,10 @@ public class BottomSheetFilterAttractions extends BottomSheetDialogFragment impl
 
     public void setSwitchCompatCertificateOfExcellenceChecked(boolean value) {
         switchCompatCertificateOfExcellence.setChecked(value);
+    }
+
+    public void setSwitchCompatAcceptFreeAccesChecked(boolean value) {
+        switchCompatAcceptFreeAccess.setChecked(value);
     }
 
 }

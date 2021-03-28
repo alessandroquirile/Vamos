@@ -75,14 +75,15 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <AutoCompleteTextView
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/auto_complete_text_view_map_attraction_name"
                     android:layout_width="0dp"
-                    android:completionThreshold="1"
-                    android:imeOptions="actionNext"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.75"
-                    android:hint="@string/search" />
+                    android:completionThreshold="1"
+                    android:hint="@string/search"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences" />
 
             </LinearLayout>
 
@@ -102,14 +103,15 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <AutoCompleteTextView
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/auto_complete_text_view_map_attraction_city"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionPrevious"
-                    android:completionThreshold="1"
                     android:layout_weight="1.75"
-                    android:hint="@string/search" />
+                    android:completionThreshold="1"
+                    android:hint="@string/search"
+                    android:imeOptions="actionPrevious"
+                    android:inputType="textCapSentences" />
 
             </LinearLayout>
 
@@ -133,7 +135,7 @@
 
             <TextView
                 android:id="@+id/text_view_attraction_map_rating"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:padding="5dp"
@@ -173,8 +175,16 @@
                 android:id="@+id/switch_attraction_map_certificate_of_excellence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="@string/certificate_of_excellence"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_attraction_map_accept_free_access"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/accept_free_access"
+                android:textStyle="bold" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -65,10 +65,8 @@ public class AccountDAO_Cognito implements AccountDAO {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL,
                 jsonObjectLogin(account), response -> {
             volleyCallBack.onSuccess(getInitiateAuthResultFromVolley(response));
-            InitiateAuthResult initiateAuthResult = getInitiateAuthResultFromVolley(response);
         }, error -> {
-            if (error != null)
-                volleyCallBack.onError(String.valueOf(error.networkResponse.statusCode));
+
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(@NotNull NetworkResponse

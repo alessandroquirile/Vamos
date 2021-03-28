@@ -55,9 +55,9 @@
                 android:drawablePadding="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:paddingTop="5dp"
+                android:paddingTop="10dp"
                 android:textColor="@color/black"
-                app:drawableStartCompat="@drawable/icon_star_yellow" />
+                app:drawableStartCompat="@drawable/icon_star_hotel_detail_activity_green" />
 
         </LinearLayout>
 

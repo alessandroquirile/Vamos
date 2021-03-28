@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
@@ -207,6 +208,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         attractionFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
         attractionFilter.setDistance(getDistanceValueFromBottomSheetFilter());
         attractionFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        attractionFilter.setHasFreeAccess(getFreeAccessFromBottomSheetFilter());
     }
 
     private void disableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -215,6 +217,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         bottomSheetFilterAttractions.setSeekBarRatingEnabled(false);
         bottomSheetFilterAttractions.setSeekBarDistanceEnabled(false);
         bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceEnabled(false);
+        bottomSheetFilterAttractions.setSwitchCompatAcceptFreeAccesEnabled(false);
     }
 
     private void enableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -222,6 +225,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         bottomSheetFilterAttractions.setSeekBarRatingEnabled(true);
         bottomSheetFilterAttractions.setSeekBarDistanceEnabled(true);
         bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceEnabled(true);
+        bottomSheetFilterAttractions.setSwitchCompatAcceptFreeAccesEnabled(true);
     }
 
     private void disableFieldsOnAutoCompleteTextViewCityChanged() {
@@ -247,6 +251,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         if (isSearchingForCity() || isSearchingForName())
             bottomSheetFilterAttractions.setSeekBarDistanceEnabled(false);
         bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceChecked(isAttractionFilterHasCertificateOfExcellence());
+        bottomSheetFilterAttractions.setSwitchCompatAcceptFreeAccesChecked(isAttractionFilterHasAcceptFreeAccess());
     }
 
     private void detectSearchType() {
@@ -453,6 +458,10 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         return bottomSheetFilterAttractions.getSwitchCompatCertificateOfExcellenceIsSelected();
     }
 
+    private boolean getFreeAccessFromBottomSheetFilter() {
+        return bottomSheetFilterAttractions.getSwitchCompatAcceptFreeAccesIsSelecteds();
+    }
+
     private String checkCityNameValue(String rsqlString) {
         if (isSearchingForCity()) {
             String cityName = extractCityName(getAttractionFilterCityValue());
@@ -490,7 +499,13 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     private String checkCertificateOfExcellence(String rsqlString) {
         if (isAttractionFilterHasCertificateOfExcellence())
-            rsqlString = rsqlString.concat("certificateOfExcellence==" + "true;");
+            rsqlString = rsqlString.concat("certificateOfExcellence==true;");
+        return rsqlString;
+    }
+
+    private String checkAcceptFreeAccess(String rsqlString) {
+        if (isAttractionFilterHasAcceptFreeAccess())
+            rsqlString = rsqlString.concat("freeAccessPrice=gt=0;");
         return rsqlString;
     }
 
@@ -501,8 +516,10 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         rsqlString = checkPriceValue(rsqlString);
         rsqlString = checkRatingValue(rsqlString);
         rsqlString = checkCertificateOfExcellence(rsqlString);
+        rsqlString = checkAcceptFreeAccess(rsqlString);
         if (!rsqlString.equals(""))
             rsqlString = rsqlString.substring(0, rsqlString.lastIndexOf(";"));
+        Log.d("RSQL-STRING LIST", rsqlString);
         return rsqlString;
     }
 
@@ -595,16 +612,16 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
         return attractionFilter.isHasCertificateOfExcellence();
     }
 
+    private boolean getAttractionFilterHasFreeAccessValue() {
+        return attractionFilter.isHasFreeAccess();
+    }
+
     private boolean isSearchingForName() {
         return !getAttractionFilterNameValue().equals("");
     }
 
     private boolean isSearchingForCity() {
         return !getAttractionFilterCityValue().equals("");
-    }
-
-    private boolean isBottomSheetFilterHotelsNull() {
-        return bottomSheetFilterAttractions == null;
     }
 
     private boolean isAttractionFilterNull() {
@@ -629,6 +646,10 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     private boolean isAttractionFilterHasCertificateOfExcellence() {
         return getAttractionFilterHasCertificateOfExcellenceValue();
+    }
+
+    private boolean isAttractionFilterHasAcceptFreeAccess() {
+        return getAttractionFilterHasFreeAccessValue();
     }
 
     private boolean checkTapTargetBooleanPreferences() {

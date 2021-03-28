@@ -1,4 +1,4 @@
-  package com.quiriletelese.troppadvisorproject.controllers;
+package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -226,6 +226,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         bottomSheetFilterAttractions.setSeekBarRatingEnabled(false);
         bottomSheetFilterAttractions.setSeekBarDistanceEnabled(false);
         bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceEnabled(false);
+        bottomSheetFilterAttractions.setSwitchCompatAcceptFreeAccesEnabled(false);
     }
 
     private void enableFieldsOnAutoCompleteTextViewNameChanged() {
@@ -233,6 +234,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         bottomSheetFilterAttractions.setSeekBarRatingEnabled(true);
         bottomSheetFilterAttractions.setSeekBarDistanceEnabled(true);
         bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceEnabled(true);
+        bottomSheetFilterAttractions.setSwitchCompatAcceptFreeAccesEnabled(true);
     }
 
     private void disableFieldsOnAutoCompleteTextViewCityChanged() {
@@ -258,6 +260,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         if (isSearchingForCity())
             bottomSheetFilterAttractions.setSeekBarDistanceEnabled(false);
         bottomSheetFilterAttractions.setSwitchCompatCertificateOfExcellenceChecked(isAttractionFilterHasCertificateOfExcellence());
+        bottomSheetFilterAttractions.setSwitchCompatAcceptFreeAccesChecked(isAttractionFilterHasAcceptFreeAccess());
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
@@ -292,6 +295,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         attractionFilter.setAvarageRating(getRatingValueFromBottomSheetFilter());
         attractionFilter.setDistance(getDistanceValueFromBottomSheetFilter());
         attractionFilter.setHasCertificateOfExcellence(getCertificateOfExcellenceFromBottomSheetFilter());
+        attractionFilter.setHasFreeAccess(getFreeAccessFromBottomSheetFilter());
     }
 
     private void detectSearchType() {
@@ -323,12 +327,18 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     @NotNull
     private Double getDistanceValueFromBottomSheetFilter() {
-        return isDistanceSeekbarEnabled() && isDistanceDifferentFromZero() ?
-                (double) bottomSheetFilterAttractions.getSeekBarDistanceValue() : 1d;
+        if (bottomSheetFilterAttractions.getSeekBarDistanceValue() != 0)
+            return (double) bottomSheetFilterAttractions.getSeekBarDistanceValue();
+        else
+            return 1d;
     }
 
     private boolean getCertificateOfExcellenceFromBottomSheetFilter() {
         return bottomSheetFilterAttractions.getSwitchCompatCertificateOfExcellenceIsSelected();
+    }
+
+    private boolean getFreeAccessFromBottomSheetFilter() {
+        return bottomSheetFilterAttractions.getSwitchCompatAcceptFreeAccesIsSelecteds();
     }
 
     private String checkCityNameValue(String rsqlString) {
@@ -372,6 +382,12 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         return rsqlString;
     }
 
+    private String checkAcceptFreeAccess(String rsqlString) {
+        if (isAttractionFilterHasAcceptFreeAccess())
+            rsqlString = rsqlString.concat("freeAccessPrice=gt=0;");
+        return rsqlString;
+    }
+
     @NotNull
     private String createRsqlString() {
         String rsqlString = "";
@@ -379,9 +395,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         rsqlString = checkPriceValue(rsqlString);
         rsqlString = checkRatingValue(rsqlString);
         rsqlString = checkCertificateOfExcellence(rsqlString);
+        rsqlString = checkAcceptFreeAccess(rsqlString);
         if (!rsqlString.equals(""))
             rsqlString = rsqlString.substring(0, rsqlString.lastIndexOf(";"));
-        Log.d("RSQL-STRING", rsqlString);
+        Log.d("RSQL-STRING MAP", rsqlString);
         return rsqlString;
     }
 
@@ -749,6 +766,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
         return attractionFilter.isHasCertificateOfExcellence();
     }
 
+    private boolean getAttractionFilterHasFreeAccessValue() {
+        return attractionFilter.isHasFreeAccess();
+    }
+
     private TextView getTextViewSearchOnMap() {
         return attractionMapActivity.getTextViewSearchOnMap();
     }
@@ -819,6 +840,10 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
 
     private boolean isAttractionFilterHasCertificateOfExcellence() {
         return getAttractionFilterHasCertificateOfExcellenceValue();
+    }
+
+    private boolean isAttractionFilterHasAcceptFreeAccess() {
+        return getAttractionFilterHasFreeAccessValue();
     }
 
     private boolean isBottomSheetFilterAttractionsVisible() {

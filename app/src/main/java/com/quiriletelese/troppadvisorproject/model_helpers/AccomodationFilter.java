@@ -14,6 +14,7 @@ public abstract class AccomodationFilter implements Serializable {
     private Integer avarageRating;
     private Double distance;
     private boolean hasCertificateOfExcellence;
+    private boolean hasFreeAccess;
 
     public String getName() {
         return name;
@@ -63,4 +64,11 @@ public abstract class AccomodationFilter implements Serializable {
         this.hasCertificateOfExcellence = hasCertificateOfExcellence;
     }
 
+    public boolean isHasFreeAccess() {
+        return hasFreeAccess;
+    }
+
+    public void setHasFreeAccess(boolean hasFreeAccess) {
+        this.hasFreeAccess = hasFreeAccess;
+    }
 }

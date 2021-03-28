@@ -1,8 +1,10 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.Rating;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +74,7 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         setImage(viewHolder, position);
         viewHolder.ratingBarReviews.setRating(reviews.get(position).getRating().floatValue());
         viewHolder.textViewTitle.setText(reviews.get(position).getTitle());
-        viewHolder.textViewDate.setText(reviews.get(position).getAddedDate() );
+        viewHolder.textViewDate.setText(reviews.get(position).getAddedDate());
         setUserName(viewHolder, position);
         viewHolder.textViewUserTitle.setText(reviews.get(position).getUser().getChosenTitle());
         viewHolder.textViewReviewBody.setText(reviews.get(position).getDescription());
@@ -150,7 +153,7 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
         private RatingBar ratingBarReviews;
         private TextView textViewTitle, textViewDate, textViewUser, textViewUserTitle,
                 textViewReviewBody, textViewToatalThumbsUp, textViewToatalThumbsDown;
-        private ImageView imageViewThumbUp, imageViewThumbDown;
+        private ImageView imageViewThumbUp, imageViewThumbDown, imageViewReport;
         private ReadReviewThumbController readReviewThumbController;
 
         public ViewHolder(@NonNull View itemView, SeeReviewsActivity seeReviewsActivity) {
@@ -177,6 +180,9 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
                 case R.id.image_view_thumb_down:
                     doUpdateVoters(-1);
                     break;
+                case R.id.image_view_report_review:
+                    showDialogReportReview();
+                    break;
             }
         }
 
@@ -192,6 +198,7 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
             textViewToatalThumbsDown = itemView.findViewById(R.id.text_view_total_thumbs_down);
             imageViewThumbUp = itemView.findViewById(R.id.image_view_thumb_up);
             imageViewThumbDown = itemView.findViewById(R.id.image_view_thumb_down);
+            imageViewReport = itemView.findViewById(R.id.image_view_report_review);
         }
 
         private void initializeController() {
@@ -202,6 +209,7 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
             circleImageViewUser.setOnClickListener(this);
             imageViewThumbUp.setOnClickListener(this);
             imageViewThumbDown.setOnClickListener(this);
+            imageViewReport.setOnClickListener(this);
         }
 
         private boolean hasLogged() {
@@ -217,6 +225,19 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
                 showLoginDialog();
             else
                 updateVoters(vote);
+        }
+
+        public void showDialogReportReview() {
+            new AlertDialog.Builder(seeReviewsActivity)
+                    .setTitle(getString(R.string.report_review))
+                    .setMessage(getString(R.string.report_review_body))
+                    .setPositiveButton("Invia", ((dialogInterface, i) -> {
+                        Toast.makeText(seeReviewsActivity, "Segnalazione inviata con successo", Toast.LENGTH_SHORT).show();
+                    }))
+                    .setNegativeButton(getString(R.string.cancel), null)
+                    .setCancelable(false)
+                    .create()
+                    .show();
         }
 
         private void startUserActivity() {
@@ -271,5 +292,14 @@ public class RecyclerViewReadReviewsAdapter extends RecyclerView.Adapter<Recycle
             }
         }
 
+        @NotNull
+        private Resources getResources() {
+            return seeReviewsActivity.getResources();
+        }
+
+        @NotNull
+        private String getString(int string) {
+            return getResources().getString(string);
+        }
     }
 }

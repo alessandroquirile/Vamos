@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -56,6 +57,7 @@ public class ProfileFragmentController implements View.OnClickListener {
     private final DAOFactory daoFactory = DAOFactory.getInstance();
     private final UserSharedPreferences userSharedPreferences;
     private User user;
+    private AlertDialog alertDialogLoadingInProgress;
 
     public ProfileFragmentController(ProfileActivity profileActivity) {
         this.profileActivity = profileActivity;
@@ -72,6 +74,7 @@ public class ProfileFragmentController implements View.OnClickListener {
     }
 
     public void findUserByEmail() {
+        showLoadingInProgressDialog();
         findUserByEmailHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -81,6 +84,7 @@ public class ProfileFragmentController implements View.OnClickListener {
 
             @Override
             public void onError(String errorCode) {
+                alertDialogLoadingInProgress.dismiss();
                 showToastOnUiThred(R.string.unexpected_error_while_fetch_data);
             }
         });
@@ -113,27 +117,17 @@ public class ProfileFragmentController implements View.OnClickListener {
         new AlertDialog.Builder(profileActivity)
                 .setTitle(getString(R.string.user_level_profile_tap_title))
                 .setMessage(getString(R.string.user_level_profile_tap_description))
-                .setPositiveButton("Ok", ((dialogInterface, i) -> {
-                    finish(RESULT_OK);
-                }))
-                //.setNegativeButton("Indietro", null)
+                .setPositiveButton("Ok", null)
                 .setCancelable(false)
                 .create()
                 .show();
-    }
-
-    private void finish(int result) {
-        profileActivity.setResult(result, new Intent());
     }
 
     public void showDialogUserWallet() {
         new AlertDialog.Builder(profileActivity)
                 .setTitle(getString(R.string.user_wallet_profile_tap_title))
                 .setMessage(getString(R.string.user_wallet_profile_tap_description))
-                .setPositiveButton("Ok", ((dialogInterface, i) -> {
-                    finish(RESULT_OK);
-                }))
-                //.setNegativeButton("Indietro", null)
+                .setPositiveButton("Ok", null)
                 .setCancelable(false)
                 .create()
                 .show();
@@ -143,13 +137,20 @@ public class ProfileFragmentController implements View.OnClickListener {
         new AlertDialog.Builder(profileActivity)
                 .setTitle(getString(R.string.user_title_profile_tap_title))
                 .setMessage(getString(R.string.user_title_profile_tap_description))
-                .setPositiveButton("Ok", ((dialogInterface, i) -> {
-                    finish(RESULT_OK);
-                }))
-                //.setNegativeButton("Indietro", null)
+                .setPositiveButton("Ok", null)
                 .setCancelable(false)
                 .create()
                 .show();
+    }
+
+    public void showLoadingInProgressDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(profileActivity);
+        LayoutInflater layoutInflater = profileActivity.getLayoutInflater();
+        View dialogView = layoutInflater.inflate(R.layout.dialog_loading_in_progress, null);
+        alertDialogBuilder.setView(dialogView);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogLoadingInProgress = alertDialogBuilder.create();
+        alertDialogLoadingInProgress.show();
     }
 
     public void setListenerOnViewComponents() {
@@ -192,6 +193,7 @@ public class ProfileFragmentController implements View.OnClickListener {
     }
 
     private void volleyCallBackOnSuccess(Object object) {
+        alertDialogLoadingInProgress.dismiss();
         if (!checkTapTargetBooleanPreferences())
             setTapTargetSequence();
         writeWalletPreferences();
@@ -246,7 +248,7 @@ public class ProfileFragmentController implements View.OnClickListener {
     public void startLoginActivityFromLogOut() {
         clearUserSharedPreferences();
         profileActivity.startActivityForResult(createStartLoginActivityIntent(), Constants.getLaunchLoginActivity());
-        //showToastOnUiThred(R.string.add_make_login);
+        showToastOnUiThred(R.string.add_make_login);
     }
 
     public void startSearchUserActivity() {

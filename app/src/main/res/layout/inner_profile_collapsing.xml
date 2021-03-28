@@ -50,7 +50,10 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
                 android:ellipsize="end"
+                android:focusable="true"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingTop="5dp"
@@ -62,15 +65,18 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="5dp">
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/text_view_user_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
                     android:drawablePadding="5dp"
                     android:ellipsize="end"
+                    android:focusable="true"
                     android:maxLines="1"
                     android:textAlignment="center"
                     android:textColor="@color/black"
@@ -81,9 +87,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="15dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
                     android:drawablePadding="5dp"
                     android:ellipsize="end"
+                    android:focusable="true"
                     android:maxLines="1"
                     android:textColor="@color/black"
                     app:drawableStartCompat="@drawable/icon_account_wallet_green" />
@@ -105,6 +114,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
 

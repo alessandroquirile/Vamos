@@ -1,13 +1,16 @@
 package com.quiriletelese.troppadvisorproject.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +45,7 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_user_revies_adapter_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_user_reviews_adapter_layout, parent, false);
         return new RecyclerViewUserReviewsAdapter.ViewHolder(view, userReviewsActivity);
     }
 
@@ -71,6 +74,8 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
         viewHolder.textViewReviewBody.setText(reviews.get(position).getDescription());
         handleThumbsButton(viewHolder, position);
         handleThumbsTextViews(viewHolder, position);
+        if (viewHolder.isSameUser())
+            viewHolder.imageViewReportUserReview.setVisibility(View.GONE);
     }
 
     @NotNull
@@ -139,14 +144,13 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
         viewHolder.imageViewThumbDown.setClickable(false);
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final UserReviewsActivity userReviewsActivity;
         private CircleImageView circleImageViewUser;
         private RatingBar ratingBarReviews;
         private TextView textViewAccomodationName, textViewTitle, textViewDate, textViewUser, textViewUserTitle,
                 textViewReviewBody, textViewToatalThumbsUp, textViewToatalThumbsDown;
-        private ImageView imageViewThumbUp, imageViewThumbDown;
+        private ImageView imageViewThumbUp, imageViewThumbDown, imageViewReportUserReview;
         private ReadUserReviewsThumbController readUserReviewsThumbController;
 
         public ViewHolder(@NonNull View itemView, UserReviewsActivity userReviewsActivity) {
@@ -170,6 +174,9 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
                 case R.id.image_view_thumb_down_user_review:
                     doUpdateVoters(-1);
                     break;
+                case R.id.image_view_report_user_review:
+                    showDialogReportReview();
+                    break;
             }
         }
 
@@ -186,6 +193,7 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
             textViewToatalThumbsDown = itemView.findViewById(R.id.text_view_total_thumbs_down_user_review);
             imageViewThumbUp = itemView.findViewById(R.id.image_view_thumb_up_user_review);
             imageViewThumbDown = itemView.findViewById(R.id.image_view_thumb_down_user_review);
+            imageViewReportUserReview = itemView.findViewById(R.id.image_view_report_user_review);
         }
 
         private void initializeController() {
@@ -196,6 +204,7 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
             circleImageViewUser.setOnClickListener(this);
             imageViewThumbUp.setOnClickListener(this);
             imageViewThumbDown.setOnClickListener(this);
+            imageViewReportUserReview.setOnClickListener(this);
         }
 
         private boolean hasLogged() {
@@ -211,6 +220,19 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
                 showLoginDialog();
             else
                 updateVoters(vote);
+        }
+
+        public void showDialogReportReview() {
+            new AlertDialog.Builder(userReviewsActivity)
+                    .setTitle(getString(R.string.report_review))
+                    .setMessage(getString(R.string.report_review_body))
+                    .setPositiveButton("Invia", ((dialogInterface, i) -> {
+                        Toast.makeText(userReviewsActivity, "Segnalazione inviata con successo", Toast.LENGTH_SHORT).show();
+                    }))
+                    .setNegativeButton(getString(R.string.cancel), null)
+                    .setCancelable(false)
+                    .create()
+                    .show();
         }
 
         private boolean isSameUser() {
@@ -252,6 +274,16 @@ public class RecyclerViewUserReviewsAdapter extends RecyclerView.Adapter<Recycle
                     textViewToatalThumbsDown.setText(String.valueOf(reviews.get(this.getAdapterPosition()).getTotalThumbDown() + 1));
                     break;
             }
+        }
+
+        @NotNull
+        private Resources getResources() {
+            return userReviewsActivity.getResources();
+        }
+
+        @NotNull
+        private String getString(int string) {
+            return getResources().getString(string);
         }
     }
 }
