@@ -3,15 +3,12 @@ package com.quiriletelese.troppadvisorproject.controllers;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,7 +36,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -68,7 +64,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -421,9 +416,17 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private void setFreeAccess() {
+        Long userWallet = getUserWallet();
         if (attraction.getFreeAccessPrice() != 0) {
-            getTextViewFreeAccess().setText(Html.fromHtml(getString(R.string.get_free_acess).concat(" (<b>")
-                    .concat(String.valueOf(attraction.getFreeAccessPrice())).concat(" gettoni</b>)")));
+            if (userWallet.intValue() >= attraction.getFreeAccessPrice()) {
+                getTextViewFreeAccess().setText(Html.fromHtml(getString(R.string.get_free_acess).concat(" (<b>")
+                        .concat(String.valueOf(attraction.getFreeAccessPrice())).concat(" gettoni</b>)")));
+            } else {
+                long difference = attraction.getFreeAccessPrice() - getUserWallet();
+                getTextViewFreeAccess().setText(Html.fromHtml(getString(R.string.get_free_acess).concat(" (")
+                        .concat(String.valueOf(attraction.getFreeAccessPrice())).concat(" gettoni) Insufficienti: ").concat(Long.toString(difference).
+                                concat(" mancanti"))));
+            }
             getTextViewFreeAccess().setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_account_wallet_green, 0, R.drawable.icon_arrow_forward_black, 0);
         } else {
             getTextViewFreeAccess().setText(getString(R.string.free_acces_not_allowed));
