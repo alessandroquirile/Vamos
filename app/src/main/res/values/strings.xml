@@ -238,8 +238,8 @@
     <string name="confirm_email">Perfetto! Ora attiva il tuo account tramite il link che ti abbiamo inviato per email e goditi la tua nuova app!</string>
     <string name="user_wallet_profile_tap_title">Portafogli virtuale</string>
     <string name="user_wallet_profile_tap_description">Questo è il tuo portafogli virtuale all\'interno del quale accumuli gettoni. Ogni accesso giornaliero ti dà diritto ad 1 gettone. Usali per riscattare gli ingressi gratuiti alle strutture dove previsto</string>
-    <string name="get_free_acess">Riscatta accesso gratuito</string>
-    <string name="free_acces_not_allowed">Riscatta accesso gratuito non consentito</string>
+    <string name="get_free_acess">Riscatta ingresso gratuito</string>
+    <string name="free_acces_not_allowed">Riscatta ingresso gratuito non consentito</string>
     <string name="not_enough_coin">Non hai abbastanza gettoni per riscattare l\'accesso gratuito</string>
     <string name="show_qr_code">Mostra questo codice qr all\'operatore per riscattare l\'ingresso gratuito. Valido esclusivamente per il prezzo intero</string>
     <string name="one_attractions_visited">Complimenti, hai guadagnato il badge \"Nuovo visitatore\" per aver riscattato il tuo primo ingresso gratuito. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
