@@ -470,7 +470,11 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private boolean isSameDay(Integer day) {
         Calendar calendar = Calendar.getInstance();
-        return day == calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        System.out.println("KEY = " + day + "\nDAY = " + (calendar.get(Calendar.DAY_OF_WEEK) - 1));
+        if (day == 7 && (calendar.get(Calendar.DAY_OF_WEEK) - 1) == 0)
+            return true;
+        else
+            return day == (calendar.get(Calendar.DAY_OF_WEEK) - 1);
     }
 
     private String detectDay(Integer day) {
