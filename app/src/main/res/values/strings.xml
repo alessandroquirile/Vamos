@@ -144,7 +144,6 @@
     <string name="avarage_rating">Voto medio</string>
     <string name="leaderboard">Classifica</string>
     <string name="was_it_helpful">È stato utile?</string>
-    <string name="searched_user_private_profile_error">Profilo privato, le informazioni personali non sono disponibili</string>
     <string name="return_to_the_original_profile_image">Torna all\'immagine originale</string>
     <string name="private_account">Account privato</string>
     <string name="select_title_required_field">Seleziona un titolo *</string>
