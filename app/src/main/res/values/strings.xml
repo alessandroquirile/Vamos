@@ -26,7 +26,7 @@
     <string name="hotel">Hotel</string>
     <string name="restaurant">Ristoranti</string>
     <string name="attractions">Attrazioni</string>
-    <string name="no_position_error">Geolocalizzazione disattivata, attivala per trovare le attrazioni nelle vicinanze. Attivala e riaggiorna la pagina cliccando sul pulsante nella barra in alto</string>
+    <string name="no_position_error">Geolocalizzazione disattivata, attivala per trovare le attrazioni nelle vicinanze poi riaggiorna la pagina cliccando sul pulsante nella barra in alto</string>
     <string name="active_geolocation">Attiva geolocalizzazione</string>
     <string name="what">Cosa:</string>
     <string name="price_search_page">Prezzo: Qualsiasi</string>
@@ -123,7 +123,7 @@
     <string name="review_successfully_submitted">Recensione inserita con successo.\nHai ottenuto 30 punti esperienza</string>
     <string name="unexpected_error_while_entering_the_review">Errore imprevisto durante l\'inserimento della recensione, riprova</string>
     <string name="wait_while_insert_review">Attendi, sto salvando la tua recensione</string>
-    <string name="no_login_profile_error">Sembra che tu non abbia ancora effettuato il login. Collega un account cliccando il tasto in alto a destra per poter accedere a funzionalità aggiuntive</string>
+    <string name="no_login_profile_error">Sembra che tu non abbia ancora effettuato il login. Collega un account cliccando il tasto in alto a destra per poter accedere alle funzionalità aggiuntive</string>
     <string name="logout">Logout</string>
     <string name="add_make_login">Effettua un nuovo login</string>
     <string name="retrieving_user_details">Attendi, sto recuperando le informazioni del tuo account</string>
