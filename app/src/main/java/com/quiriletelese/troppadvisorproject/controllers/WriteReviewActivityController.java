@@ -25,7 +25,6 @@ import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.Review;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
 import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
-import com.quiriletelese.troppadvisorproject.views.LoginActivity;
 import com.quiriletelese.troppadvisorproject.views.WriteReviewActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -110,11 +109,12 @@ public class WriteReviewActivityController implements RatingBar.OnRatingBarChang
     private void volleyCallbackOnSuccess(Object object) {
         Review review = (Review) object;
         dismissWaitWhileInsertingReviewDialog();
-        showToastOnUiThread(R.string.review_successfully_submitted);
         if (review.getUser().getTotalReviews() == 1)
             showFirstReviewRewardDialog();
-        else
+        else {
+            showToastOnUiThread(R.string.review_successfully_submitted);
             finish(Activity.RESULT_OK);
+        }
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
