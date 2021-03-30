@@ -204,7 +204,7 @@
     <string name="see_on_map_tap_description">Puoi visualizzare tutte insieme le strutture sulla mappa così da avere un\'idea più chiara della loro posizione geografica</string>
     <string name="search_attractions_list_tap_title">Cerca attrazioni</string>
     <string name="search_attractions_list_tap_description">Applica dei filtri per da trovare ciò che più si avvicina alle tue esigenze</string>
-    <string name="first_review_reward">Complimenti, hai guadagnato il badge \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
+    <string name="first_review_reward">Hai sbloccato il badge \"Nuovo recensore\" per aver inserito la tua prima recensione. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="user_level_profile_tap_title">I tuoi punti esperienza</string>
     <string name="user_level_profile_tap_description">Questi sono i tuoi punti esperienza. Li ottieni scrivendo recensioni, votando quelle degli altri e ad ogni accesso giornaliero. Te ne abbiamo dati 500 come premio di benvenuto!</string>
     <string name="view_pager_tap_title">Foto attrazioni</string>
@@ -240,10 +240,10 @@
     <string name="get_free_acess">Riscatta ingresso gratuito</string>
     <string name="free_acces_not_allowed">Riscatta ingresso gratuito non consentito</string>
     <string name="not_enough_coin">Non hai abbastanza gettoni per riscattare l\'ingresso gratuito</string>
-    <string name="show_qr_code">Mostra questo codice qr all\'operatore per riscattare l\'ingresso gratuito. Valido esclusivamente per il prezzo intero</string>
-    <string name="one_attractions_visited">Complimenti, hai guadagnato il badge \"Nuovo visitatore\" per aver riscattato il tuo primo ingresso gratuito. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
-    <string name="five_attractions_visited">Complimenti,hai guadagnato il badge \"Visitatore provetto\" per aver riscattato 5 ingressi gratuiti. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
-    <string name="ten_attractions_visited">Complimenti, hai guadagnato il badge \"Visitatore esperto\" per aver riscattato 10 ingressi gratuiti. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
+    <string name="show_qr_code">Mostra questo codice QR all\'operatore per riscattare l\'ingresso gratuito. Valido esclusivamente per il prezzo intero</string>
+    <string name="one_attractions_visited">Hai sbloccato il badge \"Nuovo visitatore\" per aver riscattato il tuo primo ingresso gratuito. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
+    <string name="five_attractions_visited">Hai sbloccato il badge \"Visitatore provetto\" per aver riscattato 5 ingressi gratuiti. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
+    <string name="ten_attractions_visited">Hai sbloccato il badge \"Visitatore esperto\" per aver riscattato 10 ingressi gratuiti. Controlla il tuo profilo per visualizzare la tua collezione di badge</string>
     <string name="email">Email *</string>
     <string name="accept_free_access">Riscatta ingresso gratuito consentito</string>
     <string name="report_review">Segnala recensione</string>
