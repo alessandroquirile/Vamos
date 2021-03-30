@@ -74,7 +74,6 @@ public class ProfileFragmentController implements View.OnClickListener {
     }
 
     public void findUserByEmail() {
-        showLoadingInProgressDialog();
         findUserByEmailHelper(new VolleyCallBack() {
             @Override
             public void onSuccess(Object object) {
@@ -237,8 +236,10 @@ public class ProfileFragmentController implements View.OnClickListener {
     public void checkLogin() {
         if (!hasLogged())
             showViewNoLoginProfileError();
-        else
+        else {
+            showLoadingInProgressDialog();
             hideViewNoLoginProfileError();
+        }
     }
 
     public void startLoginActivity() {

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.User;
+import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.SearchedUserProfileActivity;
 import com.squareup.picasso.Picasso;
 
@@ -25,10 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
+public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<RecyclerViewLeaderboardAdapter.ViewHolder> {
 
     private List<User> users;
     private Context context;
@@ -40,12 +38,12 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewLeaderboardAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_activity_items_layout, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewLeaderboardAdapter.ViewHolder holder, int position) {
         handleRecyclerViewItemsFields(holder, position);
     }
 
@@ -54,12 +52,11 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
         return users.size();
     }
 
-    private void handleRecyclerViewItemsFields(@NonNull RecyclerView.ViewHolder holder, int position) {
+    private void handleRecyclerViewItemsFields(@NonNull RecyclerViewLeaderboardAdapter.ViewHolder holder, int position) {
         handleBodyItemsFields(holder, position);
     }
 
-    private void handleBodyItemsFields(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
+    private void handleBodyItemsFields(@NonNull RecyclerViewLeaderboardAdapter.ViewHolder viewHolder, int position) {
         setBodyUsersProfileImage(viewHolder, position);
         viewHolder.textViewLeaderboardUserName.setText(users.get(position).getName().concat(" - ").concat(users.get(position).getUsername()));
         viewHolder.textViewLeaderboardUserLevel.setText(String.valueOf(users.get(position).getLevel()));
@@ -142,64 +139,6 @@ public class RecyclerViewLeaderboardAdapter extends RecyclerView.Adapter<Recycle
 
         private Intent createStartSearchedUserProfileActivityIntent() {
             Intent intentSearchedUserProfile = new Intent(context, SearchedUserProfileActivity.class);
-            intentSearchedUserProfile.putExtra(Constants.getEmail(), getUserEmail());
-            intentSearchedUserProfile.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            return intentSearchedUserProfile;
-        }
-
-        private String getUserEmail() {
-            return users.get(this.getAdapterPosition()).getEmail();
-        }
-
-    }
-
-    public class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private CardView cardViewFirst, cardViewSecond, cardViewThird;
-        private TextView textViewLeaderboardHeaderUserNameFirst, textViewLeaderboardHeaderUserNameSecond,
-                textViewLeaderboardHeaderUserNameThird;
-        private CircleImageView circleImageViewLeaderboardHeaderFirstUserPhoto,
-                circleImageViewLeaderboardHeaderSecondUserPhoto, circleImageViewLeaderboardHeaderThirdUserPhoto;
-        private TextView textViewLeaderboardHeaderUserLevelFirst, textViewLeaderboardHeaderUserLevelSecond,
-                textViewLeaderboardHeaderUserLevelThird;
-
-        public HeaderViewHolder(@NonNull View itemView) {
-            super(itemView);
-            initializeComponents();
-            setListenerOnComponents();
-        }
-
-        @Override
-        public void onClick(View view) {
-            startSearchedUserProfileActivity();
-        }
-
-        private void initializeComponents() {
-            cardViewFirst = itemView.findViewById(R.id.card_view_first);
-            cardViewSecond = itemView.findViewById(R.id.card_view_second);
-            cardViewThird = itemView.findViewById(R.id.card_view_third);
-            textViewLeaderboardHeaderUserNameFirst = itemView.findViewById(R.id.text_view_leaderboard_header_user_name_first);
-            textViewLeaderboardHeaderUserNameSecond = itemView.findViewById(R.id.text_view_leaderboard_header_user_name_second);
-            textViewLeaderboardHeaderUserNameThird = itemView.findViewById(R.id.text_view_leaderboard_header_user_name_third);
-            circleImageViewLeaderboardHeaderFirstUserPhoto = itemView.findViewById(R.id.circle_image_view_leaderboard_header_first_user_photo);
-            circleImageViewLeaderboardHeaderSecondUserPhoto = itemView.findViewById(R.id.circle_image_view_leaderboard_header_second_user_photo);
-            circleImageViewLeaderboardHeaderThirdUserPhoto = itemView.findViewById(R.id.circle_image_view_leaderboard_header_third_user_photo);
-            textViewLeaderboardHeaderUserLevelFirst = itemView.findViewById(R.id.text_view_leaderboard_header_user_level_first);
-            textViewLeaderboardHeaderUserLevelSecond = itemView.findViewById(R.id.text_view_leaderboard_header_user_level_second);
-            textViewLeaderboardHeaderUserLevelThird = itemView.findViewById(R.id.text_view_leaderboard_header_user_level_third);
-        }
-
-        private void setListenerOnComponents() {
-            cardViewFirst.setOnClickListener(this);
-            cardViewSecond.setOnClickListener(this);
-            cardViewThird.setOnClickListener(this);
-        }
-
-        private void startSearchedUserProfileActivity() {
-            context.startActivity(createStartSearchedUserProfileActivityIntent());
-        }
-
-        private Intent createStartSearchedUserProfileActivityIntent() {
-            Intent intentSearchedUserProfile = new Intent();
             intentSearchedUserProfile.putExtra(Constants.getEmail(), getUserEmail());
             intentSearchedUserProfile.addFlags(FLAG_ACTIVITY_NEW_TASK);
             return intentSearchedUserProfile;

@@ -1,8 +1,10 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.content.Context;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,7 @@ import com.quiriletelese.troppadvisorproject.factories.DAOFactory;
 import com.quiriletelese.troppadvisorproject.model_helpers.Constants;
 import com.quiriletelese.troppadvisorproject.models.User;
 import com.quiriletelese.troppadvisorproject.utils.ConfigFileReader;
+import com.quiriletelese.troppadvisorproject.utils.UserSharedPreferences;
 import com.quiriletelese.troppadvisorproject.views.LeaderboardActivity;
 import com.quiriletelese.troppadvisorproject.volley_interfaces.VolleyCallBack;
 
@@ -25,13 +28,14 @@ public class LeaderboardActivityController {
 
     private final LeaderboardActivity leaderboardActivity;
     private final DAOFactory daoFactory = DAOFactory.getInstance();
+    private int userPosition;
 
     public LeaderboardActivityController(LeaderboardActivity leaderboardActivity) {
         this.leaderboardActivity = leaderboardActivity;
     }
 
     private void findLeaderboardHelper(VolleyCallBack volleyCallBack) {
-       getUserDAO().findLeaderboard(volleyCallBack, getContext());
+        getUserDAO().findLeaderboard(volleyCallBack, getContext());
     }
 
     public void findLeaderboard() {
@@ -52,11 +56,34 @@ public class LeaderboardActivityController {
         setViewVisibility(getNoContentLeaderboardLayout(), View.GONE);
         setViewVisibility(getProgressBarLeaderboard(), View.GONE);
         initializeRecylerView(object);
+        handleUserPositionMenuItem(object);
     }
 
     private void volleyCallBackOnError(String errorCode) {
         setViewVisibility(getNoContentLeaderboardLayout(), View.VISIBLE);
         setViewVisibility(getProgressBarLeaderboard(), View.GONE);
+    }
+
+    private void handleUserPositionMenuItem(Object object) {
+        userPosition = getUserPosition(object);
+        if (userPosition != -1)
+            getMenuItem().setTitle("Sei " + (userPosition+1) + "°");
+    }
+
+    private int getUserPosition(Object object) {
+        int position = -1;
+        String email = getEmail();
+        List<User> users = (List<User>) object;
+        for (int i = 0; i < users.size(); i++)
+            if (users.get(i).getEmail().equals(email)) {
+                position = i;
+                break;
+            }
+        return position;
+    }
+
+    public void scrollToUserPosition(){
+        getRecyclerViewLeaderboard().scrollToPosition(userPosition);
     }
 
     private void initializeRecylerView(Object object) {
@@ -89,6 +116,14 @@ public class LeaderboardActivityController {
 
     public View getNoContentLeaderboardLayout() {
         return leaderboardActivity.getNoContentLeaderboardLayout();
+    }
+
+    public MenuItem getMenuItem() {
+        return leaderboardActivity.getMenuItem();
+    }
+
+    private String getEmail() {
+        return new UserSharedPreferences(getContext()).getStringSharedPreferences(Constants.getEmail());
     }
 
     private UserDAO getUserDAO() {

@@ -56,7 +56,7 @@
         <activity
             android:name=".views.AttractionDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.TransLucentStatusBar" />
         <activity
             android:name=".views.SeeReviewsActivity"
             android:label="@string/users_reviews"
@@ -82,7 +82,7 @@
             android:name=".views.LeaderboardActivity"
             android:label="@string/leaderboard"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeMaterial.NoActionBar" />
         <activity
             android:name=".views.EditProfileActivity"
             android:label="@string/edit_profile"

@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.quiriletelese.troppadvisorproject.R;
 import com.quiriletelese.troppadvisorproject.adapters.RecyclerViewLeaderboardAdapter;
@@ -24,11 +26,15 @@ public class LeaderboardActivity extends AppCompatActivity {
     private ProgressBar progressBarLeaderboard;
     private RecyclerView recyclerViewLeaderboard;
     private View noContentLeaderboardLayout;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+
+        Toolbar toolbar = findViewById(R.id.tool_bar_leaderboard);
+        setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -39,10 +45,20 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_leaderboard, menu);
+        menuItem = menu.findItem(R.id.user_position);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.user_position:
+                scrollToUserPosition();
                 break;
         }
         return true;
@@ -62,6 +78,10 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboardActivityController.findLeaderboard();
     }
 
+    public void scrollToUserPosition() {
+        leaderboardActivityController.scrollToUserPosition();
+    }
+
     public ProgressBar getProgressBarLeaderboard() {
         return progressBarLeaderboard;
     }
@@ -74,4 +94,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         return noContentLeaderboardLayout;
     }
 
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
 }
