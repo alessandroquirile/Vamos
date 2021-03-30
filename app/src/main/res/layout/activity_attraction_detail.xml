@@ -28,7 +28,6 @@
                 android:layout_height="324dp"
                 android:clipToPadding="false"
                 android:fitsSystemWindows="true"
-                android:layout_marginBottom="-24dp"
                 android:overScrollMode="never" />
 
             <TextView

@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.views;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.media.Rating;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -70,14 +72,15 @@ public class AttractionDetailActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle("");
         setAppBarLayout();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         initializeViewComponents();
         initializeController();
         setListenerOnViewComponents();
         showLoadingInProgressDialog();
         initializeActivityFields();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setViewPagerMargin();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -163,6 +166,16 @@ public class AttractionDetailActivity extends AppCompatActivity implements
                 }
             }
         });
+    }
+
+    private void setViewPagerMargin() {
+        int statusBarHeight = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) viewPager.getLayoutParams();
+        marginLayoutParams.bottomMargin -= statusBarHeight;
     }
 
     public void showLoadingInProgressDialog() {
