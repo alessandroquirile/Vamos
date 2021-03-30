@@ -80,7 +80,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".views.LeaderboardActivity"
-            android:label="@string/leaderboard"
+            android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterial.NoActionBar" />
         <activity

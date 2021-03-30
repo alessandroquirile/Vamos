@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,7 +66,7 @@ public class LeaderboardActivityController {
     private void handleUserPositionMenuItem(Object object) {
         userPosition = getUserPosition(object);
         if (userPosition != -1)
-            getMenuItem().setTitle("Sei " + (userPosition+1) + "°");
+            getMenuItem().setTitle("Sei " + (userPosition + 1) + "° in classifica");
     }
 
     private int getUserPosition(Object object) {
