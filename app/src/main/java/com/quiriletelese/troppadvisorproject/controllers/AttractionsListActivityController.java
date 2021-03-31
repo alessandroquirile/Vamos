@@ -1,11 +1,13 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
@@ -60,6 +62,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     private boolean isLoadingData = false;
     private boolean isPointSearchNull = false;
     private boolean hasToShowBottomSheetFilter = true;
+    private AlertDialog alertDialog;
 
     public AttractionsListActivityController(AttractionsListActivity attractionsListActivity) {
         this.attractionsListActivity = attractionsListActivity;
@@ -194,6 +197,7 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void onBottomSheetFilterSearchButtonClickHelper() {
+        showWaitSearchResultDialog();
         setIsLoadingData(false);
         page = 0;
         createAttractionFilter();
@@ -265,6 +269,8 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void volleyCallbackOnSuccess(Object object, PointSearch pointSearch) {
+        if (alertDialog != null)
+            alertDialog.dismiss();
         List<Attraction> attractions = (List<Attraction>) object;
         if (isLoadingData)
             addNewAttractionsToList(attractions);
@@ -283,6 +289,8 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
+        if (alertDialog != null)
+            alertDialog.dismiss();
         setProgressBarVisibilityOnUiThred(View.INVISIBLE);
         switch (errorCode) {
             case "204":
@@ -306,6 +314,28 @@ public class AttractionsListActivityController implements BottomSheetFilterSearc
 
     private void handleOtherVolleyError() {
         showToastVolleyError(R.string.unexpected_error_while_fetch_data);
+    }
+
+    private void showWaitSearchResultDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogLayout(), null));
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private AlertDialog.Builder createAlertDialogBuilder() {
+        return new AlertDialog.Builder(attractionsListActivity);
+    }
+
+    @NotNull
+    private LayoutInflater getLayoutInflater() {
+        return attractionsListActivity.getLayoutInflater();
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_wait_search_result;
     }
 
     private void initializeRecyclerViewOnSuccess(List<Attraction> attractions, PointSearch pointSearch) {

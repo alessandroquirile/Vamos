@@ -1,6 +1,7 @@
 package com.quiriletelese.troppadvisorproject.controllers;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -73,6 +75,7 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     private boolean isLinearLayoutSearchAttractionVisible = true;
     private boolean isFloatingActionButtonCenterPositionOnAttractionsVisible = true;
     private Marker latestMarkerClicked;
+    private AlertDialog alertDialog;
 
     public AttractionMapActivityController(AttractionMapActivity attractionMapActivity) {
         this.attractionMapActivity = attractionMapActivity;
@@ -192,6 +195,8 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void setMapOnSuccess(List<Attraction> attractions) {
+        if (alertDialog != null)
+            alertDialog.dismiss();
         this.attractions = attractions;
         dismissBottomSheetFilterRestaurants();
         addMarkersOnSuccess(attractions);
@@ -199,8 +204,31 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void onBottomSheetFilterSearchButtonClickHelper() {
+        showWaitSearchResultDialog();
         createAttractionFilter();
         detectSearchType();
+    }
+
+    private void showWaitSearchResultDialog() {
+        AlertDialog.Builder alertDialogBuilder = createAlertDialogBuilder();
+        alertDialogBuilder.setView(getLayoutInflater().inflate(getAlertDialogLayout(), null));
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    private AlertDialog.Builder createAlertDialogBuilder() {
+        return new AlertDialog.Builder(attractionMapActivity);
+    }
+
+    @NotNull
+    private LayoutInflater getLayoutInflater() {
+        return attractionMapActivity.getLayoutInflater();
+    }
+
+    private int getAlertDialogLayout() {
+        return R.layout.dialog_wait_search_result;
     }
 
     private void onClickHelper(@NotNull View view) {
@@ -264,6 +292,8 @@ public class AttractionMapActivityController implements GoogleMap.OnMapClickList
     }
 
     private void volleyCallbackOnError(@NotNull String errorCode) {
+        if (alertDialog != null)
+            alertDialog.dismiss();
         switch (errorCode) {
             case "204":
                 handle204VolleyError();

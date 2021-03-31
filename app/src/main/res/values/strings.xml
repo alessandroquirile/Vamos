@@ -248,4 +248,5 @@
     <string name="accept_free_access">Riscatta ingresso gratuito consentito</string>
     <string name="report_review">Segnala recensione</string>
     <string name="report_review_body">Sei sicuro di voler segnalare questa recensione? La recensione verrà analizzata dallo staff per verificare se essa viola gli standard della nostra community</string>
+    <string name="wait_for_search_result">Attendi, ricerca attrazioni in corso</string>
 </resources>
