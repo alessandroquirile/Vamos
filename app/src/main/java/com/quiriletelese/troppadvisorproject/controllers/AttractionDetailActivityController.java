@@ -64,6 +64,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -219,7 +220,7 @@ public class AttractionDetailActivityController implements View.OnClickListener,
                 }
         } else
             showLoginDialog();
-        System.out.println("WALLET = " + userWallet);
+        Log.d("USER WALLET = ", String.valueOf(userWallet));
     }
 
     public void showLoginDialog() {
@@ -549,6 +550,8 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     }
 
     private void createReviewPreviews(List<Review> reviews) {
+        if (reviews.size() < 3)
+            Collections.reverse(reviews);
         for (Review review : reviews)
             generateTextViews(review);
     }
@@ -589,7 +592,8 @@ public class AttractionDetailActivityController implements View.OnClickListener,
 
     private List<Review> getFirst3Reviews() {
         List<Review> first3Reviews = new ArrayList<>();
-        for (int i = 0; i < 3; i++)
+        int reviewsLenght = attraction.getReviews().size();
+        for (int i = reviewsLenght - 1; i > reviewsLenght - 4; i--)
             first3Reviews.add(attraction.getReviews().get(i));
         return first3Reviews;
     }
@@ -597,10 +601,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
     private void startCallActivity() {
         if (!getTextViewPhoneNumber().getText().toString().equals(getString(R.string.no_phone_number)))
             getContext().startActivity(createCallActivityIntent());
-    }
-
-    private void startMapsActivity() {
-        getContext().startActivity(createMapsActivityIntent());
     }
 
     public void startWriteReviewActivity() {
@@ -615,8 +615,6 @@ public class AttractionDetailActivityController implements View.OnClickListener,
         if (resultCode == RESULT_OK)
             if (requestCode == Constants.getLaunchWriteReviewActivity())
                 findById();
-//            else if(requestCode == Constants.getLaunchLoginActivity())
-//                userWallet = getUserWallet();
     }
 
     private void startSeeReviewsActivity() {
